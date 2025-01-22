@@ -7,8 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "pages:build": "next build",
-    "pages:deploy": "next build"
+    "pages:build": "next build && next export",
+    "pages:deploy": "next build && next export"
   },
   "dependencies": {
     "@radix-ui/react-accordion": "^1.2.0",
