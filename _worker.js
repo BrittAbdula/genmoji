@@ -1,4 +1,4 @@
 import { createPages } from '@cloudflare/next-on-pages'
 
-// 配置 Worker
+// 创建 Cloudflare Pages 应用
 export default createPages() 
