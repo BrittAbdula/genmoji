@@ -1,0 +1,10 @@
+node_modules
+
+.next
+
+gen
+
+.env*
+
+.DS_Store
+
