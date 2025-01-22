@@ -1,10 +1,14 @@
 node_modules
 
 .next
+out
 
 gen
 
 .env*
 
 .DS_Store
+
+.wrangler
+.cloudflare
 

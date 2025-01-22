@@ -1,4 +1,9 @@
+name = "genmoji-web"
+compatibility_date = "2024-01-21"
+
+# 启用 Node.js 兼容性
 compatibility_flags = ["nodejs_compat"]
 
+# 构建命令
 [build]
 command = "pnpm run pages:build" 

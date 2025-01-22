@@ -1,16 +1,15 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  // 启用 Cloudflare Pages 兼容性
+  experimental: {
+    cloudflarePages: true,
+  },
+  // 如果使用了 Images 组件，需要配置
   images: {
-    remotePatterns: [{ hostname: "localhost" }, { hostname: "store.genmojionline.com" }],
+    unoptimized: true,
+    domains: ['store.genmojionline.com'],
   },
   output: 'standalone',
-  webpack: (config) => {
-    config.resolve.fallback = {
-      ...config.resolve.fallback,
-      fs: false,
-    };
-    return config;
-  },
 };
 
 export default nextConfig;
