@@ -3,7 +3,7 @@ const nextConfig = {
   images: {
     remotePatterns: [{ hostname: "localhost" }, { hostname: "store.genmojionline.com" }],
   },
-  output: 'export',
+  output: 'standalone',
 };
 
 export default nextConfig;
