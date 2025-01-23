@@ -27,7 +27,7 @@ async function getEmoji(slug: string): Promise<Emoji> {
 }
 
 async function getRelatedEmojis(slug: string): Promise<Emoji[]> {
-  const res = await fetch(`https://gen.genmojionline.com?slug=${slug}&related=6`, {
+  const res = await fetch(`https://gen.genmojionline.com?slug=${slug}&related=9`, {
     headers: {
       'Origin': 'https://genmojionline.com'
     },
