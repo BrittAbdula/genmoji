@@ -7,6 +7,12 @@ import type { Metadata, Viewport } from "next";
 import { siteConfig } from "@/lib/config";
 export const runtime = 'edge';
 
+type PageParams = {
+    params: {
+      slug: string;
+    };
+  };
+
 async function getEmoji(slug: string): Promise<Emoji> {
   const res = await fetch(`https://gen.genmojionline.com?slug=${slug}`, {
     headers: {
@@ -42,36 +48,34 @@ async function getRelatedEmojis(slug: string): Promise<Emoji[]> {
   return data.emojis || [];
 }
 
-export async function generateMetadata(
-  { params }: { params: { slug: string } }
-): Promise<Metadata> {
-  try {
-    const emoji = await getEmoji(params.slug);
-    return constructMetadata({
-      title: `${emoji.prompt} `,
-      description: `prompt: ${emoji.prompt}, Generate the gemoji from Genmoji Online, Download or share the '${emoji.prompt}' genmoji`,
-      openGraph: {
-        images: [{
-          url: emoji.image_url,
-          width: 256,
-          height: 256,
-          alt: emoji.prompt,
-        }],
-      },
-      path: `emoji/${emoji.slug}/`,
-    });
-  } catch (error) {
-    return constructMetadata({
-      title: `Emoji Not Found | ${siteConfig.name}`,
-      description: 'The requested emoji could not be found',
-    });
+export async function generateMetadata({ params }: PageParams): Promise<Metadata> {
+    try {
+      const emoji = await getEmoji(params.slug);
+      return constructMetadata({
+        title: `${emoji.prompt} `,
+        description: `prompt: ${emoji.prompt}, Generate the gemoji from Genmoji Online, Download or share the '${emoji.prompt}' genmoji`,
+        openGraph: {
+          images: [{
+            url: emoji.image_url,
+            width: 256,
+            height: 256,
+            alt: emoji.prompt,
+          }],
+        },
+        path: `emoji/${emoji.slug}/`,
+      });
+    } catch (error) {
+      return constructMetadata({
+        title: `Emoji Not Found | ${siteConfig.name}`,
+        description: 'The requested emoji could not be found',
+      });
+    }
   }
-}
 
-export default async function EmojiPage({ params }: { params: { slug: string } }) {
-  try {
-    const emoji = await getEmoji(params.slug);
-    const relatedEmojis = await getRelatedEmojis(params.slug);
+  export default async function EmojiPage({ params }: PageParams) {
+    try {
+      const emoji = await getEmoji(params.slug);
+      const relatedEmojis = await getRelatedEmojis(params.slug);
 
     return (
       <div className="container mx-auto py-8 px-4">
