@@ -3,6 +3,7 @@
 import { Icons } from "@/components/icons";
 import { MobileDrawer } from "@/components/mobile-drawer";
 import { buttonVariants } from "@/components/ui/button";
+import { ThemeToggle } from "@/components/theme-toggle";
 import { easeInOutCubic } from "@/lib/animation";
 import { siteConfig } from "@/lib/config";
 import { cn } from "@/lib/utils";
@@ -67,23 +68,27 @@ export function Header() {
               className="relative mr-6 flex items-center space-x-2"
             >
               {/* <Icons.logo className="w-auto" /> */}
-              <img src="logo.png" alt="genmoji logo" width="40" height="40"/>
+              <img src="/logo.png" alt="genmoji logo" width="40" height="40"/>
               <span className="font-bold text-xl text-primary">{siteConfig.name}</span>
             </Link>
-            {/* <div className="hidden lg:block">
-              <Link
-                href="#"
-                className={cn(
-                  buttonVariants({ variant: "default" }),
-                  "h-8 text-white rounded-full group"
-                )}
-              >
-                {siteConfig.cta}
-              </Link>
-            </div> */}
-            {/* <div className="mt-2 cursor-pointer block lg:hidden">
-              <MobileDrawer />
-            </div> */}
+            
+            <div className="flex items-center gap-4">
+              <ThemeToggle className="hidden sm:inline-flex" />
+              <div className="hidden lg:block">
+                <Link
+                  href="/"
+                  className={cn(
+                    buttonVariants({ variant: "default" }),
+                    "h-8 text-white rounded-full group"
+                  )}
+                >
+                  {siteConfig.cta}
+                </Link>
+              </div>
+              <div className="mt-2 cursor-pointer block lg:hidden">
+                <MobileDrawer />
+              </div>
+            </div>
           </div>
           <motion.hr
             initial={{ opacity: 0 }}

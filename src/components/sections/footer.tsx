@@ -23,8 +23,8 @@ type Link = {
 };
 
 const links: Link[] = [
-  { text: "Pricing", url: "#" },
-  { text: "Contact", url: "#" },
+  // { text: "Pricing", url: "#" },
+  // { text: "Contact", url: "#" },
 ];
 
 export function Footer() {
@@ -62,7 +62,7 @@ export function Footer() {
           ))}
         </ul>
         <div className="flex items-center justify-between text-sm font-medium tracking-tight text-muted-foreground">
-          <p>All rights reserved.</p>
+          <p>© 2025 GenmojiOnline.com All rights reserved.</p>
         </div>
       </div>
     </footer>

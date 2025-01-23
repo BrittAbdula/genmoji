@@ -3,7 +3,7 @@ import { EmojiDetail } from "@/components/emoji-detail";
 import { Emoji, EmojiResponse, createEmojiResponse } from "@/types/emoji";
 import Link from "next/link";
 import { cn, constructMetadata } from "@/lib/utils";
-import type { Metadata, Viewport } from "next";
+import type { Metadata } from "next";
 import { siteConfig } from "@/lib/config";
 export const runtime = 'edge';
 
@@ -82,9 +82,6 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
     return (
       <div className="container mx-auto py-8 px-4">
         <div className="max-w-5xl mx-auto">
-          <Link href="/" className="text-muted-foreground hover:text-primary">
-            ← Back to Home
-          </Link>
           
           <div className="mt-8 flex flex-col items-center">
             <div className="w-full max-w-[520px] mb-8">

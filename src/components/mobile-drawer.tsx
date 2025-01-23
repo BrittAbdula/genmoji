@@ -1,5 +1,6 @@
 import { Icons } from "@/components/icons";
 import { buttonVariants } from "@/components/ui/button";
+import { ThemeToggle } from "@/components/theme-toggle";
 import {
   Drawer,
   DrawerContent,
@@ -20,24 +21,34 @@ export function MobileDrawer() {
       </DrawerTrigger>
       <DrawerContent>
         <DrawerHeader className="px-6">
-          <div className="">
+          <div className="flex items-center justify-between">
             <Link
               href="/"
               title="brand-logo"
-              className="relative mr-6 flex items-center space-x-2"
+              className="relative flex items-center space-x-2"
             >
-              
               <img src="/logo.png" alt="🥳" width="40" height="40"/>
               <span className="font-bold text-xl">{siteConfig.name}</span>
             </Link>
+            <ThemeToggle />
           </div>
         </DrawerHeader>
-        <DrawerFooter>
+
+        <div className="px-6 py-4 flex flex-col gap-2">
+          <Link 
+            href="/" 
+            className="text-muted-foreground hover:text-foreground transition-colors"
+          >
+            Home
+          </Link>
+        </div>
+
+        <DrawerFooter className="px-6">
           <Link
-            href="#"
+            href="/"
             className={cn(
               buttonVariants({ variant: "default" }),
-              "text-white rounded-full group"
+              "text-white rounded-full group w-full"
             )}
           >
             {siteConfig.cta}

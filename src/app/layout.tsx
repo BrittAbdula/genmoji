@@ -1,6 +1,5 @@
 import { TailwindIndicator } from "@/components/tailwind-indicator";
 import { ThemeProvider } from "@/components/theme-provider";
-import { ThemeToggle } from "@/components/theme-toggle";
 import { siteConfig } from "@/lib/config";
 import { inter } from '@/lib/fonts';
 import { cn, constructMetadata } from "@/lib/utils";
@@ -13,7 +12,7 @@ export const metadata: Metadata = constructMetadata({
 });
 
 export const viewport: Viewport = {
-  colorScheme: "light",
+  colorScheme: "dark light",
   themeColor: [
     { media: "(prefers-color-scheme: light)", color: "white" },
     { media: "(prefers-color-scheme: dark)", color: "black" },
@@ -31,18 +30,18 @@ export default function RootLayout({
         inter.className,
         'min-h-screen bg-background antialiased'
       )}>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="light"
-            enableSystem={false}
-          >
-            {children}
-            <ThemeToggle />
-            <TailwindIndicator />
-          </ThemeProvider>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          {children}
+          <TailwindIndicator />
+        </ThemeProvider>
+        <GoogleAnalytics gaId="G-6T495VYMD7'" />
+        <GoogleTagManager gtmId="GTM-T3RLKMJR" />
       </body>
-      <GoogleAnalytics gaId="G-6T495VYMD7'" />
-      <GoogleTagManager gtmId="GTM-T3RLKMJR" />
     </html>
   );
 }
