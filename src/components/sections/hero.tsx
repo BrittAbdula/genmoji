@@ -24,7 +24,7 @@ export function Hero() {
   // 获取最近生成的emoji
   const fetchRecentEmojis = async () => {
     try {
-      const response = await fetch('https://gen.genmojionline.com?limit=8');
+      const response = await fetch('https://gen.genmojionline.com?limit=32');
       const data = await response.json();
       if (data.success && data.emojis) {
         setRecentEmojis(data.emojis);
