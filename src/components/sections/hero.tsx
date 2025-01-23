@@ -8,7 +8,7 @@ import { motion } from "framer-motion";
 import confetti from "canvas-confetti";
 import { useState } from "react";
 import EmojiContainer from "@/components/emoji-container";
-import { Emoji, EmojiResponse } from "@/types/emoji";
+import { Emoji, EmojiResponse, createEmojiResponse } from "@/types/emoji";
 import { outfit } from '@/lib/fonts';
 import { cn } from '@/lib/utils';
 
@@ -23,9 +23,10 @@ export function Hero() {
   const fetchRecentEmojis = async () => {
     try {
       const response = await fetch('https://gen.genmojionline.com?limit=36');
-      const data = await response.json() as EmojiResponse;
-      if (data.success && data.emojis) {
-        setRecentEmojis(data.emojis);
+      const data = await response.json();
+      const emojiResponse = createEmojiResponse(data);
+      if (emojiResponse.success && emojiResponse.emojis) {
+        setRecentEmojis(emojiResponse.emojis);
       }
     } catch (error) {
       console.error('Error fetching recent emojis:', error);
@@ -93,15 +94,16 @@ export function Hero() {
         }),
       });
 
-      const data = await response.json() as EmojiResponse;
+      const data = await response.json();
+      const emojiResponse = createEmojiResponse(data);
       
-      if (data.success && data.emoji) {
-        setGeneratedEmoji(data.emoji);
+      if (emojiResponse.success && emojiResponse.emoji) {
+        setGeneratedEmoji(emojiResponse.emoji);
         triggerConfetti();
         fetchRecentEmojis();
         setPrompt("");
       } else {
-        throw new Error(data.error || 'Failed to generate emoji');
+        throw new Error(emojiResponse.error || 'Failed to generate emoji');
       }
     } catch (error) {
       console.error('Error:', error);

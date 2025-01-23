@@ -163,3 +163,21 @@ export function constructShareUrl(platform: 'twitter' | 'facebook' | 'linkedin',
       return url;
   }
 }
+
+/**
+ * 将普通图片URL转换为优化后的CDN URL
+ * @param url 原始图片URL
+ * @param width 目标宽度(可选)
+ * @returns 优化后的CDN URL
+ */
+export function getOptimizedImageUrl(url: string, width: number = 800): string {
+  if (!url || !url.includes('store.genmojionline.com')) {
+    return url;
+  }
+
+  const baseUrl = 'https://store.genmojionline.com/';
+  const imagePath = url.replace(baseUrl, '');
+  
+  return `${baseUrl}cdn-cgi/image/format=webp,width=${width}/${imagePath}`;
+}
+

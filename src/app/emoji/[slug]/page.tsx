@@ -1,6 +1,6 @@
 import EmojiContainer from "@/components/emoji-container";
 import { EmojiDetail } from "@/components/emoji-detail";
-import { Emoji, EmojiResponse } from "@/types/emoji";
+import { Emoji, EmojiResponse, createEmojiResponse } from "@/types/emoji";
 import Link from "next/link";
 import { cn, constructMetadata } from "@/lib/utils";
 import type { Metadata, Viewport } from "next";
@@ -23,11 +23,12 @@ async function getEmoji(slug: string): Promise<Emoji> {
     throw new Error('Failed to fetch emoji');
   }
   
-  const data = await res.json() as EmojiResponse;
-  if (!data.success || !data.emoji) {
+  const data = await res.json();
+  const emojiResponse = createEmojiResponse(data);
+  if (!emojiResponse.success || !emojiResponse.emoji) {
     throw new Error('Emoji not found');
   }
-  return data.emoji;
+  return emojiResponse.emoji;
 }
 
 async function getRelatedEmojis(slug: string): Promise<Emoji[]> {
@@ -42,8 +43,9 @@ async function getRelatedEmojis(slug: string): Promise<Emoji[]> {
     throw new Error('Failed to fetch related emojis');
   }
   
-  const data = await res.json() as EmojiResponse;
-  return data.emojis || [];
+  const data = await res.json();
+  const emojiResponse = createEmojiResponse(data);
+  return emojiResponse.emojis || [];
 }
 
 export async function generateMetadata(props: Props): Promise<Metadata> {
