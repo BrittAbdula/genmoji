@@ -6,7 +6,7 @@ import { inter } from '@/lib/fonts';
 import { cn, constructMetadata } from "@/lib/utils";
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
-import { GoogleAnalyticsWrapper } from "@/components/useGoogleAnalytics";
+import { GoogleAnalytics } from '@next/third-parties/google'
 
 export const metadata: Metadata = constructMetadata({
   title: `${siteConfig.name}`,
@@ -31,7 +31,6 @@ export default function RootLayout({
         inter.className,
         'min-h-screen bg-background antialiased'
       )}>
-        <GoogleAnalyticsWrapper>
           <ThemeProvider
             attribute="class"
             defaultTheme="light"
@@ -41,8 +40,8 @@ export default function RootLayout({
             <ThemeToggle />
             <TailwindIndicator />
           </ThemeProvider>
-        </GoogleAnalyticsWrapper>
       </body>
+      <GoogleAnalytics gaId="G-6T495VYMD7'" />
     </html>
   );
 }
