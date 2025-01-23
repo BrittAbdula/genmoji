@@ -177,52 +177,52 @@ export const siteConfig = {
   ],
   faqs: [
     {
-      question: "How does AI improve my scheduling?",
+      question: "What is Genmoji?",
       answer: (
         <span>
-          Our AI analyzes your scheduling patterns, preferences, and
-          productivity data to suggest optimal times for tasks and meetings. It
-          learns from your behavior to continuously improve its recommendations.
+          Genmoji is an alternative to Apple Emoji (iOS 18) that lets you create custom, AI-generated
+          emojis from text descriptions. With Genmoji Online, you can generate unique, personalized
+          emojis for any platform or use case.
         </span>
       ),
     },
     {
-      question: "Can I integrate Cal AI with other apps?",
+      question: "How do I use Genmoji?",
       answer: (
         <span>
-          Yes, Cal AI integrates with popular productivity tools and calendar
-          apps. You can sync with Google Calendar, Outlook, and more to
-          centralize your scheduling.
+          Using Genmoji is simple: Just type in a description of the emoji you want to create,
+        and let our AI generate your custom emoji. You can then
+          download it or share it directly to your favorite platforms.
         </span>
       ),
     },
     {
-      question: "How does the team collaboration feature work?",
+      question: "Are Genmoji emojis free to use?",
       answer: (
         <span>
-          Team collaboration allows you to share availability, schedule group
-          meetings, and coordinate tasks. The AI considers everyone&apos;s
-          schedules to find the best times for team activities.
+          Yes! All emojis created with Genmoji are free to use. You retain full rights to your
+          generated emojis and can use them for personal or commercial purposes without attribution
+          or copyright concerns.
         </span>
       ),
     },
     {
-      question: "Is my data secure with Cal AI?",
+      question: "Can I customize my Genmoji emojis?",
       answer: (
         <span>
-          We take data security seriously. All your calendar data is encrypted
-          end-to-end and stored securely in the cloud. We never share your
-          personal information or scheduling data with third parties.
+          Absolutely! You can customize your emojis by adjusting the art style, generating multiple
+          variations, and fine-tuning your text prompts. This gives you complete creative control
+          over your emoji designs.
         </span>
       ),
     },
     {
-      question: "Can I use Cal AI offline?",
+      question: "Where can I use my Genmoji emojis?",
       answer: (
         <span>
-          While full functionality requires an internet connection, you can view
-          your schedule and add events offline. The app will sync and apply AI
-          optimizations when you&apos;re back online.
+          Genmoji emojis are compatible with all major platforms including Discord, Slack, WhatsApp,
+          and social media. You can download them in various formats and use them anywhere you want
+          to express yourself.
         </span>
       ),
     },
