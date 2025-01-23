@@ -4,11 +4,13 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build && next export",
+    "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "pages:build": "next build && next export",
-    "pages:deploy": "pnpm dlx wrangler pages deploy out"
+    "pages:build": "pnpm dlx @cloudflare/next-on-pages",
+    "pages:deploy": "pnpm dlx wrangler pages deploy .vercel/output/static",
+    "pages:watch": "pnpm dlx @cloudflare/next-on-pages --watch",
+    "pages:dev": "pnpm dlx wrangler pages dev .vercel/output/static"
   },
   "dependencies": {
     "@radix-ui/react-accordion": "^1.2.0",
