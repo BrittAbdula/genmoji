@@ -4,13 +4,11 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "next build && next export",
     "start": "next start",
     "lint": "next lint",
-    "pages:build": "pnpm dlx @cloudflare/next-on-pages",
-    "pages:deploy": "pnpm dlx wrangler pages deploy .vercel/output/static",
-    "pages:watch": "pnpm dlx @cloudflare/next-on-pages --watch",
-    "pages:dev": "pnpm dlx wrangler pages dev .vercel/output/static"
+    "pages:build": "next build && next export",
+    "pages:deploy": "pnpm dlx wrangler pages deploy out"
   },
   "dependencies": {
     "@radix-ui/react-accordion": "^1.2.0",
@@ -35,6 +33,7 @@
   "devDependencies": {
     "@cloudflare/ai": "^1.2.2",
     "@cloudflare/next-on-pages": "^1.13.7",
+    "@cloudflare/workers-types": "^4.20250121.0",
     "@tailwindcss/typography": "^0.5.13",
     "@types/node": "^20",
     "@types/react": "^18",
