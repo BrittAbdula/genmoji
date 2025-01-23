@@ -5,13 +5,14 @@ import Link from "next/link";
 import { cn, constructMetadata } from "@/lib/utils";
 import type { Metadata, Viewport } from "next";
 import { siteConfig } from "@/lib/config";
+export const runtime = 'edge';
 
 async function getEmoji(slug: string): Promise<Emoji> {
   const res = await fetch(`https://gen.genmojionline.com?slug=${slug}`, {
     headers: {
       'Origin': 'https://genmojionline.com'
     },
-    next: { revalidate: 60 }  // 缓存60秒
+    next: { revalidate: 60 }
   });
   
   if (!res.ok) {
@@ -80,7 +81,7 @@ export default async function EmojiPage({ params }: { params: { slug: string } }
           </Link>
           
           <div className="mt-8 flex flex-col items-center">
-            <div className="w-full max-w-md mb-8">
+            <div className="w-full max-w-[520px] mb-8">
               <EmojiContainer emoji={emoji} size="xl" />
             </div>
             
@@ -91,7 +92,7 @@ export default async function EmojiPage({ params }: { params: { slug: string } }
 
           <div className="mt-16">
             <h2 className="text-xl font-bold mb-6">Related Genmojis</h2>
-            <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-4">
+            <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-3">
               {relatedEmojis.map((relatedEmoji) => (
                 <EmojiContainer 
                   key={relatedEmoji.slug} 

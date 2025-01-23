@@ -22,7 +22,7 @@ export function Hero() {
   // 获取最近生成的emoji
   const fetchRecentEmojis = async () => {
     try {
-      const response = await fetch('https://gen.genmojionline.com?limit=32');
+      const response = await fetch('https://gen.genmojionline.com?limit=36');
       const data = await response.json() as EmojiResponse;
       if (data.success && data.emojis) {
         setRecentEmojis(data.emojis);
@@ -172,7 +172,7 @@ export function Hero() {
         {/* Generated Emoji with Loading State */}
         {(isGenerating || generatedEmoji) && (
           <motion.div 
-            className="mt-8 max-w-[200px] mx-auto"
+            className="mt-8 max-w-[280px] mx-auto"
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.5 }}
@@ -201,7 +201,7 @@ export function Hero() {
 
         {/* Recent Emojis Grid */}
         <motion.div
-          className="grid grid-cols-4 sm:grid-cols-6 gap-4 mt-12"
+          className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-3 mt-12"
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.6 }}
