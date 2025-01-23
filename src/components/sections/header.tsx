@@ -70,7 +70,7 @@ export function Header() {
               <img src="logo.png" alt="genmoji logo" width="40" height="40"/>
               <span className="font-bold text-xl text-primary">{siteConfig.name}</span>
             </Link>
-            <div className="hidden lg:block">
+            {/* <div className="hidden lg:block">
               <Link
                 href="#"
                 className={cn(
@@ -80,10 +80,10 @@ export function Header() {
               >
                 {siteConfig.cta}
               </Link>
-            </div>
-            <div className="mt-2 cursor-pointer block lg:hidden">
+            </div> */}
+            {/* <div className="mt-2 cursor-pointer block lg:hidden">
               <MobileDrawer />
-            </div>
+            </div> */}
           </div>
           <motion.hr
             initial={{ opacity: 0 }}

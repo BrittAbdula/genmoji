@@ -10,37 +10,37 @@ const reviews = [
   {
     name: "Jack",
     username: "@jack",
-    body: "I've never seen anything like this before. It's amazing. I love it.",
+    body: "Genmoji Online perfectly understands my descriptions and creates exactly the emoji I need!",
     img: "https://avatar.vercel.sh/jack",
   },
   {
     name: "Jill",
     username: "@jill",
-    body: "I don't know what to say. I'm speechless. This is amazing.",
+    body: "With Genmoji Online, any emoji I imagine comes to life instantly. Total game changer!",
     img: "https://avatar.vercel.sh/jill",
   },
   {
     name: "John",
     username: "@john",
-    body: "I'm at a loss for words. This is amazing. I love it.",
+    body: "The quality on Genmoji Online is impressive. Makes prototyping emoji ideas a breeze!",
     img: "https://avatar.vercel.sh/john",
   },
   {
     name: "Jane",
     username: "@jane",
-    body: "I'm at a loss for words. This is amazing. I love it.",
+    body: "Just made a 'cat riding a unicorn' emoji - Discord community loves these Genmoji creations!",
     img: "https://avatar.vercel.sh/jane",
   },
   {
     name: "Jenny",
     username: "@jenny",
-    body: "I'm at a loss for words. This is amazing. I love it.",
+    body: "Genmoji Online handles complex requests beautifully. The 'sleepy panda coding' emoji is perfect!",
     img: "https://avatar.vercel.sh/jenny",
   },
   {
     name: "James",
     username: "@james",
-    body: "I'm at a loss for words. This is amazing. I love it.",
+    body: "Creating unique Slack emojis has never been easier. Genmoji Online delivers spot-on results every time.",
     img: "https://avatar.vercel.sh/james",
   },
 ];

@@ -3,29 +3,27 @@
 import { Section } from "@/components/section";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { NeonCard } from "@/components/ui/neon-card";
 import { easeInOutCubic } from "@/lib/animation";
 import { motion } from "framer-motion";
 import confetti from "canvas-confetti";
 import { useState } from "react";
 import EmojiContainer from "@/components/emoji-container";
+import { Emoji, EmojiResponse } from "@/types/emoji";
+import { outfit } from '@/lib/fonts';
+import { cn } from '@/lib/utils';
 
 export function Hero() {
   const [prompt, setPrompt] = useState("");
   const [isGenerating, setIsGenerating] = useState(false);
   const [generationStatus, setGenerationStatus] = useState<string>("");
-  const [generatedEmoji, setGeneratedEmoji] = useState<string | null>(null);
-  const [recentEmojis, setRecentEmojis] = useState<Array<{
-    image_url: string;
-    prompt: string;
-    slug: string;
-  }>>([]);
+  const [generatedEmoji, setGeneratedEmoji] = useState<Emoji | null>(null);
+  const [recentEmojis, setRecentEmojis] = useState<Emoji[]>([]);
 
   // 获取最近生成的emoji
   const fetchRecentEmojis = async () => {
     try {
       const response = await fetch('https://gen.genmojionline.com?limit=32');
-      const data = await response.json();
+      const data = await response.json() as EmojiResponse;
       if (data.success && data.emojis) {
         setRecentEmojis(data.emojis);
       }
@@ -95,10 +93,10 @@ export function Hero() {
         }),
       });
 
-      const data = await response.json();
+      const data = await response.json() as EmojiResponse;
       
-      if (data.success && data.storedImageUrl) {
-        setGeneratedEmoji(data.storedImageUrl);
+      if (data.success && data.emoji) {
+        setGeneratedEmoji(data.emoji);
         triggerConfetti();
         fetchRecentEmojis();
         setPrompt("");
@@ -125,7 +123,10 @@ export function Hero() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.8, ease: easeInOutCubic }}
-          className="text-4xl sm:text-5xl font-bold tracking-tighter mb-4"
+          className={cn(
+            "text-4xl sm:text-5xl font-bold tracking-tighter mb-4",
+            outfit.className
+          )}
         >
           Genmoji Online
         </motion.h1>
@@ -146,12 +147,13 @@ export function Hero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.4 }}
         >
-          <div className="flex flex-col sm:flex-row gap-2">
+          <div className="flex flex-col sm:flex-row gap-4">
             <Input
               placeholder="Describe your emoji (e.g. 'shark with tophat')"
               value={prompt}
               onChange={(e) => setPrompt(e.target.value)}
-              className="flex-1"
+              className="flex-1 text-base"
+              style={{ fontSize: '16px' }}
               onKeyDown={(e) => {
                 if (e.key === 'Enter' && prompt.trim() && !isGenerating) {
                   generateEmoji();
@@ -187,10 +189,12 @@ export function Hero() {
                 </div>
               </div>
             ) : (
-              <EmojiContainer 
-                src={generatedEmoji!} 
-                alt="Generated emoji"
-              />
+              generatedEmoji && !isGenerating && (
+                <EmojiContainer 
+                  emoji={generatedEmoji} 
+                  size="lg"
+                />
+              )
             )}
           </motion.div>
         )}
@@ -205,8 +209,8 @@ export function Hero() {
           {recentEmojis.map((emoji) => (
             <EmojiContainer 
               key={emoji.slug} 
-              src={emoji.image_url} 
-              alt={emoji.prompt}
+              emoji={emoji}
+              size="sm"
             />
           ))}
         </motion.div>

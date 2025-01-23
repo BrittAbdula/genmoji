@@ -12,47 +12,87 @@ export function absoluteUrl(path: string) {
 }
 
 export function constructMetadata({
-  title = siteConfig.name,
-  description = siteConfig.description,
-  image = absoluteUrl("/og"),
+  title,
+  description,
+  image,
+  path = "",
+  type = "website",
   ...props
 }: {
   title?: string;
   description?: string;
   image?: string;
-  [key: string]: Metadata[keyof Metadata];
-}): Metadata {
+  path?: string;
+  type?: "website" | "article";
+  [key: string]: any;
+} = {}): Metadata {
+  const fullUrl = `${siteConfig.url}${path}`;
+  const ogImage = image || siteConfig.seo.openGraph.images[0].url;
+
   return {
+    metadataBase: new URL(siteConfig.url),
     title: {
-      template: "%s | " + siteConfig.name,
-      default: siteConfig.name,
+      default: title || siteConfig.seo.defaultTitle,
+      template: siteConfig.seo.titleTemplate,
     },
     description: description || siteConfig.description,
-    keywords: siteConfig.keywords,
+    keywords: siteConfig.seo.keywords,
+    
+    // Open Graph
     openGraph: {
-      title,
-      description,
-      url: siteConfig.url,
-      siteName: siteConfig.name,
+      type,
+      locale: siteConfig.seo.openGraph.locale,
+      url: fullUrl,
+      siteName: siteConfig.seo.openGraph.siteName,
+      title: title || siteConfig.seo.title,
+      description: description || siteConfig.description,
       images: [
         {
-          url: image,
+          url: ogImage,
           width: 1200,
           height: 630,
-          alt: title,
+          alt: title || siteConfig.seo.title,
         },
       ],
-      type: "website",
-      locale: "en_US",
     },
-    icons: "/favicon.ico",
-    metadataBase: new URL(siteConfig.url),
-    authors: [
-      {
-        name: siteConfig.name,
-        url: siteConfig.url,
+
+    // Twitter
+    twitter: {
+      card: siteConfig.seo.twitter.cardType as "summary" | "summary_large_image" | "player" | "app",
+      title: title || siteConfig.seo.title,
+      description: description || siteConfig.description,
+      site: siteConfig.seo.twitter.site,
+      creator: siteConfig.seo.twitter.handle,
+      images: [ogImage],
+    },
+
+    // 其他元数据
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true,
+        'max-video-preview': -1,
+        'max-image-preview': 'large',
+        'max-snippet': -1,
       },
-    ],
+    },
+    
+    verification: {
+      google: process.env.NEXT_PUBLIC_GOOGLE_VERIFICATION,
+    },
+    
+    alternates: {
+      canonical: fullUrl,
+    },
+    
+    icons: {
+      icon: '/favicon.ico',
+      shortcut: '/favicon-16x16.png',
+      apple: '/apple-touch-icon.png',
+    },
+
     ...props,
   };
 }
@@ -85,5 +125,41 @@ export function formatDate(date: string) {
   } else {
     const yearsAgo = Math.floor(daysAgo / 365);
     return `${fullDate} (${yearsAgo}y ago)`;
+  }
+}
+
+// 新增：构造分享 URL
+export function constructShareUrl(platform: 'twitter' | 'facebook' | 'linkedin', {
+  url,
+  title,
+  description,
+  image,
+}: {
+  url: string;
+  title?: string;
+  description?: string;
+  image?: string;
+}) {
+  const config = siteConfig.sharing.platforms;
+  const encodedUrl = encodeURIComponent(url);
+
+  switch (platform) {
+    case 'twitter':
+      return `https://twitter.com/intent/tweet?url=${encodedUrl}&text=${
+        encodeURIComponent(title || config.twitter.text)
+      }&via=${config.twitter.via}&hashtags=${siteConfig.sharing.hashtags.join(',')}`;
+    
+    case 'facebook':
+      return `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}&quote=${
+        encodeURIComponent(description || config.facebook.quote)
+      }`;
+    
+    case 'linkedin':
+      return `https://www.linkedin.com/shareArticle?mini=true&url=${encodedUrl}&title=${
+        encodeURIComponent(title || config.linkedin.title)
+      }&summary=${encodeURIComponent(description || config.linkedin.summary)}`;
+    
+    default:
+      return url;
   }
 }

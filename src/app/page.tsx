@@ -16,12 +16,12 @@ export default function Home() {
     <main className="relative">
       <Header />
       <Hero />
-      {/* <FeatureScroll />
-      <FeatureHighlight />
+       {/* <FeatureScroll /> */}
+     {/* <FeatureHighlight />
       <BentoGrid />
-      <Benefits />
+      <Benefits /> */}
       <Features />
-      <Testimonials />
+     {/*  <Testimonials />
       <Pricing /> */}
       <FAQ />
       <CTA />

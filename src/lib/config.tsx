@@ -11,9 +11,57 @@ export const BLUR_FADE_DELAY = 0.15;
 
 export const siteConfig = {
   name: "Genmoji Online",
-  description: "Genmoji is a platform for creating and sharing emojis.",
+  description: "Genmoji Online is a platform for creating and sharing emojis, Lets you create personalized emoji that aim to perfectly match what you want to express",
+  shortDescription: "Online Genmoji Generator",
   cta: "Generate Emoji",
-  url: process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000",
+  url: process.env.NEXT_PUBLIC_APP_URL || "https://genmojionline.com/",
+  
+  // SEO & Sharing
+  seo: {
+    title: "Genmoji Online - AI Emoji Generator",
+    titleTemplate: "%s | Genmoji Online",
+    defaultTitle: "Genmoji Online - Create Personalized Emojis",
+    keywords: [
+    ],
+    openGraph: {
+      type: "website",
+      locale: "en_US",
+      siteName: "Genmoji Online",
+      images: [
+        {
+          url: "/og-image.png", // 默认 OG 图片
+          width: 1200,
+          height: 630,
+          alt: "Genmoji - AI Emoji Generator",
+        }
+      ],
+    },
+    twitter: {
+      handle: "@genmojionline",
+      site: "@genmojionline",
+      cardType: "summary_large_image",
+    },
+  },
+
+  // 分享配置
+  sharing: {
+    defaultText: "Check out this awesome emoji I made with Genmoji Online!",
+    hashtags: ["Genmoji", "AIEmoji", "CustomEmoji"],
+    platforms: {
+      twitter: {
+        text: "Create your own custom emojis with AI ✨",
+        via: "genmojionline",
+      },
+      facebook: {
+        quote: "Create custom emojis that look just like Apple's with AI",
+      },
+      linkedin: {
+        title: "Genmoji Online - AI Emoji Generator",
+        summary: "Create custom emojis with artificial intelligence",
+      }
+    }
+  },
+
   keywords: [
     "Genmoji",
     "Emoji Generator",
@@ -31,33 +79,33 @@ export const siteConfig = {
   },
   features: [
     {
-      name: "AI-Powered Emoji Creation",
-      description: "Generate unique emojis from text prompts instantly",
+      name: "Create Apple-Style Emojis",
+      description: "Make custom emojis that rival Apple Emoji quality",
       icon: <Wand2Icon className="h-6 w-6" />,
     },
     {
-      name: "Custom Styles",
-      description: "Choose from various art styles for your emojis",
+      name: "Online Emoji Maker",
+      description: "Create emojis instantly in your browser - no app needed",
       icon: <PaletteIcon className="h-6 w-6" />,
     },
     {
-      name: "High Quality",
-      description: "Crisp, high-resolution emojis for any platform",
+      name: "Cross-Platform",
+      description: "Use Genmoji anywhere - iOS, Android, Web, and more",
       icon: <SparklesIcon className="h-6 w-6" />,
     },
     {
-      name: "Easy Sharing",
-      description: "Share your creations directly to social media",
+      name: "Easy to Share",
+      description: "Get and share your Genmoji creations instantly",
       icon: <Share2Icon className="h-6 w-6" />,
     },
     {
-      name: "Download Anywhere",
-      description: "Get your emojis for any platform",
+      name: "Universal Format",
+      description: "Download Genmoji for any messaging platform",
       icon: <DownloadIcon className="h-6 w-6" />,
     },
     {
-      name: "Emoji Variations",
-      description: "Generate multiple versions of your emoji",
+      name: "Multiple Styles",
+      description: "Make different versions of your Genmoji designs",
       icon: <SmileIcon className="h-6 w-6" />,
     },
   ],
