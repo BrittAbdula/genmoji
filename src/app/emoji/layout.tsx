@@ -1,3 +1,5 @@
+"use client";
+
 import { type PropsWithChildren } from "react";
 import { Header } from "@/components/sections/header";
 import { Footer } from "@/components/sections/footer";

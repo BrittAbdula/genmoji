@@ -11,7 +11,7 @@ export const BLUR_FADE_DELAY = 0.15;
 
 export const siteConfig = {
   name: "Genmoji Online",
-  description: "Genmoji Online is a platform for creating and sharing emojis, Lets you create personalized emoji that aim to perfectly match what you want to express",
+  description: "Genmoji Online is an AI-powered emoji generator and a great alternative to Apple’s Genmoji. It lets you create and share custom emojis that perfectly express your emotions and creativity.",
   shortDescription: "Online Genmoji Generator",
   cta: "Generate Emoji",
   url: process.env.NEXT_PUBLIC_APP_URL || "https://genmojionline.com/",

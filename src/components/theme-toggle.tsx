@@ -9,17 +9,23 @@ export function ThemeToggle({ className }: { className?: string }) {
   const { setTheme, theme, systemTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
 
-  // 在组件挂载时检测用户时区和当前时间
   useEffect(() => {
     setMounted(true);
-    const hour = new Date().getHours();
-    // 如果是晚上6点到早上6点，自动切换到暗色模式
-    if (theme === 'system' && hour >= 18 || hour < 6) {
-      setTheme('dark');
+    
+    // 只在初始化时检查一次
+    if (typeof window !== 'undefined' && theme === 'system') {
+      const hour = new Date().getHours();
+      if (hour >= 18 || hour < 6) {
+        setTheme('dark');
+      } else {
+        setTheme('light');
+      }
     }
-  }, [setTheme, theme]);
+  }, []); // 移除 theme 和 setTheme 依赖
 
-  if (!mounted) return null;
+  if (!mounted) {
+    return null;
+  }
 
   return (
     <Button

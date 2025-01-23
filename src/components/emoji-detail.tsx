@@ -8,7 +8,9 @@ import {
   MoreHorizontalIcon,
   HeartIcon,
   CheckIcon,
-  CopyIcon
+  CopyIcon,
+  TwitterIcon,
+  LinkedinIcon
 } from "lucide-react";
 import { useState } from "react";
 import { motion } from "framer-motion";
@@ -17,10 +19,10 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
+  DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
 import { cn } from "@/lib/utils";
 import { siteConfig } from "@/lib/config";
-import { constructShareUrl } from "@/lib/utils";
 
 interface EmojiDetailProps {
   emoji: Emoji;
@@ -31,9 +33,16 @@ export function EmojiDetail({ emoji }: EmojiDetailProps) {
   const [showCopied, setShowCopied] = useState(false);
   const [showPromptCopied, setShowPromptCopied] = useState(false);
 
+  // 获取当前URL
+  const getShareUrl = () => {
+    if (typeof window === 'undefined') return '';
+    return window.location.href;
+  };
+
+  // 复制链接
   const handleCopy = async () => {
     try {
-      await navigator.clipboard.writeText(emoji.image_url);
+      await navigator.clipboard.writeText(getShareUrl());
       setShowCopied(true);
       setTimeout(() => setShowCopied(false), 2000);
     } catch (err) {
@@ -41,6 +50,7 @@ export function EmojiDetail({ emoji }: EmojiDetailProps) {
     }
   };
 
+  // 复制提示词
   const handlePromptCopy = async () => {
     try {
       await navigator.clipboard.writeText(emoji.prompt);
@@ -51,23 +61,34 @@ export function EmojiDetail({ emoji }: EmojiDetailProps) {
     }
   };
 
+  // 构建社交媒体分享链接
+  const getSocialShareUrl = (platform: 'twitter' | 'linkedin') => {
+    const url = encodeURIComponent(getShareUrl());
+    const text = encodeURIComponent(`Check out this emoji: ${emoji.prompt}`);
+    
+    switch (platform) {
+      case 'twitter':
+        return `https://twitter.com/intent/tweet?url=${url}&text=${text}`;
+      case 'linkedin':
+        return `https://www.linkedin.com/sharing/share-offsite/?url=${url}`;
+      default:
+        return '';
+    }
+  };
+
+  // 处理分享
   const handleShare = async () => {
     try {
       if (navigator.share) {
-        // 原生分享
+        // 原生分享API
         await navigator.share({
           title: emoji.prompt,
-          text: siteConfig.sharing.defaultText,
-          url: window.location.href
+          text: `Check out this emoji: ${emoji.prompt}`,
+          url: getShareUrl()
         });
       } else {
-        // 打开分享菜单
-        const shareUrl = constructShareUrl('twitter', {
-          url: window.location.href,
-          title: emoji.prompt,
-          description: siteConfig.sharing.defaultText,
-        });
-        window.open(shareUrl, '_blank');
+        // 如果不支持原生分享，打开Twitter分享
+        window.open(getSocialShareUrl('twitter'), '_blank');
       }
     } catch (err) {
       console.error('Failed to share:', err);
@@ -76,20 +97,11 @@ export function EmojiDetail({ emoji }: EmojiDetailProps) {
 
   return (
     <div className="space-y-6 w-full max-w-full">
-    <div className={cn(
-      "absolute -mt-6",
-      "flex items-center gap-1 text-xs",
-      "transition-opacity duration-200",
-      showPromptCopied ? "text-green-500 opacity-100" : "opacity-0"
-    )}>
-      <CheckIcon className="h-3 w-3" />
-      <span>Copied!</span>
-    </div>
       <div className="flex items-center justify-between gap-2">
         <div className="min-w-0 flex-1">
           <button
             onClick={handlePromptCopy}
-            className="group text-left w-full"
+            className="group text-left w-full relative"
           >
             <h1 
               className="text-2xl font-bold truncate" 
@@ -97,6 +109,12 @@ export function EmojiDetail({ emoji }: EmojiDetailProps) {
             >
               {emoji.prompt}
             </h1>
+            {showPromptCopied && (
+              <div className="absolute -top-6 left-0 flex items-center gap-1 text-xs text-green-500">
+                <CheckIcon className="h-3 w-3" />
+                <span>Copied!</span>
+              </div>
+            )}
           </button>
         </div>
 
@@ -119,10 +137,17 @@ export function EmojiDetail({ emoji }: EmojiDetailProps) {
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
               <DropdownMenuItem onClick={handleCopy}>
+                <CopyIcon className="mr-2 h-4 w-4" />
                 Copy link
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={handleShare}>
-                Share
+              <DropdownMenuSeparator />
+              <DropdownMenuItem onClick={() => window.open(getSocialShareUrl('twitter'), '_blank')}>
+                <TwitterIcon className="mr-2 h-4 w-4" />
+                Share on Twitter
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => window.open(getSocialShareUrl('linkedin'), '_blank')}>
+                <LinkedinIcon className="mr-2 h-4 w-4" />
+                Share on LinkedIn
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
