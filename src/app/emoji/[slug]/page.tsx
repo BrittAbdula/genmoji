@@ -7,11 +7,9 @@ import type { Metadata, Viewport } from "next";
 import { siteConfig } from "@/lib/config";
 export const runtime = 'edge';
 
-type PageParams = {
-    params: {
-      slug: string;
-    };
-  };
+type Props = {
+    params: Promise<{ slug: string }>; // ✅ 使用 Promise 包裹参数对象
+};
 
 async function getEmoji(slug: string): Promise<Emoji> {
   const res = await fetch(`https://gen.genmojionline.com?slug=${slug}`, {
@@ -48,9 +46,10 @@ async function getRelatedEmojis(slug: string): Promise<Emoji[]> {
   return data.emojis || [];
 }
 
-export async function generateMetadata({ params }: PageParams): Promise<Metadata> {
+export async function generateMetadata(props: Props): Promise<Metadata> {
     try {
-      const emoji = await getEmoji(params.slug);
+        const {slug} = await props.params;
+      const emoji = await getEmoji(slug);
       return constructMetadata({
         title: `${emoji.prompt} `,
         description: `prompt: ${emoji.prompt}, Generate the gemoji from Genmoji Online, Download or share the '${emoji.prompt}' genmoji`,
@@ -72,10 +71,11 @@ export async function generateMetadata({ params }: PageParams): Promise<Metadata
     }
   }
 
-  export default async function EmojiPage({ params }: PageParams) {
+  export default async function EmojiPage(props: Props) {
     try {
-      const emoji = await getEmoji(params.slug);
-      const relatedEmojis = await getRelatedEmojis(params.slug);
+        const {slug} = await props.params;
+      const emoji = await getEmoji(slug);
+      const relatedEmojis = await getRelatedEmojis(slug);
 
     return (
       <div className="container mx-auto py-8 px-4">
