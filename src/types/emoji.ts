@@ -1,9 +1,9 @@
 export interface Emoji {
-  id: number;
+  id?: number;
   prompt: string;
   slug: string;
   image_url: string;
-  created_at: string;
+  created_at?: string;
 }
 
 export interface EmojiResponse {

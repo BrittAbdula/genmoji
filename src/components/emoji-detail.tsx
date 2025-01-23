@@ -75,26 +75,30 @@ export function EmojiDetail({ emoji }: EmojiDetailProps) {
   };
 
   return (
-    <div className="space-y-6">
-      {/* Emoji Info */}
-      <div className="flex items-center justify-between gap-4">
-        <button
-          onClick={handlePromptCopy}
-          className="group flex-1 text-left relative"
-        >
-          <h1 className="text-2xl font-bold truncate" title={emoji.prompt}>
-            {emoji.prompt}
-          </h1>
-          <div className={cn(
-            "absolute bottom-full left-0 mb-1",
-            "flex items-center gap-1 text-xs",
-            "transition-opacity duration-200",
-            showPromptCopied ? "text-green-500 opacity-100" : "opacity-0"
-          )}>
-            <CheckIcon className="h-3 w-3" />
-            <span>Copied!</span>
-          </div>
-        </button>
+    <div className="space-y-6 w-full max-w-full">
+    <div className={cn(
+      "absolute -mt-6",
+      "flex items-center gap-1 text-xs",
+      "transition-opacity duration-200",
+      showPromptCopied ? "text-green-500 opacity-100" : "opacity-0"
+    )}>
+      <CheckIcon className="h-3 w-3" />
+      <span>Copied!</span>
+    </div>
+      <div className="flex items-center justify-between gap-2">
+        <div className="min-w-0 flex-1">
+          <button
+            onClick={handlePromptCopy}
+            className="group text-left w-full"
+          >
+            <h1 
+              className="text-2xl font-bold truncate" 
+              title={emoji.prompt}
+            >
+              {emoji.prompt}
+            </h1>
+          </button>
+        </div>
 
         <div className="flex items-center gap-2 shrink-0">
           <motion.button
@@ -120,9 +124,6 @@ export function EmojiDetail({ emoji }: EmojiDetailProps) {
               <DropdownMenuItem onClick={handleShare}>
                 Share
               </DropdownMenuItem>
-              {/* <DropdownMenuItem onClick={() => window.open('/report', '_blank')}>
-                Report
-              </DropdownMenuItem> */}
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
@@ -148,7 +149,6 @@ export function EmojiDetail({ emoji }: EmojiDetailProps) {
           Share
         </Button>
       </div>
-
     </div>
   );
 } 
