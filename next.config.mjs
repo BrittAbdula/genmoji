@@ -6,7 +6,7 @@ const nextConfig = {
     unoptimized: true,
     domains: ['store.genmojionline.com'],
   },
-  output: 'export',  // 生成静态网站
+  output: 'standalone',
   trailingSlash: true,
 };
 
