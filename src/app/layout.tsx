@@ -6,7 +6,7 @@ import { inter } from '@/lib/fonts';
 import { cn, constructMetadata } from "@/lib/utils";
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
-import { GoogleAnalytics } from '@next/third-parties/google'
+import { GoogleAnalytics, GoogleTagManager } from '@next/third-parties/google'
 
 export const metadata: Metadata = constructMetadata({
   title: `${siteConfig.name}`,
@@ -42,6 +42,7 @@ export default function RootLayout({
           </ThemeProvider>
       </body>
       <GoogleAnalytics gaId="G-6T495VYMD7'" />
+      <GoogleTagManager gtmId="GTM-T3RLKMJR" />
     </html>
   );
 }
