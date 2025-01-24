@@ -5,44 +5,77 @@ import { siteConfig } from "@/lib/config";
 import { cn } from "@/lib/utils";
 import { ChevronRight } from "lucide-react";
 import Link from "next/link";
-
 const reviews = [
   {
     name: "Jack",
     username: "@jack",
-    body: "Genmoji Online perfectly understands my descriptions and creates exactly the emoji I need!",
+    body: "**Genmoji Online's prompts are amazing!** It understood 'a robot wearing a top hat' perfectly and I use it everywhere!",
     img: "https://avatar.vercel.sh/jack",
+    feature_highlight: "Accurate Prompt Understanding",
   },
   {
     name: "Jill",
     username: "@jill",
-    body: "With Genmoji Online, any emoji I imagine comes to life instantly. Total game changer!",
+      body: "I love how **easy it is to create custom emojis on any device!** My 'takeaway coffee with legs' is now my signature emoji!",
     img: "https://avatar.vercel.sh/jill",
+    feature_highlight: "Cross-Platform Accessibility",
   },
-  {
+    {
     name: "John",
     username: "@john",
-    body: "The quality on Genmoji Online is impressive. Makes prototyping emoji ideas a breeze!",
-    img: "https://avatar.vercel.sh/john",
+    body: "**The quality is fantastic!** I made a series of 'space exploration' emojis for my team, and they look amazing as stickers!",
+      img: "https://avatar.vercel.sh/john",
+      feature_highlight: "High-Quality Output",
   },
   {
     name: "Jane",
     username: "@jane",
-    body: "Just made a 'cat riding a unicorn' emoji - Discord community loves these Genmoji creations!",
+    body: "I created an 'explosion of flowers' emoji in pastel pink, and it's perfect! **Love the color options and dynamic effects**!",
     img: "https://avatar.vercel.sh/jane",
+    feature_highlight: "Color Customization & Dynamic Effects",
   },
   {
     name: "Jenny",
     username: "@jenny",
-    body: "Genmoji Online handles complex requests beautifully. The 'sleepy panda coding' emoji is perfect!",
+        body: "Genmoji Online is a game changer! I uploaded a photo of myself and made a 'Jenny with sunglasses' emoji easily! **Love the photo integration!**",
     img: "https://avatar.vercel.sh/jenny",
+    feature_highlight: "Personalized Photo Emojis",
   },
   {
     name: "James",
     username: "@james",
-    body: "Creating unique Slack emojis has never been easier. Genmoji Online delivers spot-on results every time.",
+    body: "I was able to make a custom 'blue dinosaur with red jumper' emoji by **iterating my prompts.** So easy and powerful!",
     img: "https://avatar.vercel.sh/james",
+      feature_highlight: "Iterative Prompting",
   },
+    {
+    name: "Jamie",
+    username: "@jamie",
+    body: "I created a bunch of 'holographic trading card' emojis for our D&D group, and they turned out incredible. **So fun to make emoji collections**!",
+    img: "https://avatar.vercel.sh/jamie",
+     feature_highlight: "Emoji Collection Creation"
+  },
+  {
+      name: "Jesse",
+      username: "@jesse",
+      body: "I made a 'golden retriever wearing a bow tie' emoji using Genmoji Online. It's almost as cute as my real dog! **Simple descriptions work great!**",
+      img: "https://avatar.vercel.sh/jesse",
+    feature_highlight: "Easy Pet Emojis",
+  },
+    {
+    name: "Jordan",
+    username: "@jordan",
+    body: "**I love that I can search for my Genmoji** using the words I used to create it! It's so easy to find them again!",
+        img: "https://avatar.vercel.sh/jordan",
+      feature_highlight: "Searchable Emojis",
+    },
+     {
+    name: "Julia",
+    username: "@julia",
+    body: "I love that I can use my Genmoji as stickers! I sent a 'sleepy cat in a teacup' to all my friends and they loved it. **Stickers in any app!**",
+    img: "https://avatar.vercel.sh/julia",
+         feature_highlight: "Use as Stickers",
+  }
 ];
 
 const firstRow = reviews.slice(0, reviews.length / 2);
