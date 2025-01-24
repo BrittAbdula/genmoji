@@ -8,12 +8,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   const staticRoutes = [
     '',
-    'about',
-    'pricing',
-    'faq',
-    'contact',
+    // 'about',
+    // 'pricing',
+    // 'faq',
+    // 'contact',
+    // 'privacy',
   ].map(route => ({
-    url: `${baseUrl}/${route}`,
+    url: `${baseUrl}${route}`,
     lastModified: now,
   }));
 
@@ -37,7 +38,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     }
 
     const dynamicRoutes = emojiResponse.emojis.map((emoji: Emoji) => ({
-      url: `${baseUrl}/emoji/${emoji.slug}/`,
+      url: `${baseUrl}emoji/${emoji.slug}/`,
       lastModified: emoji.created_at ? new Date(emoji.created_at) : now,
     }));
 
