@@ -1,6 +1,6 @@
 import { MetadataRoute } from "next";
 import { siteConfig } from "@/lib/config";
-import { Emoji, createEmojiResponse } from "@/types/emoji";
+import { Emoji, EmojiResponse, createEmojiResponse } from "@/types/emoji";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = siteConfig.url;
@@ -17,16 +17,37 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     lastModified: now,
   }));
 
-  // 获取动态生成的emoji页面
-  const response = await fetch('https://gen.genmojionline.com?limit=36');
-  const emojis: Emoji[] = await response.json();
-  const dynamicRoutes = emojis.map((emoji: Emoji) => ({
-    url: `${baseUrl}/emoji/${emoji.slug}`,
-    lastModified: emoji.created_at,
-  }));
+  try {
+    // 获取动态生成的emoji页面
+    const response = await fetch('https://gen.genmojionline.com?limit=36', {
+      headers: {
+        'Origin': 'https://genmojionline.com'
+      }
+    });
+    
+    if (!response.ok) {
+      throw new Error('Failed to fetch emojis');
+    }
 
-  return [
-    ...staticRoutes,
-    ...dynamicRoutes,
-  ];
+    const data = await response.json();
+    const emojiResponse = createEmojiResponse(data);
+    
+    if (!emojiResponse.success || !emojiResponse.emojis) {
+      throw new Error('No emojis found');
+    }
+
+    const dynamicRoutes = emojiResponse.emojis.map((emoji: Emoji) => ({
+      url: `${baseUrl}/emoji/${emoji.slug}/`,
+      lastModified: emoji.created_at ? new Date(emoji.created_at) : now,
+    }));
+
+    return [
+      ...staticRoutes,
+      ...dynamicRoutes,
+    ];
+  } catch (error) {
+    console.error('Error generating sitemap:', error);
+    // 如果获取动态数据失败，至少返回静态路由
+    return staticRoutes;
+  }
 }
