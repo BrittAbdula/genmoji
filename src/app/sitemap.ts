@@ -1,15 +1,32 @@
 import { MetadataRoute } from "next";
+import { siteConfig } from "@/lib/config";
+import { Emoji, createEmojiResponse } from "@/types/emoji";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  // 直接使用你的生产环境域名
-  const domain = 'genmojionline.com/';  // 替换为你的实际域名
-  const protocol = 'https';
+  const baseUrl = siteConfig.url;
+  const now = new Date();
+
+  const staticRoutes = [
+    '',
+    'about',
+    'pricing',
+    'faq',
+    'contact',
+  ].map(route => ({
+    url: `${baseUrl}/${route}`,
+    lastModified: now,
+  }));
+
+  // 获取动态生成的emoji页面
+  const response = await fetch('https://gen.genmojionline.com?limit=36');
+  const emojis: Emoji[] = await response.json();
+  const dynamicRoutes = emojis.map((emoji: Emoji) => ({
+    url: `${baseUrl}/emoji/${emoji.slug}`,
+    lastModified: emoji.created_at,
+  }));
 
   return [
-    {
-      url: `${protocol}://${domain}`,
-      lastModified: new Date(),
-    },
-    // 如果有其他页面，可以在这里添加
+    ...staticRoutes,
+    ...dynamicRoutes,
   ];
 }
