@@ -1,16 +1,11 @@
 import { TailwindIndicator } from "@/components/tailwind-indicator";
 import { ThemeProvider } from "@/components/theme-provider";
-import { siteConfig } from "@/lib/config";
 import { inter } from '@/lib/fonts';
 import { cn } from "@/lib/utils";
-import type { Metadata, Viewport } from "next";
+import type { Viewport } from "next";
 import "./globals.css";
 import { GoogleAnalytics, GoogleTagManager } from '@next/third-parties/google'
 
-export const metadata: Metadata = {
-  title: siteConfig.name,
-  description: siteConfig.description,
-};
 
 export const viewport: Viewport = {
   colorScheme: "dark light",

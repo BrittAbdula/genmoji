@@ -53,7 +53,7 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
         const {slug} = await props.params;
       const emoji = await getEmoji(slug);
       return constructMetadata({
-        title: `${emoji.prompt} `,
+        title: `Genmoji: ${emoji.prompt} | ${siteConfig.name}`,
         description: `prompt: ${emoji.prompt}, Generate the gemoji from Genmoji Online, Download or share the '${emoji.prompt}' genmoji`,
         openGraph: {
           images: [{

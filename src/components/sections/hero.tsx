@@ -151,7 +151,7 @@ export function Hero() {
         >
           <div className="flex flex-col sm:flex-row gap-4">
             <Input
-              placeholder="Describe your emoji (e.g. 'a red cat with a hat')"
+              placeholder="e.g. 'a red cat with a hat'"
               value={prompt}
               onChange={(e) => setPrompt(e.target.value)}
               className="flex-1 text-base"

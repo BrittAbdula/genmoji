@@ -2,7 +2,7 @@ import { MetadataRoute } from "next";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // 直接使用你的生产环境域名
-  const domain = 'genmojionline.com';  // 替换为你的实际域名
+  const domain = 'genmojionline.com/';  // 替换为你的实际域名
   const protocol = 'https';
 
   return [
