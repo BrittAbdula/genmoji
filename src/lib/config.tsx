@@ -228,19 +228,74 @@ export const siteConfig = {
       question: "What is Genmoji?",
       answer: (
         <span>
-          Genmoji is an alternative to Apple Emoji (iOS 18) that lets you create custom, AI-generated
-          emojis from text descriptions. With Genmoji Online, you can generate unique, personalized
-          emojis for any platform or use case.
+          Genmoji is a new feature of Apple Intelligence that lets users create custom emojis. Genmoji is available on iOS 18.2 or later on iPhone 15 Pro, iPhone 15 Pro Max, and all iPhone 16 models. 
         </span>
       ),
     },
     {
-      question: "How do I use Genmoji?",
+      question: "What is genmojionline.com?",
       answer: (
         <span>
-          Using Genmoji is simple: Just type in a description of the emoji you want to create,
-        and let our AI generate your custom emoji. You can then
-          download it or share it directly to your favorite platforms.
+          Genmojionline.com is a website that allows you to create custom emojis, similar to Apple's Genmoji, but without the need for an iOS device. You can generate unique emojis using text-based prompts, and then use them on various social media platforms.
+        </span>
+      ),
+    },
+    {
+      question: "How is genmojionline.com different from Apple's Genmoji?",
+      answer: (
+        <span>
+          The primary difference is that genmojionline.com is not limited to Apple devices. You can use it on any device with a web browser.Apple's Genmoji is a feature of Apple Intelligence and is only available on devices updated to iOS 18 or later. Our site aims to provide the same functionality but with broader accessibility.
+        </span>
+      ),
+    },
+    {
+      question: "What technology does genmojionline.com use?",
+      answer: (
+        <span>
+          Our site uses an image generation model, similar to Flux 1 Dev, which is fine-tuned using a large dataset of emojis.
+          We use a language model (LLM) to make your prompt more descriptive, which improves the quality of the generated image.
+          We also use background removal and resizing processes similar to Apple's methods
+        </span>
+      ),
+    },
+    {
+      question: "How do I create an emoji on genmoji online?",
+      answer: (
+        <span>
+          You create emojis by typing a text-based prompt into the "Describe an emoji" box. The website uses this prompt to generate unique emojis.Use simple, descriptive keywords for the best results,Avoid long sentences.
+        </span>
+      ),
+    },
+    {
+      question: "What kind of prompts work best?",
+      answer: (
+        <span>
+          - Simple, descriptive prompts using keywords work best. Avoid long sentences
+          <br />
+          - You can specify colors, styles, and actions, such as "a red cat with a hat"
+          <br />
+          - Try adding the word "explosion" to create more dynamic and interesting emojis
+          <br />
+        </span>
+      ),
+    },
+    {
+      question: "Can I use my own photos to create Genmoji?",
+      answer: (
+        <span>
+          Yes, you can use photos of yourself or others to create Genmoji by uploading the image to our website. 
+          You can also customize the person's clothing, actions and emotions in the prompt
+          <br />
+          <br />
+          - The Feature is currently in beta and only available for a limited number of users.
+        </span>
+      ),
+    },
+    {
+      question: "Can I use the emojis I create as stickers?",
+      answer: (
+        <span>
+          Yes, the emojis you generate can be used like stickers in messaging apps. In some apps, they may also appear like normal emojis alongside text.
         </span>
       ),
     },
@@ -255,22 +310,22 @@ export const siteConfig = {
       ),
     },
     {
-      question: "Can I customize my Genmoji emojis?",
-      answer: (
-        <span>
-          Absolutely! You can customize your emojis by adjusting the art style, generating multiple
-          variations, and fine-tuning your text prompts. This gives you complete creative control
-          over your emoji designs.
-        </span>
-      ),
-    },
-    {
       question: "Where can I use my Genmoji emojis?",
       answer: (
         <span>
           Genmoji emojis are compatible with all major platforms including Discord, Slack, WhatsApp,
           and social media. You can download them in various formats and use them anywhere you want
           to express yourself.
+        </span>
+      ),
+    },
+    {
+      question: "Why does my Genmoji look different from what I expected?",
+      answer: (
+        <span>
+          Genmoji generation is creative and experimental, and sometimes you will not get the result you were hoping for.
+          Keep swiping to see other options, or refine the prompt slightly.
+If using a photo of a person, ensure the photo is well-lit and focused. You can also use the editor to try different versions of the person in the photo
         </span>
       ),
     },

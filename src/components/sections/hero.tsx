@@ -139,7 +139,7 @@ export function Hero() {
           transition={{ duration: 0.8, delay: 0.2, ease: easeInOutCubic }}
           className="text-sm text-muted-foreground  mb-8"
         >
-          Create your own custom emoji to express yourself.
+          Your Imagination, Your Emojis: Create Custom Emojis on Any Device
         </motion.p>
 
         {/* Generate Form */}
@@ -151,7 +151,7 @@ export function Hero() {
         >
           <div className="flex flex-col sm:flex-row gap-4">
             <Input
-              placeholder="Describe your emoji (e.g. 'shark with tophat')"
+              placeholder="Describe your emoji (e.g. 'a red cat with a hat')"
               value={prompt}
               onChange={(e) => setPrompt(e.target.value)}
               className="flex-1 text-base"
