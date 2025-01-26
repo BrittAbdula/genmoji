@@ -114,7 +114,7 @@ export function EmojiDetail({ emoji }: EmojiDetailProps) {
     try {
       setIsLiking(true);
       
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/like`, {
+      const response = await fetch(`https://gen.genmojionline.com/like`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
