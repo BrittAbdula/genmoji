@@ -12,8 +12,8 @@ import {
   TwitterIcon,
   LinkedinIcon
 } from "lucide-react";
-import { useState } from "react";
-import { motion } from "framer-motion";
+import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -30,8 +30,20 @@ interface EmojiDetailProps {
 
 export function EmojiDetail({ emoji }: EmojiDetailProps) {
   const [isLiked, setIsLiked] = useState(false);
+  const [likesCount, setLikesCount] = useState(emoji.likes_count || 0);
+  const [isLiking, setIsLiking] = useState(false);
   const [showCopied, setShowCopied] = useState(false);
   const [showPromptCopied, setShowPromptCopied] = useState(false);
+
+  // 检查用户是否已经点赞过
+  useEffect(() => {
+    const checkLikeStatus = () => {
+      const likedEmojis = JSON.parse(localStorage.getItem('likedEmojis') || '[]');
+      setIsLiked(likedEmojis.includes(emoji.slug));
+    };
+
+    checkLikeStatus();
+  }, [emoji.slug]);
 
   // 获取当前URL
   const getShareUrl = () => {
@@ -95,6 +107,41 @@ export function EmojiDetail({ emoji }: EmojiDetailProps) {
     }
   };
 
+  // 处理点赞
+  const handleLike = async () => {
+    if (isLiking) return;
+
+    try {
+      setIsLiking(true);
+      
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/like`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ slug: emoji.slug }),
+      });
+
+      const data = await response.json() as { success: boolean, likes_count: number };
+
+      if (data.success) {
+        // 更新本地存储
+        const likedEmojis = JSON.parse(localStorage.getItem('likedEmojis') || '[]');
+        if (!likedEmojis.includes(emoji.slug)) {
+          likedEmojis.push(emoji.slug);
+          localStorage.setItem('likedEmojis', JSON.stringify(likedEmojis));
+        }
+
+        setIsLiked(true);
+        setLikesCount(prev => prev + 1);
+      }
+    } catch (error) {
+      console.error('Failed to like:', error);
+    } finally {
+      setIsLiking(false);
+    }
+  };
+
   return (
     <div className="space-y-6 w-full max-w-full">
       <div className="flex items-center justify-between gap-2">
@@ -121,12 +168,32 @@ export function EmojiDetail({ emoji }: EmojiDetailProps) {
         <div className="flex items-center gap-2 shrink-0">
           <motion.button
             whileTap={{ scale: 0.9 }}
-            onClick={() => setIsLiked(!isLiked)}
-            className={`p-2 rounded-full transition-colors ${
+            onClick={handleLike}
+            disabled={isLiking}
+            className={cn(
+              "p-2 rounded-full transition-colors relative",
               isLiked ? 'text-red-500' : 'text-muted-foreground hover:text-red-500'
-            }`}
+            )}
           >
-            <HeartIcon className="h-5 w-5" fill={isLiked ? "currentColor" : "none"} />
+            <HeartIcon 
+              className={cn(
+                "h-5 w-5 transition-all",
+                isLiking && "animate-pulse"
+              )} 
+              fill={isLiked ? "currentColor" : "none"} 
+            />
+            <AnimatePresence>
+              {likesCount > 0 && (
+                <motion.span
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  className="absolute -bottom-4 left-1/2 -translate-x-1/2 text-xs font-medium"
+                >
+                  {likesCount}
+                </motion.span>
+              )}
+            </AnimatePresence>
           </motion.button>
           
           <DropdownMenu>
