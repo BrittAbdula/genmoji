@@ -3,12 +3,14 @@
 import { Section } from "@/components/section";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Progress } from "@/components/ui/progress";
+import { AuroraText } from "@/components/ui/aurora-text";
 import { easeInOutCubic } from "@/lib/animation";
 import { motion } from "framer-motion";
 import confetti from "canvas-confetti";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import EmojiContainer from "@/components/emoji-container";
-import { Emoji, EmojiResponse, createEmojiResponse } from "@/types/emoji";
+import { Emoji, EmojiResponse } from "@/types/emoji";
 import { outfit } from '@/lib/fonts';
 import { cn } from '@/lib/utils';
 
@@ -18,13 +20,36 @@ export function Hero() {
   const [generationStatus, setGenerationStatus] = useState<string>("");
   const [generatedEmoji, setGeneratedEmoji] = useState<Emoji | null>(null);
   const [recentEmojis, setRecentEmojis] = useState<Emoji[]>([]);
+  const [progress, setProgress] = useState(0);
+
+  // Progress animation
+  useEffect(() => {
+    let intervalId: NodeJS.Timeout;
+    if (isGenerating) {
+      setProgress(0);
+      intervalId = setInterval(() => {
+        setProgress((prev) => {
+          if (prev < 80) {
+            return prev + (80 - prev) * 0.1; // Fast at start
+          } else if (prev < 95) {
+            return prev + (95 - prev) * 0.05; // Slower near end
+          }
+          return prev;
+        });
+      }, 100);
+    } else {
+      setProgress(100);
+    }
+    return () => {
+      if (intervalId) clearInterval(intervalId);
+    };
+  }, [isGenerating]);
 
   // 获取最近生成的emoji
   const fetchRecentEmojis = async () => {
     try {
       const response = await fetch('https://gen.genmojionline.com?limit=36');
-      const data = await response.json();
-      const emojiResponse = createEmojiResponse(data);
+      const emojiResponse = await response.json() as EmojiResponse;
       if (emojiResponse.success && emojiResponse.emojis) {
         setRecentEmojis(emojiResponse.emojis);
       }
@@ -82,6 +107,7 @@ export function Hero() {
     
     setIsGenerating(true);
     setGenerationStatus("Starting generation...");
+    setProgress(0);
     
     try {
       const response = await fetch('https://gen.genmojionline.com', {
@@ -94,8 +120,7 @@ export function Hero() {
         }),
       });
 
-      const data = await response.json();
-      const emojiResponse = createEmojiResponse(data);
+      const emojiResponse = await response.json() as EmojiResponse;
       
       if (emojiResponse.success && emojiResponse.emoji) {
         setGeneratedEmoji(emojiResponse.emoji);
@@ -114,37 +139,58 @@ export function Hero() {
   };
 
   // 初始加载时获取最近的emoji
-  useState(() => {
+  useEffect(() => {
     fetchRecentEmojis();
-  });
+  }, []);
 
   return (
     <Section id="hero" className="min-h-[50vh] w-full overflow-hidden">
       <div className="mx-auto max-w-5xl pt-8 sm:pt-12 text-center relative px-4">
-        <motion.h1
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.8, ease: easeInOutCubic }}
-          className={cn(
-            "text-4xl sm:text-5xl font-bold tracking-tighter mb-4",
-            outfit.className
-          )}
-        >
-          Genmoji Online
-        </motion.h1>
 
-        <motion.p
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.8, delay: 0.2, ease: easeInOutCubic }}
-          className="text-sm text-muted-foreground  mb-8"
+        {/* Generated Emoji with Loading State */}
+        <motion.div 
+          className="mt-8 mb-6 max-w-[280px] mx-auto"
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.5 }}
         >
-          Your Imagination, Your Emojis: Create Custom Emojis on Any Device
-        </motion.p>
+          {isGenerating ? (
+            <div className="relative w-full aspect-square flex flex-col items-center justify-center">
+              <div className="relative w-12 h-12">
+                <div className="absolute inset-0 rounded-full border-2 border-primary/20 animate-ping" />
+                <div className="absolute inset-0 rounded-full border-2 border-primary/30 animate-pulse" />
+                <div className="absolute inset-2 rounded-full border-2 border-t-primary border-primary/10 animate-spin" />
+              </div>
+            </div>
+          ) : generatedEmoji ? (
+            <EmojiContainer 
+              emoji={generatedEmoji} 
+              size="lg"
+            />
+          ) : (
+            <div className="relative w-full aspect-square flex flex-col items-center justify-center">
+              <div className="w-12 h-12 rounded-full bg-primary/10 animate-pulse" />
+              <AuroraText as="p" className="mt-4 text-lg font-medium max-w-[280px]">
+                Start with a few words or a phrase that best describes your idea
+              </AuroraText>
+            </div>
+          )}
+        </motion.div>
+
+        {/* Progress Bar */}
+        {isGenerating && (
+          <motion.div 
+            className="max-w-xl mx-auto mb-4"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+          >
+            <Progress value={progress} className="h-1" />
+          </motion.div>
+        )}
 
         {/* Generate Form */}
         <motion.div 
-          className="max-w-xl mx-auto px-4 sm:px-0"
+          className="max-w-xl mx-auto px-4 sm:px-0 mb-12"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.4 }}
@@ -165,45 +211,16 @@ export function Hero() {
             <Button
               onClick={generateEmoji}
               disabled={isGenerating || !prompt.trim()}
+              className="sm:w-auto w-full"
             >
               {isGenerating ? "Generating..." : "Generate"}
             </Button>
           </div>
         </motion.div>
 
-        {/* Generated Emoji with Loading State */}
-        {(isGenerating || generatedEmoji) && (
-          <motion.div 
-            className="mt-8 max-w-[280px] mx-auto"
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.5 }}
-          >
-            {isGenerating ? (
-              <div className="relative w-full aspect-square rounded-3xl bg-gradient-to-br from-primary/5 to-primary/10 backdrop-blur-xl border border-primary/10">
-                <div className="absolute inset-0 flex flex-col items-center justify-center">
-                  <div className="relative w-12 h-12">
-                    <div className="absolute inset-0 rounded-full border-2 border-primary/20 animate-ping" />
-                    <div className="absolute inset-0 rounded-full border-2 border-primary/30 animate-pulse" />
-                    <div className="absolute inset-2 rounded-full border-2 border-t-primary border-primary/10 animate-spin" />
-                  </div>
-                  <p className="mt-4 text-sm text-muted-foreground">{generationStatus}</p>
-                </div>
-              </div>
-            ) : (
-              generatedEmoji && !isGenerating && (
-                <EmojiContainer 
-                  emoji={generatedEmoji} 
-                  size="lg"
-                />
-              )
-            )}
-          </motion.div>
-        )}
-
         {/* Recent Emojis Grid */}
         <motion.div
-          className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-3 mt-12"
+          className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-3 mt-8"
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.6 }}

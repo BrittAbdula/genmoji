@@ -1,6 +1,6 @@
 import { MetadataRoute } from "next";
 import { siteConfig } from "@/lib/config";
-import { Emoji, EmojiResponse, createEmojiResponse } from "@/types/emoji";
+import { Emoji, EmojiResponse } from "@/types/emoji";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = siteConfig.url;
@@ -30,8 +30,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       throw new Error('Failed to fetch emojis');
     }
 
-    const data = await response.json();
-    const emojiResponse = createEmojiResponse(data);
+    const emojiResponse = await response.json() as EmojiResponse;
     
     if (!emojiResponse.success || !emojiResponse.emojis) {
       throw new Error('No emojis found');

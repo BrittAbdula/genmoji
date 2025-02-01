@@ -1,11 +1,16 @@
 import { Icons } from "@/components/icons";
 import { buttonVariants } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/theme-toggle";
+import { outfit } from '@/lib/fonts';
+import { AuroraText } from "@/components/ui/aurora-text";
+import { AnimatePresence, motion, useAnimation } from "framer-motion";
+import { easeInOutCubic } from "@/lib/animation";
 import {
   Drawer,
   DrawerContent,
   DrawerFooter,
   DrawerHeader,
+  DrawerTitle,
   DrawerTrigger,
 } from "@/components/ui/drawer";
 import { siteConfig } from "@/lib/config";
@@ -21,6 +26,7 @@ export function MobileDrawer() {
       </DrawerTrigger>
       <DrawerContent>
         <DrawerHeader className="px-6">
+          <DrawerTitle className="sr-only">Navigation Menu</DrawerTitle>
           <div className="flex items-center justify-between">
             <Link
               href="/"
@@ -28,7 +34,24 @@ export function MobileDrawer() {
               className="relative flex items-center space-x-2"
             >
               <img src="/logo.png" alt="🥳" width="40" height="40"/>
-              <span className="font-bold text-xl">{siteConfig.name}</span>
+              <motion.div
+            className="absolute inset-0 -z-10 bg-gradient-to-b from-pink-100/30 via-purple-100/30 to-transparent dark:from-pink-950/30 dark:via-purple-950/30 rounded-full blur-3xl"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 1 }}
+          />
+              <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, ease: easeInOutCubic }}
+            className={cn(
+              "text-xl sm:text-2xl font-bold tracking-tight",
+              outfit.className
+            )}
+          >
+            <AuroraText>Genmoji</AuroraText>{" "}
+            <span className="text-muted-foreground">Online</span>
+          </motion.p>
             </Link>
             <ThemeToggle />
           </div>

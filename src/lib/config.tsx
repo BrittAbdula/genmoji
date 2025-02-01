@@ -228,7 +228,7 @@ export const siteConfig = {
       question: "What is Genmoji?",
       answer: (
         <span>
-          Genmoji is a new feature of Apple Intelligence that lets users create custom emojis. Genmoji is available on iOS 18.2 or later on iPhone 15 Pro, iPhone 15 Pro Max, and all iPhone 16 models. 
+          Genmoji is a new feature of Apple Intelligence that lets users create custom emojis — called Genmoji. Genmoji is available on iOS 18.2 or later on iPhone 15 Pro, iPhone 15 Pro Max, and all iPhone 16 models. 
         </span>
       ),
     },
@@ -236,7 +236,7 @@ export const siteConfig = {
       question: "What is genmojionline.com?",
       answer: (
         <span>
-          Genmojionline.com is a website that allows you to create custom emojis, similar to Apple's Genmoji, but without the need for an iOS device. You can generate unique emojis using text-based prompts, and then use them on various social media platforms.
+          Genmojionline.com is a website that allows you to create custom gemojis, similar to Apple's Genmoji, but without the need for an iOS device. You can generate unique gemojis using text-based prompts, and then use them on various social media platforms.
         </span>
       ),
     },
@@ -259,10 +259,10 @@ export const siteConfig = {
       ),
     },
     {
-      question: "How do I create an emoji on genmoji online?",
+      question: "How do I create an gemoji on genmoji online?",
       answer: (
         <span>
-          You create emojis by typing a text-based prompt into the "Describe an emoji" box. The website uses this prompt to generate unique emojis.Use simple, descriptive keywords for the best results,Avoid long sentences.
+          You create gemojis by typing a few words or a phrase into the "Describe an gemoji" box. The website uses this prompt to generate unique gemojis.Use simple, descriptive keywords for the best results,Avoid long sentences.
         </span>
       ),
     },
@@ -274,7 +274,7 @@ export const siteConfig = {
           <br />
           - You can specify colors, styles, and actions, such as "a red cat with a hat"
           <br />
-          - Try adding the word "explosion" to create more dynamic and interesting emojis
+          - Try adding the word "explosion" to create more dynamic and interesting gemojis
           <br />
         </span>
       ),
@@ -295,7 +295,7 @@ export const siteConfig = {
       question: "Can I use the emojis I create as stickers?",
       answer: (
         <span>
-          Yes, the emojis you generate can be used like stickers in messaging apps. In some apps, they may also appear like normal emojis alongside text.
+          Yes, the gemojis you generate can be used like stickers in messaging apps. In some apps, they may also appear like normal emojis alongside text.
         </span>
       ),
     },
@@ -303,17 +303,17 @@ export const siteConfig = {
       question: "Are Genmoji emojis free to use?",
       answer: (
         <span>
-          Yes! All emojis created with Genmoji are free to use. You retain full rights to your
-          generated emojis and can use them for personal or commercial purposes without attribution
+          Yes! All gemojis created with Genmoji Online are free to use. You retain full rights to your
+          generated gemojis and can use them for personal or commercial purposes without attribution
           or copyright concerns.
         </span>
       ),
     },
     {
-      question: "Where can I use my Genmoji emojis?",
+      question: "Where can I use my Genmojis?",
       answer: (
         <span>
-          Genmoji emojis are compatible with all major platforms including Discord, Slack, WhatsApp,
+          Genmojis are compatible with all major platforms including Discord, Slack, WhatsApp,
           and social media. You can download them in various formats and use them anywhere you want
           to express yourself.
         </span>

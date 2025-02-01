@@ -6,6 +6,8 @@ import { buttonVariants } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { easeInOutCubic } from "@/lib/animation";
 import { siteConfig } from "@/lib/config";
+import { outfit } from '@/lib/fonts';
+import { AuroraText } from "@/components/ui/aurora-text";
 import { cn } from "@/lib/utils";
 import { AnimatePresence, motion, useAnimation } from "framer-motion";
 import Link from "next/link";
@@ -69,7 +71,24 @@ export function Header() {
             >
               {/* <Icons.logo className="w-auto" /> */}
               <img src="/logo.png" alt="genmoji logo" width="40" height="40"/>
-              <span className="font-bold text-xl text-primary">{siteConfig.name}</span>
+              <motion.div
+            className="absolute inset-0 -z-10 bg-gradient-to-b from-pink-100/30 via-purple-100/30 to-transparent dark:from-pink-950/30 dark:via-purple-950/30 rounded-full blur-3xl"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 1 }}
+          />
+              <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, ease: easeInOutCubic }}
+            className={cn(
+              "text-xl sm:text-2xl font-bold tracking-tight",
+              outfit.className
+            )}
+          >
+            <AuroraText>Genmoji</AuroraText>{" "}
+            <span className="text-muted-foreground">Online</span>
+          </motion.p>
             </Link>
             
             <div className="flex items-center gap-4">

@@ -1,6 +1,6 @@
 import EmojiContainer from "@/components/emoji-container";
 import { EmojiDetail } from "@/components/emoji-detail";
-import { Emoji, EmojiResponse, createEmojiResponse } from "@/types/emoji";
+import { Emoji, EmojiResponse } from "@/types/emoji";
 import Link from "next/link";
 import { cn, constructMetadata } from "@/lib/utils";
 import type { Metadata } from "next";
@@ -23,8 +23,7 @@ async function getEmoji(slug: string): Promise<Emoji> {
     throw new Error('Failed to fetch emoji');
   }
   
-  const data = await res.json();
-  const emojiResponse = createEmojiResponse(data);
+  const emojiResponse = await res.json() as EmojiResponse;
   if (!emojiResponse.success || !emojiResponse.emoji) {
     throw new Error('Emoji not found');
   }
@@ -43,8 +42,7 @@ async function getRelatedEmojis(slug: string): Promise<Emoji[]> {
     throw new Error('Failed to fetch related emojis');
   }
   
-  const data = await res.json();
-  const emojiResponse = createEmojiResponse(data);
+  const emojiResponse = await res.json() as EmojiResponse;
   return emojiResponse.emojis || [];
 }
 

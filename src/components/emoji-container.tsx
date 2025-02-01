@@ -10,7 +10,7 @@ const EmojiContainer = ({ emoji, size = 'md' }: EmojiContainerProps) => {
   const sizeClasses = {
     sm: 'w-24 h-24',
     md: 'w-32 h-32',
-    lg: 'w-48 h-48',
+    lg: 'w-64 h-64',
     xl: 'w-full h-full max-w-[520px] max-h-[520px]'
   };
 
