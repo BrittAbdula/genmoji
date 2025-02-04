@@ -63,12 +63,6 @@ export const siteConfig = {
   },
 
   keywords: [
-    "Genmoji",
-    "Genmoji Generator",
-    "AI Genmoji",
-    "Custom Genmoji",
-    "Genmoji Generator",
-    "Genmoji Maker",
   ],
   links: {
     email: "support@genmojionline.com",
@@ -114,14 +108,8 @@ export const siteConfig = {
       title: "Text to Genmoji Generation",
       description:
         "Simply describe what you want, and our AI will transform your words into beautiful Apple-style genmojis instantly.",
-      imageSrc: "/hero-2.png",
-      direction: "rtl" as const,
-    },
-    {
-      title: "Universal Compatibility",
-      description:
-        "Generated genmojis work seamlessly across all platforms - from iMessage to WhatsApp, Discord to Slack.",
-      imageSrc: "/hero-3.png",
+        imageSrc: "/hero-2.png",
+        imageSrcBlack: "/hero-2-black.png",
       direction: "rtl" as const,
     },
     {
@@ -129,7 +117,16 @@ export const siteConfig = {
       description:
         "Upload your photos and transform them into personalized genmojis while maintaining the iconic Apple genmoji style.",
       imageSrc: "/hero-4.png",
+      imageSrcBlack: "/hero-4-black.png",
       direction: "ltr" as const,
+    },
+    {
+      title: "Universal Compatibility",
+      description:
+        "Generated genmojis work seamlessly across all platforms - from iMessage to WhatsApp, Discord to Slack.",
+      imageSrc: "/hero-3.png",
+      imageSrcBlack: "/hero-3-black.png",
+      direction: "rtl" as const,
     },
   ],
   bento: [

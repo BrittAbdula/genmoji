@@ -22,7 +22,7 @@ const EmojiContainer = ({ emoji, size = 'md' }: EmojiContainerProps) => {
       <div className="aspect-square rounded-2xl p-3 flex items-center justify-center overflow-hidden hover:bg-muted/50 transition-colors">
         <img 
           src={emoji.image_url} 
-          alt={emoji.prompt}
+          alt={`genmoji: ${emoji.prompt}`}
           className={`object-contain transition-transform group-hover:scale-105 ${sizeClasses[size]}`}
         />
       </div>

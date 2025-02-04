@@ -86,6 +86,7 @@ export function EmojiDetail({ emoji }: EmojiDetailProps) {
     try {
       const response = await fetch(emoji.image_url);
       const blob = await response.blob();
+      
       await navigator.clipboard.write([
         new ClipboardItem({
           [blob.type]: blob
@@ -94,7 +95,8 @@ export function EmojiDetail({ emoji }: EmojiDetailProps) {
       setShowImageCopied(true);
       setTimeout(() => setShowImageCopied(false), 2000);
     } catch (err) {
-      console.error('Failed to copy image:', err);
+      // 提示用户长按保存
+      alert('Long press to save');
     }
   };
 

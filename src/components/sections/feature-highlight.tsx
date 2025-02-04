@@ -13,6 +13,7 @@ interface FeatureProps {
   title: string;
   description: string;
   imageSrc: string;
+  imageSrcBlack: string;
   direction: "ltr" | "rtl";
   isActive: boolean;
 }
@@ -21,6 +22,7 @@ function Feature({
   title,
   description,
   imageSrc,
+  imageSrcBlack,
   direction,
   isActive,
 }: FeatureProps) {
@@ -92,9 +94,14 @@ function Feature({
       </motion.div>
       <div className="w-full lg:w-1/2">
         <img
+          src={imageSrcBlack}
+          className="hidden dark:block"
+          alt="Feature illustration dark mode"
+        />
+        <img
           src={imageSrc}
-          alt={title}
-          className="w-full max-w-[300px] mx-auto"
+          className="block dark:hidden"
+          alt="Feature illustration light mode"
         />
       </div>
     </motion.div>

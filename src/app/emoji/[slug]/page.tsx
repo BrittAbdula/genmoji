@@ -51,8 +51,8 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
         const {slug} = await props.params;
       const emoji = await getEmoji(slug);
       return constructMetadata({
-        title: `Genmoji: ${emoji.prompt} | ${siteConfig.name}`,
-        description: `prompt: ${emoji.prompt}, Generate the gemoji from Genmoji Online, Download or share the '${emoji.prompt}' genmoji`,
+        title: `Genmoji: ${emoji.prompt} | Genmoji Online`,
+        description: `Explore the genmoji '${emoji.prompt}' created with Genmoji Online, the leading genmoji generator. Download or share your custom genmoji now!`,
         openGraph: {
           images: [{
             url: emoji.image_url,
@@ -65,8 +65,8 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
       });
     } catch (error) {
       return constructMetadata({
-        title: `Emoji Not Found | ${siteConfig.name}`,
-        description: 'The requested emoji could not be found',
+        title: `Genmoji Not Found | Genmoji Online`,
+        description: 'The requested genmoji could not be found. Discover more with Genmoji Online.',
       });
     }
   }

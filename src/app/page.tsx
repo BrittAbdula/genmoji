@@ -12,12 +12,14 @@ import { Hero } from "@/components/sections/hero";
 import { Pricing } from "@/components/sections/pricing";
 import { Testimonials } from "@/components/sections/testimonials";
 import { siteConfig } from "@/lib/config";
+import { GenmojiGenerator } from '@/components/sections/genmoji-generator';
+
 export const metadata: Metadata = {
-  title: siteConfig.name,
-  description: siteConfig.description,
+  title: `Genmoji Online - Your Genmoji Generator`,
+  description: `Create personalized genmojis with Genmoji Online, the ultimate genmoji generator. Start generating your custom genmojis today!`,
   openGraph: {
-    title: siteConfig.name,
-    description: siteConfig.description,
+    title: `Genmoji Online - Your Genmoji Generator`,
+    description: `Create personalized genmojis with Genmoji Online, the ultimate genmoji generator. Start generating your custom genmojis today!`,
   },
   alternates: {
     canonical: siteConfig.url,
@@ -29,12 +31,13 @@ export default function Home() {
     <main className="relative">
       <Header />
       <Hero />
-       {/* <FeatureScroll /> */}
-     <FeatureHighlight />
+      <GenmojiGenerator />
+      {/* <FeatureScroll /> */}
+      <FeatureHighlight />
       {/* <BentoGrid />
       <Benefits />
       <Features /> */}
-     {/*  <Testimonials />
+      {/*  <Testimonials />
       <Pricing /> */}
       <FAQ />
       <CTA />
