@@ -8,11 +8,12 @@ import { AuroraText } from "@/components/ui/aurora-text";
 import { easeInOutCubic } from "@/lib/animation";
 import { motion } from "framer-motion";
 import confetti from "canvas-confetti";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import EmojiContainer from "@/components/emoji-container";
 import { Emoji, EmojiResponse } from "@/types/emoji";
 import { outfit } from '@/lib/fonts';
 import { cn } from '@/lib/utils';
+import { ImageIcon, X } from 'lucide-react';
 
 export function Hero() {
   const [prompt, setPrompt] = useState("");
@@ -21,6 +22,8 @@ export function Hero() {
   const [generatedEmoji, setGeneratedEmoji] = useState<Emoji | null>(null);
   const [recentEmojis, setRecentEmojis] = useState<Emoji[]>([]);
   const [progress, setProgress] = useState(0);
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Progress animation
   useEffect(() => {
@@ -102,6 +105,24 @@ export function Hero() {
     });
   };
 
+  const handleImageSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setSelectedImage(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const clearSelectedImage = () => {
+    setSelectedImage(null);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
+    }
+  };
+
   const generateEmoji = async () => {
     if (!prompt.trim()) return;
     
@@ -117,6 +138,7 @@ export function Hero() {
         },
         body: JSON.stringify({
           prompt: prompt.trim(),
+          image: selectedImage,
         }),
       });
 
@@ -127,6 +149,10 @@ export function Hero() {
         triggerConfetti();
         fetchRecentEmojis();
         setPrompt("");
+        setSelectedImage(null);
+        if (fileInputRef.current) {
+          fileInputRef.current.value = '';
+        }
       } else {
         throw new Error(emojiResponse.error || 'Failed to generate emoji');
       }
@@ -195,26 +221,67 @@ export function Hero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.4 }}
         >
-          <div className="flex flex-col sm:flex-row gap-4">
-            <Input
-              placeholder="e.g. 'a red cat with a hat'"
-              value={prompt}
-              onChange={(e) => setPrompt(e.target.value)}
-              className="flex-1 text-base"
-              style={{ fontSize: '16px' }}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter' && prompt.trim() && !isGenerating) {
-                  generateEmoji();
-                }
-              }}
-            />
-            <Button
-              onClick={generateEmoji}
-              disabled={isGenerating || !prompt.trim()}
-              className="sm:w-auto w-full"
-            >
-              {isGenerating ? "Generating..." : "Generate"}
-            </Button>
+          <div className="flex flex-col gap-4">
+            <div className="flex flex-col sm:flex-row gap-4">
+              <Input
+                placeholder="e.g. 'a red cat with a hat'"
+                value={prompt}
+                onChange={(e) => setPrompt(e.target.value)}
+                className="flex-1 text-base"
+                style={{ fontSize: '16px' }}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' && prompt.trim() && !isGenerating) {
+                    generateEmoji();
+                  }
+                }}
+              />
+              <Button
+                onClick={generateEmoji}
+                disabled={isGenerating || !prompt.trim()}
+                className="sm:w-auto w-full"
+              >
+                {isGenerating ? "Generating..." : "Generate"}
+              </Button>
+            </div>
+
+            <div className="flex items-center gap-4">
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handleImageSelect}
+                className="hidden"
+                ref={fileInputRef}
+              />
+              <Button
+                type="button"
+                variant="outline"
+                className="w-full"
+                onClick={() => fileInputRef.current?.click()}
+              >
+                <ImageIcon className="w-4 h-4 mr-2" />
+                {selectedImage ? 'Change Image' : 'Upload Image (Optional)'}
+              </Button>
+              {selectedImage && (
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="icon"
+                  onClick={clearSelectedImage}
+                >
+                  <X className="w-4 h-4" />
+                </Button>
+              )}
+            </div>
+
+            {selectedImage && (
+              <div className="relative w-32 h-32 mx-auto">
+                <img
+                  src={selectedImage}
+                  alt="Selected"
+                  className="w-full h-full object-cover rounded-lg"
+                />
+              </div>
+            )}
           </div>
         </motion.div>
 

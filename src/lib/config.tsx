@@ -13,7 +13,7 @@ export const siteConfig = {
   name: "Genmoji Online",
   description: "Genmoji Online is an AI-powered emoji generator and a great alternative to Apple’s Genmoji. It lets you create and share custom emojis that perfectly express your emotions and creativity.",
   shortDescription: "Online Genmoji Generator",
-  cta: "Generate Emoji",
+  cta: "Generate Gemoji",
   url: process.env.NEXT_PUBLIC_APP_URL || "https://genmojionline.com/",
   
   // SEO & Sharing
@@ -114,21 +114,21 @@ export const siteConfig = {
       title: "AI-Powered Scheduling",
       description:
         "Intelligent scheduling that learns your preferences and optimizes your time.",
-      imageSrc: "/Device-2.png",
+      imageSrc: "/hero-2.png",
       direction: "rtl" as const,
     },
     {
       title: "Smart Time Blocking",
       description:
         "Automatically block time for focused work and personal activities.",
-      imageSrc: "/Device-3.png",
+      imageSrc: "/hero-3.png",
       direction: "ltr" as const,
     },
     {
       title: "Predictive Event Planning",
       description:
         "AI suggests optimal times for meetings and events based on your habits.",
-      imageSrc: "/Device-4.png",
+      imageSrc: "/hero-4.png",
       direction: "rtl" as const,
     },
   ],

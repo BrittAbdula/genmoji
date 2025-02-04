@@ -30,10 +30,10 @@ export default function Home() {
       <Header />
       <Hero />
        {/* <FeatureScroll /> */}
-     {/* <FeatureHighlight />
-      <BentoGrid />
-      <Benefits /> */}
-      <Features />
+     <FeatureHighlight />
+      {/* <BentoGrid />
+      <Benefits />
+      <Features /> */}
      {/*  <Testimonials />
       <Pricing /> */}
       <FAQ />
