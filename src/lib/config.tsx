@@ -11,16 +11,16 @@ export const BLUR_FADE_DELAY = 0.15;
 
 export const siteConfig = {
   name: "Genmoji Online",
-  description: "Genmoji Online is an AI-powered emoji generator and a great alternative to Apple’s Genmoji. It lets you create and share custom emojis that perfectly express your emotions and creativity.",
+  description: "Genmoji Online is an AI-powered genmoji generator and a great alternative to Apple's Genmoji. It lets you create and share custom genmojis that perfectly express your emotions and creativity.",
   shortDescription: "Online Genmoji Generator",
-  cta: "Generate Gemoji",
+  cta: "Generate Genmoji",
   url: process.env.NEXT_PUBLIC_APP_URL || "https://genmojionline.com/",
   
   // SEO & Sharing
   seo: {
-    title: "Genmoji Online - AI Emoji Generator",
+    title: "Genmoji Online - AI Genmoji Generator",
     titleTemplate: "%s | Genmoji Online",
-    defaultTitle: "Genmoji Online - Create Personalized Emojis",
+    defaultTitle: "Genmoji Online - Create Personalized Genmojis",
     keywords: [
     ],
     openGraph: {
@@ -32,7 +32,7 @@ export const siteConfig = {
           url: "/og-image.png", // 默认 OG 图片
           width: 1200,
           height: 630,
-          alt: "Genmoji - AI Emoji Generator",
+          alt: "Genmoji - AI Genmoji Generator",
         }
       ],
     },
@@ -45,30 +45,30 @@ export const siteConfig = {
 
   // 分享配置
   sharing: {
-    defaultText: "Check out this awesome emoji I made with Genmoji Online!",
-    hashtags: ["Genmoji", "AIEmoji", "CustomEmoji"],
+    defaultText: "Check out this awesome genmoji I made with Genmoji Online!",
+    hashtags: ["Genmoji", "AIGenmoji", "CustomGenmoji"],
     platforms: {
       twitter: {
-        text: "Create your own custom emojis with AI ✨",
+        text: "Create your own custom genmojis with AI ✨",
         via: "genmojionline",
       },
       facebook: {
-        quote: "Create custom emojis that look just like Apple's with AI",
+        quote: "Create custom genmojis that look just like Apple's with AI",
       },
       linkedin: {
-        title: "Genmoji Online - AI Emoji Generator",
-        summary: "Create custom emojis with artificial intelligence",
+        title: "Genmoji Online - AI Genmoji Generator",
+        summary: "Create custom genmojis with artificial intelligence",
       }
     }
   },
 
   keywords: [
     "Genmoji",
-    "Emoji Generator",
-    "AI Emoji",
-    "Custom Emoji",
-    "Emoji Generator",
-    "Emoji Maker",
+    "Genmoji Generator",
+    "AI Genmoji",
+    "Custom Genmoji",
+    "Genmoji Generator",
+    "Genmoji Maker",
   ],
   links: {
     email: "support@genmojionline.com",
@@ -79,13 +79,13 @@ export const siteConfig = {
   },
   features: [
     {
-      name: "Create Apple-Style Emojis",
-      description: "Make custom emojis that rival Apple Emoji quality",
+      name: "Create Apple-Style Genmojis",
+      description: "Make custom genmojis that rival Apple Genmoji quality",
       icon: <Wand2Icon className="h-6 w-6" />,
     },
     {
-      name: "Online Emoji Maker",
-      description: "Create emojis instantly in your browser - no app needed",
+      name: "Online Genmoji Maker",
+      description: "Create genmojis instantly in your browser - no app needed",
       icon: <PaletteIcon className="h-6 w-6" />,
     },
     {
@@ -111,25 +111,25 @@ export const siteConfig = {
   ],
   featureHighlight: [
     {
-      title: "AI-Powered Scheduling",
+      title: "Text to Genmoji Generation",
       description:
-        "Intelligent scheduling that learns your preferences and optimizes your time.",
+        "Simply describe what you want, and our AI will transform your words into beautiful Apple-style genmojis instantly.",
       imageSrc: "/hero-2.png",
       direction: "rtl" as const,
     },
     {
-      title: "Smart Time Blocking",
+      title: "Universal Compatibility",
       description:
-        "Automatically block time for focused work and personal activities.",
+        "Generated genmojis work seamlessly across all platforms - from iMessage to WhatsApp, Discord to Slack.",
       imageSrc: "/hero-3.png",
-      direction: "ltr" as const,
+      direction: "rtl" as const,
     },
     {
-      title: "Predictive Event Planning",
+      title: "Image to Genmoji Creation",
       description:
-        "AI suggests optimal times for meetings and events based on your habits.",
+        "Upload your photos and transform them into personalized genmojis while maintaining the iconic Apple genmoji style.",
       imageSrc: "/hero-4.png",
-      direction: "rtl" as const,
+      direction: "ltr" as const,
     },
   ],
   bento: [
@@ -228,7 +228,7 @@ export const siteConfig = {
       question: "What is Genmoji?",
       answer: (
         <span>
-          Genmoji is a new feature of Apple Intelligence that lets users create custom emojis — called Genmoji. Genmoji is available on iOS 18.2 or later on iPhone 15 Pro, iPhone 15 Pro Max, and all iPhone 16 models. 
+          Genmoji is a new feature of Apple Intelligence that lets users create custom genmojis — called Genmoji. Genmoji is available on iOS 18.2 or later on iPhone 15 Pro, iPhone 15 Pro Max, and all iPhone 16 models. 
         </span>
       ),
     },
@@ -252,17 +252,17 @@ export const siteConfig = {
       question: "What technology does genmojionline.com use?",
       answer: (
         <span>
-          Our site uses an image generation model, similar to Flux 1 Dev, which is fine-tuned using a large dataset of emojis.
+          Our site uses an image generation model, similar to Flux 1 Dev, which is fine-tuned using a large dataset of genmojis.
           We use a language model (LLM) to make your prompt more descriptive, which improves the quality of the generated image.
           We also use background removal and resizing processes similar to Apple's methods
         </span>
       ),
     },
     {
-      question: "How do I create an gemoji on genmoji online?",
+      question: "How do I create an genmoji on genmoji online?",
       answer: (
         <span>
-          You create gemojis by typing a few words or a phrase into the "Describe an gemoji" box. The website uses this prompt to generate unique gemojis.Use simple, descriptive keywords for the best results,Avoid long sentences.
+          You create genmojis by typing a few words or a phrase into the "Describe an genmoji" box. The website uses this prompt to generate unique genmojis.Use simple, descriptive keywords for the best results,Avoid long sentences.
         </span>
       ),
     },
@@ -274,7 +274,7 @@ export const siteConfig = {
           <br />
           - You can specify colors, styles, and actions, such as "a red cat with a hat"
           <br />
-          - Try adding the word "explosion" to create more dynamic and interesting gemojis
+          - Try adding the word "explosion" to create more dynamic and interesting genmojis
           <br />
         </span>
       ),
@@ -292,19 +292,19 @@ export const siteConfig = {
       ),
     },
     {
-      question: "Can I use the emojis I create as stickers?",
+      question: "Can I use the genmojis I create as stickers?",
       answer: (
         <span>
-          Yes, the gemojis you generate can be used like stickers in messaging apps. In some apps, they may also appear like normal emojis alongside text.
+          Yes, the genmojis you generate can be used like stickers in messaging apps. In some apps, they may also appear like normal genmojis alongside text.
         </span>
       ),
     },
     {
-      question: "Are Genmoji emojis free to use?",
+      question: "Are Genmoji genmojis free to use?",
       answer: (
         <span>
-          Yes! All gemojis created with Genmoji Online are free to use. You retain full rights to your
-          generated gemojis and can use them for personal or commercial purposes without attribution
+          Yes! All genmojis created with Genmoji Online are free to use. You retain full rights to your
+          generated genmojis and can use them for personal or commercial purposes without attribution
           or copyright concerns.
         </span>
       ),
