@@ -82,7 +82,17 @@ export default async function EmojiPage(props: Props) {
                 '@type': 'InteractionCounter',
                 interactionType: 'https://schema.org/LikeAction',
                 userInteractionCount: emoji.likes_count
-            }
+            },
+            license: 'https://creativecommons.org/publicdomain/zero/1.0/',
+            acquireLicensePage: 'https://genmojionline.com/terms-of-service',
+            creditText: 'Created with Genmoji Online - Free for any use',
+            copyrightNotice: 'No Copyright - Generated with Genmoji Online',
+            encodingFormat: 'image/png',
+            width: '256px',
+            height: '256px',
+            uploadDate: emoji.created_at,
+            isAccessibleForFree: true,
+            usageTerms: 'Free for any use - no attribution required. You can use, modify, and distribute this genmoji without any restrictions.'
         };
 
         return (

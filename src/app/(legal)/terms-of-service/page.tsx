@@ -62,8 +62,28 @@ export default function TermsOfService() {
         <div className="space-y-4">
           <h2 className="text-2xl font-bold">4. Intellectual Property</h2>
           <p className="text-gray-500 dark:text-gray-400">
-            Users retain ownership of their generated emojis, but grant Genmoji Online a license to use them for service improvement.
+            All genmojis generated through our service are released into the public domain. You can freely use, modify, 
+            copy, distribute, and perform the work, even for commercial purposes, all without asking permission. 
+            No attribution is required.
           </p>
+          <div className="mt-4">
+            <h3 className="text-xl font-semibold mb-2">4.1 Usage Rights</h3>
+            <ul className="list-disc pl-6 text-gray-500 dark:text-gray-400">
+              <li>You can use the generated genmojis for any purpose</li>
+              <li>No attribution to Genmoji Online is required</li>
+              <li>You can modify and adapt the genmojis</li>
+              <li>Commercial use is permitted</li>
+              <li>You can share and redistribute the genmojis</li>
+            </ul>
+          </div>
+          <div className="mt-4">
+            <h3 className="text-xl font-semibold mb-2">4.2 Limitations</h3>
+            <p className="text-gray-500 dark:text-gray-400">
+              While the genmojis themselves are free to use, the Genmoji Online name, logo, and service remain protected 
+              by applicable intellectual property laws. The service infrastructure, website design, and underlying technology 
+              remain the property of Genmoji Online.
+            </p>
+          </div>
         </div>
 
         <div className="space-y-4">
