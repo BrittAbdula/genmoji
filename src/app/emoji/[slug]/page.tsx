@@ -11,26 +11,27 @@ import Script from 'next/script';
 export const runtime = 'edge';
 
 type Props = {
-    params: Promise<{ slug: string }>; // ✅ 使用 Promise 包裹参数对象
+    params: Promise<{ slug: string }>;
 };
 
-async function getEmoji(slug: string): Promise<Emoji> {
-  const res = await fetch(`https://gen.genmojionline.com?slug=${slug}`, {
-    headers: {
-      'Origin': 'https://genmojionline.com'
-    },
-    next: { revalidate: 60 }
-  });
-  
-  if (!res.ok) {
-    throw new Error('Failed to fetch emoji');
-  }
-  
-  const emojiResponse = await res.json() as EmojiResponse;
-  if (!emojiResponse.success || !emojiResponse.emoji) {
-    throw new Error('Emoji not found');
-  }
-  return emojiResponse.emoji;
+// Export getEmoji function
+export async function getEmoji(slug: string): Promise<Emoji> {
+    const res = await fetch(`https://gen.genmojionline.com?slug=${slug}`, {
+        headers: {
+            'Origin': 'https://genmojionline.com'
+        },
+        next: { revalidate: 60 }
+    });
+    
+    if (!res.ok) {
+        throw new Error('Failed to fetch emoji');
+    }
+    
+    const emojiResponse = await res.json() as EmojiResponse;
+    if (!emojiResponse.success || !emojiResponse.emoji) {
+        throw new Error('Emoji not found');
+    }
+    return emojiResponse.emoji;
 }
 
 async function getRelatedEmojis(slug: string): Promise<Emoji[]> {
@@ -99,7 +100,6 @@ export default async function EmojiPage(props: Props) {
         const emoji = await getEmoji(slug);
         const relatedEmojis = await getRelatedEmojis(slug);
 
-        // Prepare JSON-LD structured data
         const jsonLd = {
             '@context': 'https://schema.org',
             '@type': 'ImageObject',
@@ -125,9 +125,6 @@ export default async function EmojiPage(props: Props) {
                 <Script id="json-ld" type="application/ld+json">
                     {JSON.stringify(jsonLd)}
                 </Script>
-                {/* Dynamic Favicon */}
-                <link rel="icon" type="image/png" href={emoji.image_url} />
-                <link rel="apple-touch-icon" href={emoji.image_url} />
                 <div className="container mx-auto py-8 px-4">
                     <div className="max-w-5xl mx-auto">
                       
