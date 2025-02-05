@@ -20,7 +20,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   try {
     // 获取动态生成的emoji页面
-    const response = await fetch('https://gen.genmojionline.com?limit=36', {
+    const response = await fetch('https://gen.genmojionline.com?limit=1000', {
       headers: {
         'Origin': 'https://genmojionline.com'
       }

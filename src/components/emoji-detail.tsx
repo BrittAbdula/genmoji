@@ -18,6 +18,7 @@ import {
   InstagramIcon,
   Share2Icon,
   QrCodeIcon,
+  UploadIcon,
 } from "lucide-react";
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -101,7 +102,7 @@ export function EmojiDetail({ emoji }: EmojiDetailProps) {
   };
 
   // 构建社交媒体分享链接
-  const getSocialShareUrl = (platform: 'twitter' | 'linkedin' | 'facebook' | 'pinterest' | 'telegram' | 'whatsapp' | 'wechat') => {
+  const getSocialShareUrl = (platform: 'twitter' | 'linkedin' | 'facebook' | 'pinterest' | 'telegram' | 'whatsapp' | 'wechat' | 'imgur') => {
     const url = encodeURIComponent(getShareUrl());
     const text = encodeURIComponent(`Check out this emoji: ${emoji.prompt}`);
     const title = encodeURIComponent(emoji.prompt);
@@ -123,6 +124,8 @@ export function EmojiDetail({ emoji }: EmojiDetailProps) {
       case 'wechat':
         // 微信需要特殊处理，通常是显示二维码
         return `weixin://dl/posts/${url}`;
+      case 'imgur':
+        return `https://imgur.com/upload?url=${image}`;
       default:
         return '';
     }
@@ -300,6 +303,10 @@ export function EmojiDetail({ emoji }: EmojiDetailProps) {
               <DropdownMenuItem onClick={handleInstagramShare}>
                 <InstagramIcon className="mr-2 h-4 w-4" />
                 Share on Instagram
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => window.open(getSocialShareUrl('imgur'), '_blank')}>
+                <UploadIcon className="mr-2 h-4 w-4" />
+                Share on Imgur
               </DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem onClick={() => window.open(getSocialShareUrl('telegram'), '_blank')}>

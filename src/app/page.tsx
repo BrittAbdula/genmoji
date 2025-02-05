@@ -15,15 +15,34 @@ import { siteConfig } from "@/lib/config";
 import { GenmojiGenerator } from '@/components/sections/genmoji-generator';
 
 export const metadata: Metadata = {
-  title: `Genmoji Online - Your Genmoji Generator`,
-  description: `Create personalized genmojis with Genmoji Online, the ultimate genmoji generator. Start generating your custom genmojis today!`,
+  title: `Genmoji Online - Your Ultimate Genmoji Generator`,
+  description: `Create personalized genmojis with Genmoji Online, the ultimate genmoji generator. Transform text and images into beautiful Apple-style genmojis. Start generating your custom genmojis today!`,
   openGraph: {
-    title: `Genmoji Online - Your Genmoji Generator`,
-    description: `Create personalized genmojis with Genmoji Online, the ultimate genmoji generator. Start generating your custom genmojis today!`,
+    title: `Genmoji Online - Create Custom Genmojis`,
+    description: `Create personalized genmojis with Genmoji Online, the ultimate genmoji generator. Transform text and images into beautiful Apple-style genmojis.`,
+    type: 'website',
+    images: [
+      {
+        url: '/og-image.png',
+        width: 1200,
+        height: 630,
+        alt: 'Genmoji Online - AI Genmoji Generator',
+      }
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Genmoji Online - Create Custom Genmojis',
+    description: 'Create personalized genmojis with AI. Transform text and images into beautiful Apple-style genmojis.',
+    images: ['/og-image.png'],
   },
   alternates: {
     canonical: siteConfig.url,
   },
+  keywords: [
+    'genmoji', 'emoji generator', 'custom emoji', 'AI emoji', 'personalized emoji',
+    'emoji maker', 'genmoji creator', 'online emoji generator', 'emoji design'
+  ],
 };
 
 export default function Home() {

@@ -14,7 +14,7 @@ interface Icon {
 const icons: Icon[] = [
   { icon: <LinkedInLogoIcon />, url: "#" },
   { icon: <InstagramLogoIcon />, url: "#" },
-  { icon: <TwitterLogoIcon />, url: "#" },
+  { icon: <TwitterLogoIcon />, url: "https://x.com/genmojionline" },
 ];
 
 type Link = {
