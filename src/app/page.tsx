@@ -39,10 +39,6 @@ export const metadata: Metadata = {
   alternates: {
     canonical: siteConfig.url,
   },
-  keywords: [
-    'genmoji', 'emoji generator', 'custom emoji', 'AI emoji', 'personalized emoji',
-    'emoji maker', 'genmoji creator', 'online emoji generator', 'emoji design'
-  ],
 };
 
 export default function Home() {

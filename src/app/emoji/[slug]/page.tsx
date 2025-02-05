@@ -7,6 +7,9 @@ import type { Metadata } from "next";
 import { siteConfig } from "@/lib/config";
 import Script from 'next/script';
 
+// Add Edge Runtime configuration
+export const runtime = 'edge';
+
 type Props = {
     params: Promise<{ slug: string }>; // ✅ 使用 Promise 包裹参数对象
 };
