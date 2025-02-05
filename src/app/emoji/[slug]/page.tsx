@@ -21,7 +21,7 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
         const emoji = await getEmoji(slug);
         return constructMetadata({
             title: `${emoji.prompt} | Genmoji Online`,
-            description: `Explore and download this custom ${emoji.prompt} genmoji created with Genmoji Online. Create your own personalized genmojis with our AI-powered generator.`,
+            description: `Copy and Paste this custom ${emoji.prompt} genmoji created with Genmoji Online. Create your own personalized genmojis with our AI-powered generator.`,
             openGraph: {
                 title: `${emoji.prompt} - Custom Genmoji`,
                 description: `Check out this ${emoji.prompt} genmoji created with Genmoji Online. Create your own custom genmojis now!`,
