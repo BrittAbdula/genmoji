@@ -1,5 +1,5 @@
 import { ImageResponse } from 'next/og'
-import { getEmoji } from './page'
+import { getEmoji } from '../utils'
 
 // Image metadata
 export const size = {

@@ -97,7 +97,7 @@ export function EmojiDetail({ emoji }: EmojiDetailProps) {
       setTimeout(() => setShowImageCopied(false), 2000);
     } catch (err) {
       // 提示用户长按保存
-      alert('Long press to save');
+      alert('Long press Genmoji to save');
     }
   };
 

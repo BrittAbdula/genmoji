@@ -1,11 +1,12 @@
 import EmojiContainer from "@/components/emoji-container";
 import { EmojiDetail } from "@/components/emoji-detail";
-import { Emoji, EmojiResponse } from "@/types/emoji";
+import { Emoji } from "@/types/emoji";
 import Link from "next/link";
 import { cn, constructMetadata } from "@/lib/utils";
 import type { Metadata } from "next";
 import { siteConfig } from "@/lib/config";
 import Script from 'next/script';
+import { getEmoji, getRelatedEmojis } from '../utils';
 
 // Add Edge Runtime configuration
 export const runtime = 'edge';
@@ -13,42 +14,6 @@ export const runtime = 'edge';
 type Props = {
     params: Promise<{ slug: string }>;
 };
-
-// Export getEmoji function
-export async function getEmoji(slug: string): Promise<Emoji> {
-    const res = await fetch(`https://gen.genmojionline.com?slug=${slug}`, {
-        headers: {
-            'Origin': 'https://genmojionline.com'
-        },
-        next: { revalidate: 60 }
-    });
-    
-    if (!res.ok) {
-        throw new Error('Failed to fetch emoji');
-    }
-    
-    const emojiResponse = await res.json() as EmojiResponse;
-    if (!emojiResponse.success || !emojiResponse.emoji) {
-        throw new Error('Emoji not found');
-    }
-    return emojiResponse.emoji;
-}
-
-async function getRelatedEmojis(slug: string): Promise<Emoji[]> {
-  const res = await fetch(`https://gen.genmojionline.com?slug=${slug}&related=12`, {
-    headers: {
-      'Origin': 'https://genmojionline.com'
-    },
-    next: { revalidate: 60 }
-  });
-  
-  if (!res.ok) {
-    throw new Error('Failed to fetch related emojis');
-  }
-  
-  const emojiResponse = await res.json() as EmojiResponse;
-  return emojiResponse.emojis || [];
-}
 
 export async function generateMetadata(props: Props): Promise<Metadata> {
     try {
@@ -125,11 +90,11 @@ export default async function EmojiPage(props: Props) {
                 <Script id="json-ld" type="application/ld+json">
                     {JSON.stringify(jsonLd)}
                 </Script>
-                <div className="container mx-auto py-8 px-4">
+                <div className="container mx-auto px-4">
                     <div className="max-w-5xl mx-auto">
                       
-                      <div className="mt-8 flex flex-col items-center">
-                        <div className="w-full max-w-[520px] mb-8">
+                      <div className="flex flex-col items-center">
+                        <div className="w-full max-w-[520px]">
                           <EmojiContainer emoji={emoji} size="xl" />
                         </div>
                         
