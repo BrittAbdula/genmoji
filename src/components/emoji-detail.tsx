@@ -4,7 +4,7 @@ import { Emoji } from "@/types/emoji";
 import { Button } from "./ui/button";
 import { 
   DownloadIcon, 
-  ShareIcon, 
+  Share2, 
   MoreHorizontalIcon,
   HeartIcon,
   CheckIcon,
@@ -344,7 +344,7 @@ export function EmojiDetail({ emoji }: EmojiDetailProps) {
           className="w-full text-muted-foreground hover:text-foreground"
           onClick={handleShare}
         >
-          <ShareIcon className="mr-2 h-4 w-4" />
+          <Share2 className="mr-2 h-4 w-4" />
           Share
         </Button>
       </div>

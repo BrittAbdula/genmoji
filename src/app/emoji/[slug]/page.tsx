@@ -113,7 +113,7 @@ export default async function EmojiPage(props: Props) {
                         </div>
                       </div>
 
-                      <div className="mt-16">
+                      <div className="mt-8">
                         <h2 className="text-xl font-bold mb-6">Related Genmojis</h2>
                         <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-3">
                           {relatedEmojis.map((relatedEmoji) => (
