@@ -26,7 +26,7 @@ export function constructMetadata({
   type?: "website" | "article";
   [key: string]: any;
 } = {}): Metadata {
-  const fullUrl = `${siteConfig.url}${path}`;
+  const fullUrl = `${siteConfig.url}/${path}`;
   const ogImage = image || siteConfig.seo.openGraph.images[0].url;
 
   return {

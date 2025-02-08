@@ -233,7 +233,7 @@ export function EmojiDetail({ emoji }: EmojiDetailProps) {
             {showPromptCopied && (
               <div className="absolute -top-6 left-0 flex items-center gap-1 text-xs text-green-500">
                 <CheckIcon className="h-3 w-3" />
-                <span>Gemoji Prompt Copied!</span>
+                <span>Genmoji Prompt Copied!</span>
               </div>
             )}
           </button>

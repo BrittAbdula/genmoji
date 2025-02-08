@@ -1,5 +1,4 @@
 export interface Emoji {
-  id?: number;
   prompt: string;
   slug: string;
   image_url: string;
@@ -10,6 +9,6 @@ export interface Emoji {
 export interface EmojiResponse {
   success: boolean;
   emoji?: Emoji;
-  emojis?: Emoji[];
+  emojis: Emoji[];
   error?: string;
 }

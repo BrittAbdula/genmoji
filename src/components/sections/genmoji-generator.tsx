@@ -239,7 +239,7 @@ export function GenmojiGenerator() {
                 disabled={isGenerating || !prompt.trim()}
                 className="sm:w-auto w-full"
               >
-                {isGenerating ? "Generating..." : "Generate Gemoji"}
+                {isGenerating ? "Generating..." : "Generate genmoji"}
               </Button>
             </div>
 
@@ -293,12 +293,12 @@ export function GenmojiGenerator() {
         >
           <h2 className={cn("col-span-full text-center mb-6", outfit.className)}>
             <AuroraText as="span" className="text-2xl font-semibold">
-              Recent Gemojis
+              Recent Genmojis
             </AuroraText>
           </h2>
           {recentEmojis.map((emoji) => (
             <EmojiContainer 
-              key={emoji.slug} 
+              key={`recent-${emoji.slug}`} 
               emoji={emoji}
               size="sm"
             />

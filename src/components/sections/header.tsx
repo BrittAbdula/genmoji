@@ -10,15 +10,20 @@ import { AuroraText } from "@/components/ui/aurora-text";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
 import Link from "next/link";
+import { usePathname } from 'next/navigation';
 
 export function Header() {
+  const pathname = usePathname();
+
+  const isActive = (path: string) => pathname === path;
+
   return (
     <header className="sticky top-0 z-50 p-0 bg-background/60 backdrop-blur">
       <div className="flex justify-between items-center container mx-auto p-2">
         <Link
           href="/"
           title="brand-logo"
-          className="relative mr-6 flex items-center space-x-2"
+          className="relative flex items-center space-x-2"
         >
           <img src="/logo.png" alt="genmoji logo" width="40" height="40"/>
           <motion.div
@@ -36,7 +41,29 @@ export function Header() {
           </p>
         </Link>
         
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-6">
+          {/* Navigation Links */}
+          <nav className="hidden lg:flex items-center space-x-6">
+            <Link
+              href="/"
+              className={cn(
+                "text-sm font-medium transition-colors hover:text-foreground",
+                isActive('/') ? "text-foreground" : "text-muted-foreground"
+              )}
+            >
+              Home
+            </Link>
+            <Link
+              href="/gallery"
+              className={cn(
+                "text-sm font-medium transition-colors hover:text-foreground",
+                isActive('/gallery') ? "text-foreground" : "text-muted-foreground"
+              )}
+            >
+              Gallery
+            </Link>
+          </nav>
+
           <ThemeToggle className="hidden sm:inline-flex" />
           <div className="hidden lg:block">
             <Link

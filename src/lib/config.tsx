@@ -14,7 +14,7 @@ export const siteConfig = {
   description: "Genmoji Online is an AI-powered genmoji generator and a great alternative to Apple's Genmoji. It lets you create and share custom genmojis that perfectly express your emotions and creativity.",
   shortDescription: "Online Genmoji Generator",
   cta: "Generate Genmoji",
-  url: process.env.NEXT_PUBLIC_APP_URL || "https://genmojionline.com/",
+  url: process.env.NEXT_PUBLIC_APP_URL || "https://genmojionline.com",
   
   // SEO & Sharing
   seo: {
@@ -233,7 +233,7 @@ export const siteConfig = {
       question: "What is genmojionline.com?",
       answer: (
         <span>
-          Genmojionline.com is a website that allows you to create custom gemojis, similar to Apple's Genmoji, but without the need for an iOS device. You can generate unique gemojis using text-based prompts, and then use them on various social media platforms.
+          Genmojionline.com is a website that allows you to create custom genmojis, similar to Apple's Genmoji, but without the need for an iOS device. You can generate unique genmojis using text-based prompts, and then use them on various social media platforms.
         </span>
       ),
     },
