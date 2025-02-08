@@ -31,6 +31,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { cn } from "@/lib/utils";
 import { siteConfig } from "@/lib/config";
+import { GenmojiGeneratorDialog } from "./genmoji-generator-dialog";
 
 interface EmojiDetailProps {
   emoji: Emoji;
@@ -43,6 +44,7 @@ export function EmojiDetail({ emoji }: EmojiDetailProps) {
   const [showCopied, setShowCopied] = useState(false);
   const [showPromptCopied, setShowPromptCopied] = useState(false);
   const [showImageCopied, setShowImageCopied] = useState(false);
+  const [isGeneratorOpen, setIsGeneratorOpen] = useState(false);
 
   // 检查用户是否已经点赞过
   useEffect(() => {
@@ -327,16 +329,10 @@ export function EmojiDetail({ emoji }: EmojiDetailProps) {
         <Button 
           variant="outline"
           className="w-full text-muted-foreground hover:text-foreground relative"
-          onClick={handleCopyImage}
+          onClick={() => setIsGeneratorOpen(true)}
         >
           <ImageIcon className="mr-2 h-4 w-4" />
-          Copy Genmoji
-          {showImageCopied && (
-            <div className="absolute -top-6 left-1/2 -translate-x-1/2 flex items-center gap-1 text-xs text-green-500">
-              <CheckIcon className="h-3 w-3" />
-              <span>Genmoji Copied!</span>
-            </div>
-          )}
+          Re-Genmoji
         </Button>
 
         <Button 
@@ -348,6 +344,12 @@ export function EmojiDetail({ emoji }: EmojiDetailProps) {
           Share
         </Button>
       </div>
+
+      <GenmojiGeneratorDialog
+        isOpen={isGeneratorOpen}
+        onClose={() => setIsGeneratorOpen(false)}
+        initialPrompt={emoji.prompt}
+      />
     </div>
   );
 } 

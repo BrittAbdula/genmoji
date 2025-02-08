@@ -5,6 +5,8 @@ import { cn } from "@/lib/utils";
 import type { Viewport } from "next";
 import "./globals.css";
 import { GoogleAnalytics, GoogleTagManager } from '@next/third-parties/google'
+import { Header } from "@/components/sections/header";
+import { Footer } from "@/components/sections/footer";
 
 
 export const viewport: Viewport = {
@@ -40,7 +42,9 @@ export default function RootLayout({
           storageKey="genmoji-theme"
           disableTransitionOnChange
         >
-          {children}
+        <Header />
+        {children}
+        <Footer />
           <TailwindIndicator />
           <GoogleAnalytics gaId="G-6T495VYMD7" />
           <GoogleTagManager gtmId="GTM-T3RLKMJR" />

@@ -5,8 +5,6 @@ import { FAQ } from "@/components/sections/faq";
 import { FeatureHighlight } from "@/components/sections/feature-highlight";
 import { FeatureScroll } from "@/components/sections/feature-scroll";
 import { Features } from "@/components/sections/features";
-import { Footer } from "@/components/sections/footer";
-import { Header } from "@/components/sections/header";
 import type { Metadata } from "next";
 import { Hero } from "@/components/sections/hero";
 import { Pricing } from "@/components/sections/pricing";
@@ -44,7 +42,6 @@ export const metadata: Metadata = {
 export default function Home() {
   return (
     <main className="relative">
-      <Header />
       <Hero />
       <GenmojiGenerator />
       {/* <FeatureScroll /> */}
@@ -56,7 +53,6 @@ export default function Home() {
       <Pricing /> */}
       <FAQ />
       <CTA />
-      <Footer />
     </main>
   );
 }
