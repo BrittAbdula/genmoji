@@ -29,7 +29,7 @@ export function GalleryContent() {
         params.append('q', query);
       }
 
-      const response = await fetch(`https://gen-test.auroroa.workers.dev?${params}`);
+      const response = await fetch(`https://gen.genmojionline.com?${params}`);
       const emojiResponse = await response.json() as EmojiResponse;
       if (emojiResponse.success) {
         if (pageNum === 1) {
