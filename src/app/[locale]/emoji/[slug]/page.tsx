@@ -21,7 +21,6 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
     try {
         const {slug} = await props.params;
         const locale = await getLocale();
-        console.log('Generating metadata for:', { slug, locale });
         const emoji = await getEmoji(slug, locale);
         const t = await getTranslations('emoji.detail.meta');
 
@@ -70,7 +69,6 @@ export default async function EmojiPage(props: Props) {
     try {
         const {slug} = await props.params;
         const locale = await getLocale();
-        console.log('Rendering page for:', { slug, locale });
         const emoji = await getEmoji(slug, locale);
         const t = await getTranslations('emoji');
 

@@ -5,7 +5,6 @@ const baseURL = 'https://gen.genmojionline.com'
 
 export async function getEmoji(slug: string, locale: string): Promise<Emoji> {
     const url = `${baseURL}?slug=${slug}&locale=${locale}`;
-    console.log('Fetching emoji:', { slug, locale, url });
     
     try {
         const res = await fetch(url, {
@@ -15,7 +14,6 @@ export async function getEmoji(slug: string, locale: string): Promise<Emoji> {
             next: { revalidate: 60 }
         });
         
-        console.log('Fetch response status:', res.status);
         
         if (!res.ok) {
             const errorText = await res.text();
@@ -28,14 +26,12 @@ export async function getEmoji(slug: string, locale: string): Promise<Emoji> {
         }
         
         const emojiResponse = await res.json() as EmojiResponse;
-        console.log('Emoji response:', emojiResponse);
         
         if (!emojiResponse.success || !emojiResponse.emoji) {
             console.error('Invalid emoji response:', emojiResponse);
             throw new Error('Emoji not found');
         }
         
-        console.log('Successfully fetched emoji:', emojiResponse.emoji);
         return emojiResponse.emoji;
     } catch (error) {
         console.error('Error in getEmoji:', error);

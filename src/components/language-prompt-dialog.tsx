@@ -15,15 +15,23 @@ const LANGUAGE_NAMES = {
   zh: '中文',
 } as const;
 
-const getBrowserLanguage = () => {
-  // 获取浏览器语言并匹配到支持的语言
-  const browserLang = navigator.language.split('-')[0];
-  const supportedLanguages = ['en', 'ja', 'fr', 'zh'];
-  return supportedLanguages.includes(browserLang) ? browserLang : 'en';
-};
+// 将 getBrowserLanguage 移到组件内部
+function getBrowserLanguage(): string {
+  if (typeof window === 'undefined') return 'en';
+  
+  try {
+    const browserLang = window.navigator.language.split('-')[0];
+    const supportedLanguages = ['en', 'ja', 'fr', 'zh'];
+    return supportedLanguages.includes(browserLang) ? browserLang : 'en';
+  } catch (error) {
+    console.error('Error getting browser language:', error);
+    return 'en';
+  }
+}
 
 export function LanguagePromptDialog() {
   const [isOpen, setIsOpen] = useState(false);
+  const [browserLang, setBrowserLang] = useState<string>('en');
   const router = useRouter();
   const pathname = usePathname();
   const currentLocale = useLocale();
@@ -35,10 +43,11 @@ export function LanguagePromptDialog() {
     if (hasShown) return;
 
     // 获取浏览器语言
-    const browserLang = getBrowserLanguage();
+    const detectedLang = getBrowserLanguage();
+    setBrowserLang(detectedLang);
     
     // 如果浏览器语言与当前语言不匹配，显示对话框
-    if (browserLang !== currentLocale) {
+    if (detectedLang !== currentLocale) {
       setIsOpen(true);
     }
 
@@ -47,7 +56,6 @@ export function LanguagePromptDialog() {
   }, [currentLocale]);
 
   const handleSwitch = () => {
-    const browserLang = getBrowserLanguage();
     router.replace(pathname, { locale: browserLang });
     setIsOpen(false);
   };
@@ -55,8 +63,6 @@ export function LanguagePromptDialog() {
   const handleStay = () => {
     setIsOpen(false);
   };
-
-  const browserLang = getBrowserLanguage();
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
