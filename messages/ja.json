@@ -181,6 +181,14 @@
         "ogDescription": "Genmoji オンラインで作成されたこの{prompt}絵文字をチェック。今すぐ独自の絵文字を作成！",
         "twitterTitle": "{prompt} 絵文字",
         "twitterDescription": "Genmoji オンラインで作成されたこの{prompt}絵文字をチェック！"
+      },
+      "time": {
+        "justNow": "たった今",
+        "minutesAgo": "{minutes}分前",
+        "hoursAgo": "{hours}時間前",
+        "daysAgo": "{days}日前",
+        "monthsAgo": "{months}ヶ月前",
+        "yearsAgo": "{years}年前"
       }
     }
   },
@@ -303,5 +311,11 @@
       },
       "label": "検索"
     }
+  },
+  "languagePrompt": {
+    "title": "言語設定",
+    "description": "ブラウザの言語が現在のページの言語と異なることに気付きました。優先言語に切り替えますか？",
+    "stayIn": "{language}のままにする",
+    "switchTo": "{language}に切り替える"
   }
 } 

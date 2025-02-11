@@ -11,6 +11,7 @@ import { NextIntlClientProvider } from 'next-intl';
 import { getMessages, setRequestLocale } from 'next-intl/server';
 import { notFound } from 'next/navigation';
 import { routing } from '@/i18n/routing';
+import { LanguagePromptDialog } from '@/components/language-prompt-dialog';
 
 export const viewport: Viewport = {
   colorScheme: "dark light",
@@ -67,6 +68,7 @@ export default async function LocaleLayout(props: Props) {
             <Header />
             {children}
             <Footer />
+            <LanguagePromptDialog />
             <TailwindIndicator />
             <GoogleAnalytics gaId="G-6T495VYMD7" />
             <GoogleTagManager gtmId="GTM-T3RLKMJR" />

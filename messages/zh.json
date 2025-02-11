@@ -172,6 +172,14 @@
         "ogDescription": "看看这个用 Genmoji Online 创建的 {prompt} 表情符号。现在就创建您自己的自定义表情符号！",
         "twitterTitle": "{prompt} 表情符号",
         "twitterDescription": "看看这个用 Genmoji Online 创建的 {prompt} 表情符号！"
+      },
+      "time": {
+        "justNow": "刚刚",
+        "minutesAgo": "{minutes}分钟前",
+        "hoursAgo": "{hours}小时前",
+        "daysAgo": "{days}天前",
+        "monthsAgo": "{months}个月前",
+        "yearsAgo": "{years}年前"
       }
     }
   },
@@ -302,5 +310,11 @@
     "title": "立即创建您的 Genmoji",
     "description": "使用 Genmoji Online，终极表情符号生成器释放您的创造力。开始制作能完美表达您情感的独特表情符号。",
     "button": "开始生成 Genmoji"
+  },
+  "languagePrompt": {
+    "title": "语言偏好",
+    "description": "我们注意到您的浏览器语言与当前页面语言不同。是否切换到您的首选语言？",
+    "stayIn": "继续使用{language}",
+    "switchTo": "切换到{language}"
   }
 } 

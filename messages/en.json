@@ -172,6 +172,14 @@
         "ogDescription": "Check out this {prompt} genmoji created with Genmoji Online. Create your own custom genmojis now!",
         "twitterTitle": "{prompt} Genmoji",
         "twitterDescription": "Check out this {prompt} genmoji created with Genmoji Online!"
+      },
+      "time": {
+        "justNow": "just now",
+        "minutesAgo": "{minutes} minutes ago",
+        "hoursAgo": "{hours} hours ago",
+        "daysAgo": "{days} days ago",
+        "monthsAgo": "{months} months ago",
+        "yearsAgo": "{years} years ago"
       }
     }
   },
@@ -302,5 +310,11 @@
     "title": "Create Your Genmoji Today",
     "description": "Unleash your creativity with Genmoji Online, the ultimate genmoji generator. Start crafting unique genmojis that express your emotions perfectly.",
     "button": "Start Generating Genmoji"
+  },
+  "languagePrompt": {
+    "title": "Language Preference",
+    "description": "We noticed your browser language differs from the current page language. Would you like to switch to your preferred language?",
+    "stayIn": "Stay in {language}",
+    "switchTo": "Switch to {language}"
   }
 } 

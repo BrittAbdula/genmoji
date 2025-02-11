@@ -34,6 +34,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useTranslations } from 'next-intl';
 import { GenmojiGeneratorDialog } from "./genmoji-generator-dialog";
+import { TimeAgo } from './time-ago';
 
 interface EmojiDetailContainerProps {
   emoji: Emoji;
@@ -234,6 +235,12 @@ export function EmojiDetailContainer({ emoji }: EmojiDetailContainerProps) {
                       </div>
                     )}
                   </button>
+                  {emoji.created_at && (
+                    <TimeAgo 
+                      date={emoji.created_at} 
+                      className="text-sm text-muted-foreground"
+                    />
+                  )}
                 </div>
 
                 <div className="flex items-center gap-2 shrink-0">
