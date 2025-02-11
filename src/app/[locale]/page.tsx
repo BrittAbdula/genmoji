@@ -15,9 +15,6 @@ import { routing } from '@/i18n/routing';
 import { constructMetadata } from "@/lib/utils";
 import { getLocale } from 'next-intl/server';
 
-// Add Edge Runtime configuration
-export const runtime = 'edge';
-
 // 为静态生成提供所有支持的语言
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
