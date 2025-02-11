@@ -9,7 +9,7 @@ export async function GET(req: NextRequest) {
   const { searchParams } = req.nextUrl;
   const postTitle = searchParams.get("title") || siteConfig.description;
   const font = fetch(
-    new URL("../../assets/fonts/Inter-SemiBold.ttf", import.meta.url)
+    new URL("../../../assets/fonts/Inter-SemiBold.ttf", import.meta.url)
   ).then((res) => res.arrayBuffer());
   const fontData = await font;
 
