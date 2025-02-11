@@ -61,7 +61,7 @@ export async function getEmojis(offset: number, limit: number, locale: string, q
     return emojiResponse.emojis || [];
 }
 
-export async function getRelatedEmojis(slug: string, locale: string = 'en'): Promise<Emoji[]> {
+export async function getRelatedEmojis(slug: string, locale: string): Promise<Emoji[]> {
     const res = await fetch(`${baseURL}?slug=${slug}&related=12&locale=${locale}`, {
         headers: {
             'Origin': 'https://genmojionline.com'
