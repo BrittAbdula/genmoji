@@ -1,5 +1,6 @@
-import Link from 'next/link';
+import { Link } from '@/i18n/routing';
 import { Emoji } from '@/types/emoji';
+import { useTranslations } from 'next-intl';
 
 interface EmojiContainerProps {
   emoji: Emoji;
@@ -7,6 +8,8 @@ interface EmojiContainerProps {
 }
 
 const EmojiContainer = ({ emoji, size = 'md' }: EmojiContainerProps) => {
+  const t = useTranslations('emoji.container');
+
   const sizeClasses = {
     sm: 'w-24 h-24',
     md: 'w-32 h-32',
@@ -22,7 +25,7 @@ const EmojiContainer = ({ emoji, size = 'md' }: EmojiContainerProps) => {
       <div className="aspect-square rounded-2xl p-3 flex items-center justify-center overflow-hidden hover:bg-muted/50 transition-colors">
         <img 
           src={emoji.image_url} 
-          alt={`genmoji: ${emoji.prompt}`}
+          alt={t('imageAlt', { prompt: emoji.prompt })}
           className={`object-contain transition-transform group-hover:scale-105 ${sizeClasses[size]}`}
         />
       </div>

@@ -1,0 +1,306 @@
+{
+  "common": {
+    "name": "Genmoji Online",
+    "description": "AI驱动的表情符号创作工具。创建独特的Apple风格表情，展现个性。",
+    "shortDescription": "在线 Genmoji 生成器",
+    "cta": "生成 Genmoji",
+    "navigation": {
+      "home": "首页",
+      "gallery": "画廊",
+      "switchLanguage": "切换语言",
+      "menu": "导航菜单"
+    }
+  },
+  "hero": {
+    "title": "创建您的完美 Genmoji",
+    "subtitle": "用 AI 驱动的自定义 genmoji 表达自我"
+  },
+  "seo": {
+    "title": "Genmoji Online - AI表情符号生成器",
+    "titleTemplate": "%s | Genmoji Online",
+    "defaultTitle": "使用Genmoji Online创建个性化表情符号，这是终极表情符号生成器。将文字和图片转换成精美的Apple风格表情符号。"
+  },
+  "features": {
+    "title": "功能特点",
+    "subtitle": "强大的功能",
+    "createGenmojis": {
+      "name": "创建 Apple 风格的 Genmoji",
+      "description": "制作媲美 Apple Genmoji 质量的自定义 genmoji"
+    },
+    "onlineMaker": {
+      "name": "在线 Genmoji 制作器",
+      "description": "在浏览器中即时创建 genmoji - 无需安装应用"
+    },
+    "crossPlatform": {
+      "name": "跨平台支持",
+      "description": "在任何地方使用 Genmoji - iOS、安卓、网页等"
+    }
+  },
+  "featureHighlight": {
+    "title": "功能特点",
+    "subtitle": "强大的功能",
+    "textToGenmoji": {
+      "title": "文字生成 Genmoji",
+      "description": "只需描述您想要的内容，我们的 AI 就会立即将您的文字转化为精美的 Apple 风格 genmoji。"
+    },
+    "imageToGenmoji": {
+      "title": "图片转换 Genmoji",
+      "description": "上传您的照片，将其转换为个性化的 genmoji，同时保持标志性的 Apple genmoji 风格。"
+    },
+    "compatibility": {
+      "title": "通用兼容性",
+      "description": "生成的 genmoji 可以在所有平台上无缝使用 - 从 iMessage 到 WhatsApp，从 Discord 到 Slack。"
+    }
+  },
+  "faq": {
+    "title": "常见问题",
+    "items": [
+      {
+        "question": "什么是 Genmoji？",
+        "answer": "Genmoji 是 Apple Intelligence 的一项新功能，允许用户创建自定义表情符号 — 称为 Genmoji。Genmoji 在 iPhone 15 Pro、iPhone 15 Pro Max 和所有 iPhone 16 机型上的 iOS 18.2 或更高版本中可用。"
+      },
+      {
+        "question": "什么是 genmojionline.com？",
+        "answer": "Genmojionline.com 是一个允许您创建自定义表情符号的网站，类似于 Apple 的 Genmoji，但无需 iOS 设备。您可以使用文本提示生成独特的表情符号，然后在各种社交媒体平台上使用它们。"
+      },
+      {
+        "question": "genmojionline.com 与 Apple 的 Genmoji 有什么不同？",
+        "answer": "主要区别在于 genmojionline.com 不限于 Apple 设备。您可以在任何带有网络浏览器的设备上使用它。Apple 的 Genmoji 是 Apple Intelligence 的一项功能，仅在更新到 iOS 18 或更高版本的设备上可用。我们的网站旨在提供相同的功能，但具有更广泛的可访问性。"
+      },
+      {
+        "question": "genmojionline.com 使用什么技术？",
+        "answer": "我们的网站使用类似于 Flux 1 Dev 的图像生成模型，该模型使用大量表情符号数据集进行微调。我们使用语言模型（LLM）使您的提示词更具描述性，从而提高生成图像的质量。我们还使用类似于 Apple 的背景移除和调整大小的处理方法。"
+      },
+      {
+        "question": "如何在 genmoji online 上创建表情符号？",
+        "answer": "您可以在\"描述表情符号\"框中输入几个词或短语来创建表情符号。网站使用这个提示词来生成独特的表情符号。使用简单、描述性的关键词可以获得最佳效果，避免使用长句子。"
+      },
+      {
+        "question": "什么样的提示词效果最好？",
+        "answer": "- 使用关键词的简单描述性提示效果最好，避免长句子\n- 您可以指定颜色、风格和动作，例如\"戴帽子的红色猫\"\n- 尝试添加\"爆炸\"一词来创建更有动感和趣味的表情符号"
+      },
+      {
+        "question": "我可以使用自己的照片创建 Genmoji 吗？",
+        "answer": "是的，您可以通过将自己或他人的照片上传到我们的网站来创建 Genmoji。您还可以在提示词中自定义人物的服装、动作和表情。\n\n- 该功能目前处于测试阶段，仅对有限数量的用户开放。"
+      },
+      {
+        "question": "我可以将创建的表情符号用作贴纸吗？",
+        "answer": "是的，您生成的表情符号可以在消息应用中像贴纸一样使用。在某些应用中，它们也可能与文本一起显示为普通表情符号。"
+      },
+      {
+        "question": "Genmoji 表情符号是免费使用的吗？",
+        "answer": "是的！使用 Genmoji Online 创建的所有表情符号都可以免费使用。您保留对生成的表情符号的完整权利，可以将它们用于个人或商业目的，无需注明出处或担心版权问题。"
+      },
+      {
+        "question": "我可以在哪里使用我的 Genmoji？",
+        "answer": "Genmoji 与所有主要平台兼容，包括 Discord、Slack、WhatsApp 和社交媒体。您可以以各种格式下载它们，并在任何想要表达自我的地方使用它们。"
+      },
+      {
+        "question": "为什么我的 Genmoji 看起来与预期不同？",
+        "answer": "Genmoji 生成是具有创造性和实验性的，有时您可能无法得到您希望的结果。继续滑动查看其他选项，或稍微调整提示词。如果使用人物照片，请确保照片光线充足且清晰。您还可以使用编辑器尝试照片中人物的不同版本。"
+      }
+    ]
+  },
+  "sharing": {
+    "defaultText": "看看我用 Genmoji Online 制作的这个超棒的 genmoji！",
+    "hashtags": ["Genmoji", "AIGenmoji", "自定义Genmoji"]
+  },
+  "gallery": {
+    "title": "Genmoji 画廊",
+    "subtitle": "探索我们的 AI 生成表情符号集",
+    "loadMore": "加载更多",
+    "loading": "加载中...",
+    "noResults": "未找到表情符号",
+    "search": {
+      "placeholder": {
+        "mobile": "输入关键词搜索...",
+        "desktop": "按回车键搜索..."
+      },
+      "label": "搜索"
+    }
+  },
+  "footer": {
+    "links": {
+      "privacy": "隐私政策",
+      "terms": "服务条款"
+    },
+    "copyright": "© 2025 GenmojiOnline.com 保留所有权利。",
+    "social": {
+      "twitter": "在 Twitter 上关注我们",
+      "instagram": "在 Instagram 上关注我们",
+      "linkedin": "在 LinkedIn 上关注我们"
+    }
+  },
+  "emoji": {
+    "container": {
+      "imageAlt": "genmoji：{prompt}"
+    },
+    "notFound": {
+      "title": "未找到表情符号",
+      "description": "您要查找的表情符号不存在或已被删除。",
+      "backToHome": "← 返回首页"
+    },
+    "related": "相关表情符号",
+    "detail": {
+      "copyLink": "复制链接",
+      "copyPrompt": "复制提示词",
+      "copyImage": "复制图片",
+      "download": "下载",
+      "copied": "已复制！",
+      "reGenmoji": "重新生成",
+      "share": {
+        "title": "分享到",
+        "twitter": "分享到 Twitter",
+        "facebook": "分享到 Facebook",
+        "linkedin": "分享到 LinkedIn",
+        "instagram": "分享到 Instagram",
+        "pinterest": "分享到 Pinterest",
+        "imgur": "分享到 Imgur",
+        "telegram": "分享到 Telegram",
+        "whatsapp": "分享到 WhatsApp",
+        "wechat": "分享到微信"
+      },
+      "alert": {
+        "instagramShare": "图片已下载！您现在可以在 Instagram 上分享：\n1. 打开 Instagram\n2. 创建新帖子\n3. 选择已下载的图片\n4. 添加提示词作为说明",
+        "wechatShare": "打开微信扫描二维码分享",
+        "longPressToSave": "长按 Genmoji 保存"
+      },
+      "meta": {
+        "title": "{prompt} | Genmoji Online",
+        "description": "探索并下载这个由 Genmoji Online 创建的 {prompt} 自定义表情符号。使用我们的 AI 驱动生成器创建您自己的个性化表情符号。",
+        "ogTitle": "{prompt} - 自定义表情符号",
+        "ogDescription": "看看这个用 Genmoji Online 创建的 {prompt} 表情符号。现在就创建您自己的自定义表情符号！",
+        "twitterTitle": "{prompt} 表情符号",
+        "twitterDescription": "看看这个用 Genmoji Online 创建的 {prompt} 表情符号！"
+      }
+    }
+  },
+  "legal": {
+    "privacyPolicy": {
+      "title": "隐私政策",
+      "effectiveDate": "生效日期：2025年1月21日",
+      "introduction": "Genmoji Online（\"我们\"、\"我们的\"）致力于保护您的隐私。本隐私政策说明了我们在您使用我们的服务时如何收集、使用和披露信息。",
+      "informationWeCollect": {
+        "title": "1. 我们收集的信息",
+        "description": "我们可能收集以下类型的信息：",
+        "items": [
+          "账户信息（电子邮件、用户名）",
+          "使用数据（创建的表情符号、使用的提示词）",
+          "设备信息（IP地址、浏览器类型）",
+          "通过 Google Analytics 收集的分析数据"
+        ]
+      },
+      "howWeUse": {
+        "title": "2. 我们如何使用信息",
+        "description": "我们使用收集的信息来：",
+        "items": [
+          "提供和改进我们的服务",
+          "分析使用模式",
+          "与用户沟通",
+          "确保服务安全"
+        ]
+      },
+      "dataSharing": {
+        "title": "3. 数据共享",
+        "description": "我们不会出售您的个人信息。我们可能与以下方共享信息：",
+        "items": [
+          "服务提供商（如 Google Analytics）",
+          "法律要求时的执法机构"
+        ]
+      },
+      "dataSecurity": {
+        "title": "4. 数据安全",
+        "description": "我们实施安全措施来保护您的信息，但没有任何方法是100%安全的。"
+      },
+      "yourRights": {
+        "title": "5. 您的权利",
+        "description": "您有权访问、更正或删除您的个人信息。请通过 support@genmojionline.com 联系我们以行使这些权利。"
+      },
+      "changes": {
+        "title": "6. 政策变更",
+        "description": "我们可能会更新此政策。继续使用我们的服务即表示您接受更新后的政策。"
+      },
+      "contact": {
+        "title": "7. 联系我们",
+        "description": "如果您对本政策有任何疑问，请通过 support@genmojionline.com 联系我们。"
+      }
+    },
+    "termsOfService": {
+      "title": "服务条款",
+      "effectiveDate": "生效日期：2025年1月21日",
+      "acceptance": {
+        "title": "1. 条款接受",
+        "description": "使用 Genmoji Online 即表示您同意这些服务条款。如果您不同意，请不要使用我们的服务。"
+      },
+      "serviceDescription": {
+        "title": "2. 服务描述",
+        "description": "Genmoji Online 提供 AI 驱动的表情符号生成服务。用户可以基于文本提示创建自定义表情符号。"
+      },
+      "userResponsibilities": {
+        "title": "3. 用户责任",
+        "description": "您同意：",
+        "items": [
+          "仅将服务用于合法目的",
+          "不创建有害或冒犯性内容",
+          "尊重知识产权"
+        ]
+      },
+      "intellectualProperty": {
+        "title": "4. 知识产权",
+        "description": "通过我们的服务生成的所有 genmoji 都发布到公共领域。您可以自由使用、修改、复制、分发和展示这些作品，甚至用于商业目的，无需征求许可。无需注明出处。",
+        "usage": {
+          "title": "4.1 使用权",
+          "items": [
+            "您可以将生成的 genmoji 用于任何目的",
+            "无需注明 Genmoji Online 的出处",
+            "您可以修改和改编 genmoji",
+            "允许商业使用",
+            "您可以分享和重新分发 genmoji"
+          ]
+        },
+        "limitations": {
+          "title": "4.2 限制",
+          "description": "虽然 genmoji 本身可以自由使用，但 Genmoji Online 的名称、标志和服务仍受适用的知识产权法保护。服务基础设施、网站设计和底层技术仍然是 Genmoji Online 的财产。"
+        }
+      },
+      "liability": {
+        "title": "5. 责任限制",
+        "description": "Genmoji Online 不对因使用服务而产生的任何间接、偶然或后果性损害承担责任。"
+      },
+      "changes": {
+        "title": "6. 条款变更",
+        "description": "我们可能会更新这些条款。继续使用即表示接受更新后的条款。"
+      },
+      "governingLaw": {
+        "title": "7. 适用法律",
+        "description": "这些条款受加利福尼亚州法律管辖。"
+      },
+      "contact": {
+        "title": "8. 联系信息",
+        "description": "如果您对这些条款有任何疑问，请通过 support@genmojionline.com 联系我们。"
+      }
+    }
+  },
+  "generator": {
+    "title": "从几个词或短语开始，最好地描述您的想法",
+    "placeholder": "例如：'戴帽子的红色猫'",
+    "generateButton": "生成 genmoji",
+    "generatingButton": "生成中...",
+    "uploadImage": "上传图片（可选）",
+    "changeImage": "更换图片",
+    "recentTitle": "最近生成的 Genmoji",
+    "generationStatus": {
+      "starting": "开始生成..."
+    },
+    "error": {
+      "failed": "生成失败。请重试。"
+    },
+    "dialogTitle": "生成新的 Genmoji",
+    "dialogDescription": "根据您的描述创建新的 genmoji。您也可以上传参考图片。"
+  },
+  "cta": {
+    "title": "立即创建您的 Genmoji",
+    "description": "使用 Genmoji Online，终极表情符号生成器释放您的创造力。开始制作能完美表达您情感的独特表情符号。",
+    "button": "开始生成 Genmoji"
+  }
+} 

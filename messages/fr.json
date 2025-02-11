@@ -1,0 +1,309 @@
+{
+  "common": {
+    "name": "Genmoji Online",
+    "description": "Créons ensemble des genmojis personnalisés qui expriment parfaitement vos émotions et votre créativité.",
+    "shortDescription": "Générateur de Genmoji en Ligne",
+    "cta": "Générer un Genmoji",
+    "navigation": {
+      "home": "Accueil",
+      "gallery": "Galerie",
+      "switchLanguage": "Changer de langue",
+      "menu": "Menu de Navigation"
+    }
+  },
+  "hero": {
+    "title": "Créez Votre Genmoji Parfait",
+    "subtitle": "Exprimez-vous avec des genmojis personnalisés alimentés par l'IA"
+  },
+  "seo": {
+    "title": "Genmoji Online - Générateur d'émojis AI",
+    "titleTemplate": "%s | Genmoji Online",
+    "defaultTitle": "Créez des genmojis personnalisés avec Genmoji Online, le générateur d'émojis ultime. Transformez du texte et des images en magnifiques émojis style Apple."
+  },
+  "features": {
+    "title": "Fonctionnalités",
+    "subtitle": "Fonctionnalités puissantes",
+    "createGenmojis": {
+      "name": "Créez des Genmojis Style Apple",
+      "description": "Créez des genmojis personnalisés rivalisant avec la qualité Apple"
+    },
+    "onlineMaker": {
+      "name": "Créateur de Genmoji en Ligne",
+      "description": "Créez des genmojis instantanément dans votre navigateur - sans application"
+    },
+    "crossPlatform": {
+      "name": "Multi-plateforme",
+      "description": "Utilisez Genmoji partout - iOS, Android, Web et plus"
+    }
+  },
+  "featureHighlight": {
+    "title": "Fonctionnalités",
+    "subtitle": "Fonctionnalités puissantes",
+    "textToGenmoji": {
+      "title": "Génération de Genmoji à partir de Texte",
+      "description": "Décrivez simplement ce que vous voulez, et notre IA transformera instantanément vos mots en magnifiques genmojis style Apple."
+    },
+    "imageToGenmoji": {
+      "title": "Création de Genmoji à partir d'Image",
+      "description": "Téléchargez vos photos et transformez-les en genmojis personnalisés tout en conservant le style iconique des genmojis Apple."
+    },
+    "compatibility": {
+      "title": "Compatibilité Universelle",
+      "description": "Les genmojis générés fonctionnent parfaitement sur toutes les plateformes - d'iMessage à WhatsApp, de Discord à Slack."
+    }
+  },
+  "faq": {
+    "title": "Questions Fréquentes",
+    "items": [
+      {
+        "question": "Qu'est-ce que Genmoji ?",
+        "answer": "Genmoji est une nouvelle fonctionnalité d'Apple Intelligence qui permet aux utilisateurs de créer des emojis personnalisés — appelés Genmoji. Genmoji est disponible sur iOS 18.2 ou version ultérieure sur iPhone 15 Pro, iPhone 15 Pro Max et tous les modèles iPhone 16."
+      },
+      {
+        "question": "Qu'est-ce que genmojionline.com ?",
+        "answer": "Genmojionline.com est un site web qui vous permet de créer des emojis personnalisés, similaires aux Genmoji d'Apple, mais sans avoir besoin d'un appareil iOS. Vous pouvez générer des emojis uniques à l'aide de commandes textuelles, puis les utiliser sur diverses plateformes de médias sociaux."
+      },
+      {
+        "question": "En quoi genmojionline.com est-il différent du Genmoji d'Apple ?",
+        "answer": "La principale différence est que genmojionline.com n'est pas limité aux appareils Apple. Vous pouvez l'utiliser sur n'importe quel appareil avec un navigateur web. Genmoji d'Apple est une fonctionnalité d'Apple Intelligence et n'est disponible que sur les appareils mis à jour vers iOS 18 ou version ultérieure. Notre site vise à fournir la même fonctionnalité mais avec une accessibilité plus large."
+      },
+      {
+        "question": "Quelle technologie utilise genmojionline.com ?",
+        "answer": "Notre site utilise un modèle de génération d'images, similaire à Flux 1 Dev, qui est affiné à l'aide d'un grand ensemble de données d'emojis. Nous utilisons un modèle de langage (LLM) pour rendre votre prompt plus descriptif, ce qui améliore la qualité de l'image générée. Nous utilisons également des processus de suppression d'arrière-plan et de redimensionnement similaires aux méthodes d'Apple."
+      },
+      {
+        "question": "Comment créer un emoji sur genmoji online ?",
+        "answer": "Vous créez des emojis en tapant quelques mots ou une phrase dans la boîte \"Décrire un emoji\". Le site web utilise ce prompt pour générer des emojis uniques. Utilisez des mots-clés simples et descriptifs pour de meilleurs résultats, évitez les longues phrases."
+      },
+      {
+        "question": "Quels types de prompts fonctionnent le mieux ?",
+        "answer": "- Les prompts simples et descriptifs utilisant des mots-clés fonctionnent le mieux. Évitez les longues phrases\n- Vous pouvez spécifier des couleurs, des styles et des actions, comme \"un chat rouge avec un chapeau\"\n- Essayez d'ajouter le mot \"explosion\" pour créer des emojis plus dynamiques et intéressants"
+      },
+      {
+        "question": "Puis-je utiliser mes propres photos pour créer un Genmoji ?",
+        "answer": "Oui, vous pouvez utiliser des photos de vous-même ou d'autres personnes pour créer un Genmoji en téléchargeant l'image sur notre site web. Vous pouvez également personnaliser les vêtements, les actions et les émotions de la personne dans le prompt.\n\n- Cette fonctionnalité est actuellement en version bêta et n'est disponible que pour un nombre limité d'utilisateurs."
+      },
+      {
+        "question": "Puis-je utiliser les emojis que je crée comme autocollants ?",
+        "answer": "Oui, les emojis que vous générez peuvent être utilisés comme des autocollants dans les applications de messagerie. Dans certaines applications, ils peuvent également apparaître comme des emojis normaux à côté du texte."
+      },
+      {
+        "question": "Les emojis Genmoji sont-ils gratuits ?",
+        "answer": "Oui ! Tous les emojis créés avec Genmoji Online sont gratuits. Vous conservez tous les droits sur vos emojis générés et pouvez les utiliser à des fins personnelles ou commerciales sans attribution ni problèmes de droits d'auteur."
+      },
+      {
+        "question": "Où puis-je utiliser mes Genmojis ?",
+        "answer": "Les Genmojis sont compatibles avec toutes les principales plateformes, y compris Discord, Slack, WhatsApp et les réseaux sociaux. Vous pouvez les télécharger dans différents formats et les utiliser partout où vous souhaitez vous exprimer."
+      },
+      {
+        "question": "Pourquoi mon Genmoji est-il différent de ce que j'attendais ?",
+        "answer": "La génération de Genmoji est créative et expérimentale, et parfois vous n'obtiendrez pas le résultat espéré. Continuez à faire défiler pour voir d'autres options, ou affinez légèrement le prompt. Si vous utilisez une photo d'une personne, assurez-vous que la photo est bien éclairée et nette. Vous pouvez également utiliser l'éditeur pour essayer différentes versions de la personne sur la photo."
+      }
+    ]
+  },
+  "sharing": {
+    "defaultText": "Découvrez ce superbe genmoji que j'ai créé avec Genmoji Online !",
+    "hashtags": ["Genmoji", "GemojiIA", "GemojiPersonnalisé"]
+  },
+  "gallery": {
+    "title": "Galerie Genmoji",
+    "subtitle": "Explorez notre collection d'emojis générés par l'IA",
+    "loadMore": "Charger Plus",
+    "loading": "Chargement...",
+    "noResults": "Aucun emoji trouvé",
+    "search": {
+      "placeholder": {
+        "mobile": "Tapez pour rechercher...",
+        "desktop": "Appuyez sur Entrée pour rechercher..."
+      },
+      "label": "Rechercher"
+    }
+  },
+  "generator": {
+    "title": "Commencez par quelques mots ou une phrase qui décrit le mieux votre idée",
+    "placeholder": "ex : 'un chat rouge avec un chapeau'",
+    "generateButton": "Générer un genmoji",
+    "generatingButton": "Génération en cours...",
+    "uploadImage": "Télécharger une image (Optionnel)",
+    "changeImage": "Changer l'image",
+    "recentTitle": "Genmojis Récents",
+    "generationStatus": {
+      "starting": "Démarrage de la génération..."
+    },
+    "error": {
+      "failed": "La génération a échoué. Veuillez réessayer."
+    },
+    "dialogTitle": "Générer un Nouveau Genmoji",
+    "dialogDescription": "Créez un nouveau genmoji basé sur votre description. Vous pouvez également télécharger une image de référence."
+  },
+  "cta": {
+    "title": "Créez Votre Genmoji Aujourd'hui",
+    "description": "Libérez votre créativité avec Genmoji Online, le générateur ultime de genmojis. Commencez à créer des genmojis uniques qui expriment parfaitement vos émotions.",
+    "button": "Commencer à Générer des Genmoji"
+  },
+  "footer": {
+    "links": {
+      "privacy": "Politique de Confidentialité",
+      "terms": "Conditions d'Utilisation"
+    },
+    "copyright": "© 2025 GenmojiOnline.com Tous droits réservés.",
+    "social": {
+      "twitter": "Suivez-nous sur Twitter",
+      "instagram": "Suivez-nous sur Instagram",
+      "linkedin": "Suivez-nous sur LinkedIn"
+    }
+  },
+  "emoji": {
+    "container": {
+      "imageAlt": "genmoji : {prompt}"
+    },
+    "notFound": {
+      "title": "Emoji Non Trouvé",
+      "description": "L'emoji que vous recherchez n'existe pas ou a été supprimé.",
+      "backToHome": "← Retour à l'Accueil"
+    },
+    "related": "Genmojis Similaires",
+    "detail": {
+      "copyLink": "Copier le lien",
+      "copyPrompt": "Copier le prompt",
+      "copyImage": "Copier l'image",
+      "download": "Télécharger",
+      "copied": "Copié !",
+      "reGenmoji": "Re-Genmoji",
+      "share": {
+        "title": "Partager sur",
+        "twitter": "Partager sur Twitter",
+        "facebook": "Partager sur Facebook",
+        "linkedin": "Partager sur LinkedIn",
+        "instagram": "Partager sur Instagram",
+        "pinterest": "Partager sur Pinterest",
+        "imgur": "Partager sur Imgur",
+        "telegram": "Partager sur Telegram",
+        "whatsapp": "Partager sur WhatsApp",
+        "wechat": "Partager sur WeChat"
+      },
+      "sharing": {
+        "defaultText": "Découvrez ce genmoji incroyable que j'ai créé avec Genmoji Online ! ✨"
+      },
+      "alert": {
+        "instagramShare": "Image téléchargée ! Vous pouvez maintenant la partager sur Instagram :\n1. Ouvrez Instagram\n2. Créez un nouveau post\n3. Sélectionnez l'image téléchargée\n4. Ajoutez le prompt comme légende",
+        "wechatShare": "Ouvrez WeChat et scannez le QR code pour partager",
+        "longPressToSave": "Appuyez longuement sur le Genmoji pour sauvegarder"
+      },
+      "meta": {
+        "title": "{prompt} | Genmoji Online",
+        "description": "Explorez et téléchargez ce {prompt} genmoji personnalisé créé avec Genmoji Online. Créez vos propres genmojis personnalisés avec notre générateur alimenté par l'IA.",
+        "ogTitle": "{prompt} - Genmoji Personnalisé",
+        "ogDescription": "Découvrez ce {prompt} genmoji créé avec Genmoji Online. Créez vos propres genmojis personnalisés maintenant !",
+        "twitterTitle": "{prompt} Genmoji",
+        "twitterDescription": "Découvrez ce {prompt} genmoji créé avec Genmoji Online !"
+      }
+    }
+  },
+  "legal": {
+    "privacyPolicy": {
+      "title": "Politique de Confidentialité",
+      "effectiveDate": "Date d'effet : 21 janvier 2025",
+      "introduction": "Genmoji Online (« nous », « notre ») s'engage à protéger votre vie privée. Cette politique de confidentialité explique comment nous collectons, utilisons et divulguons les informations lorsque vous utilisez nos services.",
+      "informationWeCollect": {
+        "title": "1. Informations que nous collectons",
+        "description": "Nous pouvons collecter les types d'informations suivants :",
+        "items": [
+          "Informations de compte (adresse e-mail, nom d'utilisateur)",
+          "Données d'utilisation (emojis créés, prompts utilisés)",
+          "Informations sur l'appareil (adresse IP, type de navigateur)",
+          "Données analytiques collectées via Google Analytics"
+        ]
+      },
+      "howWeUse": {
+        "title": "2. Comment nous utilisons vos informations",
+        "description": "Les informations collectées sont utilisées aux fins suivantes :",
+        "items": [
+          "Fournir et améliorer nos services",
+          "Analyser les modèles d'utilisation",
+          "Communiquer avec les utilisateurs",
+          "Assurer la sécurité des services"
+        ]
+      },
+      "dataSharing": {
+        "title": "3. Partage des données",
+        "description": "Nous ne vendons pas vos informations personnelles. Nous pouvons partager les informations dans les cas suivants :",
+        "items": [
+          "Fournisseurs de services (comme Google Analytics)",
+          "Forces de l'ordre lorsque requis par la loi"
+        ]
+      },
+      "dataSecurity": {
+        "title": "4. Sécurité des données",
+        "description": "Nous mettons en œuvre des mesures de sécurité pour protéger vos informations, mais aucune méthode n'est 100% sûre."
+      },
+      "yourRights": {
+        "title": "5. Vos droits",
+        "description": "Vous avez le droit d'accéder, de corriger ou de supprimer vos informations personnelles. Pour exercer ces droits, contactez-nous à support@genmojionline.com."
+      },
+      "changes": {
+        "title": "6. Modifications de la politique",
+        "description": "Nous pouvons mettre à jour cette politique. L'utilisation continue des services constitue l'acceptation de la politique mise à jour."
+      },
+      "contact": {
+        "title": "7. Nous contacter",
+        "description": "Pour toute question concernant cette politique, contactez-nous à support@genmojionline.com."
+      }
+    },
+    "termsOfService": {
+      "title": "Conditions d'Utilisation",
+      "effectiveDate": "Date d'effet : 21 janvier 2025",
+      "acceptance": {
+        "title": "1. Acceptation des conditions",
+        "description": "En utilisant Genmoji Online, vous acceptez ces conditions d'utilisation. Si vous n'acceptez pas ces conditions, veuillez ne pas utiliser le service."
+      },
+      "serviceDescription": {
+        "title": "2. Description du service",
+        "description": "Genmoji Online fournit un service de génération d'emojis alimenté par l'IA. Les utilisateurs peuvent créer des emojis personnalisés basés sur des prompts textuels."
+      },
+      "userResponsibilities": {
+        "title": "3. Responsabilités de l'utilisateur",
+        "description": "L'utilisateur accepte de :",
+        "items": [
+          "N'utiliser le service qu'à des fins légales",
+          "Ne pas créer de contenu nuisible ou offensant",
+          "Respecter les droits de propriété intellectuelle"
+        ]
+      },
+      "intellectualProperty": {
+        "title": "4. Propriété intellectuelle",
+        "description": "Tous les emojis générés via notre service sont publiés dans le domaine public. Vous pouvez librement utiliser, modifier, copier, distribuer et exécuter les œuvres à toutes fins, y compris commerciales, sans demander d'autorisation. Aucune attribution n'est requise.",
+        "usage": {
+          "title": "4.1 Droits d'utilisation",
+          "items": [
+            "Utilisation des emojis générés à toute fin",
+            "Aucune attribution à Genmoji Online requise",
+            "Modification des emojis autorisée",
+            "Utilisation commerciale autorisée",
+            "Partage et redistribution des emojis autorisés"
+          ]
+        },
+        "limitations": {
+          "title": "4.2 Limitations",
+          "description": "Bien que les emojis eux-mêmes soient libres d'utilisation, le nom, le logo et les services de Genmoji Online sont protégés par les lois de propriété intellectuelle applicables. L'infrastructure du service, le design du site web et la technologie sous-jacente sont la propriété de Genmoji Online."
+        }
+      },
+      "liability": {
+        "title": "5. Limitation de responsabilité",
+        "description": "Genmoji Online n'est pas responsable des dommages indirects, accessoires ou consécutifs résultant de l'utilisation du service."
+      },
+      "changes": {
+        "title": "6. Modifications des conditions",
+        "description": "Nous pouvons mettre à jour ces conditions. L'utilisation continue du service constitue l'acceptation des conditions mises à jour."
+      },
+      "governingLaw": {
+        "title": "7. Loi applicable",
+        "description": "Ces conditions sont régies par les lois de l'État de Californie."
+      },
+      "contact": {
+        "title": "8. Informations de contact",
+        "description": "Pour toute question concernant ces conditions, contactez-nous à support@genmojionline.com."
+      }
+    }
+  }
+} 

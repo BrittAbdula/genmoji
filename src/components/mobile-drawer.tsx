@@ -15,12 +15,14 @@ import {
 } from "@/components/ui/drawer";
 import { siteConfig } from "@/lib/config";
 import { cn } from "@/lib/utils";
-import Link from "next/link";
+import { Link, usePathname } from '@/i18n/routing';
 import { IoMenuSharp } from "react-icons/io5";
-import { usePathname } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 
 export function MobileDrawer() {
   const pathname = usePathname();
+  const t = useTranslations('common');
+  const nav = useTranslations('common.navigation');
   const isActive = (path: string) => pathname === path;
 
   return (
@@ -30,14 +32,14 @@ export function MobileDrawer() {
       </DrawerTrigger>
       <DrawerContent>
         <DrawerHeader className="px-6">
-          <DrawerTitle className="sr-only">Navigation Menu</DrawerTitle>
+          <DrawerTitle className="sr-only">{nav('menu')}</DrawerTitle>
           <div className="flex items-center justify-between">
             <Link
               href="/"
-              title="brand-logo"
+              title={t('name')}
               className="relative flex items-center space-x-2"
             >
-              <img src="/logo.png" alt="🥳" width="40" height="40"/>
+              <img src="/logo.png" alt={t('name')} width="40" height="40"/>
               <motion.div
                 className="absolute inset-0 -z-10 bg-gradient-to-b from-pink-100/30 via-purple-100/30 to-transparent dark:from-pink-950/30 dark:via-purple-950/30 rounded-full blur-3xl"
                 initial={{ opacity: 0 }}
@@ -53,8 +55,8 @@ export function MobileDrawer() {
                   outfit.className
                 )}
               >
-                <AuroraText>Genmoji</AuroraText>{" "}
-                <span className="text-muted-foreground">Online</span>
+                <AuroraText>{t('name').split(' ')[0]}</AuroraText>{" "}
+                <span className="text-muted-foreground">{t('name').split(' ')[1]}</span>
               </motion.p>
             </Link>
             <ThemeToggle />
@@ -69,7 +71,7 @@ export function MobileDrawer() {
               isActive('/') ? "text-foreground bg-accent" : "text-muted-foreground"
             )}
           >
-            Home
+            {nav('home')}
           </Link>
           <Link 
             href="/gallery" 
@@ -78,7 +80,7 @@ export function MobileDrawer() {
               isActive('/gallery') ? "text-foreground bg-accent" : "text-muted-foreground"
             )}
           >
-            Gallery
+            {nav('gallery')}
           </Link>
         </div>
 
@@ -90,7 +92,7 @@ export function MobileDrawer() {
               "text-white rounded-full group w-full"
             )}
           >
-            {siteConfig.cta}
+            {t('cta')}
           </Link>
         </DrawerFooter>
       </DrawerContent>

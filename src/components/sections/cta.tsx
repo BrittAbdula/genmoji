@@ -1,3 +1,5 @@
+"use client";
+
 import { Icons } from "@/components/icons";
 import { buttonVariants } from "@/components/ui/button";
 import Marquee from "@/components/ui/marquee";
@@ -5,6 +7,8 @@ import { siteConfig } from "@/lib/config";
 import { cn } from "@/lib/utils";
 import { ChevronRight } from "lucide-react";
 import Link from "next/link";
+import { useTranslations } from 'next-intl';
+
 const reviews = [
   {
       name: "Jack",
@@ -131,6 +135,8 @@ const ReviewCard = ({
 };
 
 export function CTA() {
+  const t = useTranslations('cta');
+  
   return (
     <section id="cta">
       <div className="py-14 container mx-auto px-4 max-w-[1000px] ">
@@ -183,13 +189,13 @@ export function CTA() {
             </Marquee>
           </div>
           <div className="z-10 mx-auto size-24 rounded-[2rem] border bg-white/10 p-3 shadow-2xl backdrop-blur-md dark:bg-black/10 lg:size-32">
-          <img src="/logo.png" alt="genmoji logo" className="w-auto h-full"/>
+            <img src="/logo.png" alt="genmoji logo" className="w-auto h-full"/>
           </div>
           <div className="z-10 mt-4 flex flex-col items-center text-center text-black dark:text-white">
             <h2 className="text-3xl font-bold lg:text-4xl">
-              Create Your Genmoji Today
+              {t('title')}
             </h2>
-            <p className="mt-2">Unleash your creativity with Genmoji Online, the ultimate genmoji generator. Start crafting unique genmojis that express your emotions perfectly.</p>
+            <p className="mt-2">{t('description')}</p>
             <Link
               href="#"
               className={cn(
@@ -197,7 +203,7 @@ export function CTA() {
                 "h-8 text-white rounded-full group mt-4"
               )}
             >
-              Start Generating Genmojis
+              {t('button')}
               <ChevronRight className="ml-1 size-4 transition-all duration-300 ease-out group-hover:translate-x-1" />
             </Link>
           </div>

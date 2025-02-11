@@ -1,6 +1,6 @@
 import { ImageResponse } from 'next/og'
-import { getEmoji } from '../utils'
-
+import { getEmoji } from '@/lib/api'
+import { getLocale } from 'next-intl/server';
 // Add Edge Runtime configuration
 export const runtime = 'edge'
 
@@ -14,7 +14,8 @@ export const contentType = 'image/png'
 // Image generation
 export default async function Icon({ params }: { params: { slug: string } }) {
   try {
-    const emoji = await getEmoji(params.slug)
+    const locale = await getLocale()
+    const emoji = await getEmoji(params.slug, locale)
     
     // Fetch the emoji image
     const response = await fetch(emoji.image_url)

@@ -4,6 +4,7 @@ export interface Emoji {
   image_url: string;
   created_at?: string;
   likes_count?: number;
+  locale: string;
 }
 
 export interface EmojiResponse {

@@ -1,31 +1,40 @@
 "use client";
 
-import { Section } from "@/components/section";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Progress } from "@/components/ui/progress";
-import { AuroraText } from "@/components/ui/aurora-text";
-import { easeInOutCubic } from "@/lib/animation";
+import { buttonVariants } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
-import confetti from "canvas-confetti";
-import { useState, useEffect, useRef } from "react";
-import EmojiContainer from "@/components/emoji-container";
-import { Emoji, EmojiResponse } from "@/types/emoji";
-import { outfit } from '@/lib/fonts';
-import { cn } from '@/lib/utils';
-import { ImageIcon, X } from 'lucide-react';
+import { Link } from '@/i18n/routing';
+import { useTranslations } from 'next-intl';
 
 export function Hero() {
+  const t = useTranslations('common');
+  const hero = useTranslations('hero');
+
   return (
-    <Section id="hero" className="w-full overflow-hidden bg-background">
-      <div className="container mx-auto px-6 text-center ">
-        <h1 className="text-3xl sm:text-5xl font-extrabold text-primary mb-6">
-          Welcome to Genmoji Online
-        </h1>
-        <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto">
-          Your ultimate genmoji generator for creating personalized genmojis.
-        </p>
+    <section className="relative overflow-hidden">
+      <div className="container relative z-10 mx-auto px-4 py-6 sm:px-6 lg:px-8 lg:py-12">
+        <div className="mx-auto max-w-4xl text-center">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+          >
+            <h1 className="text-4xl font-bold tracking-tight sm:text-6xl">
+              {hero('title')}
+            </h1>
+            <p className="mt-6 text-lg leading-8 text-muted-foreground">
+              {t('description')}
+            </p>
+          </motion.div>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+            className="mt-10 flex items-center justify-center gap-x-6"
+          >
+          </motion.div>
+        </div>
       </div>
-    </Section>
+    </section>
   );
 }

@@ -3,15 +3,14 @@
 import { Section } from "@/components/section";
 import { buttonVariants } from "@/components/ui/button";
 import { easeOutCubic } from "@/lib/animation";
-import { siteConfig } from "@/lib/config";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
-import Link from "next/link";
+import { Link } from '@/i18n/routing';
+import { useTranslations } from 'next-intl';
 import { useEffect, useRef, useState } from "react";
 
 interface FeatureProps {
-  title: string;
-  description: string;
+  translationKey: string;
   imageSrc: string;
   imageSrcBlack: string;
   direction: "ltr" | "rtl";
@@ -19,14 +18,16 @@ interface FeatureProps {
 }
 
 function Feature({
-  title,
-  description,
+  translationKey,
   imageSrc,
   imageSrcBlack,
   direction,
   isActive,
 }: FeatureProps) {
   const isLTR = direction === "ltr";
+  const t = useTranslations('featureHighlight');
+  const common = useTranslations('common');
+
   const textVariants = {
     hidden: { opacity: 0, x: isLTR ? -20 : 20 },
     visible: {
@@ -73,21 +74,21 @@ function Feature({
             className="text-4xl md:text-5xl lg:text-6xl font-bold"
             variants={itemVariants}
           >
-            {title}
+            {t(`${translationKey}.title`)}
           </motion.h2>
           <motion.p className="text-xl md:text-2xl" variants={itemVariants}>
-            {description}
+            {t(`${translationKey}.description`)}
           </motion.p>
           <motion.div variants={itemVariants}>
             <Link
-              href="#"
+              href="/"
               className={cn(
                 buttonVariants({ variant: "default", size: "lg" }),
                 "text-white rounded-full group text-lg",
                 "mx-auto lg:mx-0"
               )}
             >
-              {siteConfig.cta}
+              {common('cta')}
             </Link>
           </motion.div>
         </div>
@@ -96,12 +97,12 @@ function Feature({
         <img
           src={imageSrcBlack}
           className="hidden dark:block"
-          alt="Feature illustration dark mode"
+          alt={t(`${translationKey}.title`) + ' - Dark Mode'}
         />
         <img
           src={imageSrc}
           className="block dark:hidden"
-          alt="Feature illustration light mode"
+          alt={t(`${translationKey}.title`) + ' - Light Mode'}
         />
       </div>
     </motion.div>
@@ -109,10 +110,30 @@ function Feature({
 }
 
 export function FeatureHighlight() {
-  const features = siteConfig.featureHighlight;
+  const features = [
+    {
+      translationKey: 'textToGenmoji',
+      imageSrc: "/hero-2.png",
+      imageSrcBlack: "/hero-2-black.png",
+      direction: "rtl" as const,
+    },
+    {
+      translationKey: 'imageToGenmoji',
+      imageSrc: "/hero-4.png",
+      imageSrcBlack: "/hero-4-black.png",
+      direction: "ltr" as const,
+    },
+    {
+      translationKey: 'compatibility',
+      imageSrc: "/hero-3.png",
+      imageSrcBlack: "/hero-3-black.png",
+      direction: "rtl" as const,
+    },
+  ];
 
   const [activeFeature, setActiveFeature] = useState(-1);
   const containerRef = useRef<HTMLElement>(null);
+  const t = useTranslations('featureHighlight');
 
   useEffect(() => {
     const handleScroll = () => {
@@ -136,8 +157,8 @@ export function FeatureHighlight() {
   return (
     <Section
       id="feature-highlight"
-      title="Features"
-      subtitle="Powerful features"
+      title={t('title')}
+      subtitle={t('subtitle')}
       className="container px-10"
       ref={containerRef}
     >

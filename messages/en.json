@@ -1,0 +1,306 @@
+{
+  "common": {
+    "name": "Genmoji Online",
+    "description": "let's create and share custom genmojis that perfectly express your emotions and creativity.",
+    "shortDescription": "Online Genmoji Generator",
+    "cta": "Generate Genmoji",
+    "navigation": {
+      "home": "Home",
+      "gallery": "Gallery",
+      "switchLanguage": "Switch language",
+      "menu": "Navigation Menu"
+    }
+  },
+  "hero": {
+    "title": "Create Your Perfect Genmoji",
+    "subtitle": "Express yourself with AI-powered custom genmojis"
+  },
+  "seo": {
+    "title": "Genmoji Online -  Your Ultimate Genmoji Generator",
+    "titleTemplate": "%s | Genmoji Online",
+    "defaultTitle": "Create personalized genmojis with Genmoji Online, the ultimate genmoji generator. Transform text and images into beautiful Apple-style genmojis. Start generating your custom genmojis today!"
+  },
+  "features": {
+    "title": "Features",
+    "subtitle": "Powerful features",
+    "createGenmojis": {
+      "name": "Create Apple-Style Genmojis",
+      "description": "Make custom genmojis that rival Apple Genmoji quality"
+    },
+    "onlineMaker": {
+      "name": "Online Genmoji Maker",
+      "description": "Create genmojis instantly in your browser - no app needed"
+    },
+    "crossPlatform": {
+      "name": "Cross-Platform",
+      "description": "Use Genmoji anywhere - iOS, Android, Web, and more"
+    }
+  },
+  "featureHighlight": {
+    "title": "Features",
+    "subtitle": "Powerful features",
+    "textToGenmoji": {
+      "title": "Text to Genmoji Generation",
+      "description": "Simply describe what you want, and our AI will transform your words into beautiful Apple-style genmojis instantly."
+    },
+    "imageToGenmoji": {
+      "title": "Image to Genmoji Creation",
+      "description": "Upload your photos and transform them into personalized genmojis while maintaining the iconic Apple genmoji style."
+    },
+    "compatibility": {
+      "title": "Universal Compatibility",
+      "description": "Generated genmojis work seamlessly across all platforms - from iMessage to WhatsApp, Discord to Slack."
+    }
+  },
+  "faq": {
+    "title": "Frequently Asked Questions",
+    "items": [
+      {
+        "question": "What is Genmoji?",
+        "answer": "Genmoji is a new feature of Apple Intelligence that lets users create custom genmojis — called Genmoji. Genmoji is available on iOS 18.2 or later on iPhone 15 Pro, iPhone 15 Pro Max, and all iPhone 16 models."
+      },
+      {
+        "question": "What is genmojionline.com?",
+        "answer": "Genmojionline.com is a website that allows you to create custom genmojis, similar to Apple's Genmoji, but without the need for an iOS device. You can generate unique genmojis using text-based prompts, and then use them on various social media platforms."
+      },
+      {
+        "question": "How is genmojionline.com different from Apple's Genmoji?",
+        "answer": "The primary difference is that genmojionline.com is not limited to Apple devices. You can use it on any device with a web browser. Apple's Genmoji is a feature of Apple Intelligence and is only available on devices updated to iOS 18 or later. Our site aims to provide the same functionality but with broader accessibility."
+      },
+      {
+        "question": "What technology does genmojionline.com use?",
+        "answer": "Our site uses an image generation model, similar to Flux 1 Dev, which is fine-tuned using a large dataset of genmojis. We use a language model (LLM) to make your prompt more descriptive, which improves the quality of the generated image. We also use background removal and resizing processes similar to Apple's methods."
+      },
+      {
+        "question": "How do I create an genmoji on genmoji online?",
+        "answer": "You create genmojis by typing a few words or a phrase into the \"Describe an genmoji\" box. The website uses this prompt to generate unique genmojis. Use simple, descriptive keywords for the best results, avoid long sentences."
+      },
+      {
+        "question": "What kind of prompts work best?",
+        "answer": "- Simple, descriptive prompts using keywords work best. Avoid long sentences\n- You can specify colors, styles, and actions, such as \"a red cat with a hat\"\n- Try adding the word \"explosion\" to create more dynamic and interesting genmojis"
+      },
+      {
+        "question": "Can I use my own photos to create Genmoji?",
+        "answer": "Yes, you can use photos of yourself or others to create Genmoji by uploading the image to our website. You can also customize the person's clothing, actions and emotions in the prompt.\n\n- The Feature is currently in beta and only available for a limited number of users."
+      },
+      {
+        "question": "Can I use the genmojis I create as stickers?",
+        "answer": "Yes, the genmojis you generate can be used like stickers in messaging apps. In some apps, they may also appear like normal genmojis alongside text."
+      },
+      {
+        "question": "Are Genmoji genmojis free to use?",
+        "answer": "Yes! All genmojis created with Genmoji Online are free to use. You retain full rights to your generated genmojis and can use them for personal or commercial purposes without attribution or copyright concerns."
+      },
+      {
+        "question": "Where can I use my Genmojis?",
+        "answer": "Genmojis are compatible with all major platforms including Discord, Slack, WhatsApp, and social media. You can download them in various formats and use them anywhere you want to express yourself."
+      },
+      {
+        "question": "Why does my Genmoji look different from what I expected?",
+        "answer": "Genmoji generation is creative and experimental, and sometimes you will not get the result you were hoping for. Keep swiping to see other options, or refine the prompt slightly. If using a photo of a person, ensure the photo is well-lit and focused. You can also use the editor to try different versions of the person in the photo."
+      }
+    ]
+  },
+  "sharing": {
+    "defaultText": "Check out this awesome genmoji I made with Genmoji Online!",
+    "hashtags": ["Genmoji", "AIGenmoji", "CustomGenmoji"]
+  },
+  "gallery": {
+    "title": "Genmoji Gallery",
+    "subtitle": "Explore our collection of AI-generated emojis",
+    "loadMore": "Load More",
+    "loading": "Loading...",
+    "noResults": "No emojis found",
+    "search": {
+      "placeholder": {
+        "mobile": "Type to search...",
+        "desktop": "Press Enter to search..."
+      },
+      "label": "Search"
+    }
+  },
+  "footer": {
+    "links": {
+      "privacy": "Privacy Policy",
+      "terms": "Terms of Service"
+    },
+    "copyright": "© 2025 GenmojiOnline.com All rights reserved.",
+    "social": {
+      "twitter": "Follow us on Twitter",
+      "instagram": "Follow us on Instagram",
+      "linkedin": "Follow us on LinkedIn"
+    }
+  },
+  "emoji": {
+    "container": {
+      "imageAlt": "genmoji: {prompt}"
+    },
+    "notFound": {
+      "title": "Emoji Not Found",
+      "description": "The emoji you're looking for doesn't exist or has been removed.",
+      "backToHome": "← Back to Home"
+    },
+    "related": "Related Genmojis",
+    "detail": {
+      "copyLink": "Copy link",
+      "copyPrompt": "Copy prompt",
+      "copyImage": "Copy image",
+      "download": "Download",
+      "copied": "Copied!",
+      "reGenmoji": "Re-Genmoji",
+      "share": {
+        "title": "Share",
+        "twitter": "Share on Twitter",
+        "facebook": "Share on Facebook",
+        "linkedin": "Share on LinkedIn",
+        "instagram": "Share on Instagram",
+        "pinterest": "Share on Pinterest",
+        "imgur": "Share on Imgur",
+        "telegram": "Share on Telegram",
+        "whatsapp": "Share on WhatsApp",
+        "wechat": "Share on WeChat"
+      },
+      "alert": {
+        "instagramShare": "Image downloaded! You can now share it on Instagram:\n1. Open Instagram\n2. Create a new post\n3. Select the downloaded image\n4. Add the prompt as caption",
+        "wechatShare": "Open WeChat and scan the QR code to share",
+        "longPressToSave": "Long press Genmoji to save"
+      },
+      "meta": {
+        "title": "{prompt} | Genmoji Online",
+        "description": "Explore and Download this custom {prompt} genmoji created with Genmoji Online. Create your own personalized genmojis with our AI-powered generator.",
+        "ogTitle": "{prompt} - Custom Genmoji",
+        "ogDescription": "Check out this {prompt} genmoji created with Genmoji Online. Create your own custom genmojis now!",
+        "twitterTitle": "{prompt} Genmoji",
+        "twitterDescription": "Check out this {prompt} genmoji created with Genmoji Online!"
+      }
+    }
+  },
+  "legal": {
+    "privacyPolicy": {
+      "title": "Privacy Policy",
+      "effectiveDate": "Effective Date: January 21, 2025",
+      "introduction": "Genmoji Online (\"we\", \"our\", \"us\") is committed to protecting your privacy. This Privacy Policy explains how we collect, use, and disclose information when you use our service.",
+      "informationWeCollect": {
+        "title": "1. Information We Collect",
+        "description": "We may collect the following types of information:",
+        "items": [
+          "Account information (email, username)",
+          "Usage data (emojis created, prompts used)",
+          "Device information (IP address, browser type)",
+          "Analytics data through Google Analytics"
+        ]
+      },
+      "howWeUse": {
+        "title": "2. How We Use Information",
+        "description": "We use the collected information to:",
+        "items": [
+          "Provide and improve our services",
+          "Analyze usage patterns",
+          "Communicate with users",
+          "Ensure service security"
+        ]
+      },
+      "dataSharing": {
+        "title": "3. Data Sharing",
+        "description": "We do not sell your personal information. We may share information with:",
+        "items": [
+          "Service providers (e.g., Google Analytics)",
+          "Legal authorities when required by law"
+        ]
+      },
+      "dataSecurity": {
+        "title": "4. Data Security",
+        "description": "We implement security measures to protect your information, but no method is 100% secure."
+      },
+      "yourRights": {
+        "title": "5. Your Rights",
+        "description": "You have the right to access, correct, or delete your personal information. Contact us at support@genmojionline.com to exercise these rights."
+      },
+      "changes": {
+        "title": "6. Changes to This Policy",
+        "description": "We may update this policy. Continued use of our service constitutes acceptance of the updated policy."
+      },
+      "contact": {
+        "title": "7. Contact Us",
+        "description": "For questions about this policy, contact us at support@genmojionline.com."
+      }
+    },
+    "termsOfService": {
+      "title": "Terms of Service",
+      "effectiveDate": "Effective Date: January 21, 2025",
+      "acceptance": {
+        "title": "1. Acceptance of Terms",
+        "description": "By using Genmoji Online, you agree to these Terms of Service. If you do not agree, do not use our service."
+      },
+      "serviceDescription": {
+        "title": "2. Service Description",
+        "description": "Genmoji Online provides AI-powered emoji generation services. Users can create custom emojis based on text prompts."
+      },
+      "userResponsibilities": {
+        "title": "3. User Responsibilities",
+        "description": "You agree to:",
+        "items": [
+          "Use the service only for lawful purposes",
+          "Not create harmful or offensive content",
+          "Respect intellectual property rights"
+        ]
+      },
+      "intellectualProperty": {
+        "title": "4. Intellectual Property",
+        "description": "All genmojis generated through our service are released into the public domain. You can freely use, modify, copy, distribute, and perform the work, even for commercial purposes, all without asking permission. No attribution is required.",
+        "usage": {
+          "title": "4.1 Usage Rights",
+          "items": [
+            "You can use the generated genmojis for any purpose",
+            "No attribution to Genmoji Online is required",
+            "You can modify and adapt the genmojis",
+            "Commercial use is permitted",
+            "You can share and redistribute the genmojis"
+          ]
+        },
+        "limitations": {
+          "title": "4.2 Limitations",
+          "description": "While the genmojis themselves are free to use, the Genmoji Online name, logo, and service remain protected by applicable intellectual property laws. The service infrastructure, website design, and underlying technology remain the property of Genmoji Online."
+        }
+      },
+      "liability": {
+        "title": "5. Limitation of Liability",
+        "description": "Genmoji Online is not liable for any indirect, incidental, or consequential damages arising from service use."
+      },
+      "changes": {
+        "title": "6. Changes to Terms",
+        "description": "We may update these terms. Continued use constitutes acceptance of the updated terms."
+      },
+      "governingLaw": {
+        "title": "7. Governing Law",
+        "description": "These terms are governed by the laws of the State of California."
+      },
+      "contact": {
+        "title": "8. Contact Information",
+        "description": "For questions about these terms, contact us at support@genmojionline.com."
+      }
+    }
+  },
+  "generator": {
+    "title": "Start with a few words or a phrase that best describes your idea",
+    "placeholder": "e.g. 'a red cat with a hat'",
+    "generateButton": "Generate genmoji",
+    "generatingButton": "Generating...",
+    "uploadImage": "Upload Image (Optional)",
+    "changeImage": "Change Image",
+    "recentTitle": "Recent Genmojis",
+    "generationStatus": {
+      "starting": "Starting generation..."
+    },
+    "error": {
+      "failed": "Generation failed. Please try again."
+    },
+    "dialogTitle": "Generate New Genmoji",
+    "dialogDescription": "Create a new genmoji based on your description. You can also upload an image for reference."
+  },
+  "cta": {
+    "title": "Create Your Genmoji Today",
+    "description": "Unleash your creativity with Genmoji Online, the ultimate genmoji generator. Start crafting unique genmojis that express your emotions perfectly.",
+    "button": "Start Generating Genmoji"
+  }
+} 

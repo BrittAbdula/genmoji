@@ -1,12 +1,14 @@
 import EmojiContainer from "@/components/emoji-container";
-import { EmojiDetail } from "@/components/emoji-detail";
-import { Emoji } from "@/types/emoji";
-import Link from "next/link";
+import { EmojiDetailContainer } from "@/components/emoji-detail-container";
 import { cn, constructMetadata } from "@/lib/utils";
 import type { Metadata } from "next";
-import { siteConfig } from "@/lib/config";
 import Script from 'next/script';
-import { getEmoji, getRelatedEmojis } from '../utils';
+import { getEmoji } from '@/lib/api';
+import { Link } from '@/i18n/routing';
+import { getTranslations } from 'next-intl/server';
+import { Suspense } from 'react';
+import { RelatedEmojis } from '@/components/related-emojis';
+import { getLocale } from "next-intl/server";
 
 // Add Edge Runtime configuration
 export const runtime = 'edge';
@@ -18,13 +20,17 @@ type Props = {
 export async function generateMetadata(props: Props): Promise<Metadata> {
     try {
         const {slug} = await props.params;
-        const emoji = await getEmoji(slug);
+        const locale = await getLocale();
+        console.log('Generating metadata for:', { slug, locale });
+        const emoji = await getEmoji(slug, locale);
+        const t = await getTranslations('emoji.detail.meta');
+
         return constructMetadata({
-            title: `${emoji.prompt} | Genmoji Online`,
-            description: `Explore and Download this custom ${emoji.prompt} genmoji created with Genmoji Online. Create your own personalized genmojis with our AI-powered generator.`,
+            title: t('title', { prompt: emoji.prompt }),
+            description: t('description', { prompt: emoji.prompt }),
             openGraph: {
-                title: `${emoji.prompt} - Custom Genmoji`,
-                description: `Check out this ${emoji.prompt} genmoji created with Genmoji Online. Create your own custom genmojis now!`,
+                title: t('ogTitle', { prompt: emoji.prompt }),
+                description: t('ogDescription', { prompt: emoji.prompt }),
                 type: 'article',
                 images: [{
                     url: emoji.image_url,
@@ -35,8 +41,8 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
             },
             twitter: {
                 card: 'summary_large_image',
-                title: `${emoji.prompt} Genmoji`,
-                description: `Check out this ${emoji.prompt} genmoji created with Genmoji Online!`,
+                title: t('twitterTitle', { prompt: emoji.prompt }),
+                description: t('twitterDescription', { prompt: emoji.prompt }),
                 images: [emoji.image_url],
             },
             icons: {
@@ -48,9 +54,10 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
                     url: emoji.image_url,
                 },
             },
-            path: `emoji/${emoji.slug}/`,
+            path: locale === 'en' ? `emoji/${emoji.slug}/` : `${locale}/emoji/${emoji.slug}/`,
         });
     } catch (error) {
+        console.error('Error generating metadata:', error);
         return constructMetadata({
             title: `Genmoji Not Found | Genmoji Online`,
             description: 'The requested genmoji could not be found. Create your own custom genmojis with Genmoji Online.',
@@ -62,8 +69,10 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
 export default async function EmojiPage(props: Props) {
     try {
         const {slug} = await props.params;
-        const emoji = await getEmoji(slug);
-        const relatedEmojis = await getRelatedEmojis(slug);
+        const locale = await getLocale();
+        console.log('Rendering page for:', { slug, locale });
+        const emoji = await getEmoji(slug, locale);
+        const t = await getTranslations('emoji');
 
         const jsonLd = {
             '@context': 'https://schema.org',
@@ -100,47 +109,40 @@ export default async function EmojiPage(props: Props) {
                 <Script id="json-ld" type="application/ld+json">
                     {JSON.stringify(jsonLd)}
                 </Script>
-                <div className="container mx-auto px-4">
-                    <div className="max-w-5xl mx-auto">
-                      
-                      <div className="flex flex-col items-center">
-                        <div className="w-full max-w-[520px]">
-                          <EmojiContainer emoji={emoji} size="xl" />
-                        </div>
-                        
-                        <div className="w-full max-w-md">
-                          <EmojiDetail emoji={emoji} />
-                        </div>
-                      </div>
-
-                      <div className="mt-8">
-                        <h2 className="text-xl font-bold mb-6">Related Genmojis</h2>
-                        <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-3">
-                          {relatedEmojis.map((relatedEmoji) => (
-                            <EmojiContainer 
-                              key={relatedEmoji.slug} 
-                              emoji={relatedEmoji}
-                              size="sm"
-                            />
-                          ))}
-                        </div>
-                      </div>
+                <div className="container mx-auto px-4 py-8">
+                    <EmojiDetailContainer emoji={emoji} />
+                    <div className="mt-16">
+                        <h2 className="text-2xl font-bold mb-8 text-center">{t('related')}</h2>
                     </div>
+                    <Suspense fallback={
+                        <div className="mt-16 animate-pulse">
+                            <div className="h-8 w-48 bg-gray-200 rounded mx-auto mb-8"></div>
+                            <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-4">
+                                {[...Array(6)].map((_, i) => (
+                                    <div key={i} className="aspect-square bg-gray-200 rounded"></div>
+                                ))}
+                            </div>
+                        </div>
+                    }>
+                        <RelatedEmojis slug={slug} />
+                    </Suspense>
                 </div>
             </>
         );
     } catch (error) {
+        console.error('Error loading emoji:', error);
+        const t = await getTranslations('emoji.notFound');
         return (
             <div className="container mx-auto py-8">
                 <div className="max-w-4xl mx-auto">
                     <Link href="/" className="text-muted-foreground hover:text-primary">
-                        ← Back to Home
+                        {t('backToHome')}
                     </Link>
                     
                     <div className="mt-8 text-center">
-                        <h1 className="text-2xl font-bold mb-4">Emoji Not Found</h1>
+                        <h1 className="text-2xl font-bold mb-4">{t('title')}</h1>
                         <p className="text-muted-foreground">
-                            The emoji you're looking for doesn't exist or has been removed.
+                            {t('description')}
                         </p>
                     </div>
                 </div>

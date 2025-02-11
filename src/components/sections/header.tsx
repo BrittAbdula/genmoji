@@ -4,16 +4,18 @@ import { Icons } from "@/components/icons";
 import { MobileDrawer } from "@/components/mobile-drawer";
 import { buttonVariants } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/theme-toggle";
-import { siteConfig } from "@/lib/config";
 import { outfit } from '@/lib/fonts';
 import { AuroraText } from "@/components/ui/aurora-text";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
-import Link from "next/link";
-import { usePathname } from 'next/navigation';
+import { Link, usePathname } from '@/i18n/routing';
+import { LanguageSwitcher } from "@/components/language-switcher";
+import { useTranslations } from 'next-intl';
 
 export function Header() {
   const pathname = usePathname();
+  const t = useTranslations('common');
+  const nav = useTranslations('common.navigation');
 
   const isActive = (path: string) => pathname === path;
 
@@ -22,10 +24,10 @@ export function Header() {
       <div className="flex justify-between items-center container mx-auto p-2">
         <Link
           href="/"
-          title="brand-logo"
+          title={t('name')}
           className="relative flex items-center space-x-2"
         >
-          <img src="/logo.png" alt="genmoji logo" width="40" height="40"/>
+          <img src="/logo.png" alt={t('name')} width="40" height="40"/>
           <motion.div
             className="absolute inset-0 -z-10 bg-gradient-to-b from-pink-100/30 via-purple-100/30 to-transparent dark:from-pink-950/30 dark:via-purple-950/30 rounded-full blur-3xl"
             initial={{ opacity: 0 }}
@@ -36,8 +38,8 @@ export function Header() {
             "text-xl sm:text-2xl font-bold tracking-tight",
             outfit.className
           )}>
-            <AuroraText>Genmoji</AuroraText>{" "}
-            <span className="text-muted-foreground">Online</span>
+            <AuroraText>{t('name').split(' ')[0]}</AuroraText>{" "}
+            <span className="text-muted-foreground">{t('name').split(' ')[1]}</span>
           </p>
         </Link>
         
@@ -51,7 +53,7 @@ export function Header() {
                 isActive('/') ? "text-foreground" : "text-muted-foreground"
               )}
             >
-              Home
+              {nav('home')}
             </Link>
             <Link
               href="/gallery"
@@ -60,10 +62,11 @@ export function Header() {
                 isActive('/gallery') ? "text-foreground" : "text-muted-foreground"
               )}
             >
-              Gallery
+              {nav('gallery')}
             </Link>
           </nav>
 
+          <LanguageSwitcher />
           <ThemeToggle className="hidden sm:inline-flex" />
           <div className="hidden lg:block">
             <Link
@@ -73,7 +76,7 @@ export function Header() {
                 "h-8 text-white rounded-full group"
               )}
             >
-              {siteConfig.cta}
+              {t('cta')}
             </Link>
           </div>
           <div className="mt-2 cursor-pointer block lg:hidden">

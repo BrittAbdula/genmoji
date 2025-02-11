@@ -1,6 +1,0 @@
-name = "genmoji-web"
-compatibility_date = "2024-01-21"
-
-# 构建命令
-[build]
-command = "pnpm run pages:build" 

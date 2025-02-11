@@ -5,11 +5,12 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Progress } from "@/components/ui/progress";
 import { useState, useEffect, useRef } from "react";
-import EmojiContainer from "@/components/emoji-container";
+import { genMoji } from "@/lib/api";
 import { Emoji, EmojiResponse } from "@/types/emoji";
 import { ImageIcon, X } from 'lucide-react';
 import confetti from "canvas-confetti";
 import { useRouter } from "next/navigation";
+import { useTranslations, useLocale } from 'next-intl';
 
 interface GenmojiGeneratorDialogProps {
   isOpen: boolean;
@@ -23,6 +24,8 @@ export function GenmojiGeneratorDialog({
   initialPrompt = "",
 }: GenmojiGeneratorDialogProps) {
   const router = useRouter();
+  const t = useTranslations('generator');
+  const locale = useLocale();
   const [prompt, setPrompt] = useState(initialPrompt);
   const [isGenerating, setIsGenerating] = useState(false);
   const [progress, setProgress] = useState(0);
@@ -108,27 +111,15 @@ export function GenmojiGeneratorDialog({
     setProgress(0);
     
     try {
-      const response = await fetch('https://gen.genmojionline.com', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          prompt: prompt.trim(),
-          image: selectedImage,
-        }),
-      });
-
-      const emojiResponse = await response.json() as EmojiResponse;
+      const emojiResponse = await genMoji(prompt.trim(), locale, selectedImage);
       
       if (emojiResponse.success && emojiResponse.emoji) {
         setGeneratedEmoji(emojiResponse.emoji);
         triggerConfetti();
-        // 导航到新生成的emoji页面
         router.push(`/emoji/${emojiResponse.emoji.slug}`);
         onClose();
       } else {
-        throw new Error(emojiResponse.error || 'Failed to generate emoji');
+        throw new Error(emojiResponse.error || t('error.failed'));
       }
     } catch (error) {
       console.error('Error:', error);
@@ -141,9 +132,9 @@ export function GenmojiGeneratorDialog({
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent aria-describedby="dialog-description">
         <DialogHeader>
-          <DialogTitle>Generate New Genmoji</DialogTitle>
+          <DialogTitle>{t('dialogTitle')}</DialogTitle>
           <DialogDescription id="dialog-description">
-            Create a new genmoji based on your description. You can also upload an image for reference.
+            {t('dialogDescription')}
           </DialogDescription>
         </DialogHeader>
 
@@ -156,7 +147,7 @@ export function GenmojiGeneratorDialog({
 
           <div className="flex flex-col gap-4">
             <Input
-              placeholder="Describe your emoji..."
+              placeholder={t('placeholder')}
               value={prompt}
               onChange={(e) => setPrompt(e.target.value)}
               onKeyDown={(e) => {
@@ -181,7 +172,7 @@ export function GenmojiGeneratorDialog({
                 onClick={() => fileInputRef.current?.click()}
               >
                 <ImageIcon className="mr-2 h-4 w-4" />
-                {selectedImage ? 'Change Image' : 'Upload Image (Optional)'}
+                {selectedImage ? t('changeImage') : t('uploadImage')}
               </Button>
               {selectedImage && (
                 <Button
@@ -209,7 +200,7 @@ export function GenmojiGeneratorDialog({
               onClick={generateEmoji}
               disabled={isGenerating || !prompt.trim()}
             >
-              {isGenerating ? "Generating..." : "Generate Genmoji"}
+              {isGenerating ? t('generatingButton') : t('generateButton')}
             </Button>
           </div>
         </div>

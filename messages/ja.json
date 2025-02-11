@@ -1,0 +1,307 @@
+{
+  "common": {
+    "name": "Genmoji Online",
+    "description": "あなたの感情と創造性を完璧に表現するカスタム絵文字を一緒に作りましょう。",
+    "shortDescription": "オンライン絵文字ジェネレーター",
+    "cta": "Genmojiを作成",
+    "navigation": {
+      "home": "ホーム",
+      "gallery": "ギャラリー",
+      "switchLanguage": "言語を切り替える",
+      "menu": "ナビゲーションメニュー"
+    }
+  },
+  "hero": {
+    "title": "あなただけの絵文字を作成",
+    "subtitle": "AIを活用したカスタム絵文字で自己表現"
+  },
+  "seo": {
+    "title": "Genmoji オンライン - AI絵文字ジェネレーター",
+    "titleTemplate": "%s | Genmoji オンライン",
+    "defaultTitle": "Genmoji オンラインで、パーソナライズされた絵文字を作成。テキストや画像からApple風の美しい絵文字に変換できる究極の絵文字ジェネレーター。"
+  },
+  "features": {
+    "title": "機能",
+    "subtitle": "強力な機能",
+    "createGenmojis": {
+      "name": "Apple風の絵文字作成",
+      "description": "高品質なカスタム絵文字を作成"
+    },
+    "onlineMaker": {
+      "name": "オンライン絵文字メーカー",
+      "description": "ブラウザで即座に絵文字を作成 - アプリ不要"
+    },
+    "crossPlatform": {
+      "name": "クロスプラットフォーム",
+      "description": "どのデバイスでも利用可能"
+    }
+  },
+  "featureHighlight": {
+    "title": "機能紹介",
+    "subtitle": "主な特徴",
+    "textToGenmoji": {
+      "title": "テキストからGenmojiを作成",
+      "description": "欲しい絵文字を言葉で説明するだけで、AIが瞬時にApple風の美しい絵文字に変換します。"
+    },
+    "imageToGenmoji": {
+      "title": "画像から絵文字を作成",
+      "description": "写真をアップロードして、Apple絵文字の特徴的なスタイルを保ちながら、パーソナライズされた絵文字に変換できます。"
+    },
+    "compatibility": {
+      "title": "どこでも使える互換性",
+      "description": "生成された絵文字は、iMessageからWhatsApp、DiscordからSlackまで、すべてのプラットフォームでシームレスに動作します。"
+    }
+  },
+  "faq": {
+    "title": "よくある質問",
+    "items": [
+      {
+        "question": "Genmojiとは何ですか？",
+        "answer": "Genmojiは、Apple Intelligenceの新機能で、ユーザーがカスタム絵文字（Genmoji）を作成できる機能です。GenmojiはiOS 18.2以降のiPhone 15 Pro、iPhone 15 Pro Max、およびすべてのiPhone 16モデルで利用可能です。"
+      },
+      {
+        "question": "genmojionline.comとは何ですか？",
+        "answer": "genmojionline.comは、iOSデバイスがなくても、Appleの絵文字に似たカスタム絵文字を作成できるウェブサイトです。テキストベースのプロンプトを使用してユニークなGenmojiを作成し、様々なソーシャルメディアで使用できます。"
+      },
+      {
+        "question": "genmojionline.comとAppleのGenmojiの違いは何ですか？",
+        "answer": "主な違いは、genmojionline.comがAppleデバイスに限定されていないことです。ウェブブラウザがあれば、どのデバイスでも使用できます。AppleのGenmojiはApple Intelligenceの機能で、iOS 18以降のデバイスでのみ利用可能ですが、当サイトはより広いアクセシビリティを提供することを目指しています。"
+      },
+      {
+        "question": "genmojionline.comはどのような技術を使用していますか？",
+        "answer": "当サイトはFlux 1 Devに似た画像生成モデルを使用しており、大規模な絵文字データセットで微調整されています。プロンプトをより説明的にするために言語モデル（LLM）を使用し、生成される画像の品質を向上させています。また、Appleと同様の背景除去とリサイズ処理も行っています。"
+      },
+      {
+        "question": "genmoji onlineで絵文字を作成するにはどうすればよいですか？",
+        "answer": "「絵文字を説明」ボックスに数単語やフレーズを入力して絵文字を作成します。ウェブサイトはこのプロンプトを使用してユニークなGenmojiを作成します。最良の結果を得るには、シンプルで説明的なキーワードを使用し、長い文章は避けてください。"
+      },
+      {
+        "question": "どのようなプロンプトが最も効果的ですか？",
+        "answer": "- キーワードを使用したシンプルで説明的なプロンプトが最も効果的です。長い文章は避けてください\n- 「帽子をかぶった赤い猫」のように、色、スタイル、アクションを指定できます\n- より動的で面白い絵文字を作成するには、「爆発」という単語を追加してみてください"
+      },
+      {
+        "question": "自分の写真でGenmojiを作成できますか？",
+        "answer": "はい、写真を当サイトにアップロードすることで、自分や他の人の写真からGenmojiを作成できます。プロンプトで人物の服装、アクション、感情をカスタマイズすることもできます。\n\n- この機能は現在ベータ版で、限られたユーザーのみが利用可能です。"
+      },
+      {
+        "question": "作成した絵文字をステッカーとして使用できますか？",
+        "answer": "はい、生成した絵文字はメッセージングアプリでステッカーとして使用できます。一部のアプリでは、テキストと一緒に通常の絵文字として表示されることもあります。"
+      },
+      {
+        "question": "Genmoji絵文字は無料で使用できますか？",
+        "answer": "はい！Genmoji Onlineで作成したすべての絵文字は無料で使用できます。生成した絵文字の完全な権利を保持し、帰属表示や著作権の心配なく、個人用または商用目的で使用できます。"
+      },
+      {
+        "question": "Genmojiはどこで使用できますか？",
+        "answer": "GenmojiはDiscord、Slack、WhatsApp、ソーシャルメディアなど、主要なプラットフォームすべてで使用できます。様々なフォーマットでダウンロードし、自己表現したいあらゆる場所で使用できます。"
+      },
+      {
+        "question": "なぜGenmojiが期待通りに見えないのですか？",
+        "answer": "Genmojiの生成はクリエイティブで実験的なため、期待した結果が得られないことがあります。他のオプションを見るためにスワイプするか、プロンプトを少し調整してみてください。人物の写真を使用する場合は、写真が十分に明るく、焦点が合っていることを確認してください。エディターを使用して写真の人物の異なるバージョンを試すこともできます。"
+      }
+    ]
+  },
+  "sharing": {
+    "defaultText": "Genmoji オンラインで作成した素敵な絵文字をチェックしてください！",
+    "hashtags": ["Genmoji", "AI絵文字", "カスタム絵文字"]
+  },
+  "generator": {
+    "title": "アイデアを最もよく表す単語やフレーズから始めましょう",
+    "placeholder": "例：'帽子をかぶった赤い猫'",
+    "generateButton": "Genmojiを作成",
+    "generatingButton": "生成中...",
+    "uploadImage": "画像をアップロード（任意）",
+    "changeImage": "画像を変更",
+    "recentTitle": "最近の絵文字",
+    "generationStatus": {
+      "starting": "生成を開始しています..."
+    },
+    "error": {
+      "failed": "生成に失敗しました。もう一度お試しください。"
+    },
+    "dialogTitle": "新しいGenmojiを作成",
+    "dialogDescription": "説明に基づいて新しい絵文字を作成します。参考画像をアップロードすることもできます。"
+  },
+  "cta": {
+    "title": "今すぐGenmojiを作成",
+    "description": "Genmoji Onlineで創造力を解き放ちましょう。究極の絵文字ジェネレーターで、あなたの感情を完璧に表現するユニークな絵文字を作成できます。",
+    "button": "絵文字の生成を開始"
+  },
+  "footer": {
+    "links": {
+      "privacy": "プライバシーポリシー",
+      "terms": "利用規約"
+    },
+    "copyright": "© 2025 GenmojiOnline.com 無断転載を禁じます。",
+    "social": {
+      "twitter": "Twitterでフォロー",
+      "instagram": "Instagramでフォロー",
+      "linkedin": "LinkedInでフォロー"
+    }
+  },
+  "emoji": {
+    "container": {
+      "imageAlt": "絵文字：{prompt}"
+    },
+    "notFound": {
+      "title": "絵文字が見つかりません",
+      "description": "お探しの絵文字は存在しないか、削除されました。",
+      "backToHome": "← ホームに戻る"
+    },
+    "related": "関連する絵文字",
+    "detail": {
+      "copyLink": "リンクをコピー",
+      "copyPrompt": "プロンプトをコピー",
+      "copyImage": "画像をコピー",
+      "download": "ダウンロード",
+      "copied": "コピーしました！",
+      "reGenmoji": "再生成",
+      "share": {
+        "title": "共有",
+        "twitter": "Twitterで共有",
+        "facebook": "Facebookで共有",
+        "linkedin": "LinkedInで共有",
+        "instagram": "Instagramで共有",
+        "pinterest": "Pinterestで共有",
+        "imgur": "Imgurで共有",
+        "telegram": "Telegramで共有",
+        "whatsapp": "WhatsAppで共有",
+        "wechat": "WeChatで共有",
+        "defaultText": "Genmoji オンラインで作った素敵な絵文字をチェックしてください！ ✨"
+      },
+      "alert": {
+        "instagramShare": "画像をダウンロードしました！Instagramで共有できます：\n1. Instagramを開く\n2. 新しい投稿を作成\n3. ダウンロードした画像を選択\n4. プロンプトをキャプションとして追加",
+        "wechatShare": "WeChatを開いてQRコードをスキャンして共有",
+        "longPressToSave": "絵文字を長押しして保存"
+      },
+      "meta": {
+        "title": "{prompt} | Genmoji オンライン",
+        "description": "Genmoji オンラインで作成されたカスタム{prompt}絵文字を探索・ダウンロード。AIを活用した生成器で独自の絵文字を作成しましょう。",
+        "ogTitle": "{prompt} - カスタム絵文字",
+        "ogDescription": "Genmoji オンラインで作成されたこの{prompt}絵文字をチェック。今すぐ独自の絵文字を作成！",
+        "twitterTitle": "{prompt} 絵文字",
+        "twitterDescription": "Genmoji オンラインで作成されたこの{prompt}絵文字をチェック！"
+      }
+    }
+  },
+  "legal": {
+    "privacyPolicy": {
+      "title": "プライバシーポリシー",
+      "effectiveDate": "発効日：2025年1月21日",
+      "introduction": "Genmoji オンライン（「当社」、「私たち」）は、お客様のプライバシーを保護することを約束します。このプライバシーポリシーは、お客様が当社のサービスを利用する際に、当社がどのように情報を収集、使用、開示するかを説明します。",
+      "informationWeCollect": {
+        "title": "1. 収集する情報",
+        "description": "当社は以下の種類の情報を収集する場合があります：",
+        "items": [
+          "アカウント情報（メールアドレス、ユーザー名）",
+          "利用データ（作成された絵文字、使用されたプロンプト）",
+          "デバイス情報（IPアドレス、ブラウザの種類）",
+          "Google Analyticsを通じて収集される分析データ"
+        ]
+      },
+      "howWeUse": {
+        "title": "2. 情報の使用方法",
+        "description": "収集した情報は以下の目的で使用されます：",
+        "items": [
+          "サービスの提供と改善",
+          "利用パターンの分析",
+          "ユーザーとのコミュニケーション",
+          "サービスのセキュリティ確保"
+        ]
+      },
+      "dataSharing": {
+        "title": "3. データの共有",
+        "description": "当社はお客様の個人情報を販売することはありません。以下の場合に情報を共有する場合があります：",
+        "items": [
+          "サービスプロバイダー（Google Analyticsなど）",
+          "法的要件に基づく場合の法執行機関"
+        ]
+      },
+      "dataSecurity": {
+        "title": "4. データセキュリティ",
+        "description": "当社はお客様の情報を保護するためのセキュリティ対策を実施していますが、100%安全な方法は存在しません。"
+      },
+      "yourRights": {
+        "title": "5. お客様の権利",
+        "description": "お客様は個人情報へのアクセス、訂正、削除を要求する権利があります。これらの権利を行使するには、support@genmojionline.comまでご連絡ください。"
+      },
+      "changes": {
+        "title": "6. ポリシーの変更",
+        "description": "当社はこのポリシーを更新する場合があります。サービスの継続利用は、更新されたポリシーへの同意を意味します。"
+      },
+      "contact": {
+        "title": "7. お問い合わせ",
+        "description": "このポリシーに関するご質問は、support@genmojionline.comまでお問い合わせください。"
+      }
+    },
+    "termsOfService": {
+      "title": "利用規約",
+      "effectiveDate": "発効日：2025年1月21日",
+      "acceptance": {
+        "title": "1. 規約の同意",
+        "description": "Genmoji オンラインを利用することで、これらの利用規約に同意したことになります。同意されない場合は、サービスの利用をお控えください。"
+      },
+      "serviceDescription": {
+        "title": "2. サービスの説明",
+        "description": "Genmoji オンラインは、AIを活用した絵文字生成サービスを提供します。ユーザーはテキストプロンプトに基づいてカスタム絵文字を作成できます。"
+      },
+      "userResponsibilities": {
+        "title": "3. ユーザーの責任",
+        "description": "ユーザーは以下に同意します：",
+        "items": [
+          "サービスを合法的な目的にのみ使用すること",
+          "有害または攻撃的なコンテンツを作成しないこと",
+          "知的財産権を尊重すること"
+        ]
+      },
+      "intellectualProperty": {
+        "title": "4. 知的財産権",
+        "description": "当社のサービスを通じて生成されたすべての絵文字はパブリックドメインとして公開されます。許可を求めることなく、商業目的を含むあらゆる目的で、作品を自由に使用、修正、コピー、配布、実演することができます。帰属表示は必要ありません。",
+        "usage": {
+          "title": "4.1 使用権",
+          "items": [
+            "生成された絵文字をあらゆる目的で使用可能",
+            "Genmoji オンラインへの帰属表示は不要",
+            "絵文字の修正・改変が可能",
+            "商業利用が許可されています",
+            "絵文字の共有・再配布が可能"
+          ]
+        },
+        "limitations": {
+          "title": "4.2 制限事項",
+          "description": "絵文字自体は自由に使用できますが、Genmoji オンラインの名称、ロゴ、サービスは適用される知的財産法により保護されています。サービスのインフラストラクチャ、ウェブサイトデザイン、基盤技術はGenmoji オンラインの所有物です。"
+        }
+      },
+      "liability": {
+        "title": "5. 責任の制限",
+        "description": "Genmoji オンラインは、サービスの使用に起因する間接的、偶発的、または結果的な損害について責任を負いません。"
+      },
+      "changes": {
+        "title": "6. 規約の変更",
+        "description": "当社はこれらの規約を更新する場合があります。継続的な利用は更新された規約への同意を意味します。"
+      },
+      "governingLaw": {
+        "title": "7. 準拠法",
+        "description": "これらの規約はカリフォルニア州法に準拠します。"
+      },
+      "contact": {
+        "title": "8. お問い合わせ情報",
+        "description": "これらの規約に関するご質問は、support@genmojionline.comまでお問い合わせください。"
+      }
+    }
+  },
+  "gallery": {
+    "title": "絵文字ギャラリー",
+    "subtitle": "AIが生成した絵文字コレクションを探索",
+    "loadMore": "もっと見る",
+    "loading": "読み込み中...",
+    "noResults": "絵文字が見つかりません",
+    "search": {
+      "placeholder": {
+        "mobile": "検索キーワードを入力...",
+        "desktop": "Enterキーで検索..."
+      },
+      "label": "検索"
+    }
+  }
+} 

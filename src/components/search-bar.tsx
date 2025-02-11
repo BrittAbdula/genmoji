@@ -4,6 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Search } from "lucide-react";
 import { useCallback, useState, useEffect, useRef } from "react";
 import { useDebounce } from "@/lib/hooks/use-debounce";
+import { useTranslations } from 'next-intl';
 
 interface SearchBarProps {
   onSearch: (query: string) => void;
@@ -11,6 +12,7 @@ interface SearchBarProps {
 }
 
 export function SearchBar({ onSearch, loading }: SearchBarProps) {
+  const t = useTranslations('gallery.search');
   const [value, setValue] = useState("");
   const [isComposing, setIsComposing] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
@@ -86,8 +88,9 @@ export function SearchBar({ onSearch, loading }: SearchBarProps) {
         onCompositionEnd={handleCompositionEnd}
         onKeyDown={handleKeyDown}
         className="pl-9 h-10"
-        placeholder={isMobile ? "Type to search..." : "Press Enter to search..."}
+        placeholder={t(`placeholder.${isMobile ? 'mobile' : 'desktop'}`)}
         disabled={loading}
+        aria-label={t('label')}
       />
     </div>
   );

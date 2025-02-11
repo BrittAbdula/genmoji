@@ -13,8 +13,12 @@ import { Emoji, EmojiResponse } from "@/types/emoji";
 import { outfit } from '@/lib/fonts';
 import { cn } from '@/lib/utils';
 import { ImageIcon, X } from 'lucide-react';
+import { useTranslations, useLocale } from 'next-intl';
+import { getEmojis, genMoji } from '@/lib/api';
 
 export function GenmojiGenerator() {
+  const t = useTranslations('generator');
+  const locale = useLocale();
   const [prompt, setPrompt] = useState("");
   const [isGenerating, setIsGenerating] = useState(false);
   const [generationStatus, setGenerationStatus] = useState<string>("");
@@ -50,11 +54,8 @@ export function GenmojiGenerator() {
   // 获取最近生成的emoji
   const fetchRecentEmojis = async () => {
     try {
-      const response = await fetch('https://gen.genmojionline.com?limit=36');
-      const emojiResponse = await response.json() as EmojiResponse;
-      if (emojiResponse.success && emojiResponse.emojis) {
-        setRecentEmojis(emojiResponse.emojis);
-      }
+      const emojis = await getEmojis(0, 36, locale);
+      setRecentEmojis(emojis);
     } catch (error) {
       console.error('Error fetching recent emojis:', error);
     }
@@ -126,22 +127,11 @@ export function GenmojiGenerator() {
     if (!prompt.trim()) return;
     
     setIsGenerating(true);
-    setGenerationStatus("Starting generation...");
+    setGenerationStatus(t('generationStatus.starting'));
     setProgress(0);
     
     try {
-      const response = await fetch('https://gen.genmojionline.com', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          prompt: prompt.trim(),
-          image: selectedImage,
-        }),
-      });
-
-      const emojiResponse = await response.json() as EmojiResponse;
+      const emojiResponse = await genMoji(prompt.trim(),locale, selectedImage)
       
       if (emojiResponse.success && emojiResponse.emoji) {
         setGeneratedEmoji(emojiResponse.emoji);
@@ -153,11 +143,11 @@ export function GenmojiGenerator() {
           fileInputRef.current.value = '';
         }
       } else {
-        throw new Error(emojiResponse.error || 'Failed to generate emoji');
+        throw new Error(emojiResponse.error || t('error.failed'));
       }
     } catch (error) {
       console.error('Error:', error);
-      setGenerationStatus("Generation failed. Please try again.");
+      setGenerationStatus(t('error.failed'));
     } finally {
       setIsGenerating(false);
     }
@@ -196,7 +186,7 @@ export function GenmojiGenerator() {
             <div className="relative w-full aspect-square flex flex-col items-center justify-center border-2 border-dashed border-primary/20 rounded-2xl">
               <div className="w-12 h-12 rounded-full bg-primary/10 animate-pulse" />
               <AuroraText as="p" className="mt-4 text-lg font-medium max-w-[280px] p-4">
-                Start with a few words or a phrase that best describes your idea
+                {t('title')}
               </AuroraText>
             </div>
           )}
@@ -223,7 +213,7 @@ export function GenmojiGenerator() {
           <div className="flex flex-col gap-4">
             <div className="flex flex-col sm:flex-row gap-4">
               <Input
-                placeholder="e.g. 'a red cat with a hat'"
+                placeholder={t('placeholder')}
                 value={prompt}
                 onChange={(e) => setPrompt(e.target.value)}
                 className="flex-1 text-base"
@@ -239,7 +229,7 @@ export function GenmojiGenerator() {
                 disabled={isGenerating || !prompt.trim()}
                 className="sm:w-auto w-full"
               >
-                {isGenerating ? "Generating..." : "Generate genmoji"}
+                {isGenerating ? t('generatingButton') : t('generateButton')}
               </Button>
             </div>
 
@@ -258,7 +248,7 @@ export function GenmojiGenerator() {
                 onClick={() => fileInputRef.current?.click()}
               >
                 <ImageIcon className="w-4 h-4 mr-2" />
-                {selectedImage ? 'Change Image' : 'Upload Image (Optional)'}
+                {selectedImage ? t('changeImage') : t('uploadImage')}
               </Button>
               {selectedImage && (
                 <Button
@@ -293,7 +283,7 @@ export function GenmojiGenerator() {
         >
           <h2 className={cn("col-span-full text-center mb-6", outfit.className)}>
             <AuroraText as="span" className="text-2xl font-semibold">
-              Recent Genmojis
+              {t('recentTitle')}
             </AuroraText>
           </h2>
           {recentEmojis.map((emoji) => (
