@@ -3,6 +3,10 @@ import { constructMetadata } from "@/lib/utils";
 import { siteConfig } from "@/lib/config";
 import { GalleryContent } from "@/components/gallery-content";
 import { getLocale } from 'next-intl/server';
+import { getTranslations } from 'next-intl/server';
+
+// Add Edge Runtime configuration
+export const runtime = 'edge';
 
 export async function generateMetadata() {
   const locale = await getLocale();

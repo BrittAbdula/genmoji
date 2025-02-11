@@ -1,6 +1,8 @@
 import { getTranslations } from 'next-intl/server';
 import { getLocale } from 'next-intl/server';
 
+export const runtime = 'edge';
+
 export async function generateMetadata() {
   const t = await getTranslations('legal.privacyPolicy');
   const locale = await getLocale();
