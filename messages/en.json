@@ -140,7 +140,7 @@
       "description": "The emoji you're looking for doesn't exist or has been removed.",
       "backToHome": "← Back to Home"
     },
-    "related": "Related Genmojis",
+    "similar": "Similar Genmojis",
     "detail": {
       "copyLink": "Copy link",
       "copyPrompt": "Copy prompt",

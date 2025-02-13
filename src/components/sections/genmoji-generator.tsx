@@ -160,7 +160,7 @@ export function GenmojiGenerator() {
 
   return (
     <section id="genmoji-generator" className="min-h-[50vh] w-full overflow-hidden">
-      <div className="mx-auto max-w-5xl text-center relative px-4">
+      <div className="mx-auto max-w-5xl text-center relative ">
 
         {/* Generated Emoji with Loading State */}
         <motion.div 
@@ -274,18 +274,18 @@ export function GenmojiGenerator() {
           </div>
         </motion.div>
 
-        {/* Recent Emojis Grid */}
-        <motion.div
-          className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-3 mt-8"
-          initial={{ opacity: 0, y: 40 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.6 }}
-        >
-          <h2 className={cn("col-span-full text-center mb-6", outfit.className)}>
+        <h2 className={cn("col-span-full text-left mb-6 ml-4 text-2xl", outfit.className)}>
             <AuroraText as="span" className="text-2xl font-semibold">
               {t('recentTitle')}
             </AuroraText>
           </h2>
+        {/* Recent Emojis Grid */}
+        {/* <motion.div
+            className="grid w-full auto-rows-max grid-cols-4 place-content-stretch justify-items-stretch gap-4 sm:grid-cols-5 md:grid-cols-6 lg:grid-cols-8"
+          initial={{ opacity: 0, y: 40 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.6 }}
+        >
           {recentEmojis.map((emoji) => (
             <EmojiContainer 
               key={`recent-${emoji.slug}`} 
@@ -293,7 +293,7 @@ export function GenmojiGenerator() {
               size="sm"
             />
           ))}
-        </motion.div>
+        </motion.div> */}
       </div>
     </section>
   );

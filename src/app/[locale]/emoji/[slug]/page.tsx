@@ -110,16 +110,13 @@ export default async function EmojiPage(props: Props) {
                 <div className="container mx-auto px-4 py-8">
                     <EmojiDetailContainer emoji={emoji} />
                     <div className="mt-16">
-                        <h2 className="text-2xl font-bold mb-8 text-center">{t('related')}</h2>
+                        <h2 className="text-2xl font-bold mb-8 text-left">{t('similar')}</h2>
                     </div>
                     <Suspense fallback={
-                        <div className="mt-16 animate-pulse">
-                            <div className="h-8 w-48 bg-gray-200 rounded mx-auto mb-8"></div>
-                            <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-4">
-                                {[...Array(6)].map((_, i) => (
-                                    <div key={i} className="aspect-square bg-gray-200 rounded"></div>
-                                ))}
-                            </div>
+                        <div className="grid w-full auto-rows-max grid-cols-4 place-content-stretch justify-items-stretch gap-4 sm:grid-cols-5 md:grid-cols-6 lg:grid-cols-8">
+                            {[...Array(8)].map((_, i) => (
+                                <div key={i} className="aspect-square rounded-lg bg-muted animate-pulse" />
+                            ))}
                         </div>
                     }>
                         <RelatedEmojis slug={slug} />

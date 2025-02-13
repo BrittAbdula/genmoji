@@ -4,6 +4,9 @@ import { siteConfig } from "@/lib/config";
 import { GalleryContent } from "@/components/gallery-content";
 import { getLocale } from 'next-intl/server';
 import { getTranslations } from 'next-intl/server';
+import { cn } from '@/lib/utils';
+import { outfit } from '@/lib/fonts';
+import { AuroraText } from "@/components/ui/aurora-text";
 
 // Add Edge Runtime configuration
 export const runtime = 'edge';
@@ -42,6 +45,31 @@ export async function generateMetadata() {
   });
 }
 
-export default function GalleryPage() {
-  return <GalleryContent />;
+export default async function GalleryPage() {
+  const t = await getTranslations('gallery');
+  
+  return (
+    <main className="min-h-screen bg-gradient-to-b from-background to-muted/20">
+      <div className="relative">
+        {/* Header Background */}
+        <div className="absolute inset-0 h-[30vh] " />
+        
+        {/* Content Container */}
+        <div className="container relative mx-auto pt-[calc(2rem+var(--desktop-header-height))] pb-16">
+          {/* Header Section */}
+          <div className="relative space-y-4 text-center my-6">
+            <h1 className={cn("text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight", outfit.className)}>
+              <AuroraText>{t('title')}</AuroraText>
+            </h1>
+            <p className="text-muted-foreground text-lg md:text-xl max-w-3xl mx-auto">
+              {t('subtitle')}
+            </p>
+          </div>
+
+          {/* Gallery Content */}
+            <GalleryContent />
+        </div>
+      </div>
+    </main>
+  );
 } 

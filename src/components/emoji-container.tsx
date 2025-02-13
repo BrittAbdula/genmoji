@@ -22,13 +22,11 @@ const EmojiContainer = ({ emoji, size = 'md' }: EmojiContainerProps) => {
       href={`/emoji/${emoji.slug}`}
       className="block group"
     >
-      <div className="aspect-square rounded-2xl p-3 flex items-center justify-center overflow-hidden hover:bg-muted/50 transition-colors">
-        <img 
+      <img 
           src={emoji.image_url} 
           alt={t('imageAlt', { prompt: emoji.prompt })}
-          className={`object-contain transition-transform group-hover:scale-105 ${sizeClasses[size]}`}
+          className={`aspect-square w-full p-1.5 transition-opacity duration-200 ease-out`}
         />
-      </div>
       {/* <p className="mt-2 text-sm text-center text-muted-foreground truncate">
         {emoji.prompt}
       </p> */}

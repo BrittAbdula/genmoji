@@ -63,7 +63,7 @@ export async function getEmojis(offset: number, limit: number, locale: string, q
 
 // 3. 获取相关表情
 export async function getRelatedEmojis(slug: string, locale: string): Promise<Emoji[]> {
-  const url = `${WORKER_URL}/emoji/related/${slug}?locale=${locale}&limit=12`;
+  const url = `${WORKER_URL}/emoji/related/${slug}?locale=${locale}&limit=16`;
   
   const res = await fetch(url, {
     headers: {

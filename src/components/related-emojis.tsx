@@ -7,7 +7,7 @@ export async function RelatedEmojis({ slug }: { slug: string }) {
     const relatedEmojis = await getRelatedEmojis(slug, locale);
 
     return (
-            <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-4">
+        <div className="grid w-full auto-rows-max grid-cols-4 place-content-stretch justify-items-stretch gap-4 sm:grid-cols-5 md:grid-cols-6 lg:grid-cols-8">
                 {relatedEmojis.map((relatedEmoji) => (
                     <EmojiContainer 
                         key={relatedEmoji.slug} 

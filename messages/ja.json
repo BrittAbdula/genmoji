@@ -148,6 +148,7 @@
       "description": "お探しの絵文字は存在しないか、削除されました。",
       "backToHome": "← ホームに戻る"
     },
+    "similar": "類似の絵文字",
     "related": "関連する絵文字",
     "detail": {
       "copyLink": "リンクをコピー",

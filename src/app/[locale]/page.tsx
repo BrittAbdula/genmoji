@@ -14,6 +14,7 @@ import { siteConfig } from "@/lib/config";
 import { routing } from '@/i18n/routing';
 import { constructMetadata } from "@/lib/utils";
 import { getLocale } from 'next-intl/server';
+import { GalleryContent } from '@/components/gallery-content';
 
 // 为静态生成提供所有支持的语言
 export function generateStaticParams() {
@@ -70,9 +71,12 @@ export default async function Home(props: Props) {
   setRequestLocale(locale);
 
   return (
-    <main className="relative">
+    <main className="items-center container mx-auto p-2">
       <Hero />
       <GenmojiGenerator />
+      <div className="mx-auto max-w-5xl text-center  px-4">
+      <GalleryContent />
+      </div>
       {/* <FeatureScroll /> */}
       <FeatureHighlight />
       {/* <BentoGrid />

@@ -162,7 +162,7 @@
       "description": "L'emoji que vous recherchez n'existe pas ou a été supprimé.",
       "backToHome": "← Retour à l'Accueil"
     },
-    "related": "Genmojis Similaires",
+    "similar": "Genmojis Similaires",
     "detail": {
       "copyLink": "Copier le lien",
       "copyPrompt": "Copier le prompt",
