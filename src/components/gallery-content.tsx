@@ -24,6 +24,7 @@ export function GalleryContent() {
   const loadingRef = useRef(false);
   const refreshIntervalRef = useRef<NodeJS.Timeout>();
   const latestTimestampRef = useRef<string>();
+  const refreshLimit = 6; // 每次刷新获取的最新表情数量
   
   // 使用 ref 来存储缓存，避免重渲染
   const cache = useRef<Map<string, Emoji[]>>(new Map());
@@ -45,17 +46,21 @@ export function GalleryContent() {
         ? `after:${latestTimestampRef.current}`
         : "";
         
-      const newEmojis = await getEmojis(0, limit, locale, query);
+      const newEmojis = await getEmojis(0, refreshLimit, locale, query);
       
       if (newEmojis && newEmojis.length > 0) {
         // 更新最新时间戳
         latestTimestampRef.current = newEmojis[0].created_at;
         
-        // 将新的 emoji 添加到列表前端
+        // 将新的 emoji 添加到列表前端，保持原有列表不变
         setEmojis(prev => {
-          const newList = [...newEmojis, ...prev];
-          // 去重，以防有重复的 emoji
-          return Array.from(new Map(newList.map(item => [item.slug, item])).values());
+          // 只添加不存在的新表情
+          const existingSlugs = new Set(prev.map(emoji => emoji.slug));
+          const uniqueNewEmojis = newEmojis.filter(emoji => !existingSlugs.has(emoji.slug));
+          
+          if (uniqueNewEmojis.length === 0) return prev; // 如果没有新的表情，保持不变
+          
+          return [...uniqueNewEmojis, ...prev];
         });
       }
     } catch (error) {
@@ -63,18 +68,29 @@ export function GalleryContent() {
     }
   };
 
+  // 启动自动刷新
+  const startAutoRefresh = useCallback(() => {
+    if (refreshIntervalRef.current) {
+      clearInterval(refreshIntervalRef.current);
+    }
+    refreshIntervalRef.current = setInterval(checkNewEmojis, 15000);
+  }, []);
+
+  // 停止自动刷新
+  const stopAutoRefresh = useCallback(() => {
+    if (refreshIntervalRef.current) {
+      clearInterval(refreshIntervalRef.current);
+      refreshIntervalRef.current = undefined;
+    }
+  }, []);
+
   // 初始化自动刷新
   useEffect(() => {
-    // 启动定时器
-    refreshIntervalRef.current = setInterval(checkNewEmojis, 10000);
-
-    // 清理函数
-    return () => {
-      if (refreshIntervalRef.current) {
-        clearInterval(refreshIntervalRef.current);
-      }
-    };
-  }, [locale]);
+    if (!searchQuery) {
+      startAutoRefresh();
+    }
+    return () => stopAutoRefresh();
+  }, [locale, searchQuery]);
 
   const fetchEmojis = async (pageNum: number, query: string = "", retryCount = 3) => {
     if (loadingRef.current) return;
@@ -159,6 +175,12 @@ export function GalleryContent() {
       setLoading(true);
       // 重置最新时间戳
       latestTimestampRef.current = undefined;
+      // 如果搜索为空，重新启动自动刷新
+      if (!query) {
+        startAutoRefresh();
+      } else {
+        stopAutoRefresh();
+      }
       fetchEmojis(1, query);
     }, 300),
     [locale]
@@ -195,8 +217,8 @@ export function GalleryContent() {
   const renderContent = () => {
     if (loading && page === 1) {
       return (
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
-          {Array.from({ length: 12 }).map((_, i) => (
+        <div className="grid w-full auto-rows-max grid-cols-4 place-content-stretch justify-items-stretch gap-4 sm:grid-cols-5 md:grid-cols-6 lg:grid-cols-8">
+          {Array.from({ length: 16 }).map((_, i) => (
             <div key={`loading-skeleton-${i}`} className="aspect-square rounded-lg bg-muted animate-pulse" />
           ))}
         </div>
