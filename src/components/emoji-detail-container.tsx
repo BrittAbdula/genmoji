@@ -107,6 +107,23 @@ export function EmojiDetailContainer({ emoji }: EmojiDetailContainerProps) {
     }
   };
 
+  // 处理下载
+  const handleDownload = async () => {
+    try {
+      const response = await fetch(emoji.image_url);
+      const blob = await response.blob();
+      
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = `${emoji.slug}.png`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    } catch (err) {
+      console.error('Failed to download:', err);
+    }
+  };
+
   // 构建社交媒体分享链接
   const getSocialShareUrl = (platform: 'twitter' | 'linkedin' | 'facebook' | 'pinterest' | 'telegram' | 'whatsapp' | 'wechat' | 'imgur') => {
     const url = encodeURIComponent(getShareUrl());
@@ -285,7 +302,7 @@ export function EmojiDetailContainer({ emoji }: EmojiDetailContainerProps) {
                         <CopyIcon className="mr-2 h-4 w-4" />
                         {t('copyLink')}
                       </DropdownMenuItem>
-                      <DropdownMenuItem onClick={() => window.open(emoji.image_url, '_blank')}>
+                      <DropdownMenuItem onClick={handleDownload}>
                         <DownloadIcon className="mr-2 h-4 w-4" />
                         {t('download')}
                       </DropdownMenuItem>
