@@ -35,7 +35,7 @@ import {
 import { useTranslations } from 'next-intl';
 import { GenmojiGeneratorDialog } from "./genmoji-generator-dialog";
 import { TimeAgo } from './time-ago';
-
+import { useLocale } from 'next-intl';
 interface EmojiDetailContainerProps {
   emoji: Emoji;
 }
@@ -49,7 +49,7 @@ export function EmojiDetailContainer({ emoji }: EmojiDetailContainerProps) {
   const [showPromptCopied, setShowPromptCopied] = useState(false);
   const [showImageCopied, setShowImageCopied] = useState(false);
   const [isGeneratorOpen, setIsGeneratorOpen] = useState(false);
-
+  const locale = useLocale();
   // 检查用户是否已经点赞过
   useEffect(() => {
     const checkLikeStatus = () => {
@@ -200,7 +200,7 @@ export function EmojiDetailContainer({ emoji }: EmojiDetailContainerProps) {
 
     try {
       setIsLiking(true);
-      const data = await likeEmoji(emoji.slug);
+      const data = await likeEmoji(emoji.slug, locale);
 
       if (data.success) {
         const likedEmojis = JSON.parse(localStorage.getItem('likedEmojis') || '[]');
