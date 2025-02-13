@@ -8,10 +8,7 @@ export async function getEmoji(slug: string, locale: string): Promise<Emoji> {
     
     try {
         const res = await fetch(url, {
-            headers: {
-                'Origin': 'https://genmojionline.com'
-            },
-            next: { revalidate: 60 }
+            next: { revalidate: 3600 }
         });
         
         
@@ -43,9 +40,6 @@ export async function getEmojis(offset: number, limit: number, locale: string, q
     const res = await fetch( q ? 
         `${baseURL}?offset=${offset}&limit=${limit}&q=${q}&locale=${locale}` : 
         `${baseURL}?offset=${offset}&limit=${limit}&locale=${locale}`, {
-        headers: {
-            'Origin': 'https://genmojionline.com'
-        },
         next: { revalidate: 60 }
     });
 
@@ -59,9 +53,6 @@ export async function getEmojis(offset: number, limit: number, locale: string, q
 
 export async function getRelatedEmojis(slug: string, locale: string): Promise<Emoji[]> {
     const res = await fetch(`${baseURL}?slug=${slug}&related=12&locale=${locale}`, {
-        headers: {
-            'Origin': 'https://genmojionline.com'
-        },
         next: { revalidate: 60 }
     });
     

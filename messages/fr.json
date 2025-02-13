@@ -182,9 +182,6 @@
         "whatsapp": "Partager sur WhatsApp",
         "wechat": "Partager sur WeChat"
       },
-      "sharing": {
-        "defaultText": "Découvrez ce genmoji incroyable que j'ai créé avec Genmoji Online ! ✨"
-      },
       "alert": {
         "instagramShare": "Image téléchargée ! Vous pouvez maintenant la partager sur Instagram :\n1. Ouvrez Instagram\n2. Créez un nouveau post\n3. Sélectionnez l'image téléchargée\n4. Ajoutez le prompt comme légende",
         "wechatShare": "Ouvrez WeChat et scannez le QR code pour partager",
@@ -197,8 +194,22 @@
         "ogDescription": "Découvrez ce {prompt} genmoji créé avec Genmoji Online. Créez vos propres genmojis personnalisés maintenant !",
         "twitterTitle": "{prompt} Genmoji",
         "twitterDescription": "Découvrez ce {prompt} genmoji créé avec Genmoji Online !"
+      },
+      "time": {
+        "justNow": "à l'instant",
+        "minutesAgo": "il y a {minutes} minutes",
+        "hoursAgo": "il y a {hours} heures",
+        "daysAgo": "il y a {days} jours",
+        "monthsAgo": "il y a {months} mois",
+        "yearsAgo": "il y a {years} ans"
       }
     }
+  },
+  "languagePrompt": {
+    "title": "Préférence de Langue",
+    "description": "Nous avons remarqué que la langue de votre navigateur diffère de la langue actuelle de la page. Souhaitez-vous passer à votre langue préférée ?",
+    "stayIn": "Rester en {language}",
+    "switchTo": "Passer à {language}"
   },
   "legal": {
     "privacyPolicy": {
