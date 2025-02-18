@@ -101,10 +101,6 @@
       }
     ]
   },
-  "sharing": {
-    "defaultText": "Genmoji オンラインで作成した素敵な絵文字をチェックしてください！",
-    "hashtags": ["Genmoji", "AI絵文字", "カスタム絵文字"]
-  },
   "generator": {
     "title": "アイデアを最もよく表す単語やフレーズから始めましょう",
     "placeholder": "例：'帽子をかぶった赤い猫'",
@@ -169,6 +165,10 @@
         "whatsapp": "WhatsAppで共有",
         "wechat": "WeChatで共有",
         "defaultText": "Genmoji オンラインで作った素敵な絵文字をチェックしてください！ ✨"
+      },
+      "sharing": {
+        "defaultText": "Genmoji オンラインで作成した素敵な絵文字をチェックしてください！",
+        "hashtags": ["Genmoji", "AI絵文字", "カスタム絵文字"]
       },
       "alert": {
         "instagramShare": "画像をダウンロードしました！Instagramで共有できます：\n1. Instagramを開く\n2. 新しい投稿を作成\n3. ダウンロードした画像を選択\n4. プロンプトをキャプションとして追加",

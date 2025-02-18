@@ -101,10 +101,6 @@
       }
     ]
   },
-  "sharing": {
-    "defaultText": "看看我用 Genmoji Online 制作的这个超棒的 genmoji！",
-    "hashtags": ["Genmoji", "AIGenmoji", "自定义Genmoji"]
-  },
   "gallery": {
     "title": "Genmoji 画廊",
     "subtitle": "探索我们的 AI 生成表情符号集",
@@ -140,7 +136,7 @@
       "description": "您要查找的表情符号不存在或已被删除。",
       "backToHome": "← 返回首页"
     },
-    "related": "相关表情符号",
+    "similar": "相关表情符号",
     "detail": {
       "copyLink": "复制链接",
       "copyPrompt": "复制提示词",
@@ -159,6 +155,10 @@
         "telegram": "分享到 Telegram",
         "whatsapp": "分享到 WhatsApp",
         "wechat": "分享到微信"
+      },
+      "sharing": {
+        "defaultText": "看看我用 Genmoji Online 制作的这个超棒的 genmoji！",
+        "hashtags": ["Genmoji", "AIGenmoji", "自定义Genmoji"]
       },
       "alert": {
         "instagramShare": "图片已下载！您现在可以在 Instagram 上分享：\n1. 打开 Instagram\n2. 创建新帖子\n3. 选择已下载的图片\n4. 添加提示词作为说明",

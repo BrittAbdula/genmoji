@@ -103,11 +103,10 @@ export default async function EmojiPage(props: Props) {
         };
 
         return (
-            <>
+            <div className="container mx-auto py-4">
                 <Script id="json-ld" type="application/ld+json">
                     {JSON.stringify(jsonLd)}
                 </Script>
-                <div className="container mx-auto px-4 py-8">
                     <EmojiDetailContainer emoji={emoji} />
                     <div className="mt-16">
                         <h2 className="text-2xl font-bold mb-8 text-left">{t('similar')}</h2>
@@ -121,8 +120,7 @@ export default async function EmojiPage(props: Props) {
                     }>
                         <RelatedEmojis slug={slug} />
                     </Suspense>
-                </div>
-            </>
+            </div>
         );
     } catch (error) {
         console.error('Error loading emoji:', error);

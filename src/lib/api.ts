@@ -1,6 +1,7 @@
 import { Emoji, EmojiResponse } from "@/types/emoji";
 
 const WORKER_URL = 'https://genmoji-api.genmojionline.com';
+// const WORKER_URL = 'https://gen-test.auroroa.workers.dev';
 
 // 1. 获取单个表情
 export async function getEmoji(slug: string, locale: string): Promise<Emoji> {
@@ -9,7 +10,7 @@ export async function getEmoji(slug: string, locale: string): Promise<Emoji> {
   try {
     const res = await fetch(url, {
       headers: {
-        'Origin': 'http://localhost:3000'
+        'Origin': 'https://genmojionline.com'
       },
       next: { revalidate: 3600 }
     });

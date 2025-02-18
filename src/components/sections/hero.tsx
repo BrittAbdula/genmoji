@@ -26,13 +26,6 @@ export function Hero() {
               {t('description')}
             </p>
           </motion.div>
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-            className="mt-10 flex items-center justify-center gap-x-6"
-          >
-          </motion.div>
         </div>
       </div>
     </section>

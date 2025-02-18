@@ -18,15 +18,22 @@ import { cn } from "@/lib/utils";
 import { Link, usePathname } from '@/i18n/routing';
 import { IoMenuSharp } from "react-icons/io5";
 import { useTranslations } from 'next-intl';
+import { LanguageSwitcher } from "@/components/language-switcher";
+import React from 'react';
 
 export function MobileDrawer() {
   const pathname = usePathname();
   const t = useTranslations('common');
   const nav = useTranslations('common.navigation');
   const isActive = (path: string) => pathname === path;
+  const [open, setOpen] = React.useState(false);
+
+  const handleLinkClick = () => {
+    setOpen(false);
+  };
 
   return (
-    <Drawer>
+    <Drawer open={open} onOpenChange={setOpen}>
       <DrawerTrigger>
         <IoMenuSharp className="text-2xl" />
       </DrawerTrigger>
@@ -36,6 +43,7 @@ export function MobileDrawer() {
           <div className="flex items-center justify-between">
             <Link
               href="/"
+              onClick={handleLinkClick}
               title={t('name')}
               className="relative flex items-center space-x-2"
             >
@@ -59,13 +67,17 @@ export function MobileDrawer() {
                 <span className="text-muted-foreground">{t('name').split(' ')[1]}</span>
               </motion.p>
             </Link>
-            <ThemeToggle />
+            <div className="flex items-center gap-2">
+              <LanguageSwitcher />
+              <ThemeToggle />
+            </div>
           </div>
         </DrawerHeader>
 
         <div className="px-6 py-4 flex flex-col gap-4">
           <Link 
             href="/" 
+            onClick={handleLinkClick}
             className={cn(
               "text-sm font-medium transition-colors hover:text-foreground px-2 py-1.5 rounded-sm",
               isActive('/') ? "text-foreground bg-accent" : "text-muted-foreground"
@@ -75,6 +87,7 @@ export function MobileDrawer() {
           </Link>
           <Link 
             href="/gallery" 
+            onClick={handleLinkClick}
             className={cn(
               "text-sm font-medium transition-colors hover:text-foreground px-2 py-1.5 rounded-sm",
               isActive('/gallery') ? "text-foreground bg-accent" : "text-muted-foreground"
@@ -87,6 +100,7 @@ export function MobileDrawer() {
         <DrawerFooter className="px-6">
           <Link
             href="/"
+            onClick={handleLinkClick}
             className={cn(
               buttonVariants({ variant: "default" }),
               "text-white rounded-full group w-full"

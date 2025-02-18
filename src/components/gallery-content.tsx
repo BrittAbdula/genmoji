@@ -249,18 +249,16 @@ export function GalleryContent() {
     }
 
     return (
-      <div className="relative z-10">
+      <div className="mx-auto flex w-full max-w-6xl flex-1 flex-col">
         <div className="grid w-full auto-rows-max grid-cols-4 place-content-stretch justify-items-stretch gap-4 sm:grid-cols-5 md:grid-cols-6 lg:grid-cols-8">
-          {emojis.map((emoji, index) => (
+        {emojis.map((emoji, index) => (
             <motion.div
               key={`${emoji.slug}-${index}`}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.3, delay: index % 12 * 0.05 }}
+              className="relative isolate select-none rounded-xl bg-transparent hover:bg-gray-100/10 dark:hover:bg-gray-800/50 transition-colors duration-200 ease-out p-2"
             >
               <EmojiContainer
                 emoji={emoji}
-                size="md"
+                size="lg"
               />
             </motion.div>
           ))}

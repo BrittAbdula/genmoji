@@ -101,10 +101,6 @@
       }
     ]
   },
-  "sharing": {
-    "defaultText": "Check out this awesome genmoji I made with Genmoji Online!",
-    "hashtags": ["Genmoji", "AIGenmoji", "CustomGenmoji"]
-  },
   "gallery": {
     "title": "Genmoji Gallery",
     "subtitle": "Explore our collection of AI-generated emojis",
@@ -159,6 +155,10 @@
         "telegram": "Share on Telegram",
         "whatsapp": "Share on WhatsApp",
         "wechat": "Share on WeChat"
+      },
+      "sharing": {
+        "defaultText": "Check out this awesome genmoji I made with Genmoji Online!",
+        "hashtags": ["Genmoji", "AIGenmoji", "CustomGenmoji"]
       },
       "alert": {
         "instagramShare": "Image downloaded! You can now share it on Instagram:\n1. Open Instagram\n2. Create a new post\n3. Select the downloaded image\n4. Add the prompt as caption",

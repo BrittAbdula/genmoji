@@ -6,9 +6,9 @@ import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { likeEmoji } from "@/lib/api";
 import { Button } from "./ui/button";
-import { 
-  DownloadIcon, 
-  Share2, 
+import {
+  DownloadIcon,
+  Share2,
   MoreHorizontalIcon,
   HeartIcon,
   CheckIcon,
@@ -33,9 +33,10 @@ import {
   DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
 import { useTranslations } from 'next-intl';
-import { GenmojiGeneratorDialog } from "./genmoji-generator-dialog";
+import { UnifiedGenmojiGenerator } from './unified-genmoji-generator';
 import { TimeAgo } from './time-ago';
 import { useLocale } from 'next-intl';
+
 interface EmojiDetailContainerProps {
   emoji: Emoji;
 }
@@ -93,7 +94,7 @@ export function EmojiDetailContainer({ emoji }: EmojiDetailContainerProps) {
     try {
       const response = await fetch(emoji.image_url);
       const blob = await response.blob();
-      
+
       await navigator.clipboard.write([
         new ClipboardItem({
           [blob.type]: blob
@@ -112,7 +113,7 @@ export function EmojiDetailContainer({ emoji }: EmojiDetailContainerProps) {
     try {
       const response = await fetch(emoji.image_url);
       const blob = await response.blob();
-      
+
       const a = document.createElement('a');
       a.href = URL.createObjectURL(blob);
       a.download = `${emoji.slug}.png`;
@@ -130,7 +131,7 @@ export function EmojiDetailContainer({ emoji }: EmojiDetailContainerProps) {
     const text = encodeURIComponent(`Check out this emoji: ${emoji.prompt}`);
     const title = encodeURIComponent(emoji.prompt);
     const image = encodeURIComponent(emoji.image_url);
-    
+
     switch (platform) {
       case 'twitter':
         return `https://twitter.com/intent/tweet?url=${url}&text=${text}`;
@@ -158,14 +159,14 @@ export function EmojiDetailContainer({ emoji }: EmojiDetailContainerProps) {
     try {
       const response = await fetch(emoji.image_url);
       const blob = await response.blob();
-      
+
       const a = document.createElement('a');
       a.href = URL.createObjectURL(blob);
       a.download = `${emoji.slug}.png`;
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
-      
+
       alert(t('alert.instagramShare'));
     } catch (err) {
       console.error('Failed to prepare Instagram share:', err);
@@ -220,164 +221,164 @@ export function EmojiDetailContainer({ emoji }: EmojiDetailContainerProps) {
   };
 
   return (
-    <div className="w-full max-w-5xl mx-auto">
-      <motion.div 
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-        className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start"
-      >
-        {/* 左侧：大图展示区 */}
-        <EmojiContainer emoji={emoji} size="xl" />
+    <div className="container mx-auto px-4">
+      <div className="mx-auto flex w-full max-w-2xl flex-col items-center">
 
-        {/* 右侧：详情区 */}
-        <div className="flex flex-col space-y-6">
-            <div className="space-y-6 w-full max-w-full">
-              <div className="flex items-center justify-between gap-2">
-                <div className="min-w-0 flex-1">
-                  <button
-                    onClick={handlePromptCopy}
-                    className="group text-left w-full relative"
-                  >
-                    <h1 
-                      className="text-2xl font-bold truncate" 
-                      title={emoji.prompt}
-                    >
-                      {emoji.prompt}
-                    </h1>
-                    {showPromptCopied && (
-                      <div className="absolute -top-6 left-0 flex items-center gap-1 text-xs text-green-500">
-                        <CheckIcon className="h-3 w-3" />
-                        <span>{t('copied')}</span>
-                      </div>
-                    )}
-                  </button>
-                  {emoji.created_at && (
-                    <TimeAgo 
-                      date={emoji.created_at} 
-                      className="text-sm text-muted-foreground"
-                    />
+        {/* 标题区域 */}
+        <div className="w-full mb-6">
+          <div className="flex items-start justify-between gap-3">
+            <button
+              onClick={handlePromptCopy}
+              className="group text-left relative flex-1 min-w-0"
+            >
+              <h1
+                className="text-xl font-medium truncate leading-tight"
+                title={emoji.prompt}
+              >
+                {emoji.prompt}
+              </h1>
+              {showPromptCopied && (
+                <div className="absolute top-full left-0 mt-1 flex items-center gap-1 text-xs text-green-500">
+                  <CheckIcon className="h-3 w-3" />
+                  <span>{t('copied')}</span>
+                </div>
+              )}
+            </button>
+
+            <div className="flex items-start gap-1.5">
+              <motion.button
+                whileTap={{ scale: 0.9 }}
+                onClick={handleLike}
+                disabled={isLiking}
+                className={cn(
+                  "p-1.5 rounded-full transition-colors relative hover:bg-muted/50",
+                  isLiked ? 'text-red-500' : 'text-muted-foreground hover:text-red-500'
+                )}
+              >
+                <HeartIcon
+                  className={cn(
+                    "h-4 w-4 transition-all",
+                    isLiking && "animate-pulse"
                   )}
-                </div>
+                  fill={isLiked ? "currentColor" : "none"}
+                />
+              </motion.button>
 
-                <div className="flex items-center gap-2 shrink-0">
-                  <motion.button
-                    whileTap={{ scale: 0.9 }}
-                    onClick={handleLike}
-                    disabled={isLiking}
-                    className={cn(
-                      "p-2 rounded-full transition-colors relative",
-                      isLiked ? 'text-red-500' : 'text-muted-foreground hover:text-red-500'
-                    )}
-                  >
-                    <HeartIcon 
-                      className={cn(
-                        "h-5 w-5 transition-all",
-                        isLiking && "animate-pulse"
-                      )} 
-                      fill={isLiked ? "currentColor" : "none"} 
-                    />
-                    <AnimatePresence>
-                      {likesCount > 0 && (
-                        <motion.span
-                          initial={{ opacity: 0, y: 10 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          exit={{ opacity: 0, y: -10 }}
-                          className="absolute -bottom-4 left-1/2 -translate-x-1/2 text-xs font-medium"
-                        >
-                          {likesCount}
-                        </motion.span>
-                      )}
-                    </AnimatePresence>
-                  </motion.button>
-                  
-                  <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                      <Button variant="ghost" size="icon">
-                        <MoreHorizontalIcon className="h-5 w-5" />
-                      </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end" className="w-56">
-                      <DropdownMenuItem onClick={handleCopy}>
-                        <CopyIcon className="mr-2 h-4 w-4" />
-                        {t('copyLink')}
-                      </DropdownMenuItem>
-                      <DropdownMenuItem onClick={handleDownload}>
-                        <DownloadIcon className="mr-2 h-4 w-4" />
-                        {t('download')}
-                      </DropdownMenuItem>
-                      <DropdownMenuSeparator />
-                      <DropdownMenuItem onClick={() => window.open(getSocialShareUrl('twitter'), '_blank')}>
-                        <X className="mr-2 h-4 w-4" />
-                        {t('share.twitter')}
-                      </DropdownMenuItem>
-                      <DropdownMenuItem onClick={() => window.open(getSocialShareUrl('facebook'), '_blank')}>
-                        <FacebookIcon className="mr-2 h-4 w-4" />
-                        {t('share.facebook')}
-                      </DropdownMenuItem>
-                      <DropdownMenuItem onClick={() => window.open(getSocialShareUrl('linkedin'), '_blank')}>
-                        <LinkedinIcon className="mr-2 h-4 w-4" />
-                        {t('share.linkedin')}
-                      </DropdownMenuItem>
-                      <DropdownMenuItem onClick={() => window.open(getSocialShareUrl('pinterest'), '_blank')}>
-                        <Share2Icon className="mr-2 h-4 w-4" />
-                        {t('share.pinterest')}
-                      </DropdownMenuItem>
-                      <DropdownMenuItem onClick={handleInstagramShare}>
-                        <InstagramIcon className="mr-2 h-4 w-4" />
-                        {t('share.instagram')}
-                      </DropdownMenuItem>
-                      <DropdownMenuItem onClick={() => window.open(getSocialShareUrl('imgur'), '_blank')}>
-                        <UploadIcon className="mr-2 h-4 w-4" />
-                        {t('share.imgur')}
-                      </DropdownMenuItem>
-                      <DropdownMenuSeparator />
-                      <DropdownMenuItem onClick={() => window.open(getSocialShareUrl('telegram'), '_blank')}>
-                        <SendIcon className="mr-2 h-4 w-4" />
-                        {t('share.telegram')}
-                      </DropdownMenuItem>
-                      <DropdownMenuItem onClick={() => window.open(getSocialShareUrl('whatsapp'), '_blank')}>
-                        <MessageCircleIcon className="mr-2 h-4 w-4" />
-                        {t('share.whatsapp')}
-                      </DropdownMenuItem>
-                      <DropdownMenuItem onClick={handleWeChatShare}>
-                        <QrCodeIcon className="mr-2 h-4 w-4" />
-                        {t('share.wechat')}
-                      </DropdownMenuItem>
-                    </DropdownMenuContent>
-                  </DropdownMenu>
-                </div>
-              </div>
-
-              {/* Primary Actions */}
-              <div className="grid grid-cols-2 gap-3">
-                <Button 
-                  variant="outline"
-                  className="w-full text-muted-foreground hover:text-foreground relative"
-                  onClick={() => setIsGeneratorOpen(true)}
-                >
-                  <ImageIcon className="mr-2 h-4 w-4" />
-                  {t('reGenmoji')}
-                </Button>
-
-                <Button 
-                  variant="outline"
-                  className="w-full text-muted-foreground hover:text-foreground"
-                  onClick={handleShare}
-                >
-                  <Share2 className="mr-2 h-4 w-4" />
-                  {t('share.title')}
-                </Button>
-              </div>
-
-              <GenmojiGeneratorDialog
-                isOpen={isGeneratorOpen}
-                onClose={() => setIsGeneratorOpen(false)}
-                initialPrompt={emoji.prompt}
-              />
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="ghost" size="icon" className="hover:bg-muted/50 p-1.5 h-auto">
+                    <MoreHorizontalIcon className="h-4 w-4" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-48">
+                  <DropdownMenuItem onClick={handleCopy}>
+                    <CopyIcon className="mr-2 h-4 w-4" />
+                    {t('copyLink')}
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={handleDownload}>
+                    <DownloadIcon className="mr-2 h-4 w-4" />
+                    {t('download')}
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem onClick={() => window.open(getSocialShareUrl('twitter'), '_blank')}>
+                    <X className="mr-2 h-4 w-4" />
+                    {t('share.twitter')}
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => window.open(getSocialShareUrl('facebook'), '_blank')}>
+                    <FacebookIcon className="mr-2 h-4 w-4" />
+                    {t('share.facebook')}
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => window.open(getSocialShareUrl('linkedin'), '_blank')}>
+                    <LinkedinIcon className="mr-2 h-4 w-4" />
+                    {t('share.linkedin')}
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => window.open(getSocialShareUrl('pinterest'), '_blank')}>
+                    <Share2Icon className="mr-2 h-4 w-4" />
+                    {t('share.pinterest')}
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={handleInstagramShare}>
+                    <InstagramIcon className="mr-2 h-4 w-4" />
+                    {t('share.instagram')}
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => window.open(getSocialShareUrl('imgur'), '_blank')}>
+                    <UploadIcon className="mr-2 h-4 w-4" />
+                    {t('share.imgur')}
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem onClick={() => window.open(getSocialShareUrl('telegram'), '_blank')}>
+                    <SendIcon className="mr-2 h-4 w-4" />
+                    {t('share.telegram')}
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => window.open(getSocialShareUrl('whatsapp'), '_blank')}>
+                    <MessageCircleIcon className="mr-2 h-4 w-4" />
+                    {t('share.whatsapp')}
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={handleWeChatShare}>
+                    <QrCodeIcon className="mr-2 h-4 w-4" />
+                    {t('share.wechat')}
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
             </div>
           </div>
-      </motion.div>
+        </div>
+
+        {/* 图片展示区 */}
+        <div className="relative w-full aspect-square mb-6">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, ease: "easeOut" }}
+            className="w-full h-full rounded-xl overflow-hidden bg-gradient-to-b from-muted/5 to-muted/10 backdrop-blur-sm"
+          >
+            <EmojiContainer emoji={emoji} size="xl" />
+          </motion.div>
+        </div>
+        {/* 信息栏 - MODEL/DIMENSIONS/DATE */}
+        <div className="w-full flex items-center justify-between text-xs text-muted-foreground mb-4">
+          <div className="flex items-center gap-1.5">
+            <span className="uppercase">CATEGORY</span>
+            <span className="text-foreground">Emoji</span>
+          </div>
+          <div className="flex items-center gap-1.5">
+            <span className="uppercase">MAKER</span>
+            <span className="text-foreground">anonymous</span>
+          </div>
+          <div className="flex items-center gap-1.5">
+            <span className="uppercase">DATE</span>
+            <span className="text-foreground">
+              {emoji.created_at ? new Date(emoji.created_at).toLocaleDateString() : '-'}
+            </span>
+          </div>
+        </div>
+
+        {/* 操作按钮区 */}
+        <div className="w-full max-w-sm">
+          <div className="grid grid-cols-2 gap-3">
+            <UnifiedGenmojiGenerator
+              trigger={
+                <Button
+                  variant="outline"
+                  className="w-full text-muted-foreground hover:text-foreground relative py-4 bg-pink-500/5 hover:bg-pink-500/10 dark:bg-pink-500/10 dark:hover:bg-pink-500/20 border-pink-500/20 dark:border-pink-500/30 transition-all duration-200"
+                >
+                  <ImageIcon className="mr-2 h-3.5 w-3.5" />
+                  {t('reGenmoji')}
+                </Button>
+              }
+              initialPrompt={emoji.prompt}
+            />
+
+            <Button
+              variant="outline"
+              className="w-full text-muted-foreground hover:text-foreground py-4 bg-violet-500/5 hover:bg-violet-500/10 dark:bg-violet-500/10 dark:hover:bg-violet-500/20 border-violet-500/20 dark:border-violet-500/30 transition-all duration-200"
+              onClick={handleShare}
+            >
+              <Share2 className="mr-2 h-3.5 w-3.5" />
+              {t('share.title')}
+            </Button>
+          </div>
+        </div>
+      </div>
     </div>
   );
 } 

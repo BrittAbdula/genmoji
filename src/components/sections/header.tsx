@@ -66,7 +66,7 @@ export function Header() {
             </Link>
           </nav>
 
-          <LanguageSwitcher />
+          <LanguageSwitcher className="hidden sm:inline-flex" />
           <ThemeToggle className="hidden sm:inline-flex" />
           <div className="hidden lg:block">
             <Link

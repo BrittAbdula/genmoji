@@ -8,7 +8,7 @@ import { Features } from "@/components/sections/features";
 import { Hero } from "@/components/sections/hero";
 import { Pricing } from "@/components/sections/pricing";
 import { Testimonials } from "@/components/sections/testimonials";
-import { GenmojiGenerator } from '@/components/sections/genmoji-generator';
+import { HomeGenerator } from '@/components/sections/home-generator';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { siteConfig } from "@/lib/config";
 import { routing } from '@/i18n/routing';
@@ -73,10 +73,8 @@ export default async function Home(props: Props) {
   return (
     <main className="items-center container mx-auto p-2">
       <Hero />
-      <GenmojiGenerator />
-      <div className="mx-auto max-w-5xl text-center  px-4">
-      <GalleryContent />
-      </div>
+      <HomeGenerator />
+        <GalleryContent />
       {/* <FeatureScroll /> */}
       <FeatureHighlight />
       {/* <BentoGrid />

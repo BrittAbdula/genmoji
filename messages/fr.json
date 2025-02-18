@@ -101,10 +101,6 @@
       }
     ]
   },
-  "sharing": {
-    "defaultText": "Découvrez ce superbe genmoji que j'ai créé avec Genmoji Online !",
-    "hashtags": ["Genmoji", "GemojiIA", "GemojiPersonnalisé"]
-  },
   "gallery": {
     "title": "Galerie Genmoji",
     "subtitle": "Explorez notre collection d'emojis générés par l'IA",
@@ -181,6 +177,10 @@
         "telegram": "Partager sur Telegram",
         "whatsapp": "Partager sur WhatsApp",
         "wechat": "Partager sur WeChat"
+      },
+      "sharing": {
+        "defaultText": "Découvrez ce superbe genmoji que j'ai créé avec Genmoji Online !",
+        "hashtags": ["Genmoji", "GemojiIA", "GemojiPersonnalisé"]
       },
       "alert": {
         "instagramShare": "Image téléchargée ! Vous pouvez maintenant la partager sur Instagram :\n1. Ouvrez Instagram\n2. Créez un nouveau post\n3. Sélectionnez l'image téléchargée\n4. Ajoutez le prompt comme légende",
