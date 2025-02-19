@@ -183,7 +183,7 @@ export function HorizontalGalleryContent() {
                 key={pageIndex}
                 className="flex-shrink-0 snap-start w-full pt-4"
               >
-                <div className="grid w-full auto-rows-max grid-cols-4 place-content-center justify-items-center gap-4 sm:grid-cols-5 md:grid-cols-6 lg:grid-cols-8">
+                <div className="grid w-full auto-rows-max grid-cols-4 place-items-center justify-items-center gap-4 sm:grid-cols-5 md:grid-cols-6 lg:grid-cols-8 mx-auto">
                   {pageEmojis.map((emoji, index) => (
                     <div
                       key={`${emoji.slug}-${index}`}>

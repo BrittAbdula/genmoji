@@ -482,7 +482,7 @@ export function EmojiDetailContainer({ emoji }: EmojiDetailContainerProps) {
         </div>
 
         {/* 操作按钮区 */}
-        <div className="w-full max-w-sm">
+        <div className="w-full max-w-sm pt-2">
           <div className="grid grid-cols-2 gap-3">
             <UnifiedGenmojiGenerator
               trigger={
