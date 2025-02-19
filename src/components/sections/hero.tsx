@@ -32,38 +32,6 @@ const Subtitle = memo(({ text }: { text: string }) => (
   </p>
 ));
 
-// Memoized GeneratorButton component
-const GeneratorButton = memo(({ ctaText, onClick }: { ctaText: string; onClick?: () => void }) => (
-  <button
-    onClick={onClick}
-    type="button"
-    className={cn(
-      "group relative inline-flex items-center justify-center overflow-hidden rounded-lg px-8 py-3 font-medium",
-      "transition-all duration-700 hover:-translate-y-0.5",
-      "text-white text-base"
-    )}
-  >
-    <div
-      className={cn(
-        "absolute inset-0 flex items-center justify-center",
-        "bg-[length:200%_200%] bg-gradient-to-r from-pink-500 via-pink-500 to-violet-500",
-        "animate-rainbow-fade transition-all duration-700"
-      )}
-    />
-    <div
-      className={cn(
-        "absolute inset-0.5 flex items-center justify-center rounded-[7px]",
-        "bg-gradient-to-r from-pink-500 to-violet-500 opacity-0 transition-all duration-700",
-        "group-hover:opacity-100 group-hover:inset-1"
-      )}
-    />
-    <span className="relative flex items-center gap-2">
-      <Sparkles className="w-4 h-4" />
-      {ctaText}
-    </span>
-  </button>
-));
-
 export function Hero() {
   const t = useTranslations('hero');
 
@@ -100,7 +68,18 @@ export function Hero() {
             </div>
 
             <UnifiedGenmojiGenerator
-              trigger={<GeneratorButton ctaText={t('cta')} />}
+              trigger={
+                <Button
+                  size="lg"
+                  className={cn(
+                    "rounded-md",
+                    "px-8 bg-gradient-to-r from-pink-500 to-violet-500 hover:from-pink-600 hover:to-violet-600 text-white"
+                  )}
+                >
+                  <Sparkles className="h-4 w-4" />
+                  {t('cta')}
+                </Button>
+              }
             />
           </motion.div>
 
