@@ -55,10 +55,10 @@ const SHOWCASE_IMAGES = [
     slug: "brain",
     image_url: "https://store.genmojionline.com/cdn-cgi/imagedelivery/DEOVdDdfeGzASe0KdtD7FA//62f18150-8d13-4113-5367-e32983d2cc00/public"
   },
-  {
-    slug: "plane--m6d90d3n",
-    image_url: "https://store.genmojionline.com/cdn-cgi/imagedelivery/DEOVdDdfeGzASe0KdtD7FA//4c8df1c7-ac1f-472f-aa05-03d52a1b7200/public"
-  },
+  // {
+  //   slug: "plane--m6d90d3n",
+  //   image_url: "https://store.genmojionline.com/cdn-cgi/imagedelivery/DEOVdDdfeGzASe0KdtD7FA//4c8df1c7-ac1f-472f-aa05-03d52a1b7200/public"
+  // },
   {
     slug: "toad-mushroom",
     image_url: "https://store.genmojionline.com/cdn-cgi/imagedelivery/DEOVdDdfeGzASe0KdtD7FA//fdd9e9a0-afcf-4ade-94fa-6d27501b0600/public"

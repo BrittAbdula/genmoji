@@ -22,7 +22,7 @@ export function HorizontalGalleryContent() {
   const [hasMore, setHasMore] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [dragCount, setDragCount] = useState(0);
-  const limit = 16;
+  const limit = 32;
   const locale = useLocale();
   const loadingRef = useRef(false);
   const scrollContainerRef = useRef<HTMLDivElement>(null);

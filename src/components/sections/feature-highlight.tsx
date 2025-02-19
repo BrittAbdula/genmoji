@@ -1,14 +1,15 @@
 "use client";
 
 import { Section } from "@/components/section";
-import { buttonVariants } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { easeOutCubic } from "@/lib/animation";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
 import { Link } from '@/i18n/routing';
 import { useTranslations } from 'next-intl';
 import { useEffect, useRef, useState } from "react";
-
+import { UnifiedGenmojiGenerator } from "../unified-genmoji-generator";
+import { Sparkles } from "lucide-react";
 interface FeatureProps {
   translationKey: string;
   imageSrc: string;
@@ -80,16 +81,20 @@ function Feature({
             {t(`${translationKey}.description`)}
           </motion.p>
           <motion.div variants={itemVariants}>
-            <Link
-              href="/"
-              className={cn(
-                buttonVariants({ variant: "default", size: "lg" }),
-                "text-white rounded-full group text-lg",
-                "mx-auto lg:mx-0"
-              )}
-            >
-              {common('cta')}
-            </Link>
+            <UnifiedGenmojiGenerator
+              trigger={
+                <Button
+                  size="lg"
+                  className={cn(
+                    "rounded-md",
+                    "px-8 bg-gradient-to-r from-pink-500 to-violet-500 hover:from-pink-600 hover:to-violet-600 text-white"
+                  )}
+                >
+                  <Sparkles className="h-4 w-4" />
+                  {common('cta')}
+                </Button>
+              }
+            />
           </motion.div>
         </div>
       </motion.div>

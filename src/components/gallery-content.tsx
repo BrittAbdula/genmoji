@@ -218,7 +218,7 @@ export function GalleryContent() {
     if (loading && page === 1) {
       return (
         <div className="grid w-full auto-rows-max grid-cols-4 place-content-stretch justify-items-stretch gap-4 sm:grid-cols-5 md:grid-cols-6 lg:grid-cols-8">
-          {Array.from({ length: 64 }).map((_, i) => (
+          {Array.from({ length: 32 }).map((_, i) => (
             <div key={`loading-skeleton-${i}`} className="aspect-square rounded-lg bg-muted animate-pulse" />
           ))}
         </div>
@@ -254,7 +254,6 @@ export function GalleryContent() {
         {emojis.map((emoji, index) => (
             <div
               key={`${emoji.slug}-${index}`}
-              className="relative isolate select-none rounded-xl bg-transparent hover:bg-gray-100/10 dark:hover:bg-gray-800/50 transition-colors duration-200 ease-out p-2"
             >
               <EmojiContainer
                 emoji={emoji}
