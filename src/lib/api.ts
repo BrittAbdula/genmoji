@@ -1,4 +1,5 @@
 import { Emoji, EmojiResponse } from "@/types/emoji";
+import { ActionType, ActionDetails, ActionResponse } from "@/types/action";
 
 const WORKER_URL = 'https://genmoji-api.genmojionline.com';
 // const WORKER_URL = 'https://gen-test.auroroa.workers.dev';
@@ -81,8 +82,13 @@ export async function getRelatedEmojis(slug: string, locale: string): Promise<Em
   return emojiResponse.emojis || [];
 }
 
-// 4. 点赞表情
-export async function likeEmoji(slug: string, locale: string): Promise<{ success: boolean, likes_count: number }> {
+// 4. 执行表情操作（点赞、评分、举报等）
+export async function performAction(
+  slug: string, 
+  locale: string, 
+  actionType: ActionType,
+  details?: ActionDetails
+): Promise<ActionResponse> {
   const res = await fetch(`${WORKER_URL}/action/${slug}`, {
     method: 'POST',
     headers: {
@@ -90,13 +96,20 @@ export async function likeEmoji(slug: string, locale: string): Promise<{ success
       'Content-Type': 'application/json'
     },
     body: JSON.stringify({ 
-      action_type: 'like',
-      locale 
+      action_type: actionType,
+      locale,
+      details
     })
   });
 
   if (!res.ok) {
-    throw new Error('Failed to like emoji');
+    const errorText = await res.text();
+    console.error('Action error:', {
+      status: res.status,
+      statusText: res.statusText,
+      error: errorText
+    });
+    throw new Error(`Failed to perform action: ${res.status} ${res.statusText}`);
   }
   return res.json();
 }

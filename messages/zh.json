@@ -13,7 +13,8 @@
   },
   "hero": {
     "title": "创建您的完美 Genmoji",
-    "subtitle": "用 AI 驱动的自定义 genmoji 表达自我"
+    "subtitle": "用 AI 驱动的自定义 genmoji 表达自我",
+    "cta": "生成 Genmoji"
   },
   "seo": {
     "title": "Genmoji Online - AI表情符号生成器",
@@ -304,7 +305,8 @@
       "failed": "生成失败。请重试。"
     },
     "dialogTitle": "生成新的 Genmoji",
-    "dialogDescription": "根据您的描述创建新的 genmoji。您也可以上传参考图片。"
+    "dialogDescription": "根据您的描述创建新的 genmoji。您也可以上传参考图片。",
+    "generatingMessage": "正在为您创建 genmoji，您可以继续浏览其他内容..."
   },
   "cta": {
     "title": "立即创建您的 Genmoji",

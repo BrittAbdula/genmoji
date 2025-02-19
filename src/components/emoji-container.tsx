@@ -19,13 +19,13 @@ const EmojiContainer = ({ emoji, size = 'md' }: EmojiContainerProps) => {
 
   return (
     <Link 
-      href={`/emoji/${emoji.slug}`}
+      href={`/emoji/${emoji.slug}/`}
       className="block group"
     >
       <img 
           src={emoji.image_url} 
           alt={t('imageAlt', { prompt: emoji.prompt })}
-          className={`aspect-square w-full p-1.5 transition-opacity duration-200 ease-out`}
+          className={`aspect-square w-full  transition-opacity duration-200 ease-out`}
         />
       {/* <p className="mt-2 text-sm text-center text-muted-foreground truncate">
         {emoji.prompt}

@@ -13,7 +13,8 @@
   },
   "hero": {
     "title": "Create Your Perfect Genmoji",
-    "subtitle": "Express yourself with AI-powered custom genmojis"
+    "subtitle": "Express yourself with AI-powered custom genmoji",
+    "cta": "Generate Genmoji"
   },
   "seo": {
     "title": "Genmoji Online -  Your Ultimate Genmoji Generator",
@@ -304,7 +305,8 @@
       "failed": "Generation failed. Please try again."
     },
     "dialogTitle": "Generate New Genmoji",
-    "dialogDescription": "Create a new genmoji based on your description. You can also upload an image for reference."
+    "dialogDescription": "Create a new genmoji based on your description. You can also upload an image for reference.",
+    "generatingMessage": "Your genmoji is being created. Feel free to browse while waiting..."
   },
   "cta": {
     "title": "Create Your Genmoji Today",

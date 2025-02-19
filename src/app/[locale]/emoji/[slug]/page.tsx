@@ -9,6 +9,7 @@ import { getTranslations } from 'next-intl/server';
 import { Suspense } from 'react';
 import { RelatedEmojis } from '@/components/related-emojis';
 import { getLocale } from "next-intl/server";
+import { siteConfig } from "@/lib/config";
 
 // Add Edge Runtime configuration
 export const runtime = 'edge';
@@ -51,6 +52,20 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
                 other: {
                     rel: 'apple-touch-icon-precomposed',
                     url: emoji.image_url,
+                },
+            },
+            alternates: {
+                canonical: locale === 'en' ? `${siteConfig.url}/emoji/${emoji.slug}` : `${siteConfig.url}/${locale}/emoji/${emoji.slug}`,
+                languages: {
+                    'x-default': `${siteConfig.url}/emoji/${emoji.slug}`,
+                    'en': `${siteConfig.url}/emoji/${emoji.slug}`,
+                    'en-US': `${siteConfig.url}/emoji/${emoji.slug}`,
+                    'ja': `${siteConfig.url}/ja/emoji/${emoji.slug}`,
+                    'ja-JP': `${siteConfig.url}/ja/emoji/${emoji.slug}`,
+                    'fr': `${siteConfig.url}/fr/emoji/${emoji.slug}`,
+                    'fr-FR': `${siteConfig.url}/fr/emoji/${emoji.slug}`,
+                    'zh': `${siteConfig.url}/zh/emoji/${emoji.slug}`,
+                    'zh-CN': `${siteConfig.url}/zh/emoji/${emoji.slug}`,
                 },
             },
             path: locale === 'en' ? `emoji/${emoji.slug}/` : `${locale}/emoji/${emoji.slug}/`,
@@ -108,7 +123,7 @@ export default async function EmojiPage(props: Props) {
                     {JSON.stringify(jsonLd)}
                 </Script>
                     <EmojiDetailContainer emoji={emoji} />
-                    <div className="mt-16">
+                    <div className="mt-8">
                         <h2 className="text-2xl font-bold mb-8 text-left">{t('similar')}</h2>
                     </div>
                     <Suspense fallback={

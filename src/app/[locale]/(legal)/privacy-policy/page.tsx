@@ -1,27 +1,39 @@
 import { getTranslations } from 'next-intl/server';
 import { getLocale } from 'next-intl/server';
+import { siteConfig } from "@/lib/config";
 
 export const runtime = 'edge';
 
 export async function generateMetadata() {
   const t = await getTranslations('legal.privacyPolicy');
   const locale = await getLocale();
-  const canonical = `/${locale}/privacy-policy`;
+  const path = locale === 'en' ? '/privacy-policy' : `/${locale}/privacy-policy`;
 
   return {
-    metadataBase: new URL('https://genmojionline.com'),
+    metadataBase: new URL(siteConfig.url),
     title: `${t('title')} | Genmoji Online`,
     description: "Learn how Genmoji Online collects, uses, and protects your personal information. Read our comprehensive privacy policy.",
     alternates: {
-      canonical,
+      canonical: `${siteConfig.url}${path}`,
+      languages: {
+        'x-default': `${siteConfig.url}/privacy-policy`,
+        'en': `${siteConfig.url}/privacy-policy`,
+        'en-US': `${siteConfig.url}/privacy-policy`,
+        'ja': `${siteConfig.url}/ja/privacy-policy`,
+        'ja-JP': `${siteConfig.url}/ja/privacy-policy`,
+        'fr': `${siteConfig.url}/fr/privacy-policy`,
+        'fr-FR': `${siteConfig.url}/fr/privacy-policy`,
+        'zh': `${siteConfig.url}/zh/privacy-policy`,
+        'zh-CN': `${siteConfig.url}/zh/privacy-policy`,
+      },
     },
     openGraph: {
       title: `${t('title')} | Genmoji Online`,
       description: "Your privacy matters. Read Genmoji Online's privacy policy to understand how we handle your data.",
-      url: canonical,
+      url: `${siteConfig.url}${path}`,
       images: [
         {
-          url: '/og-image.png',
+          url: `${siteConfig.url}/og-image.png`,
           width: 1200,
           height: 630,
           alt: 'Genmoji Online Privacy Policy',

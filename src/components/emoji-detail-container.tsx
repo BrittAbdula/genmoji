@@ -4,7 +4,7 @@ import { Emoji } from "@/types/emoji";
 import EmojiContainer from "@/components/emoji-container";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
-import { likeEmoji } from "@/lib/api";
+import { performAction } from "@/lib/api";
 import { Button } from "./ui/button";
 import {
   DownloadIcon,
@@ -24,7 +24,7 @@ import {
   QrCodeIcon,
   UploadIcon,
 } from "lucide-react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -43,6 +43,7 @@ interface EmojiDetailContainerProps {
 
 export function EmojiDetailContainer({ emoji }: EmojiDetailContainerProps) {
   const t = useTranslations('emoji.detail');
+  const locale = useLocale();
   const [isLiked, setIsLiked] = useState(false);
   const [likesCount, setLikesCount] = useState(emoji.likes_count || 0);
   const [isLiking, setIsLiking] = useState(false);
@@ -50,7 +51,20 @@ export function EmojiDetailContainer({ emoji }: EmojiDetailContainerProps) {
   const [showPromptCopied, setShowPromptCopied] = useState(false);
   const [showImageCopied, setShowImageCopied] = useState(false);
   const [isGeneratorOpen, setIsGeneratorOpen] = useState(false);
-  const locale = useLocale();
+  const [isCopied, setIsCopied] = useState(false);
+  const [isDownloading, setIsDownloading] = useState(false);
+  const [showGenerator, setShowGenerator] = useState(false);
+
+  // 记录浏览行为
+  useEffect(() => {
+    const referrer = document.referrer;
+    performAction(emoji.slug, locale, 'view', {
+      referrer,
+    }).catch(error => {
+      console.error('Failed to record view:', error);
+    });
+  }, [emoji.slug, locale]);
+
   // 检查用户是否已经点赞过
   useEffect(() => {
     const checkLikeStatus = () => {
@@ -69,12 +83,21 @@ export function EmojiDetailContainer({ emoji }: EmojiDetailContainerProps) {
 
   // 复制链接
   const handleCopy = async () => {
+    if (isCopied) return;
+    setIsCopied(true);
+    
     try {
+      // 先执行复制操作
       await navigator.clipboard.writeText(getShareUrl());
       setShowCopied(true);
       setTimeout(() => setShowCopied(false), 2000);
-    } catch (err) {
-      console.error('Failed to copy:', err);
+      
+      // 异步提交行为数据
+      performAction(emoji.slug, locale, 'copy').catch(error => {
+        console.error('Failed to record copy action:', error);
+      });
+    } catch (error) {
+      console.error('Failed to copy to clipboard:', error);
     }
   };
 
@@ -102,6 +125,11 @@ export function EmojiDetailContainer({ emoji }: EmojiDetailContainerProps) {
       ]);
       setShowImageCopied(true);
       setTimeout(() => setShowImageCopied(false), 2000);
+
+      // 异步提交行为数据
+      performAction(emoji.slug, locale, 'copy', { type: 'image' }).catch(error => {
+        console.error('Failed to record image copy action:', error);
+      });
     } catch (err) {
       // 提示用户长按保存
       alert(t('alert.longPressToSave'));
@@ -110,18 +138,31 @@ export function EmojiDetailContainer({ emoji }: EmojiDetailContainerProps) {
 
   // 处理下载
   const handleDownload = async () => {
+    if (isDownloading) return;
+    setIsDownloading(true);
+    
     try {
+      // 先执行下载操作
       const response = await fetch(emoji.image_url);
       const blob = await response.blob();
+      const url = URL.createObjectURL(blob);
+      
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `${emoji.slug}.png`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
 
-      const a = document.createElement('a');
-      a.href = URL.createObjectURL(blob);
-      a.download = `${emoji.slug}.png`;
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-    } catch (err) {
-      console.error('Failed to download:', err);
+      // 异步提交行为数据
+      performAction(emoji.slug, locale, 'download').catch(error => {
+        console.error('Failed to record download action:', error);
+      });
+    } catch (error) {
+      console.error('Failed to download emoji:', error);
+    } finally {
+      setIsDownloading(false);
     }
   };
 
@@ -198,23 +239,15 @@ export function EmojiDetailContainer({ emoji }: EmojiDetailContainerProps) {
   // 处理点赞
   const handleLike = async () => {
     if (isLiking) return;
-
+    setIsLiking(true);
     try {
-      setIsLiking(true);
-      const data = await likeEmoji(emoji.slug, locale);
-
-      if (data.success) {
-        const likedEmojis = JSON.parse(localStorage.getItem('likedEmojis') || '[]');
-        if (!likedEmojis.includes(emoji.slug)) {
-          likedEmojis.push(emoji.slug);
-          localStorage.setItem('likedEmojis', JSON.stringify(likedEmojis));
-        }
-
+      const response = await performAction(emoji.slug, locale, 'like');
+      if (response.success && response.data?.likes_count !== undefined) {
+        setLikesCount(response.data.likes_count);
         setIsLiked(true);
-        setLikesCount(prev => prev + 1);
       }
     } catch (error) {
-      console.error('Failed to like:', error);
+      console.error('Failed to like emoji:', error);
     } finally {
       setIsLiking(false);
     }

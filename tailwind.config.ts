@@ -65,6 +65,8 @@ const config = {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
         ripple: "ripple var(--duration,2s) ease calc(var(--i, 0)*.2s) infinite",
+        gradient: "gradient 8s linear infinite",
+        "rainbow-fade": "rainbow-fade 8s linear infinite",
       },
       keyframes: {
         marquee: {
@@ -94,6 +96,19 @@ const config = {
           },
           "50%": {
             transform: "translate(-50%, -50%) scale(0.9)",
+          },
+        },
+        gradient: {
+          to: {
+            backgroundPosition: "var(--bg-size) 0",
+          },
+        },
+        "rainbow-fade": {
+          "0%, 100%": {
+            backgroundPosition: "0% 50%",
+          },
+          "50%": {
+            backgroundPosition: "100% 50%",
           },
         },
       },

@@ -15,6 +15,7 @@ import { routing } from '@/i18n/routing';
 import { constructMetadata } from "@/lib/utils";
 import { getLocale } from 'next-intl/server';
 import { GalleryContent } from '@/components/gallery-content';
+import { HorizontalGalleryContent } from '@/components/horizontal-gallery-content';
 
 // 为静态生成提供所有支持的语言
 export function generateStaticParams() {
@@ -56,10 +57,15 @@ export async function generateMetadata(props: Props) {
     alternates: {
       canonical: locale === 'en' ? `${siteConfig.url}` : `${siteConfig.url}/${locale}`,
       languages: {
-        'en':  `${siteConfig.url}`,
+        'x-default': `${siteConfig.url}`,
+        'en': `${siteConfig.url}`,
+        'en-US': `${siteConfig.url}`,
         'ja': `${siteConfig.url}/ja`,
+        'ja-JP': `${siteConfig.url}/ja`,
         'fr': `${siteConfig.url}/fr`,
+        'fr-FR': `${siteConfig.url}/fr`,
         'zh': `${siteConfig.url}/zh`,
+        'zh-CN': `${siteConfig.url}/zh`,
       },
     },
   };
@@ -73,8 +79,8 @@ export default async function Home(props: Props) {
   return (
     <main className="items-center container mx-auto p-2">
       <Hero />
-      <HomeGenerator />
-        <GalleryContent />
+      {/* <HomeGenerator /> */}
+      <HorizontalGalleryContent />
       {/* <FeatureScroll /> */}
       <FeatureHighlight />
       {/* <BentoGrid />

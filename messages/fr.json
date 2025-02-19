@@ -13,7 +13,8 @@
   },
   "hero": {
     "title": "Créez Votre Genmoji Parfait",
-    "subtitle": "Exprimez-vous avec des genmojis personnalisés alimentés par l'IA"
+    "subtitle": "Exprimez-vous avec des genmoji personnalisés alimentés par l'IA",
+    "cta": "Générer un Genmoji"
   },
   "seo": {
     "title": "Genmoji Online - Générateur d'émojis AI",
@@ -130,7 +131,8 @@
       "failed": "La génération a échoué. Veuillez réessayer."
     },
     "dialogTitle": "Générer un Nouveau Genmoji",
-    "dialogDescription": "Créez un nouveau genmoji basé sur votre description. Vous pouvez également télécharger une image de référence."
+    "dialogDescription": "Créez un nouveau genmoji basé sur votre description. Vous pouvez également télécharger une image de référence.",
+    "generatingMessage": "Votre genmoji est en cours de création. Vous pouvez continuer à naviguer pendant l'attente..."
   },
   "cta": {
     "title": "Créez Votre Genmoji Aujourd'hui",

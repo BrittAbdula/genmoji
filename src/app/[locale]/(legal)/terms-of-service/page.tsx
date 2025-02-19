@@ -1,27 +1,39 @@
 import { getTranslations } from 'next-intl/server';
 import { getLocale } from 'next-intl/server';
+import { siteConfig } from "@/lib/config";
 
 export const runtime = 'edge';
 
 export async function generateMetadata() {
   const t = await getTranslations('legal.termsOfService');
   const locale = await getLocale();
-  const canonical = `/${locale}/terms-of-service`;
+  const path = locale === 'en' ? '/terms-of-service' : `/${locale}/terms-of-service`;
 
   return {
-    metadataBase: new URL('https://genmojionline.com'),
+    metadataBase: new URL(siteConfig.url),
     title: `${t('title')} | Genmoji Online`,
     description: "Read the terms and conditions governing your use of Genmoji Online's AI-powered emoji generation services.",
     alternates: {
-      canonical,
+      canonical: `${siteConfig.url}${path}`,
+      languages: {
+        'x-default': `${siteConfig.url}/terms-of-service`,
+        'en': `${siteConfig.url}/terms-of-service`,
+        'en-US': `${siteConfig.url}/terms-of-service`,
+        'ja': `${siteConfig.url}/ja/terms-of-service`,
+        'ja-JP': `${siteConfig.url}/ja/terms-of-service`,
+        'fr': `${siteConfig.url}/fr/terms-of-service`,
+        'fr-FR': `${siteConfig.url}/fr/terms-of-service`,
+        'zh': `${siteConfig.url}/zh/terms-of-service`,
+        'zh-CN': `${siteConfig.url}/zh/terms-of-service`,
+      },
     },
     openGraph: {
       title: `${t('title')} | Genmoji Online`,
       description: "Understand the terms and conditions for using Genmoji Online's services.",
-      url: canonical,
+      url: `${siteConfig.url}${path}`,
       images: [
         {
-          url: '/og-image.png',
+          url: `${siteConfig.url}/og-image.png`,
           width: 1200,
           height: 630,
           alt: 'Genmoji Online Terms of Service',

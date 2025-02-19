@@ -12,8 +12,9 @@
     }
   },
   "hero": {
-    "title": "あなただけの絵文字を作成",
-    "subtitle": "AIを活用したカスタム絵文字で自己表現"
+    "title": "あなただけのgenmojiを作成",
+    "subtitle": "AIを活用したカスタムgenmojiで自己表現",
+    "cta": "Genmojiを作成"
   },
   "seo": {
     "title": "Genmoji オンライン - AI絵文字ジェネレーター",
@@ -116,7 +117,8 @@
       "failed": "生成に失敗しました。もう一度お試しください。"
     },
     "dialogTitle": "新しいGenmojiを作成",
-    "dialogDescription": "説明に基づいて新しい絵文字を作成します。参考画像をアップロードすることもできます。"
+    "dialogDescription": "説明に基づいて新しい絵文字を作成します。参考画像をアップロードすることもできます。",
+    "generatingMessage": "Genmojiを作成中です。その間に他のコンテンツをご覧いただけます..."
   },
   "cta": {
     "title": "今すぐGenmojiを作成",

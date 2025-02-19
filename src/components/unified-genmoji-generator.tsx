@@ -17,6 +17,7 @@ import EmojiContainer from "@/components/emoji-container";
 import { motion } from "framer-motion";
 import { useMediaQuery } from "@/hooks/use-media-query";
 import { cn } from "@/lib/utils";
+import { useGenerationStore } from "@/store/generation-store";
 
 interface UnifiedGenmojiGeneratorProps {
   trigger?: React.ReactNode;
@@ -36,12 +37,12 @@ export function UnifiedGenmojiGenerator({
   const locale = useLocale();
   const [isOpen, setIsOpen] = useState(mode === 'inline');
   const [prompt, setPrompt] = useState(initialPrompt);
-  const [isGenerating, setIsGenerating] = useState(false);
-  const [progress, setProgress] = useState(0);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [generatedEmoji, setGeneratedEmoji] = useState<Emoji | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const isMobile = useMediaQuery("(max-width: 768px)");
+  
+  const { isGenerating, progress, setGenerating, setProgress, setPrompt: setGlobalPrompt } = useGenerationStore();
 
   useEffect(() => {
     setPrompt(initialPrompt);
@@ -52,7 +53,7 @@ export function UnifiedGenmojiGenerator({
     if (isGenerating) {
       setProgress(0);
       intervalId = setInterval(() => {
-        setProgress((prev) => {
+        setProgress((prev: number) => {
           if (prev < 80) {
             return prev + (80 - prev) * 0.1;
           } else if (prev < 95) {
@@ -67,7 +68,7 @@ export function UnifiedGenmojiGenerator({
     return () => {
       if (intervalId) clearInterval(intervalId);
     };
-  }, [isGenerating]);
+  }, [isGenerating, setProgress]);
 
   const handleImageSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -117,8 +118,10 @@ export function UnifiedGenmojiGenerator({
   const generateEmoji = async () => {
     if (!prompt.trim()) return;
     
-    setIsGenerating(true);
+    setGenerating(true);
     setProgress(0);
+    setGlobalPrompt(prompt.trim());
+    setIsOpen(false);
     
     try {
       const emojiResponse = await genMoji(prompt.trim(), locale, selectedImage);
@@ -148,7 +151,7 @@ export function UnifiedGenmojiGenerator({
     } catch (error) {
       console.error('Error:', error);
     } finally {
-      setIsGenerating(false);
+      setGenerating(false);
     }
   };
 
@@ -252,42 +255,43 @@ export function UnifiedGenmojiGenerator({
     </div>
   );
 
-  if (mode === 'inline') {
-    return content;
-  }
-
-  // 在移动端使用抽屉，在PC端使用对话框
-  return isMobile ? (
-    <Drawer open={isOpen} onOpenChange={setIsOpen}>
-      <DrawerTrigger asChild>
-        {trigger}
-      </DrawerTrigger>
-      <DrawerContent className="px-0">
-        <DrawerHeader className="px-6">
-          <DrawerTitle>{t('dialogTitle')}</DrawerTitle>
-          <DrawerDescription>
-            {t('dialogDescription')}
-          </DrawerDescription>
-        </DrawerHeader>
-        <div className="px-6 pb-8">
-          {content}
-        </div>
-      </DrawerContent>
-    </Drawer>
-  ) : (
-    <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      <DialogTrigger asChild>
-        {trigger}
-      </DialogTrigger>
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle>{t('dialogTitle')}</DialogTitle>
-          <DialogDescription>
-            {t('dialogDescription')}
-          </DialogDescription>
-        </DialogHeader>
-        {content}
-      </DialogContent>
-    </Dialog>
+  return (
+    <>
+      {mode === 'inline' ? (
+        content
+      ) : isMobile ? (
+        <Drawer open={isOpen} onOpenChange={setIsOpen}>
+          <DrawerTrigger asChild>
+            {trigger}
+          </DrawerTrigger>
+          <DrawerContent className="px-0">
+            <DrawerHeader className="px-6">
+              <DrawerTitle>{t('dialogTitle')}</DrawerTitle>
+              <DrawerDescription>
+                {t('dialogDescription')}
+              </DrawerDescription>
+            </DrawerHeader>
+            <div className="px-6 pb-8">
+              {content}
+            </div>
+          </DrawerContent>
+        </Drawer>
+      ) : (
+        <Dialog open={isOpen} onOpenChange={setIsOpen}>
+          <DialogTrigger asChild>
+            {trigger}
+          </DialogTrigger>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>{t('dialogTitle')}</DialogTitle>
+              <DialogDescription>
+                {t('dialogDescription')}
+              </DialogDescription>
+            </DialogHeader>
+            {content}
+          </DialogContent>
+        </Dialog>
+      )}
+    </>
   );
 } 

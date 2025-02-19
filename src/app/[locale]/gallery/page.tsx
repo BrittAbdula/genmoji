@@ -36,10 +36,15 @@ export async function generateMetadata() {
     alternates: {
       canonical: locale === 'en' ? `${siteConfig.url}/gallery` : `${siteConfig.url}/${locale}/gallery`,
       languages: {
+        'x-default': `${siteConfig.url}/gallery`,
         'en': `${siteConfig.url}/gallery`,
+        'en-US': `${siteConfig.url}/gallery`,
         'ja': `${siteConfig.url}/ja/gallery`,
+        'ja-JP': `${siteConfig.url}/ja/gallery`,
         'fr': `${siteConfig.url}/fr/gallery`,
+        'fr-FR': `${siteConfig.url}/fr/gallery`,
         'zh': `${siteConfig.url}/zh/gallery`,
+        'zh-CN': `${siteConfig.url}/zh/gallery`,
       },
     },
   });

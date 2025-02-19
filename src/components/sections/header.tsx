@@ -68,7 +68,7 @@ export function Header() {
 
           <LanguageSwitcher className="hidden sm:inline-flex" />
           <ThemeToggle className="hidden sm:inline-flex" />
-          <div className="hidden lg:block">
+          {/* <div className="hidden lg:block">
             <Link
               href="/"
               className={cn(
@@ -78,7 +78,7 @@ export function Header() {
             >
               {t('cta')}
             </Link>
-          </div>
+          </div> */}
           <div className="mt-2 cursor-pointer block lg:hidden">
             <MobileDrawer />
           </div>
