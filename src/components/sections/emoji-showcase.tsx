@@ -76,10 +76,6 @@ const SHOWCASE_IMAGES = [
     image_url: "https://store.genmojionline.com/cdn-cgi/imagedelivery/DEOVdDdfeGzASe0KdtD7FA//0cb13c3f-fa14-4d45-087b-34e33c3db000/public"
   },
   {
-    slug: "valentines-card",
-    image_url: "https://store.genmojionline.com/cdn-cgi/imagedelivery/DEOVdDdfeGzASe0KdtD7FA//9fa9ceb6-2bdd-4a63-55b1-f55853911a00/public"
-  },
-  {
     slug: "pink-drink",
     image_url: "https://store.genmojionline.com/cdn-cgi/imagedelivery/DEOVdDdfeGzASe0KdtD7FA//3a3f5674-e5fc-4669-9a30-56417377a600/public"
   },
