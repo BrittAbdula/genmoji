@@ -8,13 +8,13 @@ export async function RelatedEmojis({ slug }: { slug: string }) {
 
     return (
         <div className="grid w-full auto-rows-max grid-cols-4 place-content-stretch justify-items-stretch gap-4 sm:grid-cols-5 md:grid-cols-6 lg:grid-cols-8">
-                {relatedEmojis.map((relatedEmoji) => (
-                    <EmojiContainer 
-                        key={relatedEmoji.slug} 
-                        emoji={relatedEmoji}
-                        size="sm"
-                    />
-                ))}
-            </div>
+            {relatedEmojis.map((relatedEmoji) => (
+                <EmojiContainer
+                    key={relatedEmoji.slug}
+                    emoji={relatedEmoji}
+                    size="sm"
+                />
+            ))}
+        </div>
     );
 } 

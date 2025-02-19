@@ -8,8 +8,8 @@ const SHOWCASE_IMAGES = [
     image_url: "https://store.genmojionline.com/cdn-cgi/imagedelivery/DEOVdDdfeGzASe0KdtD7FA//0507f6f6-9105-4d20-7a63-696dd8f50b00/public"
   },
   {
-    slug: "text-saying-fuck-trump",
-    image_url: "https://store.genmojionline.com/cdn-cgi/imagedelivery/DEOVdDdfeGzASe0KdtD7FA//dc6668f1-0e8b-4950-a2e6-404bfa9a6800/public"
+    slug: "donald-trump--m6p5j2zy",
+    image_url: "https://store.genmojionline.com/cdn-cgi/imagedelivery/DEOVdDdfeGzASe0KdtD7FA//1be8ab5c-9cea-4a9e-6f40-2d59ef803300/public"
   },
   {
     slug: "shirtless-man-wearing-undies",
@@ -30,10 +30,6 @@ const SHOWCASE_IMAGES = [
   {
     slug: "pink-wildflower",
     image_url: "https://store.genmojionline.com/cdn-cgi/imagedelivery/DEOVdDdfeGzASe0KdtD7FA//4a31febb-e1fa-4f97-b142-021b02caa900/public"
-  },
-  {
-    slug: "cute-police-cat",
-    image_url: "https://store.genmojionline.com/cdn-cgi/imagedelivery/DEOVdDdfeGzASe0KdtD7FA//ba6a022a-29ef-49cc-a7aa-9160444b5400/public"
   },
   {
     slug: "police-guinea-pig",

@@ -7,6 +7,7 @@ import { getTranslations } from 'next-intl/server';
 import { cn } from '@/lib/utils';
 import { outfit } from '@/lib/fonts';
 import { AuroraText } from "@/components/ui/aurora-text";
+import { Suspense } from "react";
 
 // Add Edge Runtime configuration
 export const runtime = 'edge';
@@ -52,13 +53,13 @@ export async function generateMetadata() {
 
 export default async function GalleryPage() {
   const t = await getTranslations('gallery');
-  
+
   return (
     <main className="min-h-screen bg-gradient-to-b from-background to-muted/20">
       <div className="relative">
         {/* Header Background */}
         <div className="absolute inset-0 h-[30vh] " />
-        
+
         {/* Content Container */}
         <div className="container relative mx-auto pt-[calc(2rem+var(--desktop-header-height))] pb-16">
           {/* Header Section */}

@@ -1,12 +1,12 @@
 "use client";
 
-import { useState, useEffect, useCallback, useRef } from "react";
+import { useState, useEffect, useCallback, useRef, Suspense } from "react";
 import { motion } from "framer-motion";
 import { getEmojis } from '@/lib/api'
 import EmojiContainer from "@/components/emoji-container";
 import { Emoji } from "@/types/emoji";
 import { Button } from "@/components/ui/button";
-import { useTranslations, useLocale} from 'next-intl';
+import { useTranslations, useLocale } from 'next-intl';
 import { ChevronLeft, ChevronRight, ArrowRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useRouter } from "next/navigation";
@@ -32,7 +32,7 @@ export function HorizontalGalleryContent() {
   const fetchEmojis = async (pageNum: number, retryCount = 3) => {
     if (loadingRef.current) return;
     loadingRef.current = true;
-    
+
     try {
       setError(null);
       const newEmojis = await getEmojis(
@@ -56,7 +56,7 @@ export function HorizontalGalleryContent() {
         loadingRef.current = false;
         return fetchEmojis(pageNum, retryCount - 1);
       }
-      
+
       setError(t('error.failed'));
       setEmojis([]);
       setHasMore(false);
@@ -81,21 +81,21 @@ export function HorizontalGalleryContent() {
 
   const handleDragEnd = (e: React.MouseEvent<HTMLDivElement> | React.TouchEvent<HTMLDivElement>) => {
     if (!isDraggingRef.current) return;
-    
+
     const endX = 'touches' in e ? e.changedTouches[0].clientX : e.clientX;
     const deltaX = startXRef.current - endX;
-    
+
     if (deltaX < -100 && hasMore) {
       const newDragCount = dragCount + 1;
       setDragCount(newDragCount);
-      
+
       if (newDragCount >= 3) {
         router.push('/gallery');
       } else {
         setPage(prev => prev + 1);
       }
     }
-    
+
     isDraggingRef.current = false;
   };
 
@@ -156,69 +156,71 @@ export function HorizontalGalleryContent() {
 
     return (
       <div className="relative group max-w-7xl mx-auto">
-        <div
-          ref={scrollContainerRef}
-          className="flex overflow-x-auto gap-8 snap-x snap-mandatory hide-scrollbar"
-          style={{
-            scrollbarWidth: 'none',
-            msOverflowStyle: 'none',
-          }}
-          onMouseDown={handleDragStart}
-          onMouseMove={handleDragMove}
-          onMouseUp={handleDragEnd}
-          onMouseLeave={handleDragEnd}
-          onTouchStart={handleDragStart}
-          onTouchMove={handleDragMove}
-          onTouchEnd={handleDragEnd}
-        >
-          {pages.map((pageEmojis, pageIndex) => (
-            <div
-              key={pageIndex}
-              className="flex-shrink-0 snap-start w-full"
-            >
-              <div className="grid w-full auto-rows-max grid-cols-4 place-content-center justify-items-center gap-4 sm:grid-cols-5 md:grid-cols-6 lg:grid-cols-8">
-                {pageEmojis.map((emoji, index) => (
-                  <motion.div
-                    key={`${emoji.slug}-${index}`}
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ duration: 0.3, delay: index * 0.05 }}
-                  >
-                    <div className="relative isolate select-none rounded-xl bg-transparent hover:bg-gray-100/10 dark:hover:bg-gray-800/50 transition-colors duration-200 ease-out p-2">
+        <Suspense fallback={
+          <div className="grid w-full auto-rows-max grid-cols-4 place-content-stretch justify-items-stretch gap-4 sm:grid-cols-5 md:grid-cols-6 lg:grid-cols-8">
+            {[...Array(32)].map((_, i) => (
+              <div key={i} className="aspect-square rounded-lg bg-muted animate-pulse" />
+            ))}
+          </div>
+        }>
+          <div
+            ref={scrollContainerRef}
+            className="flex overflow-x-auto gap-8 snap-x snap-mandatory hide-scrollbar"
+            style={{
+              scrollbarWidth: 'none',
+              msOverflowStyle: 'none',
+            }}
+            onMouseDown={handleDragStart}
+            onMouseMove={handleDragMove}
+            onMouseUp={handleDragEnd}
+            onMouseLeave={handleDragEnd}
+            onTouchStart={handleDragStart}
+            onTouchMove={handleDragMove}
+            onTouchEnd={handleDragEnd}
+          >
+            {pages.map((pageEmojis, pageIndex) => (
+              <div
+                key={pageIndex}
+                className="flex-shrink-0 snap-start w-full pt-4"
+              >
+                <div className="grid w-full auto-rows-max grid-cols-4 place-content-center justify-items-center gap-4 sm:grid-cols-5 md:grid-cols-6 lg:grid-cols-8">
+                  {pageEmojis.map((emoji, index) => (
+                    <div
+                      key={`${emoji.slug}-${index}`}>
                       <EmojiContainer
                         emoji={emoji}
-                        size="md"
+                        size="sm"
                       />
                     </div>
-                  </motion.div>
-                ))}
+                  ))}
+                </div>
               </div>
-            </div>
-          ))}
-          {loading && (
-            <div className="flex-shrink-0 w-32 h-32 flex items-center justify-center">
-              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary" />
-            </div>
-          )}
-          {hasMore && !loading && (
-            <div className="flex-shrink-0 w-32 flex items-center justify-center">
-              <motion.div
-                animate={{
-                  x: [0, 10, 0],
-                }}
-                transition={{
-                  duration: 1.5,
-                  repeat: Infinity,
-                  ease: "easeInOut",
-                }}
-                className="flex flex-col items-center gap-2 text-muted-foreground"
-              >
-                <ArrowRight className="w-6 h-6" />
-              </motion.div>
-            </div>
-          )}
-        </div>
-        
+            ))}
+            {loading && (
+              <div className="flex-shrink-0 w-32 h-32 flex items-center justify-center">
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary" />
+              </div>
+            )}
+            {hasMore && !loading && (
+              <div className="flex-shrink-0 w-32 flex items-center justify-center">
+                <motion.div
+                  animate={{
+                    x: [0, 10, 0],
+                  }}
+                  transition={{
+                    duration: 1.5,
+                    repeat: Infinity,
+                    ease: "easeInOut",
+                  }}
+                  className="flex flex-col items-center gap-2 text-muted-foreground"
+                >
+                  <ArrowRight className="w-6 h-6" />
+                </motion.div>
+              </div>
+            )}
+          </div>
+        </Suspense>
+
         {/* 滚动按钮 */}
         <button
           onClick={scrollLeft}

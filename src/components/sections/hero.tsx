@@ -56,11 +56,8 @@ export function Hero() {
         {/* Content */}
         <div className="relative z-20 flex min-h-[100dvh] flex-col">
           {/* Main Content */}
-          <motion.div 
+          <div 
             className="flex-1 flex flex-col items-center justify-center px-4 pt-10"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.8 }}
           >
             <div className="flex flex-col items-center max-w-5xl mx-auto text-center mb-8">
               <Title title={t('title')} />
@@ -81,16 +78,13 @@ export function Hero() {
                 </Button>
               }
             />
-          </motion.div>
+          </div>
 
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.3 }}
+          <div
             className="w-full mt-auto"
           >
             <EmojiShowcase />
-          </motion.div>
+          </div>
         </div>
       </section>
     </LazyMotion>

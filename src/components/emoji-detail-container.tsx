@@ -307,7 +307,7 @@ export function EmojiDetailContainer({ emoji }: EmojiDetailContainerProps) {
 
   return (
     <div className="container mx-auto px-4">
-      <div className="mx-auto flex w-full max-w-2xl flex-col items-center">
+      <div className="mx-auto flex w-full max-w-xl flex-col items-center">
 
         {/* 标题区域 */}
         <div className="w-full mb-6">
@@ -456,7 +456,11 @@ export function EmojiDetailContainer({ emoji }: EmojiDetailContainerProps) {
             transition={{ duration: 0.5, ease: "easeOut" }}
             className="w-full h-full rounded-xl overflow-hidden bg-gradient-to-b from-muted/5 to-muted/10 backdrop-blur-sm"
           >
-            <EmojiContainer emoji={emoji} size="xl" />
+          <img 
+              src={emoji.image_url} 
+              alt= {`prompt: ${emoji.prompt}`}
+              className={`aspect-square w-full  transition-opacity duration-200 ease-out`}
+            />
           </motion.div>
         </div>
         {/* 信息栏 - MODEL/DIMENSIONS/DATE */}

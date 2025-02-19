@@ -218,7 +218,7 @@ export function GalleryContent() {
     if (loading && page === 1) {
       return (
         <div className="grid w-full auto-rows-max grid-cols-4 place-content-stretch justify-items-stretch gap-4 sm:grid-cols-5 md:grid-cols-6 lg:grid-cols-8">
-          {Array.from({ length: 16 }).map((_, i) => (
+          {Array.from({ length: 64 }).map((_, i) => (
             <div key={`loading-skeleton-${i}`} className="aspect-square rounded-lg bg-muted animate-pulse" />
           ))}
         </div>
@@ -252,15 +252,15 @@ export function GalleryContent() {
       <div className="mx-auto flex w-full max-w-6xl flex-1 flex-col">
         <div className="grid w-full auto-rows-max grid-cols-4 place-content-stretch justify-items-stretch gap-4 sm:grid-cols-5 md:grid-cols-6 lg:grid-cols-8">
         {emojis.map((emoji, index) => (
-            <motion.div
+            <div
               key={`${emoji.slug}-${index}`}
               className="relative isolate select-none rounded-xl bg-transparent hover:bg-gray-100/10 dark:hover:bg-gray-800/50 transition-colors duration-200 ease-out p-2"
             >
               <EmojiContainer
                 emoji={emoji}
-                size="lg"
+                size="sm"
               />
-            </motion.div>
+            </div>
           ))}
         </div>
 
@@ -282,14 +282,11 @@ export function GalleryContent() {
   return (
     <div className="w-full">
       <SearchBar onSearch={handleSearch} loading={loading} />
-      <motion.div
+      <div
         className="mt-8"
-        initial={{ opacity: 0, y: 40 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8, delay: 0.2 }}
       >
         {renderContent()}
-      </motion.div>
+      </div>
     </div>
   );
 } 

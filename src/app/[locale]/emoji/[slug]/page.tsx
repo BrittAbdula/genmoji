@@ -128,7 +128,7 @@ export default async function EmojiPage(props: Props) {
                     </div>
                     <Suspense fallback={
                         <div className="grid w-full auto-rows-max grid-cols-4 place-content-stretch justify-items-stretch gap-4 sm:grid-cols-5 md:grid-cols-6 lg:grid-cols-8">
-                            {[...Array(8)].map((_, i) => (
+                            {[...Array(16)].map((_, i) => (
                                 <div key={i} className="aspect-square rounded-lg bg-muted animate-pulse" />
                             ))}
                         </div>
