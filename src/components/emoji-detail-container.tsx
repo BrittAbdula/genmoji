@@ -4,7 +4,7 @@ import { Emoji } from "@/types/emoji";
 import EmojiContainer from "@/components/emoji-container";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
-import { performAction } from "@/lib/api";
+import { performAction, toggleLike } from "@/lib/api";
 import { Button } from "./ui/button";
 import {
   DownloadIcon,
@@ -54,6 +54,9 @@ export function EmojiDetailContainer({ emoji }: EmojiDetailContainerProps) {
   const [isCopied, setIsCopied] = useState(false);
   const [isDownloading, setIsDownloading] = useState(false);
   const [showGenerator, setShowGenerator] = useState(false);
+  const [showLikeEffect, setShowLikeEffect] = useState(false);
+  const likeTimeoutRef = useRef<NodeJS.Timeout>();
+  const initialLikeState = useRef(false);
 
   // 记录浏览行为
   useEffect(() => {
@@ -67,12 +70,17 @@ export function EmojiDetailContainer({ emoji }: EmojiDetailContainerProps) {
 
   // 检查用户是否已经点赞过
   useEffect(() => {
-    const checkLikeStatus = () => {
-      const likedEmojis = JSON.parse(localStorage.getItem('likedEmojis') || '[]');
-      setIsLiked(likedEmojis.includes(emoji.slug));
+    const likedEmojis = JSON.parse(localStorage.getItem('likedEmojis') || '[]');
+    const hasLiked = likedEmojis.includes(emoji.slug);
+    setIsLiked(hasLiked);
+    initialLikeState.current = hasLiked;
+    
+    // 清理函数
+    return () => {
+      if (likeTimeoutRef.current) {
+        clearTimeout(likeTimeoutRef.current);
+      }
     };
-
-    checkLikeStatus();
   }, [emoji.slug]);
 
   // 获取当前URL
@@ -236,18 +244,62 @@ export function EmojiDetailContainer({ emoji }: EmojiDetailContainerProps) {
     }
   };
 
+  // 更新本地存储的点赞状态
+  const updateLocalLikeStatus = (liked: boolean) => {
+    const likedEmojis = JSON.parse(localStorage.getItem('likedEmojis') || '[]');
+    if (liked && !likedEmojis.includes(emoji.slug)) {
+      likedEmojis.push(emoji.slug);
+    } else if (!liked) {
+      const index = likedEmojis.indexOf(emoji.slug);
+      if (index > -1) {
+        likedEmojis.splice(index, 1);
+      }
+    }
+    localStorage.setItem('likedEmojis', JSON.stringify(likedEmojis));
+  };
+
+  // 处理点赞动画
+  const triggerLikeAnimation = () => {
+    setShowLikeEffect(true);
+    if (likeTimeoutRef.current) {
+      clearTimeout(likeTimeoutRef.current);
+    }
+    likeTimeoutRef.current = setTimeout(() => {
+      setShowLikeEffect(false);
+    }, 1000);
+  };
+
   // 处理点赞
   const handleLike = async () => {
     if (isLiking) return;
     setIsLiking(true);
+    
     try {
-      const response = await performAction(emoji.slug, locale, 'like');
-      if (response.success && response.data?.likes_count !== undefined) {
-        setLikesCount(response.data.likes_count);
-        setIsLiked(true);
+      const response = await toggleLike(emoji.slug, locale);
+      
+      if (response.success && response.data?.liked !== undefined) {
+        // 使用服务器返回的状态更新UI
+        setIsLiked(response.data.liked);
+        updateLocalLikeStatus(response.data.liked);
+        initialLikeState.current = response.data.liked;
+        
+        // 触发动画效果
+        if (response.data.liked) {
+          triggerLikeAnimation();
+        }
       }
-    } catch (error) {
-      console.error('Failed to like emoji:', error);
+    } catch (error: any) {
+      console.error('Failed to toggle like:', error);
+      
+      try {
+        const errorData = JSON.parse(error.message);
+        if (errorData.error === 'Emoji not found') {
+          // 处理表情不存在的情况
+          console.error('Emoji not found');
+        }
+      } catch {
+        // JSON 解析失败，说明不是预期的错误格式
+      }
     } finally {
       setIsLiking(false);
     }
@@ -288,13 +340,53 @@ export function EmojiDetailContainer({ emoji }: EmojiDetailContainerProps) {
                   isLiked ? 'text-red-500' : 'text-muted-foreground hover:text-red-500'
                 )}
               >
-                <HeartIcon
-                  className={cn(
-                    "h-4 w-4 transition-all",
-                    isLiking && "animate-pulse"
+                <AnimatePresence mode="wait">
+                  {showLikeEffect && (
+                    <motion.div
+                      key="like-effect"
+                      initial={{ scale: 1, opacity: 1 }}
+                      animate={{ 
+                        scale: [1, 1.5, 0.8, 1.2, 1],
+                        opacity: [1, 0.8, 1, 0.8, 1],
+                        rotate: [0, -15, 15, -10, 0]
+                      }}
+                      transition={{ 
+                        duration: 0.6,
+                        times: [0, 0.2, 0.4, 0.6, 1],
+                        ease: "easeInOut"
+                      }}
+                      className="absolute inset-0 flex items-center justify-center pointer-events-none"
+                    >
+                      <HeartIcon className="h-4 w-4" fill="currentColor" />
+                    </motion.div>
                   )}
-                  fill={isLiked ? "currentColor" : "none"}
-                />
+                  <motion.div
+                    key="heart-icon"
+                    animate={showLikeEffect ? { scale: [1, 0.8, 1] } : { scale: 1 }}
+                    transition={{ duration: 0.4 }}
+                  >
+                    <HeartIcon
+                      className={cn(
+                        "h-4 w-4 transition-all",
+                        isLiking && "animate-pulse"
+                      )}
+                      fill={isLiked ? "currentColor" : "none"}
+                    />
+                  </motion.div>
+                </AnimatePresence>
+                <AnimatePresence mode="wait">
+                  {likesCount > 0 && (
+                    <motion.span
+                      key={`count-${likesCount}`}
+                      initial={{ opacity: 0, y: -10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: 10 }}
+                      className="absolute -top-3 -right-3 text-xs bg-background border rounded-full px-1.5 py-0.5 select-none"
+                    >
+                      {likesCount}
+                    </motion.span>
+                  )}
+                </AnimatePresence>
               </motion.button>
 
               <DropdownMenu>

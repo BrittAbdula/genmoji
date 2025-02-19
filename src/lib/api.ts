@@ -82,7 +82,32 @@ export async function getRelatedEmojis(slug: string, locale: string): Promise<Em
   return emojiResponse.emojis || [];
 }
 
-// 4. 执行表情操作（点赞、评分、举报等）
+// 4. 点赞表情
+export async function toggleLike(slug: string, locale: string): Promise<{ success: boolean; data?: { liked: boolean } }> {
+  const res = await fetch(`${WORKER_URL}/action/${slug}/like`, {
+    method: 'POST',
+    headers: {
+      'Origin': 'https://genmojionline.com',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ 
+      locale
+    })
+  });
+
+  if (!res.ok) {
+    const errorText = await res.text();
+    console.error('Like error:', {
+      status: res.status,
+      statusText: res.statusText,
+      error: errorText
+    });
+    throw new Error(errorText);
+  }
+  return res.json();
+}
+
+// 5. 执行表情操作（评分、举报等）
 export async function performAction(
   slug: string, 
   locale: string, 
@@ -114,7 +139,7 @@ export async function performAction(
   return res.json();
 }
 
-// 5. 生成新表情
+// 6. 生成新表情
 export async function genMoji(prompt: string, locale: string, image: string | null): Promise<EmojiResponse> {
   const res = await fetch(`${WORKER_URL}/emoji/generate`, {
     method: 'POST',

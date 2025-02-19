@@ -7,8 +7,8 @@ export interface ActionResponse {
   error?: string;
   data?: {
     url?: string;
-    likes_count?: number;
     views_count?: number;
+    liked?: boolean;
   };
 }
 
