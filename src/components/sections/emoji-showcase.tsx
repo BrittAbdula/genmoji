@@ -12,10 +12,6 @@ const SHOWCASE_IMAGES = [
     image_url: "https://store.genmojionline.com/cdn-cgi/imagedelivery/DEOVdDdfeGzASe0KdtD7FA//1be8ab5c-9cea-4a9e-6f40-2d59ef803300/public"
   },
   {
-    slug: "shirtless-man-wearing-undies",
-    image_url: "https://store.genmojionline.com/cdn-cgi/imagedelivery/DEOVdDdfeGzASe0KdtD7FA//97cf669c-bfb0-4a55-e6d0-1e95fc6d3700/public"
-  },
-  {
     slug: "unrealistic-smiling-donut-with-headphones",
     image_url: "https://store.genmojionline.com/cdn-cgi/imagedelivery/DEOVdDdfeGzASe0KdtD7FA//42f0e9be-3c37-4821-fcbc-a0821281b700/public"
   },
@@ -112,12 +108,12 @@ export function EmojiShowcase() {
 
   return (
     <div className="relative flex w-full flex-col items-center justify-center gap-8 overflow-hidden py-4">
-      <Marquee pauseOnHover className="[--duration:40s]">
+      <Marquee  className="[--duration:40s]">
         {firstRow.map((item, i) => (
           <EmojiCard key={i} {...item} index={i} />
         ))}
       </Marquee>
-      <Marquee reverse pauseOnHover className="[--duration:35s]">
+      <Marquee reverse  className="[--duration:35s]">
         {secondRow.map((item, i) => (
           <EmojiCard key={i} {...item} index={i + firstRow.length} />
         ))}

@@ -216,8 +216,10 @@ export function GenmojiGenerator() {
                 placeholder={t('placeholder')}
                 value={prompt}
                 onChange={(e) => setPrompt(e.target.value)}
-                className="flex-1 text-base"
+                className="flex-1 text-base sm:text-base"
                 style={{ fontSize: '16px' }}
+                autoComplete="off"
+                inputMode="text"
                 onKeyDown={(e) => {
                   if (e.key === 'Enter' && prompt.trim() && !isGenerating) {
                     generateEmoji();
