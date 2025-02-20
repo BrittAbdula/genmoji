@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback, useRef } from "react";
+import { useState, useEffect, useCallback, useRef, memo } from "react";
 import { motion } from "framer-motion";
 import { getEmojis } from '@/lib/api'
 import EmojiContainer from "@/components/emoji-container";
@@ -10,6 +10,32 @@ import { SearchBar } from "@/components/search-bar";
 import { useTranslations, useLocale} from 'next-intl';
 import { debounce } from "lodash";
 import { useInView } from "react-intersection-observer";
+
+// 将内容渲染部分抽离为独立组件
+const EmojiGrid = memo(({ emojis }: { emojis: Emoji[] }) => {
+  return (
+    <div className="grid w-full auto-rows-max grid-cols-4 place-items-center justify-items-center gap-4 sm:grid-cols-5 md:grid-cols-6 lg:grid-cols-8 mx-auto">
+      {emojis.map((emoji, index) => (
+        <div key={`${emoji.slug}-${index}`}>
+          <EmojiContainer emoji={emoji} size="sm" />
+        </div>
+      ))}
+    </div>
+  );
+});
+EmojiGrid.displayName = 'EmojiGrid';
+
+// 将加载状态组件抽离
+const LoadingSkeleton = memo(() => {
+  return (
+    <div className="grid w-full auto-rows-max grid-cols-4 place-content-stretch justify-items-stretch gap-4 sm:grid-cols-5 md:grid-cols-6 lg:grid-cols-8">
+      {Array.from({ length: 32 }).map((_, i) => (
+        <div key={`loading-skeleton-${i}`} className="aspect-square rounded-lg bg-muted animate-pulse" />
+      ))}
+    </div>
+  );
+});
+LoadingSkeleton.displayName = 'LoadingSkeleton';
 
 export function GalleryContent() {
   const t = useTranslations('gallery');
@@ -210,19 +236,9 @@ export function GalleryContent() {
     }
   }, [page]);
 
-  const handleSearch = useCallback((query: string) => {
-    setSearchQuery(query);
-  }, []);
-
   const renderContent = () => {
     if (loading && page === 1) {
-      return (
-        <div className="grid w-full auto-rows-max grid-cols-4 place-content-stretch justify-items-stretch gap-4 sm:grid-cols-5 md:grid-cols-6 lg:grid-cols-8">
-          {Array.from({ length: 32 }).map((_, i) => (
-            <div key={`loading-skeleton-${i}`} className="aspect-square rounded-lg bg-muted animate-pulse" />
-          ))}
-        </div>
-      );
+      return <LoadingSkeleton />;
     }
 
     if (error) {
@@ -250,20 +266,7 @@ export function GalleryContent() {
 
     return (
       <div className="mx-auto flex w-full max-w-6xl flex-1 flex-col">
-        <div className="grid w-full auto-rows-max grid-cols-4 place-items-center justify-items-center gap-4 sm:grid-cols-5 md:grid-cols-6 lg:grid-cols-8 mx-auto">
-        {emojis.map((emoji, index) => (
-            <div
-              key={`${emoji.slug}-${index}`}
-            >
-              <EmojiContainer
-                emoji={emoji}
-                size="sm"
-              />
-            </div>
-          ))}
-        </div>
-
-        {/* 无限加载触发器 */}
+        <EmojiGrid emojis={emojis} />
         {hasMore && (
           <div
             ref={loadMoreRef}
@@ -278,12 +281,14 @@ export function GalleryContent() {
     );
   };
 
+  const handleSearch = useCallback((query: string) => {
+    setSearchQuery(query);
+  }, []);
+
   return (
     <div className="w-full">
       <SearchBar onSearch={handleSearch} loading={loading} />
-      <div
-        className="mt-8"
-      >
+      <div className="mt-8">
         {renderContent()}
       </div>
     </div>
