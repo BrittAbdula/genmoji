@@ -6,10 +6,11 @@ import Script from 'next/script';
 import { getEmoji } from '@/lib/api';
 import { Link } from '@/i18n/routing';
 import { getTranslations } from 'next-intl/server';
-import { Suspense } from 'react';
+import { Suspense, useEffect } from 'react';
 import { RelatedEmojis } from '@/components/related-emojis';
 import { getLocale } from "next-intl/server";
 import { siteConfig } from "@/lib/config";
+import { ScrollToTop } from '@/components/scroll-to-top';
 
 // Add Edge Runtime configuration
 export const runtime = 'edge';
@@ -119,6 +120,7 @@ export default async function EmojiPage(props: Props) {
 
         return (
             <div className="container mx-auto py-4">
+                <ScrollToTop />
                 <Script id="json-ld" type="application/ld+json">
                     {JSON.stringify(jsonLd)}
                 </Script>
