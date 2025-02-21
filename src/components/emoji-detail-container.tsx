@@ -4,7 +4,7 @@ import { Emoji } from "@/types/emoji";
 import EmojiContainer from "@/components/emoji-container";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
-import { performAction, toggleLike } from "@/lib/api";
+import { performAction, toggleLike, getEmojisByBaseSlug } from "@/lib/api";
 import { Button } from "./ui/button";
 import {
   DownloadIcon,
@@ -24,7 +24,7 @@ import {
   QrCodeIcon,
   UploadIcon,
 } from "lucide-react";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, memo, useMemo } from "react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -41,11 +41,172 @@ interface EmojiDetailContainerProps {
   emoji: Emoji;
 }
 
-export function EmojiDetailContainer({ emoji }: EmojiDetailContainerProps) {
+// 主图片展示组件
+const MainImage = memo(({ 
+  emoji, 
+  onSwipe,
+  className 
+}: { 
+  emoji: Emoji; 
+  onSwipe: (direction: 'left' | 'right') => void;
+  className?: string;
+}) => {
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.5, ease: "easeOut" }}
+      className={cn("w-full h-full rounded-xl overflow-hidden bg-gradient-to-b from-muted/5 to-muted/10 backdrop-blur-sm", className)}
+      drag="x"
+      dragConstraints={{ left: 0, right: 0 }}
+      dragElastic={0.2}
+      onDragEnd={(e, { offset, velocity }) => {
+        const swipe = Math.abs(offset.x) * velocity.x;
+        if (swipe < -100) {
+          onSwipe('right');
+        } else if (swipe > 100) {
+          onSwipe('left');
+        }
+      }}
+    >
+      <AnimatePresence mode="wait">
+        <motion.img 
+          key={emoji.slug}
+          src={emoji.image_url} 
+          alt={`prompt: ${emoji.prompt}`}
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0, scale: 0.9 }}
+          transition={{ duration: 0.3 }}
+          className="w-full h-full object-contain p-8"
+          draggable={false}
+        />
+      </AnimatePresence>
+    </motion.div>
+  );
+});
+
+// 预览图片组件
+const PreviewImage = memo(({ 
+  emoji,
+  direction,
+  onClick 
+}: { 
+  emoji: Emoji;
+  direction: 'left' | 'right';
+  onClick: () => void;
+}) => {
+  return (
+    <div 
+      className={cn(
+        "absolute top-0 bottom-0 w-1/4 flex items-center cursor-pointer transition-opacity hover:opacity-50 opacity-30",
+        direction === 'left' ? 'left-0 justify-start' : 'right-0 justify-end'
+      )}
+      onClick={onClick}
+    >
+      <motion.div
+        className="w-full h-full"
+        initial={{ opacity: 0, x: direction === 'left' ? -20 : 20 }}
+        animate={{ opacity: 1, x: 0 }}
+        exit={{ opacity: 0, x: direction === 'left' ? -20 : 20 }}
+      >
+        <img
+          src={emoji.image_url}
+          alt={`${direction} variation`}
+          className="w-full h-full object-contain"
+        />
+      </motion.div>
+    </div>
+  );
+});
+
+// 变体缩略图组件
+const VariationThumbnail = memo(({ 
+  variation,
+  isSelected,
+  onClick 
+}: { 
+  variation: Emoji;
+  isSelected: boolean;
+  onClick: () => void;
+}) => {
+  return (
+    <button
+      onClick={onClick}
+      className={cn(
+        "relative shrink-0 w-20 h-20 sm:w-24 sm:h-24 rounded-xl overflow-hidden transition-all duration-200",
+        "hover:bg-gray-950/[.05] active:bg-gray-950/[.1]",
+        "dark:hover:bg-gray-50/[.15] dark:active:bg-gray-50/[.2]",
+        "backdrop-blur-sm bg-gradient-to-b from-muted/5 to-muted/10",
+        isSelected && "bg-gray-950/[.1] dark:bg-gray-50/[.2] scale-105"
+      )}
+    >
+      <img
+        src={variation.image_url}
+        alt={variation.prompt}
+        className="w-full h-full object-contain p-2"
+        loading="lazy"
+        draggable={false}
+      />
+    </button>
+  );
+});
+
+// 变体列表组件
+const VariationsList = memo(({ 
+  variations,
+  currentIndex,
+  onVariationSelect,
+  onScroll,
+  isLoading 
+}: { 
+  variations: Emoji[];
+  currentIndex: number;
+  onVariationSelect: (index: number) => void;
+  onScroll: (e: React.UIEvent<HTMLDivElement>) => void;
+  isLoading: boolean;
+}) => {
+  return (
+    <div className="w-full mb-4 relative">
+      <div 
+        className="overflow-x-auto hide-scrollbar px-4 mx-auto max-w-[calc(100vw-2rem)] sm:max-w-[calc(100vw-4rem)] md:max-w-xl"
+        onScroll={onScroll}
+      >
+        <div className="relative">
+          <div 
+            className="flex gap-3 py-4 px-[calc((100%-((4*5rem)-1rem))/2)] sm:px-[calc((100%-((6*6rem)-1rem))/2)]"
+            style={{ width: 'max-content' }}
+          >
+            {variations.map((variation, index) => (
+              <VariationThumbnail
+                key={variation.slug}
+                variation={variation}
+                isSelected={index === currentIndex}
+                onClick={() => onVariationSelect(index)}
+              />
+            ))}
+            {isLoading && (
+              <div className="shrink-0 w-20 h-20 sm:w-24 sm:h-24 rounded-xl bg-muted/10 flex items-center justify-center backdrop-blur-sm">
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary" />
+              </div>
+            )}
+          </div>
+          <div className="absolute left-0 top-0 bottom-0 w-12 bg-gradient-to-r from-background via-background/80 to-transparent pointer-events-none" />
+          <div className="absolute right-0 top-0 bottom-0 w-12 bg-gradient-to-l from-background via-background/80 to-transparent pointer-events-none" />
+        </div>
+      </div>
+    </div>
+  );
+});
+
+export function EmojiDetailContainer({ emoji: initialEmoji }: EmojiDetailContainerProps) {
   const t = useTranslations('emoji.detail');
   const locale = useLocale();
+  const [currentEmoji, setCurrentEmoji] = useState(initialEmoji);
+  const [allVariations, setAllVariations] = useState<Emoji[]>([]);
+  const [displayIndex, setDisplayIndex] = useState(0);
   const [isLiked, setIsLiked] = useState(false);
-  const [likesCount, setLikesCount] = useState(emoji.likes_count || 0);
+  const [likesCount, setLikesCount] = useState(initialEmoji.likes_count || 0);
   const [isLiking, setIsLiking] = useState(false);
   const [showCopied, setShowCopied] = useState(false);
   const [showPromptCopied, setShowPromptCopied] = useState(false);
@@ -57,31 +218,87 @@ export function EmojiDetailContainer({ emoji }: EmojiDetailContainerProps) {
   const [showLikeEffect, setShowLikeEffect] = useState(false);
   const likeTimeoutRef = useRef<NodeJS.Timeout>();
   const initialLikeState = useRef(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [hasMore, setHasMore] = useState(true);
+  const [offset, setOffset] = useState(0);
+  const LIMIT = 10;
+
+  // 获取变体 - 只在初始化时调用一次
+  const fetchVariations = async () => {
+    if (isLoading) return;
+    
+    try {
+      setIsLoading(true);
+      const newEmojis = await getEmojisByBaseSlug(initialEmoji.slug, locale, LIMIT, 0);
+      
+      // 确保当前emoji在列表中，并找到它的位置
+      const currentEmojiIndex = newEmojis.findIndex(e => e.slug === initialEmoji.slug);
+      if (currentEmojiIndex === -1) {
+        // 如果当前emoji不在返回列表中，将其添加到开头
+        setAllVariations([initialEmoji, ...newEmojis]);
+        setDisplayIndex(0);
+      } else {
+        setAllVariations(newEmojis);
+        setDisplayIndex(currentEmojiIndex);
+      }
+    } catch (err) {
+      console.error('Failed to fetch emoji variations:', err);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // 初始加载 - 只执行一次
+  useEffect(() => {
+    fetchVariations();
+  }, []);
+
+  // 切换显示的变体
+  const handleVariationChange = (index: number) => {
+    if (index < 0 || index >= allVariations.length) return;
+    
+    setDisplayIndex(index);
+    const selectedEmoji = allVariations[index];
+    setCurrentEmoji(selectedEmoji);
+    // 重置状态
+    setIsLiked(false);
+    setLikesCount(selectedEmoji.likes_count || 0);
+    checkLikeStatus(selectedEmoji.slug);
+
+    // 更新标题和信息栏数据
+    document.title = t('meta.title', { prompt: selectedEmoji.prompt });
+    const newUrl = new URL(window.location.href);
+    newUrl.pathname = `${locale === 'en' ? '' : `/${locale}`}/emoji/${selectedEmoji.slug}`;
+    window.history.replaceState({}, '', newUrl.toString());
+  };
 
   // 记录浏览行为
   useEffect(() => {
     const referrer = document.referrer;
-    performAction(emoji.slug, locale, 'view', {
+    performAction(initialEmoji.slug, locale, 'view', {
       referrer,
     }).catch(error => {
       console.error('Failed to record view:', error);
     });
-  }, [emoji.slug, locale]);
+  }, [initialEmoji.slug, locale]);
+
+  // 检查点赞状态
+  const checkLikeStatus = (slug: string) => {
+    const likedEmojis = JSON.parse(localStorage.getItem('likedEmojis') || '[]');
+    const hasLiked = likedEmojis.includes(slug);
+    setIsLiked(hasLiked);
+    initialLikeState.current = hasLiked;
+  };
 
   // 检查用户是否已经点赞过
   useEffect(() => {
-    const likedEmojis = JSON.parse(localStorage.getItem('likedEmojis') || '[]');
-    const hasLiked = likedEmojis.includes(emoji.slug);
-    setIsLiked(hasLiked);
-    initialLikeState.current = hasLiked;
-    
-    // 清理函数
+    checkLikeStatus(initialEmoji.slug);
     return () => {
       if (likeTimeoutRef.current) {
         clearTimeout(likeTimeoutRef.current);
       }
     };
-  }, [emoji.slug]);
+  }, [initialEmoji.slug]);
 
   // 获取当前URL
   const getShareUrl = () => {
@@ -101,7 +318,7 @@ export function EmojiDetailContainer({ emoji }: EmojiDetailContainerProps) {
       setTimeout(() => setShowCopied(false), 2000);
       
       // 异步提交行为数据
-      performAction(emoji.slug, locale, 'copy').catch(error => {
+      performAction(initialEmoji.slug, locale, 'copy').catch(error => {
         console.error('Failed to record copy action:', error);
       });
     } catch (error) {
@@ -112,7 +329,7 @@ export function EmojiDetailContainer({ emoji }: EmojiDetailContainerProps) {
   // 复制提示词
   const handlePromptCopy = async () => {
     try {
-      await navigator.clipboard.writeText(emoji.prompt);
+      await navigator.clipboard.writeText(initialEmoji.prompt);
       setShowPromptCopied(true);
       setTimeout(() => setShowPromptCopied(false), 2000);
     } catch (err) {
@@ -123,7 +340,7 @@ export function EmojiDetailContainer({ emoji }: EmojiDetailContainerProps) {
   // 复制图片到剪贴板
   const handleCopyImage = async () => {
     try {
-      const response = await fetch(emoji.image_url);
+      const response = await fetch(initialEmoji.image_url);
       const blob = await response.blob();
 
       await navigator.clipboard.write([
@@ -135,7 +352,7 @@ export function EmojiDetailContainer({ emoji }: EmojiDetailContainerProps) {
       setTimeout(() => setShowImageCopied(false), 2000);
 
       // 异步提交行为数据
-      performAction(emoji.slug, locale, 'copy', { type: 'image' }).catch(error => {
+      performAction(initialEmoji.slug, locale, 'copy', { type: 'image' }).catch(error => {
         console.error('Failed to record image copy action:', error);
       });
     } catch (err) {
@@ -151,20 +368,20 @@ export function EmojiDetailContainer({ emoji }: EmojiDetailContainerProps) {
     
     try {
       // 先执行下载操作
-      const response = await fetch(emoji.image_url);
+      const response = await fetch(initialEmoji.image_url);
       const blob = await response.blob();
       const url = URL.createObjectURL(blob);
       
       const link = document.createElement('a');
       link.href = url;
-      link.download = `${emoji.slug}.png`;
+      link.download = `${initialEmoji.slug}.png`;
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
       URL.revokeObjectURL(url);
 
       // 异步提交行为数据
-      performAction(emoji.slug, locale, 'download').catch(error => {
+      performAction(initialEmoji.slug, locale, 'download').catch(error => {
         console.error('Failed to record download action:', error);
       });
     } catch (error) {
@@ -177,9 +394,9 @@ export function EmojiDetailContainer({ emoji }: EmojiDetailContainerProps) {
   // 构建社交媒体分享链接
   const getSocialShareUrl = (platform: 'twitter' | 'linkedin' | 'facebook' | 'pinterest' | 'telegram' | 'whatsapp' | 'wechat' | 'imgur') => {
     const url = encodeURIComponent(getShareUrl());
-    const text = encodeURIComponent(`Check out this emoji: ${emoji.prompt}`);
-    const title = encodeURIComponent(emoji.prompt);
-    const image = encodeURIComponent(emoji.image_url);
+    const text = encodeURIComponent(`Check out this emoji: ${initialEmoji.prompt}`);
+    const title = encodeURIComponent(initialEmoji.prompt);
+    const image = encodeURIComponent(initialEmoji.image_url);
 
     switch (platform) {
       case 'twitter':
@@ -206,12 +423,12 @@ export function EmojiDetailContainer({ emoji }: EmojiDetailContainerProps) {
   // 处理分享到 Instagram
   const handleInstagramShare = async () => {
     try {
-      const response = await fetch(emoji.image_url);
+      const response = await fetch(initialEmoji.image_url);
       const blob = await response.blob();
 
       const a = document.createElement('a');
       a.href = URL.createObjectURL(blob);
-      a.download = `${emoji.slug}.png`;
+      a.download = `${initialEmoji.slug}.png`;
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
@@ -232,8 +449,8 @@ export function EmojiDetailContainer({ emoji }: EmojiDetailContainerProps) {
     try {
       if (navigator.share) {
         await navigator.share({
-          title: emoji.prompt,
-          text: t('sharing.defaultText', { prompt: emoji.prompt }),
+          title: initialEmoji.prompt,
+          text: t('sharing.defaultText', { prompt: initialEmoji.prompt }),
           url: getShareUrl()
         });
       } else {
@@ -247,10 +464,10 @@ export function EmojiDetailContainer({ emoji }: EmojiDetailContainerProps) {
   // 更新本地存储的点赞状态
   const updateLocalLikeStatus = (liked: boolean) => {
     const likedEmojis = JSON.parse(localStorage.getItem('likedEmojis') || '[]');
-    if (liked && !likedEmojis.includes(emoji.slug)) {
-      likedEmojis.push(emoji.slug);
+    if (liked && !likedEmojis.includes(initialEmoji.slug)) {
+      likedEmojis.push(initialEmoji.slug);
     } else if (!liked) {
-      const index = likedEmojis.indexOf(emoji.slug);
+      const index = likedEmojis.indexOf(initialEmoji.slug);
       if (index > -1) {
         likedEmojis.splice(index, 1);
       }
@@ -275,7 +492,7 @@ export function EmojiDetailContainer({ emoji }: EmojiDetailContainerProps) {
     setIsLiking(true);
     
     try {
-      const response = await toggleLike(emoji.slug, locale);
+      const response = await toggleLike(initialEmoji.slug, locale);
       
       if (response.success && response.data?.liked !== undefined) {
         // 使用服务器返回的状态更新UI
@@ -305,6 +522,71 @@ export function EmojiDetailContainer({ emoji }: EmojiDetailContainerProps) {
     }
   };
 
+  // 处理滑动
+  const handleSwipe = (direction: 'left' | 'right') => {
+    if (direction === 'right' && displayIndex < allVariations.length - 1) {
+      handleVariationChange(displayIndex + 1);
+    } else if (direction === 'left' && displayIndex > 0) {
+      handleVariationChange(displayIndex - 1);
+    }
+  };
+
+  // 缓存主要展示区域
+  const mainImageSection = useMemo(() => (
+    <div className="relative w-full aspect-square mb-6 overflow-hidden">
+      {allVariations.length > 1 && displayIndex > 0 && (
+        <PreviewImage
+          emoji={allVariations[displayIndex - 1]}
+          direction="left"
+          onClick={() => handleVariationChange(displayIndex - 1)}
+        />
+      )}
+
+      <MainImage
+        emoji={currentEmoji}
+        onSwipe={handleSwipe}
+      />
+
+      {allVariations.length > 1 && displayIndex < allVariations.length - 1 && (
+        <PreviewImage
+          emoji={allVariations[displayIndex + 1]}
+          direction="right"
+          onClick={() => handleVariationChange(displayIndex + 1)}
+        />
+      )}
+
+      {allVariations.length > 1 && (
+        <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 flex gap-1.5">
+          {allVariations.map((_, index) => (
+            <button
+              key={index}
+              onClick={() => handleVariationChange(index)}
+              className={cn(
+                "w-1.5 h-1.5 rounded-full transition-all duration-200",
+                index === displayIndex 
+                  ? "bg-primary w-3" 
+                  : "bg-primary/30 hover:bg-primary/50"
+              )}
+            />
+          ))}
+        </div>
+      )}
+    </div>
+  ), [currentEmoji, allVariations, displayIndex]);
+
+  // 缓存变体列表区域
+  const variationsSection = useMemo(() => (
+    allVariations.length > 1 && (
+      <VariationsList
+        variations={allVariations}
+        currentIndex={displayIndex}
+        onVariationSelect={handleVariationChange}
+        onScroll={() => {}} // 移除滚动加载逻辑
+        isLoading={false} // 移除加载状态
+      />
+    )
+  ), [allVariations, displayIndex]);
+
   return (
     <div className="container mx-auto px-2 flex w-full max-w-xl flex-col items-center">
       {/* <div className="mx-auto flex w-full max-w-xl flex-col items-center"> */}
@@ -318,9 +600,9 @@ export function EmojiDetailContainer({ emoji }: EmojiDetailContainerProps) {
             >
               <h1
                 className="text-xl font-medium truncate leading-tight"
-                title={emoji.prompt}
+                title={initialEmoji.prompt}
               >
-                {emoji.prompt}
+                {initialEmoji.prompt}
               </h1>
               {showPromptCopied && (
                 <div className="absolute top-full left-0 mt-1 flex items-center gap-1 text-xs text-green-500">
@@ -448,37 +730,31 @@ export function EmojiDetailContainer({ emoji }: EmojiDetailContainerProps) {
           </div>
         </div>
 
-        {/* 图片展示区 */}
-        <div className="relative w-full aspect-square mb-6">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, ease: "easeOut" }}
-            className="w-full h-full rounded-xl overflow-hidden bg-gradient-to-b from-muted/5 to-muted/10 backdrop-blur-sm"
-          >
-          <img 
-              src={emoji.image_url} 
-              alt= {`prompt: ${emoji.prompt}`}
-              className={`aspect-square w-full  transition-opacity duration-200 ease-out`}
-            />
-          </motion.div>
-        </div>
+        {mainImageSection}
+        {variationsSection}
+
         {/* 信息栏 - MODEL/DIMENSIONS/DATE */}
-        <div className="w-full flex items-center justify-between text-xs text-muted-foreground mb-4">
-          <div className="flex items-center gap-1.5">
-            <span className="uppercase">CATEGORY</span>
-            <span className="text-foreground">Emoji</span>
+        <div className="w-full relative mb-4">
+          <div className="overflow-x-auto hide-scrollbar">
+            <div className="flex items-center gap-2 px-4 min-w-max mx-auto" style={{ width: 'fit-content' }}>
+              <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                <span className="uppercase whitespace-nowrap">CATEGORY</span>
+                <span className="text-foreground">Emoji</span>
+              </div>
+              <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                <span className="uppercase whitespace-nowrap">MAKER</span>
+                <span className="text-foreground">anonymous</span>
+              </div>
+              <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                <span className="uppercase whitespace-nowrap">DATE</span>
+                <span className="text-foreground whitespace-nowrap">
+                  {currentEmoji.created_at ? new Date(currentEmoji.created_at).toLocaleDateString() : '-'}
+                </span>
+              </div>
+            </div>
           </div>
-          <div className="flex items-center gap-1.5">
-            <span className="uppercase">MAKER</span>
-            <span className="text-foreground">anonymous</span>
-          </div>
-          <div className="flex items-center gap-1.5">
-            <span className="uppercase">DATE</span>
-            <span className="text-foreground">
-              {emoji.created_at ? new Date(emoji.created_at).toLocaleDateString() : '-'}
-            </span>
-          </div>
+          <div className="absolute left-0 top-0 bottom-0 w-4 bg-gradient-to-r from-background to-transparent pointer-events-none" />
+          <div className="absolute right-0 top-0 bottom-0 w-4 bg-gradient-to-l from-background to-transparent pointer-events-none" />
         </div>
 
         {/* 操作按钮区 */}
@@ -494,7 +770,7 @@ export function EmojiDetailContainer({ emoji }: EmojiDetailContainerProps) {
                   {t('reGenmoji')}
                 </Button>
               }
-              initialPrompt={emoji.prompt}
+              initialPrompt={initialEmoji.prompt}
             />
 
             <Button

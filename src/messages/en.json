@@ -1,0 +1,11 @@
+{
+  "emoji": {
+    "variations": {
+      "title": "Other Variations",
+      "error": "Failed to load variations"
+    },
+    "detail": {
+      "swipeToSee": "swipe to see more"
+    }
+  }
+} 

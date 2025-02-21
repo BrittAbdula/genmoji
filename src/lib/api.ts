@@ -32,7 +32,6 @@ export async function getEmoji(slug: string, locale: string): Promise<Emoji> {
       console.error('Invalid emoji response:', emojiResponse);
       throw new Error('Emoji not found');
     }
-    
     return emojiResponse.emoji;
   } catch (error) {
     console.error('Error in getEmoji:', error);
@@ -154,4 +153,29 @@ export async function genMoji(prompt: string, locale: string, image: string | nu
     throw new Error('Failed to generate emoji');
   }
   return res.json();
+}
+
+// 4. 获取同一base slug的表情
+export async function getEmojisByBaseSlug(
+  slug: string, 
+  locale: string, 
+  limit: number = 20,
+  offset: number = 0
+): Promise<Emoji[]> {
+  const baseSlug = slug.split('--')[0];
+  const url = `${WORKER_URL}/emoji/by-base-slug/${baseSlug}?locale=${locale}&limit=${limit}&offset=${offset}`;
+  
+  const res = await fetch(url, {
+    headers: {
+      'Origin': 'https://genmojionline.com'
+    },
+    next: { revalidate: 60 }
+  });
+  
+  if (!res.ok) {
+    throw new Error('Failed to fetch emojis by base slug');
+  }
+  
+  const emojiResponse = await res.json() as EmojiResponse;
+  return emojiResponse.emojis || [];
 }
