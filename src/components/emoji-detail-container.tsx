@@ -24,7 +24,7 @@ import {
   QrCodeIcon,
   UploadIcon,
 } from "lucide-react";
-import { useState, useEffect, useRef, memo, useMemo } from "react";
+import { useState, useEffect, useRef, memo, useMemo, forwardRef } from "react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -121,17 +121,14 @@ const PreviewImage = memo(({
 });
 
 // 变体缩略图组件
-const VariationThumbnail = memo(({ 
-  variation,
-  isSelected,
-  onClick 
-}: { 
+const VariationThumbnail = memo(forwardRef<HTMLButtonElement, { 
   variation: Emoji;
   isSelected: boolean;
   onClick: () => void;
-}) => {
+}>(({ variation, isSelected, onClick }, ref) => {
   return (
     <button
+      ref={ref}
       onClick={onClick}
       className={cn(
         "relative shrink-0 w-20 h-20 sm:w-24 sm:h-24 rounded-xl overflow-hidden transition-all duration-200",
@@ -150,7 +147,9 @@ const VariationThumbnail = memo(({
       />
     </button>
   );
-});
+}));
+
+VariationThumbnail.displayName = 'VariationThumbnail';
 
 // 变体列表组件
 const VariationsList = memo(({ 
@@ -166,20 +165,44 @@ const VariationsList = memo(({
   onScroll: (e: React.UIEvent<HTMLDivElement>) => void;
   isLoading: boolean;
 }) => {
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const thumbnailRefs = useRef<(HTMLButtonElement | null)[]>([]);
+
+  // 当选中的索引改变时，将对应的缩略图滚动到中心位置
+  useEffect(() => {
+    const selectedThumbnail = thumbnailRefs.current[currentIndex];
+    if (selectedThumbnail && scrollContainerRef.current) {
+      const container = scrollContainerRef.current;
+      const containerWidth = container.offsetWidth;
+      const thumbnailWidth = selectedThumbnail.offsetWidth;
+      const thumbnailLeft = selectedThumbnail.offsetLeft;
+      const scrollLeft = thumbnailLeft - (containerWidth / 2) + (thumbnailWidth / 2);
+      
+      container.scrollTo({
+        left: scrollLeft,
+        behavior: 'smooth'
+      });
+    }
+  }, [currentIndex]);
+
   return (
     <div className="w-full mb-4 relative">
       <div 
+        ref={scrollContainerRef}
         className="overflow-x-auto hide-scrollbar px-4 mx-auto max-w-[calc(100vw-2rem)] sm:max-w-[calc(100vw-4rem)] md:max-w-xl"
         onScroll={onScroll}
       >
         <div className="relative">
           <div 
-            className="flex gap-3 py-4 px-[calc((100%-((4*5rem)-1rem))/2)] sm:px-[calc((100%-((6*6rem)-1rem))/2)]"
+            className="flex gap-3 py-4"
             style={{ width: 'max-content' }}
           >
             {variations.map((variation, index) => (
               <VariationThumbnail
                 key={variation.slug}
+                ref={(el: HTMLButtonElement | null) => {
+                  thumbnailRefs.current[index] = el;
+                }}
                 variation={variation}
                 isSelected={index === currentIndex}
                 onClick={() => onVariationSelect(index)}
