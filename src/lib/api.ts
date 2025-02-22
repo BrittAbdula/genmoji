@@ -8,6 +8,7 @@ const WORKER_URL = 'https://genmojionline.com/api';
 // 1. 获取单个表情
 export async function getEmoji(slug: string, locale: string): Promise<Emoji> {
   const url = `${WORKER_URL}/genmoji/by-slug/${slug}?locale=${locale}`;
+  console.log('--------getEmojiurl', url);
   try {
     const res = await fetch(url, {
       next: { revalidate: 3600 }
@@ -39,6 +40,7 @@ export async function getEmoji(slug: string, locale: string): Promise<Emoji> {
 // 2. 获取表情列表或搜索
 export async function getEmojis(offset: number, limit: number, locale: string, q?: string): Promise<Emoji[]> {
   const url = new URL(q ? '/api/genmoji/search' : '/api/genmoji/list', WORKER_URL);
+  console.log('--------url', url);
   url.searchParams.set('offset', offset.toString());
   url.searchParams.set('limit', limit.toString());
   url.searchParams.set('locale', locale);
