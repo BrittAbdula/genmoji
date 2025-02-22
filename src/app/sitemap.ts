@@ -19,7 +19,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // Generate static routes for all locales
   const staticRoutes = locales.flatMap(locale => 
     routes.map(route => ({
-      url: `${baseUrl}/${locale}${route ? `/${route}` : ''}/`,
+      url: `${baseUrl}/${locale === 'en' ? '' : locale}${route ? `/${route}` : ''}/`,
       lastModified: now,
       changeFrequency: 'daily' as const,
       priority: route === '' ? 1.0 : 0.8,
@@ -32,7 +32,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     // Generate emoji routes for all locales
     const dynamicRoutes = locales.flatMap(locale =>
       emojis.map((emoji: Emoji) => ({
-        url: `${baseUrl}/${locale}/emoji/${emoji.slug}/`,
+        url: `${baseUrl}/${locale === 'en' ? '' : locale}/emoji/${emoji.slug}/`,
         lastModified: emoji.created_at ? new Date(emoji.created_at) : now,
         changeFrequency: 'weekly' as const,
         priority: 0.6,
@@ -42,7 +42,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     return [
       // Root URL without locale
       {
-        url: baseUrl,
+        url: baseUrl + '/',
         lastModified: now,
         changeFrequency: 'daily' as const,
         priority: 1.0,
@@ -55,7 +55,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     // If fetching dynamic data fails, at least return static routes
     return [
       {
-        url: baseUrl,
+        url: baseUrl + '/',
         lastModified: now,
         changeFrequency: 'daily' as const,
         priority: 1.0,
