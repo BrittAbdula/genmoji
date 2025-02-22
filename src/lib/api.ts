@@ -7,7 +7,7 @@ const WORKER_URL = 'https://genmojionline.com/api';
 
 // 1. 获取单个表情
 export async function getEmoji(slug: string, locale: string): Promise<Emoji> {
-  const url = `${WORKER_URL}/gemoji/by-slug/${slug}?locale=${locale}`;
+  const url = `${WORKER_URL}/genmoji/by-slug/${slug}?locale=${locale}`;
   try {
     const res = await fetch(url, {
       next: { revalidate: 3600 }
@@ -38,7 +38,7 @@ export async function getEmoji(slug: string, locale: string): Promise<Emoji> {
 
 // 2. 获取表情列表或搜索
 export async function getEmojis(offset: number, limit: number, locale: string, q?: string): Promise<Emoji[]> {
-  const url = new URL(q ? '/api/gemoji/search' : '/api/gemoji/list', WORKER_URL);
+  const url = new URL(q ? '/api/genmoji/search' : '/api/genmoji/list', WORKER_URL);
   url.searchParams.set('offset', offset.toString());
   url.searchParams.set('limit', limit.toString());
   url.searchParams.set('locale', locale);
@@ -58,7 +58,7 @@ export async function getEmojis(offset: number, limit: number, locale: string, q
 
 // 3. 获取相关表情
 export async function getRelatedEmojis(slug: string, locale: string): Promise<Emoji[]> {
-  const url = `${WORKER_URL}/gemoji/related/${slug}?locale=${locale}&limit=16`;
+  const url = `${WORKER_URL}/genmoji/related/${slug}?locale=${locale}&limit=16`;
   
   const res = await fetch(url, {
     next: { revalidate: 60 }
@@ -129,7 +129,7 @@ export async function performAction(
 
 // 6. 生成新表情
 export async function genMoji(prompt: string, locale: string, image: string | null): Promise<EmojiResponse> {
-  const res = await fetch(`${WORKER_URL}/gemoji/generate`, {
+  const res = await fetch(`${WORKER_URL}/genmoji/generate`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
@@ -151,7 +151,7 @@ export async function getEmojisByBaseSlug(
   offset: number = 0
 ): Promise<Emoji[]> {
   const baseSlug = slug.split('--')[0];
-  const url = `${WORKER_URL}/gemoji/by-base-slug/${baseSlug}?locale=${locale}&limit=${limit}&offset=${offset}`;
+  const url = `${WORKER_URL}/genmoji/by-base-slug/${baseSlug}?locale=${locale}&limit=${limit}&offset=${offset}`;
   
   const res = await fetch(url, {
     next: { revalidate: 60 }
