@@ -19,7 +19,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // Generate static routes for all locales
   const staticRoutes = locales.flatMap(locale => 
     routes.map(route => ({
-      url: `${baseUrl}/${locale === 'en' ? '' : locale}${route ? `/${route}` : ''}/`,
+      url: `${baseUrl}${locale === 'en' ? '' : '/' + locale}${route ? `/${route}` : ''}/`,
       lastModified: now,
       changeFrequency: 'daily' as const,
       priority: route === '' ? 1.0 : 0.8,
@@ -32,7 +32,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     // Generate emoji routes for all locales
     const dynamicRoutes = locales.flatMap(locale =>
       emojis.map((emoji: Emoji) => ({
-        url: `${baseUrl}/${locale === 'en' ? '' : locale}/emoji/${emoji.slug}/`,
+        url: `${baseUrl}${locale === 'en' ? '' : '/' + locale}/emoji/${emoji.slug}/`,
         lastModified: emoji.created_at ? new Date(emoji.created_at) : now,
         changeFrequency: 'weekly' as const,
         priority: 0.6,
