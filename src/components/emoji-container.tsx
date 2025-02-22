@@ -26,9 +26,7 @@ const EmojiContainer = ({ emoji, size = 'md' }: EmojiContainerProps) => {
         "rounded-xl cursor-pointer flex items-center justify-center",
         "transition-colors duration-200",
         "hover:bg-gray-950/[.05] active:bg-gray-950/[.1]",
-        "dark:hover:bg-gray-50/[.15] dark:active:bg-gray-50/[.2]",
-        "p-2",
-        sizeClasses[size]
+        "dark:hover:bg-gray-50/[.15] dark:active:bg-gray-50/[.2]"
       )}
     >
       <img 
