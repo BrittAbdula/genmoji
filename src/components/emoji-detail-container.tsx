@@ -701,13 +701,13 @@ export function EmojiDetailContainer({ emoji: initialEmoji }: EmojiDetailContain
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end" className="w-48">
+                  <DropdownMenuItem onClick={handleShare}>
+                    <Share2Icon className="mr-2 h-4 w-4" />
+                    {t('share.title')}
+                  </DropdownMenuItem>
                   <DropdownMenuItem onClick={handleCopy}>
                     <CopyIcon className="mr-2 h-4 w-4" />
                     {t('copyLink')}
-                  </DropdownMenuItem>
-                  <DropdownMenuItem onClick={handleDownload}>
-                    <DownloadIcon className="mr-2 h-4 w-4" />
-                    {t('download')}
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem onClick={() => window.open(getSocialShareUrl('twitter'), '_blank')}>
@@ -743,10 +743,10 @@ export function EmojiDetailContainer({ emoji: initialEmoji }: EmojiDetailContain
                     <MessageCircleIcon className="mr-2 h-4 w-4" />
                     {t('share.whatsapp')}
                   </DropdownMenuItem>
-                  <DropdownMenuItem onClick={handleWeChatShare}>
+                  {/* <DropdownMenuItem onClick={handleWeChatShare}>
                     <QrCodeIcon className="mr-2 h-4 w-4" />
                     {t('share.wechat')}
-                  </DropdownMenuItem>
+                  </DropdownMenuItem> */}
                 </DropdownMenuContent>
               </DropdownMenu>
             </div>
@@ -799,10 +799,10 @@ export function EmojiDetailContainer({ emoji: initialEmoji }: EmojiDetailContain
             <Button
               variant="outline"
               className="w-full text-muted-foreground hover:text-foreground py-4 bg-violet-500/5 hover:bg-violet-500/10 dark:bg-violet-500/10 dark:hover:bg-violet-500/20 border-violet-500/20 dark:border-violet-500/30 transition-all duration-200"
-              onClick={handleShare}
+              onClick={handleDownload}
             >
-              <Share2 className="mr-2 h-3.5 w-3.5" />
-              {t('share.title')}
+              <DownloadIcon className="mr-2 h-3.5 w-3.5" />
+              {t('download')}
             </Button>
           </div>
         </div>
