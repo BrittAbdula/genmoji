@@ -3,6 +3,7 @@ import { ActionType, ActionDetails, ActionResponse } from "@/types/action";
 
 const WORKER_URL = 'https://genmoji-api.genmojionline.com';
 // const WORKER_URL = 'https://gen-test.auroroa.workers.dev';
+// const WORKER_URL = 'https://genmojionline.com/api';
 
 // 1. 获取单个表情
 export async function getEmoji(slug: string, locale: string): Promise<Emoji> {
