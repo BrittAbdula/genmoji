@@ -5,6 +5,7 @@ export interface Emoji {
   created_at?: string;
   likes_count?: number;
   locale: string;
+  model: string;
 }
 
 export interface EmojiResponse {

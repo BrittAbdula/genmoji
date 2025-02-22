@@ -119,20 +119,34 @@
   "generator": {
     "title": "Commencez par quelques mots ou une phrase qui décrit le mieux votre idée",
     "placeholder": "ex : 'un chat rouge avec un chapeau'",
-    "generateButton": "Générer un genmoji",
+    "generateButton": "Générer un emoji",
     "generatingButton": "Génération en cours...",
     "uploadImage": "Télécharger une image (Optionnel)",
     "changeImage": "Changer l'image",
-    "recentTitle": "Genmojis Récents",
+    "recentTitle": "Emojis récents",
     "generationStatus": {
       "starting": "Démarrage de la génération..."
     },
     "error": {
       "failed": "La génération a échoué. Veuillez réessayer."
     },
-    "dialogTitle": "Générer un Nouveau Genmoji",
-    "dialogDescription": "Créez un nouveau genmoji basé sur votre description. Vous pouvez également télécharger une image de référence.",
-    "generatingMessage": "Votre genmoji est en cours de création. Vous pouvez continuer à naviguer pendant l'attente..."
+    "dialogTitle": "Générer un nouvel emoji",
+    "dialogDescription": "Créez un nouvel emoji basé sur votre description. Vous pouvez également télécharger une image de référence.",
+    "generatingMessage": "Votre emoji est en cours de création. N'hésitez pas à naviguer pendant l'attente...",
+    "models": {
+      "genmoji": {
+        "name": "Emoji",
+        "description": "Style Apple classique"
+      },
+      "sticker": {
+        "name": "Sticker",
+        "description": "Style autocollant mignon"
+      },
+      "mascot": {
+        "name": "Mascotte",
+        "description": "Style mascotte de dessin animé"
+      }
+    }
   },
   "cta": {
     "title": "Créez Votre Genmoji Aujourd'hui",

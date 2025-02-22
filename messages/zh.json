@@ -306,7 +306,21 @@
     },
     "dialogTitle": "生成新的 Genmoji",
     "dialogDescription": "根据您的描述创建新的 genmoji。您也可以上传参考图片。",
-    "generatingMessage": "正在为您创建 genmoji，您可以继续浏览其他内容..."
+    "generatingMessage": "正在为您创建 genmoji，您可以继续浏览其他内容...",
+    "models": {
+      "genmoji": {
+        "name": "表情",
+        "description": "经典苹果风格表情"
+      },
+      "sticker": {
+        "name": "贴纸",
+        "description": "可爱贴纸风格"
+      },
+      "mascot": {
+        "name": "吉祥物",
+        "description": "卡通吉祥物风格"
+      }
+    }
   },
   "cta": {
     "title": "立即创建您的 Genmoji",

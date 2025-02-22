@@ -306,7 +306,21 @@
     },
     "dialogTitle": "Generate New Genmoji",
     "dialogDescription": "Create a new genmoji based on your description. You can also upload an image for reference.",
-    "generatingMessage": "Your genmoji is being created. Feel free to browse while waiting..."
+    "generatingMessage": "Your genmoji is being created. Feel free to browse while waiting...",
+    "models": {
+      "genmoji": {
+        "name": "Genmoji",
+        "description": "Classic Apple-style emoji"
+      },
+      "sticker": {
+        "name": "Sticker",
+        "description": "Cute sticker style"
+      },
+      "mascot": {
+        "name": "Mascot",
+        "description": "Cartoon mascot style"
+      }
+    }
   },
   "cta": {
     "title": "Create Your Genmoji Today",

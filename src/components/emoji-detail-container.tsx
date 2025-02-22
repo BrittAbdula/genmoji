@@ -296,14 +296,14 @@ export function EmojiDetailContainer({ emoji: initialEmoji }: EmojiDetailContain
   };
 
   // 记录浏览行为
-  useEffect(() => {
-    const referrer = document.referrer;
-    performAction(initialEmoji.slug, locale, 'view', {
-      referrer,
-    }).catch(error => {
-      console.error('Failed to record view:', error);
-    });
-  }, [initialEmoji.slug, locale]);
+  // useEffect(() => {
+  //   const referrer = document.referrer;
+  //   performAction(initialEmoji.slug, locale, 'view', {
+  //     referrer,
+  //   }).catch(error => {
+  //     console.error('Failed to record view:', error);
+  //   });
+  // }, [initialEmoji.slug, locale]);
 
   // 检查点赞状态
   const checkLikeStatus = (slug: string) => {
@@ -761,8 +761,8 @@ export function EmojiDetailContainer({ emoji: initialEmoji }: EmojiDetailContain
           <div className="overflow-x-auto hide-scrollbar">
             <div className="flex items-center gap-2 px-4 min-w-max mx-auto" style={{ width: 'fit-content' }}>
               <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
-                <span className="uppercase whitespace-nowrap">CATEGORY</span>
-                <span className="text-foreground">Emoji</span>
+                <span className="uppercase whitespace-nowrap">MODEL</span>
+                <span className="text-foreground">{currentEmoji.model}</span>
               </div>
               <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
                 <span className="uppercase whitespace-nowrap">MAKER</span>

@@ -1,9 +1,9 @@
 import { Emoji, EmojiResponse } from "@/types/emoji";
 import { ActionType, ActionDetails, ActionResponse } from "@/types/action";
 
-// const WORKER_URL = 'https://genmoji-api.genmojionline.com';
+const WORKER_URL = 'https://genmoji-api.genmojionline.com';
 // const WORKER_URL = 'https://gen-test.auroroa.workers.dev';
-const WORKER_URL = 'https://genmojionline.com/api';
+// const WORKER_URL = 'https://genmojionline.com/api';
 
 // 1. 获取单个表情
 export async function getEmoji(slug: string, locale: string): Promise<Emoji> {
@@ -11,17 +11,22 @@ export async function getEmoji(slug: string, locale: string): Promise<Emoji> {
   // console.log('--------getEmojiurl', url);
   try {
     const res = await fetch(url, {
-      next: { revalidate: 3600 }
+      next: { revalidate: 3600 },
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      }
     });
 
     if (!res.ok) {
       const errorText = await res.text();
       console.error('Failed to fetch emoji:', {
+        url,
         status: res.status,
         statusText: res.statusText,
         error: errorText
       });
-      throw new Error(`Failed to fetch emoji: ${res.status} ${res.statusText}`);
+      throw new Error(`Failed to fetch emoji: ${res.status} ${res.statusText} - ${errorText}`);
     }
 
     const emojiResponse = await res.json() as EmojiResponse;
@@ -39,18 +44,12 @@ export async function getEmoji(slug: string, locale: string): Promise<Emoji> {
 
 // 2. 获取表情列表或搜索
 export async function getEmojis(offset: number, limit: number, locale: string, q?: string): Promise<Emoji[]> {
-  // const url = new URL(q ? '/genmoji/search' : '/genmoji/list', WORKER_URL);
-  // console.log('--------url', url);
-  // url.searchParams.set('offset', offset.toString());
-  // url.searchParams.set('limit', limit.toString());
-  // url.searchParams.set('locale', locale);
-  // if (q) url.searchParams.set('q', q);
-  const path = q ? 'genmoji/search' : 'genmoji/list';
-
-  let url = `${WORKER_URL}/${path}?offset=${offset}&limit=${limit}&locale=${locale}`;
-  if (q) {
-    url += `&q=${q}`;
-  }
+  const url = new URL(q ? '/genmoji/search' : '/genmoji/list', WORKER_URL);
+  url.searchParams.set('offset', offset.toString());
+  url.searchParams.set('limit', limit.toString());
+  url.searchParams.set('locale', locale);
+  if (q) url.searchParams.set('q', q);
+  
   const res = await fetch(url, {
     next: { revalidate: 60 }
   });
@@ -135,13 +134,18 @@ export async function performAction(
 }
 
 // 6. 生成新表情
-export async function genMoji(prompt: string, locale: string, image: string | null): Promise<EmojiResponse> {
+export async function genMoji(
+  prompt: string, 
+  locale: string, 
+  image: string | null, 
+  model: 'genmoji' | 'sticker' | 'mascot' = 'genmoji'
+): Promise<EmojiResponse> {
   const res = await fetch(`${WORKER_URL}/genmoji/generate`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify({ prompt, locale, image })
+    body: JSON.stringify({ prompt, locale, image, model })
   });
 
   if (!res.ok) {

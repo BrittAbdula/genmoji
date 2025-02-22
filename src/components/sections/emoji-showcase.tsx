@@ -1,11 +1,12 @@
 import Marquee from "@/components/ui/marquee";
 import { cn } from "@/lib/utils";
+import { useLocale } from "next-intl";
 import Link from "next/link";
 
 const SHOWCASE_IMAGES = [
   {
-    slug: "ginger-teen-guy-white-button-up-shirt-blue-striped-tie-straight-hair-side-part-smile-hazel-eyes-buff",
-    image_url: "https://store.genmojionline.com/cdn-cgi/imagedelivery/DEOVdDdfeGzASe0KdtD7FA//0507f6f6-9105-4d20-7a63-696dd8f50b00/public"
+    slug: "a-red-cat-with-a-hat--m7gc2hobwjjk",
+    image_url: "https://store.genmojionline.com/cdn-cgi/imagedelivery/DEOVdDdfeGzASe0KdtD7FA//ec1b5fc7-655a-4b6e-80cd-03afd1e3a100/public"
   },
   {
     slug: "donald-trump--m6p5j2zy",
@@ -28,8 +29,8 @@ const SHOWCASE_IMAGES = [
     image_url: "https://store.genmojionline.com/cdn-cgi/imagedelivery/DEOVdDdfeGzASe0KdtD7FA//4a31febb-e1fa-4f97-b142-021b02caa900/public"
   },
   {
-    slug: "police-guinea-pig",
-    image_url: "https://store.genmojionline.com/cdn-cgi/imagedelivery/DEOVdDdfeGzASe0KdtD7FA//7d76ccdc-f28d-4891-ba58-f4e24c97cd00/public"
+    slug: "purple-jellyfish",
+    image_url: "https://store.genmojionline.com/cdn-cgi/imagedelivery/DEOVdDdfeGzASe0KdtD7FA//f873a587-2af8-49e9-dbd0-7a0c36de3000/public"
   },
   {
     slug: "care-bear-with-a-smiling-face-with-heart-eyes-on-his-belly--m6covmuq",
@@ -72,15 +73,16 @@ const SHOWCASE_IMAGES = [
     image_url: "https://store.genmojionline.com/cdn-cgi/imagedelivery/DEOVdDdfeGzASe0KdtD7FA//3a3f5674-e5fc-4669-9a30-56417377a600/public"
   },
   {
-    slug: "clown-goose",
-    image_url: "https://store.genmojionline.com/cdn-cgi/imagedelivery/DEOVdDdfeGzASe0KdtD7FA//57756e92-18f6-46fd-db41-1ce9a9946100/public"
+    slug: "clown-goose--m7gcr5o074pw",
+    image_url: "https://store.genmojionline.com/cdn-cgi/imagedelivery/DEOVdDdfeGzASe0KdtD7FA//d59524d3-6729-49b9-286e-f42017832b00/public"
   }
 ];
 
 
 const EmojiCard = ({ slug, image_url, index }: { slug: string; image_url: string; index: number }) => {
+  const locale = useLocale();
   return (
-    <Link href={`/emoji/${slug}/`}>
+    <Link href={`/${locale}/emoji/${slug}/`}>
       <div
         className={cn(
           "relative h-32 w-32 sm:h-40 sm:w-40 mx-4 transform-gpu transition-all duration-500",

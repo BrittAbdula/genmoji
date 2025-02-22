@@ -103,22 +103,36 @@
     ]
   },
   "generator": {
-    "title": "アイデアを最もよく表す単語やフレーズから始めましょう",
+    "title": "アイデアを最もよく表す言葉やフレーズから始めましょう",
     "placeholder": "例：'帽子をかぶった赤い猫'",
-    "generateButton": "Genmojiを作成",
+    "generateButton": "絵文字を生成",
     "generatingButton": "生成中...",
     "uploadImage": "画像をアップロード（任意）",
     "changeImage": "画像を変更",
-    "recentTitle": "最近の絵文字",
+    "recentTitle": "最近生成された絵文字",
     "generationStatus": {
       "starting": "生成を開始しています..."
     },
     "error": {
       "failed": "生成に失敗しました。もう一度お試しください。"
     },
-    "dialogTitle": "新しいGenmojiを作成",
+    "dialogTitle": "新しい絵文字を生成",
     "dialogDescription": "説明に基づいて新しい絵文字を作成します。参考画像をアップロードすることもできます。",
-    "generatingMessage": "Genmojiを作成中です。その間に他のコンテンツをご覧いただけます..."
+    "generatingMessage": "絵文字を作成中です。その間に他のコンテンツをご覧ください...",
+    "models": {
+      "genmoji": {
+        "name": "絵文字",
+        "description": "クラシックなAppleスタイルの絵文字"
+      },
+      "sticker": {
+        "name": "ステッカー",
+        "description": "かわいいステッカースタイル"
+      },
+      "mascot": {
+        "name": "マスコット",
+        "description": "カートゥーンマスコットスタイル"
+      }
+    }
   },
   "cta": {
     "title": "今すぐGenmojiを作成",
