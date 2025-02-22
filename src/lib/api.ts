@@ -67,9 +67,6 @@ export async function getRelatedEmojis(slug: string, locale: string): Promise<Em
   const url = `${WORKER_URL}/emoji/related/${slug}?locale=${locale}&limit=16`;
   
   const res = await fetch(url, {
-    headers: {
-      'Origin': 'https://genmojionline.com'
-    },
     next: { revalidate: 60 }
   });
   
@@ -86,7 +83,6 @@ export async function toggleLike(slug: string, locale: string): Promise<{ succes
   const res = await fetch(`${WORKER_URL}/action/${slug}/like`, {
     method: 'POST',
     headers: {
-      'Origin': 'https://genmojionline.com',
       'Content-Type': 'application/json'
     },
     body: JSON.stringify({ 
@@ -116,7 +112,6 @@ export async function performAction(
   const res = await fetch(`${WORKER_URL}/action/${slug}`, {
     method: 'POST',
     headers: {
-      'Origin': 'https://genmojionline.com',
       'Content-Type': 'application/json'
     },
     body: JSON.stringify({ 
@@ -143,7 +138,6 @@ export async function genMoji(prompt: string, locale: string, image: string | nu
   const res = await fetch(`${WORKER_URL}/emoji/generate`, {
     method: 'POST',
     headers: {
-      'Origin': 'https://genmojionline.com',
       'Content-Type': 'application/json'
     },
     body: JSON.stringify({ prompt, locale, image })
@@ -166,9 +160,6 @@ export async function getEmojisByBaseSlug(
   const url = `${WORKER_URL}/emoji/by-base-slug/${baseSlug}?locale=${locale}&limit=${limit}&offset=${offset}`;
   
   const res = await fetch(url, {
-    headers: {
-      'Origin': 'https://genmojionline.com'
-    },
     next: { revalidate: 60 }
   });
   

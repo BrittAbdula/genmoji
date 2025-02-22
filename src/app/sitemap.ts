@@ -1,6 +1,7 @@
 import { MetadataRoute } from "next";
 import { siteConfig } from "@/lib/config";
 import { Emoji, EmojiResponse } from "@/types/emoji";
+import { getEmojis } from "@/lib/api";
 
 // Supported locales
 const locales = ['en', 'fr', 'ja', 'zh'];
@@ -27,25 +28,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   try {
     // Fetch dynamically generated emoji pages
-    const response = await fetch('https://gen.genmojionline.com?limit=1000', {
-      headers: {
-        'Origin': 'https://genmojionline.com'
-      }
-    });
-    
-    if (!response.ok) {
-      throw new Error('Failed to fetch emojis');
-    }
-
-    const emojiResponse = await response.json() as EmojiResponse;
-    
-    if (!emojiResponse.success || !emojiResponse.emojis) {
-      throw new Error('No emojis found');
-    }
-
+    const emojis = await getEmojis(0, 1000, 'en');
     // Generate emoji routes for all locales
     const dynamicRoutes = locales.flatMap(locale =>
-      emojiResponse.emojis.map((emoji: Emoji) => ({
+      emojis.map((emoji: Emoji) => ({
         url: `${baseUrl}/${locale}/emoji/${emoji.slug}/`,
         lastModified: emoji.created_at ? new Date(emoji.created_at) : now,
         changeFrequency: 'weekly' as const,
