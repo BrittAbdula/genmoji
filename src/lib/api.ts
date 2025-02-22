@@ -2,8 +2,8 @@ import { Emoji, EmojiResponse } from "@/types/emoji";
 import { ActionType, ActionDetails, ActionResponse } from "@/types/action";
 
 // const WORKER_URL = 'https://genmoji-api.genmojionline.com';
-// const WORKER_URL = 'https://gen-test.auroroa.workers.dev';
-const WORKER_URL = 'https://genmojionline.com/api';
+const WORKER_URL = 'https://gen-test.auroroa.workers.dev';
+// const WORKER_URL = 'https://genmojionline.com/api';
 
 // 1. 获取单个表情
 export async function getEmoji(slug: string, locale: string): Promise<Emoji> {
@@ -39,7 +39,7 @@ export async function getEmoji(slug: string, locale: string): Promise<Emoji> {
 
 // 2. 获取表情列表或搜索
 export async function getEmojis(offset: number, limit: number, locale: string, q?: string): Promise<Emoji[]> {
-  const url = new URL(q ? '/api/genmoji/search' : '/api/genmoji/list', WORKER_URL);
+  const url = new URL(q ? '/genmoji/search' : '/genmoji/list', WORKER_URL);
   console.log('--------url', url);
   url.searchParams.set('offset', offset.toString());
   url.searchParams.set('limit', limit.toString());
