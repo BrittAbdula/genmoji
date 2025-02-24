@@ -42,12 +42,12 @@ interface EmojiDetailContainerProps {
 }
 
 // 主图片展示组件
-const MainImage = memo(({ 
-  emoji, 
+const MainImage = memo(({
+  emoji,
   onSwipe,
-  className 
-}: { 
-  emoji: Emoji; 
+  className
+}: {
+  emoji: Emoji;
   onSwipe: (direction: 'left' | 'right') => void;
   className?: string;
 }) => {
@@ -70,9 +70,9 @@ const MainImage = memo(({
       }}
     >
       <AnimatePresence mode="wait">
-        <motion.img 
+        <motion.img
           key={emoji.slug}
-          src={emoji.image_url} 
+          src={emoji.image_url}
           alt={`prompt: ${emoji.prompt}`}
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -87,17 +87,17 @@ const MainImage = memo(({
 });
 
 // 预览图片组件
-const PreviewImage = memo(({ 
+const PreviewImage = memo(({
   emoji,
   direction,
-  onClick 
-}: { 
+  onClick
+}: {
   emoji: Emoji;
   direction: 'left' | 'right';
   onClick: () => void;
 }) => {
   return (
-    <div 
+    <div
       className={cn(
         "absolute top-0 bottom-0 w-1/4 flex items-center cursor-pointer transition-opacity hover:opacity-50 opacity-30",
         direction === 'left' ? 'left-0 justify-start' : 'right-0 justify-end'
@@ -121,7 +121,7 @@ const PreviewImage = memo(({
 });
 
 // 变体缩略图组件
-const VariationThumbnail = memo(forwardRef<HTMLButtonElement, { 
+const VariationThumbnail = memo(forwardRef<HTMLButtonElement, {
   variation: Emoji;
   isSelected: boolean;
   onClick: () => void;
@@ -152,13 +152,13 @@ const VariationThumbnail = memo(forwardRef<HTMLButtonElement, {
 VariationThumbnail.displayName = 'VariationThumbnail';
 
 // 变体列表组件
-const VariationsList = memo(({ 
+const VariationsList = memo(({
   variations,
   currentIndex,
   onVariationSelect,
   onScroll,
-  isLoading 
-}: { 
+  isLoading
+}: {
   variations: Emoji[];
   currentIndex: number;
   onVariationSelect: (index: number) => void;
@@ -177,7 +177,7 @@ const VariationsList = memo(({
       const thumbnailWidth = selectedThumbnail.offsetWidth;
       const thumbnailLeft = selectedThumbnail.offsetLeft;
       const scrollLeft = thumbnailLeft - (containerWidth / 2) + (thumbnailWidth / 2);
-      
+
       container.scrollTo({
         left: scrollLeft,
         behavior: 'smooth'
@@ -187,13 +187,13 @@ const VariationsList = memo(({
 
   return (
     <div className="w-full mb-4 relative">
-      <div 
+      <div
         ref={scrollContainerRef}
         className="overflow-x-auto hide-scrollbar px-4 mx-auto max-w-[calc(100vw-2rem)] sm:max-w-[calc(100vw-4rem)] md:max-w-xl"
         onScroll={onScroll}
       >
         <div className="relative">
-          <div 
+          <div
             className="flex gap-3 py-4"
             style={{ width: 'max-content' }}
           >
@@ -249,11 +249,11 @@ export function EmojiDetailContainer({ emoji: initialEmoji }: EmojiDetailContain
   // 获取变体 - 只在初始化时调用一次
   const fetchVariations = async () => {
     if (isLoading) return;
-    
+
     try {
       setIsLoading(true);
       const newEmojis = await getEmojisByBaseSlug(initialEmoji.slug, locale, LIMIT, 0);
-      
+
       // 确保当前emoji在列表中，并找到它的位置
       const currentEmojiIndex = newEmojis.findIndex(e => e.slug === initialEmoji.slug);
       if (currentEmojiIndex === -1) {
@@ -276,10 +276,28 @@ export function EmojiDetailContainer({ emoji: initialEmoji }: EmojiDetailContain
     fetchVariations();
   }, []);
 
+  // 添加键盘事件监听
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'ArrowLeft') {
+        if (displayIndex > 0) {
+          handleVariationChange(displayIndex - 1);
+        }
+      } else if (e.key === 'ArrowRight') {
+        if (displayIndex < allVariations.length - 1) {
+          handleVariationChange(displayIndex + 1);
+        }
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [displayIndex, allVariations.length]);
+
   // 切换显示的变体
   const handleVariationChange = (index: number) => {
     if (index < 0 || index >= allVariations.length) return;
-    
+
     setDisplayIndex(index);
     const selectedEmoji = allVariations[index];
     setCurrentEmoji(selectedEmoji);
@@ -333,13 +351,13 @@ export function EmojiDetailContainer({ emoji: initialEmoji }: EmojiDetailContain
   const handleCopy = async () => {
     if (isCopied) return;
     setIsCopied(true);
-    
+
     try {
       // 先执行复制操作
       await navigator.clipboard.writeText(getShareUrl());
       setShowCopied(true);
       setTimeout(() => setShowCopied(false), 2000);
-      
+
       // 异步提交行为数据
       performAction(initialEmoji.slug, locale, 'copy').catch(error => {
         console.error('Failed to record copy action:', error);
@@ -388,13 +406,13 @@ export function EmojiDetailContainer({ emoji: initialEmoji }: EmojiDetailContain
   const handleDownload = async () => {
     if (isDownloading) return;
     setIsDownloading(true);
-    
+
     try {
       // 先执行下载操作
       const response = await fetch(initialEmoji.image_url);
       const blob = await response.blob();
       const url = URL.createObjectURL(blob);
-      
+
       const link = document.createElement('a');
       link.href = url;
       link.download = `${initialEmoji.slug}.png`;
@@ -513,16 +531,16 @@ export function EmojiDetailContainer({ emoji: initialEmoji }: EmojiDetailContain
   const handleLike = async () => {
     if (isLiking) return;
     setIsLiking(true);
-    
+
     try {
       const response = await toggleLike(initialEmoji.slug, locale);
-      
+
       if (response.success && response.data?.liked !== undefined) {
         // 使用服务器返回的状态更新UI
         setIsLiked(response.data.liked);
         updateLocalLikeStatus(response.data.liked);
         initialLikeState.current = response.data.liked;
-        
+
         // 触发动画效果
         if (response.data.liked) {
           triggerLikeAnimation();
@@ -530,7 +548,7 @@ export function EmojiDetailContainer({ emoji: initialEmoji }: EmojiDetailContain
       }
     } catch (error: any) {
       console.error('Failed to toggle like:', error);
-      
+
       try {
         const errorData = JSON.parse(error.message);
         if (errorData.error === 'Emoji not found') {
@@ -586,8 +604,8 @@ export function EmojiDetailContainer({ emoji: initialEmoji }: EmojiDetailContain
               onClick={() => handleVariationChange(index)}
               className={cn(
                 "w-1.5 h-1.5 rounded-full transition-all duration-200",
-                index === displayIndex 
-                  ? "bg-primary w-3" 
+                index === displayIndex
+                  ? "bg-primary w-3"
                   : "bg-primary/30 hover:bg-primary/50"
               )}
             />
@@ -604,7 +622,7 @@ export function EmojiDetailContainer({ emoji: initialEmoji }: EmojiDetailContain
         variations={allVariations}
         currentIndex={displayIndex}
         onVariationSelect={handleVariationChange}
-        onScroll={() => {}} // 移除滚动加载逻辑
+        onScroll={() => { }} // 移除滚动加载逻辑
         isLoading={false} // 移除加载状态
       />
     )
@@ -614,152 +632,154 @@ export function EmojiDetailContainer({ emoji: initialEmoji }: EmojiDetailContain
     <div className="container mx-auto px-2 flex w-full max-w-xl flex-col items-center">
       {/* <div className="mx-auto flex w-full max-w-xl flex-col items-center"> */}
 
-        {/* 标题区域 */}
-        <div className="w-full mb-6">
-          <div className="flex items-start justify-between gap-3">
-            <button
-              onClick={handlePromptCopy}
-              className="group text-left relative flex-1 min-w-0"
+      {/* 标题区域 */}
+      <div className="w-full mb-6">
+        <div className="flex items-start justify-between gap-3">
+          <button
+            onClick={handlePromptCopy}
+            className="group text-left relative flex-1 min-w-0"
+          >
+            <h1
+              className="text-xl font-medium truncate leading-tight"
+              title={initialEmoji.prompt}
             >
-              <h1
-                className="text-xl font-medium truncate leading-tight"
-                title={initialEmoji.prompt}
-              >
-                {initialEmoji.prompt}
-              </h1>
-              {showPromptCopied && (
-                <div className="absolute top-full left-0 mt-1 flex items-center gap-1 text-xs text-green-500">
-                  <CheckIcon className="h-3 w-3" />
-                  <span>{t('copied')}</span>
-                </div>
+              {initialEmoji.prompt}
+            </h1>
+            {showPromptCopied && (
+              <div className="absolute top-full left-0 mt-1 flex items-center gap-1 text-xs text-green-500">
+                <CheckIcon className="h-3 w-3" />
+                <span>{t('copied')}</span>
+              </div>
+            )}
+          </button>
+
+          <div className="flex items-start gap-1.5">
+            <motion.button
+              whileTap={{ scale: 0.9 }}
+              onClick={handleLike}
+              disabled={isLiking}
+              className={cn(
+                "p-1.5 rounded-full transition-colors relative hover:bg-muted/50",
+                isLiked ? 'text-red-500' : 'text-muted-foreground hover:text-red-500'
               )}
-            </button>
-
-            <div className="flex items-start gap-1.5">
-              <motion.button
-                whileTap={{ scale: 0.9 }}
-                onClick={handleLike}
-                disabled={isLiking}
-                className={cn(
-                  "p-1.5 rounded-full transition-colors relative hover:bg-muted/50",
-                  isLiked ? 'text-red-500' : 'text-muted-foreground hover:text-red-500'
-                )}
-              >
-                <AnimatePresence mode="wait">
-                  {showLikeEffect && (
-                    <motion.div
-                      key="like-effect"
-                      initial={{ scale: 1, opacity: 1 }}
-                      animate={{ 
-                        scale: [1, 1.5, 0.8, 1.2, 1],
-                        opacity: [1, 0.8, 1, 0.8, 1],
-                        rotate: [0, -15, 15, -10, 0]
-                      }}
-                      transition={{ 
-                        duration: 0.6,
-                        times: [0, 0.2, 0.4, 0.6, 1],
-                        ease: "easeInOut"
-                      }}
-                      className="absolute inset-0 flex items-center justify-center pointer-events-none"
-                    >
-                      <HeartIcon className="h-4 w-4" fill="currentColor" />
-                    </motion.div>
-                  )}
+            >
+              <AnimatePresence mode="wait">
+                {showLikeEffect && (
                   <motion.div
-                    key="heart-icon"
-                    animate={showLikeEffect ? { scale: [1, 0.8, 1] } : { scale: 1 }}
-                    transition={{ duration: 0.4 }}
+                    key="like-effect"
+                    initial={{ scale: 1, opacity: 1 }}
+                    animate={{
+                      scale: [1, 1.5, 0.8, 1.2, 1],
+                      opacity: [1, 0.8, 1, 0.8, 1],
+                      rotate: [0, -15, 15, -10, 0]
+                    }}
+                    transition={{
+                      duration: 0.6,
+                      times: [0, 0.2, 0.4, 0.6, 1],
+                      ease: "easeInOut"
+                    }}
+                    className="absolute inset-0 flex items-center justify-center pointer-events-none"
                   >
-                    <HeartIcon
-                      className={cn(
-                        "h-4 w-4 transition-all",
-                        isLiking && "animate-pulse"
-                      )}
-                      fill={isLiked ? "currentColor" : "none"}
-                    />
+                    <HeartIcon className="h-4 w-4" fill="currentColor" />
                   </motion.div>
-                </AnimatePresence>
-                <AnimatePresence mode="wait">
-                  {likesCount > 0 && (
-                    <motion.span
-                      key={`count-${likesCount}`}
-                      initial={{ opacity: 0, y: -10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: 10 }}
-                      className="absolute -top-3 -right-3 text-xs bg-background border rounded-full px-1.5 py-0.5 select-none"
-                    >
-                      {likesCount}
-                    </motion.span>
-                  )}
-                </AnimatePresence>
-              </motion.button>
+                )}
+                <motion.div
+                  key="heart-icon"
+                  animate={showLikeEffect ? { scale: [1, 0.8, 1] } : { scale: 1 }}
+                  transition={{ duration: 0.4 }}
+                >
+                  <HeartIcon
+                    className={cn(
+                      "h-4 w-4 transition-all",
+                      isLiking && "animate-pulse"
+                    )}
+                    fill={isLiked ? "currentColor" : "none"}
+                  />
+                </motion.div>
+              </AnimatePresence>
+              <AnimatePresence mode="wait">
+                {likesCount > 0 && (
+                  <motion.span
+                    key={`count-${likesCount}`}
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: 10 }}
+                    className="absolute -top-3 -right-3 text-xs bg-background border rounded-full px-1.5 py-0.5 select-none"
+                  >
+                    {likesCount}
+                  </motion.span>
+                )}
+              </AnimatePresence>
+            </motion.button>
 
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" size="icon" className="hover:bg-muted/50 p-1.5 h-auto">
-                    <MoreHorizontalIcon className="h-4 w-4" />
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-48">
-                  <DropdownMenuItem onClick={handleShare}>
-                    <Share2Icon className="mr-2 h-4 w-4" />
-                    {t('share.title')}
-                  </DropdownMenuItem>
-                  <DropdownMenuItem onClick={handleCopy}>
-                    <CopyIcon className="mr-2 h-4 w-4" />
-                    {t('copyLink')}
-                  </DropdownMenuItem>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem onClick={() => window.open(getSocialShareUrl('twitter'), '_blank')}>
-                    <X className="mr-2 h-4 w-4" />
-                    {t('share.twitter')}
-                  </DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => window.open(getSocialShareUrl('facebook'), '_blank')}>
-                    <FacebookIcon className="mr-2 h-4 w-4" />
-                    {t('share.facebook')}
-                  </DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => window.open(getSocialShareUrl('linkedin'), '_blank')}>
-                    <LinkedinIcon className="mr-2 h-4 w-4" />
-                    {t('share.linkedin')}
-                  </DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => window.open(getSocialShareUrl('pinterest'), '_blank')}>
-                    <Share2Icon className="mr-2 h-4 w-4" />
-                    {t('share.pinterest')}
-                  </DropdownMenuItem>
-                  <DropdownMenuItem onClick={handleInstagramShare}>
-                    <InstagramIcon className="mr-2 h-4 w-4" />
-                    {t('share.instagram')}
-                  </DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => window.open(getSocialShareUrl('imgur'), '_blank')}>
-                    <UploadIcon className="mr-2 h-4 w-4" />
-                    {t('share.imgur')}
-                  </DropdownMenuItem>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem onClick={() => window.open(getSocialShareUrl('telegram'), '_blank')}>
-                    <SendIcon className="mr-2 h-4 w-4" />
-                    {t('share.telegram')}
-                  </DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => window.open(getSocialShareUrl('whatsapp'), '_blank')}>
-                    <MessageCircleIcon className="mr-2 h-4 w-4" />
-                    {t('share.whatsapp')}
-                  </DropdownMenuItem>
-                  {/* <DropdownMenuItem onClick={handleWeChatShare}>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" size="icon" className="hover:bg-muted/50 p-1.5 h-auto">
+                  <MoreHorizontalIcon className="h-4 w-4" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-48">
+                <DropdownMenuItem onClick={handleShare}>
+                  <Share2Icon className="mr-2 h-4 w-4" />
+                  {t('share.title')}
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={handleCopy}>
+                  <CopyIcon className="mr-2 h-4 w-4" />
+                  {t('copyLink')}
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={() => window.open(getSocialShareUrl('twitter'), '_blank')}>
+                  <X className="mr-2 h-4 w-4" />
+                  {t('share.twitter')}
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => window.open(getSocialShareUrl('facebook'), '_blank')}>
+                  <FacebookIcon className="mr-2 h-4 w-4" />
+                  {t('share.facebook')}
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => window.open(getSocialShareUrl('linkedin'), '_blank')}>
+                  <LinkedinIcon className="mr-2 h-4 w-4" />
+                  {t('share.linkedin')}
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => window.open(getSocialShareUrl('pinterest'), '_blank')}>
+                  <Share2Icon className="mr-2 h-4 w-4" />
+                  {t('share.pinterest')}
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={handleInstagramShare}>
+                  <InstagramIcon className="mr-2 h-4 w-4" />
+                  {t('share.instagram')}
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => window.open(getSocialShareUrl('imgur'), '_blank')}>
+                  <UploadIcon className="mr-2 h-4 w-4" />
+                  {t('share.imgur')}
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={() => window.open(getSocialShareUrl('telegram'), '_blank')}>
+                  <SendIcon className="mr-2 h-4 w-4" />
+                  {t('share.telegram')}
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => window.open(getSocialShareUrl('whatsapp'), '_blank')}>
+                  <MessageCircleIcon className="mr-2 h-4 w-4" />
+                  {t('share.whatsapp')}
+                </DropdownMenuItem>
+                {/* <DropdownMenuItem onClick={handleWeChatShare}>
                     <QrCodeIcon className="mr-2 h-4 w-4" />
                     {t('share.wechat')}
                   </DropdownMenuItem> */}
-                </DropdownMenuContent>
-              </DropdownMenu>
-            </div>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
         </div>
+      </div>
 
-        {mainImageSection}
-        {variationsSection}
+      {mainImageSection}
+      {variationsSection}
 
-        {/* 信息栏 - MODEL/DIMENSIONS/DATE */}
-        <div className="w-full relative mb-4">
+      {/* 信息栏 */}
+      <div className="w-full relative mb-6 space-y-2">
+        {/* 基本信息行 */}
+        <div className="relative">
           <div className="overflow-x-auto hide-scrollbar">
-            <div className="flex items-center gap-2 px-4 min-w-max mx-auto" style={{ width: 'fit-content' }}>
+            <div className="flex items-center justify-center gap-4 px-4 min-w-max w-full">
               <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
                 <span className="uppercase whitespace-nowrap">MODEL</span>
                 <span className="text-foreground">{currentEmoji.model}</span>
@@ -780,32 +800,105 @@ export function EmojiDetailContainer({ emoji: initialEmoji }: EmojiDetailContain
           <div className="absolute right-0 top-0 bottom-0 w-4 bg-gradient-to-l from-background to-transparent pointer-events-none" />
         </div>
 
-        {/* 操作按钮区 */}
-        <div className="w-full max-w-sm pt-2">
-          <div className="grid grid-cols-2 gap-3">
-            <UnifiedGenmojiGenerator
-              trigger={
-                <Button
-                  variant="outline"
-                  className="w-full text-muted-foreground hover:text-foreground relative py-4 bg-pink-500/5 hover:bg-pink-500/10 dark:bg-pink-500/10 dark:hover:bg-pink-500/20 border-pink-500/20 dark:border-pink-500/30 transition-all duration-200"
-                >
-                  <ImageIcon className="mr-2 h-3.5 w-3.5" />
-                  {t('reGenmoji')}
-                </Button>
-              }
-              initialPrompt={initialEmoji.prompt}
-            />
-
-            <Button
-              variant="outline"
-              className="w-full text-muted-foreground hover:text-foreground py-4 bg-violet-500/5 hover:bg-violet-500/10 dark:bg-violet-500/10 dark:hover:bg-violet-500/20 border-violet-500/20 dark:border-violet-500/30 transition-all duration-200"
-              onClick={handleDownload}
-            >
-              <DownloadIcon className="mr-2 h-3.5 w-3.5" />
-              {t('download')}
-            </Button>
+        {/* 扩展信息行 */}
+        {currentEmoji.subject_count && (
+          <div className="relative">
+            <div className="overflow-x-auto hide-scrollbar">
+              <div className="flex items-center justify-center gap-4 px-4 min-w-max w-full">
+                <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                  <span className="uppercase whitespace-nowrap">CATEGORY</span>
+                  <span className="text-foreground capitalize">{currentEmoji.category?.replace(/_/g, ' ')}</span>
+                </div>
+                <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                  <span className="uppercase whitespace-nowrap">COLOR</span>
+                  <span className="text-foreground capitalize">{currentEmoji.primary_color}</span>
+                </div>
+                <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                  <span className="uppercase whitespace-nowrap">QUALITY</span>
+                  <div className="flex items-center gap-0.5">
+                    {Array.from({ length: 5 }).map((_, i) => (
+                      <div
+                        key={i}
+                        className={cn(
+                          "w-1.5 h-1.5 rounded-full",
+                          i < currentEmoji.quality_score!
+                            ? "bg-primary"
+                            : "bg-muted"
+                        )}
+                      />
+                    ))}
+                  </div>
+                </div>
+                <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                  <span className="uppercase whitespace-nowrap">SUBJECTS</span>
+                  <span className="text-foreground">{currentEmoji.subject_count}</span>
+                </div>
+              </div>
+            </div>
+            <div className="absolute left-0 top-0 bottom-0 w-4 bg-gradient-to-r from-background to-transparent pointer-events-none" />
+            <div className="absolute right-0 top-0 bottom-0 w-4 bg-gradient-to-l from-background to-transparent pointer-events-none" />
           </div>
+        )}
+
+        {/* 关键词标签行 */}
+        {(() => {
+          try {
+            const keywords = currentEmoji.keywords ?
+              (typeof currentEmoji.keywords === 'string' ?
+                JSON.parse(currentEmoji.keywords) :
+                currentEmoji.keywords
+              ) : [];
+
+            return keywords.length > 0 && (
+              <div className="relative">
+                <div className="overflow-x-auto hide-scrollbar">
+                  <div className="flex items-center justify-center gap-2 px-4 min-w-max w-full">
+                    {keywords.map((keyword: string, index: number) => (
+                      <span
+                        key={index}
+                        className="px-2 py-0.5 rounded-full text-xs bg-muted text-muted-foreground whitespace-nowrap"
+                      >
+                        {keyword}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+                <div className="absolute left-0 top-0 bottom-0 w-4 bg-gradient-to-r from-background to-transparent pointer-events-none" />
+                <div className="absolute right-0 top-0 bottom-0 w-4 bg-gradient-to-l from-background to-transparent pointer-events-none" />
+              </div>
+            );
+          } catch (e) {
+            return null;
+          }
+        })()}
+      </div>
+
+      {/* 操作按钮区 */}
+      <div className="w-full max-w-sm pt-2">
+        <div className="grid grid-cols-2 gap-3">
+          <UnifiedGenmojiGenerator
+            trigger={
+              <Button
+                variant="outline"
+                className="w-full text-muted-foreground hover:text-foreground relative py-4 bg-pink-500/5 hover:bg-pink-500/10 dark:bg-pink-500/10 dark:hover:bg-pink-500/20 border-pink-500/20 dark:border-pink-500/30 transition-all duration-200"
+              >
+                <ImageIcon className="mr-2 h-3.5 w-3.5" />
+                {t('reGenmoji')}
+              </Button>
+            }
+            initialPrompt={initialEmoji.prompt}
+          />
+
+          <Button
+            variant="outline"
+            className="w-full text-muted-foreground hover:text-foreground py-4 bg-violet-500/5 hover:bg-violet-500/10 dark:bg-violet-500/10 dark:hover:bg-violet-500/20 border-violet-500/20 dark:border-violet-500/30 transition-all duration-200"
+            onClick={handleDownload}
+          >
+            <DownloadIcon className="mr-2 h-3.5 w-3.5" />
+            {t('download')}
+          </Button>
         </div>
+      </div>
       {/* </div> */}
     </div>
   );
