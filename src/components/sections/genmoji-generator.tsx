@@ -3,9 +3,6 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Progress } from "@/components/ui/progress";
-import { AuroraText } from "@/components/ui/aurora-text";
-import { easeInOutCubic } from "@/lib/animation";
-import { motion } from "framer-motion";
 import confetti from "canvas-confetti";
 import { useState, useEffect, useRef } from "react";
 import EmojiContainer from "@/components/emoji-container";
@@ -163,12 +160,6 @@ export function GenmojiGenerator() {
       <div className="mx-auto max-w-5xl text-center relative ">
 
         {/* Generated Emoji with Loading State */}
-        <motion.div 
-          className="mb-6 max-w-[280px] mx-auto"
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.5 }}
-        >
           {isGenerating ? (
             <div className="relative w-full aspect-square flex flex-col items-center justify-center">
               <div className="relative w-12 h-12">
@@ -185,31 +176,16 @@ export function GenmojiGenerator() {
           ) : (
             <div className="relative w-full aspect-square flex flex-col items-center justify-center border-2 border-dashed border-primary/20 rounded-2xl">
               <div className="w-12 h-12 rounded-full bg-primary/10 animate-pulse" />
-              <AuroraText as="p" className="mt-4 text-lg font-medium max-w-[280px] p-4">
                 {t('title')}
-              </AuroraText>
             </div>
           )}
-        </motion.div>
 
         {/* Progress Bar */}
         {isGenerating && (
-          <motion.div 
-            className="max-w-xl mx-auto mb-4"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-          >
             <Progress value={progress} className="h-1" />
-          </motion.div>
         )}
 
         {/* Generate Form */}
-        <motion.div 
-          className="max-w-xl mx-auto px-4 sm:px-0 mb-12"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.4 }}
-        >
           <div className="flex flex-col gap-4">
             <div className="flex flex-col sm:flex-row gap-4">
               <Input
@@ -274,12 +250,9 @@ export function GenmojiGenerator() {
               </div>
             )}
           </div>
-        </motion.div>
 
         <h2 className={cn("col-span-full text-left mb-6 ml-4 text-2xl", outfit.className)}>
-            <AuroraText as="span" className="text-2xl font-semibold">
               {t('recentTitle')}
-            </AuroraText>
           </h2>
         {/* Recent Emojis Grid */}
         {/* <motion.div

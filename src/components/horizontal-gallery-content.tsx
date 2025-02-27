@@ -9,7 +9,6 @@ import { useTranslations, useLocale } from 'next-intl';
 import { ArrowRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useRouter } from "next/navigation";
-import { AuroraText } from "@/components/ui/aurora-text";
 import { outfit } from "@/lib/fonts";
 
 export function HorizontalGalleryContent() {
@@ -78,10 +77,11 @@ export function HorizontalGalleryContent() {
 
   return (
     <div className="w-full max-w-[1400px] mx-auto px-6 space-y-6">
-      <h2 className={cn("text-left px-4 text-2xl font-semibold", outfit.className)}>
-      <AuroraText as="span" className="text-2xl font-semibold">
+      <h2 className={cn(
+    "text-2xl sm:text-2xl md:text-3xl lg:text-3xl font-bold tracking-tight gradient-text",
+    outfit.className
+  )}>
           {t('generator.recentTitle')}
-        </AuroraText>
       </h2>
       {renderContent()}
       <div className="flex justify-center pt-2">

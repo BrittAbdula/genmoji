@@ -5,7 +5,6 @@ import { Drawer, DrawerContent, DrawerHeader, DrawerTitle, DrawerDescription, Dr
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Progress } from "@/components/ui/progress";
-import { AuroraText } from "@/components/ui/aurora-text";
 import { useState, useEffect, useRef } from "react";
 import { genMoji } from "@/lib/api";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
@@ -15,7 +14,6 @@ import confetti from "canvas-confetti";
 import { useRouter } from "next/navigation";
 import { useTranslations, useLocale } from 'next-intl';
 import EmojiContainer from "@/components/emoji-container";
-import { motion } from "framer-motion";
 import { useMediaQuery } from "@/hooks/use-media-query";
 import { cn } from "@/lib/utils";
 import { useGenerationStore } from "@/store/generation-store";
@@ -167,17 +165,10 @@ export function UnifiedGenmojiGenerator({
       )}
 
       {mode === 'inline' && generatedEmoji && (
-        <motion.div 
-          className="mb-6 max-w-[280px] mx-auto"
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.5 }}
-        >
           <EmojiContainer 
             emoji={generatedEmoji} 
             size="lg"
           />
-        </motion.div>
       )}
 
       <div className="flex flex-col gap-4">

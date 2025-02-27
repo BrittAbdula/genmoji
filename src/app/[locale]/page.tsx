@@ -22,6 +22,15 @@ export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
 }
 
+// 强制静态渲染
+export const dynamic = 'force-static';
+
+// 设置重新验证时间（秒）
+export const revalidate = 86400; // 24小时
+
+// 禁用动态参数
+export const dynamicParams = false;
+
 type Props = {
   params: Promise<{ locale: string }>;
 };

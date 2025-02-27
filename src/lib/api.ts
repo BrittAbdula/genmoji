@@ -11,7 +11,7 @@ export async function getEmoji(slug: string, locale: string): Promise<Emoji> {
   // console.log('--------getEmojiurl', url);
   try {
     const res = await fetch(url, {
-      next: { revalidate: 3600 },
+      next: { revalidate: 86400 },
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
@@ -67,7 +67,7 @@ export async function getRelatedEmojis(slug: string, locale: string): Promise<Em
   const url = `${WORKER_URL}/genmoji/related/${slug}?locale=${locale}&limit=16`;
 
   const res = await fetch(url, {
-    next: { revalidate: 60 }
+    next: { revalidate: 120 }
   });
 
   if (!res.ok) {
@@ -165,7 +165,7 @@ export async function getEmojisByBaseSlug(
   const url = `${WORKER_URL}/genmoji/by-base-slug/${baseSlug}?locale=${locale}&limit=${limit}&offset=${offset}`;
 
   const res = await fetch(url, {
-    next: { revalidate: 60 }
+    next: { revalidate: 180 }
   });
 
   if (!res.ok) {

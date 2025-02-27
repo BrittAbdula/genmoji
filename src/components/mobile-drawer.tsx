@@ -1,10 +1,6 @@
 import { Icons } from "@/components/icons";
 import { buttonVariants } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/theme-toggle";
-import { outfit } from '@/lib/fonts';
-import { AuroraText } from "@/components/ui/aurora-text";
-import { AnimatePresence, motion, useAnimation } from "framer-motion";
-import { easeInOutCubic } from "@/lib/animation";
 import {
   Drawer,
   DrawerContent,
@@ -20,7 +16,7 @@ import { IoMenuSharp } from "react-icons/io5";
 import { useTranslations } from 'next-intl';
 import { LanguageSwitcher } from "@/components/language-switcher";
 import React from 'react';
-
+import { AuroraText } from "@/components/ui/aurora-text";
 export function MobileDrawer() {
   const pathname = usePathname();
   const t = useTranslations('common');
@@ -48,24 +44,8 @@ export function MobileDrawer() {
               className="relative flex items-center space-x-2"
             >
               <img src="/logo.png" alt={t('name')} width="40" height="40"/>
-              <motion.div
-                className="absolute inset-0 -z-10 bg-gradient-to-b from-pink-100/30 via-purple-100/30 to-transparent dark:from-pink-950/30 dark:via-purple-950/30 rounded-full blur-3xl"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 1 }}
-              />
-              <motion.p
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, ease: easeInOutCubic }}
-                className={cn(
-                  "text-xl sm:text-2xl font-bold tracking-tight",
-                  outfit.className
-                )}
-              >
-                <AuroraText>{t('name').split(' ')[0]}</AuroraText>{" "}
+              <AuroraText>{t('name').split(' ')[0]}</AuroraText>{" "}
                 <span className="text-muted-foreground">{t('name').split(' ')[1]}</span>
-              </motion.p>
             </Link>
             <div className="flex items-center gap-2">
               <LanguageSwitcher />

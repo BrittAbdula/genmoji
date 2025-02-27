@@ -1,27 +1,23 @@
 "use client";
 
-import { motion, LazyMotion, domAnimation } from "framer-motion";
-import { easeInOutCubic } from "@/lib/animation";
 import { outfit } from '@/lib/fonts';
 import { cn } from '@/lib/utils';
 import { useTranslations } from 'next-intl';
-import { AuroraText } from "@/components/ui/aurora-text";
 import { UnifiedGenmojiGenerator } from "@/components/unified-genmoji-generator";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Sparkles } from "lucide-react";
 import { EmojiShowcase } from "./emoji-showcase";
 import { ChevronRight } from "lucide-react";
-import { AnimatedGridPattern } from "@/components/ui/animated-grid-pattern";
-import { memo } from "react";
+import { memo, useEffect, useRef, useState } from "react";
 import { ReactNode } from 'react';
 
 // Memoized Title component
 const Title = memo(({ title }: { title: string }) => (
   <h1 className={cn(
-    "text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight",
+    "text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight gradient-text",
     outfit.className
   )}>
-    <AuroraText>{title}</AuroraText>
+    {title}
   </h1>
 ));
 
@@ -32,22 +28,102 @@ const Subtitle = memo(({ text }: { text: string }) => (
   </p>
 ));
 
+// Deterministic grid positions
+const generateGridPositions = (count: number) => {
+  const positions = [];
+  const gridSize = Math.ceil(Math.sqrt(count));
+  
+  for (let i = 0; i < count; i++) {
+    const row = Math.floor(i / gridSize);
+    const col = i % gridSize;
+    
+    positions.push({
+      top: `${(row * 100) / (gridSize - 1)}%`,
+      left: `${(col * 100) / (gridSize - 1)}%`
+    });
+  }
+  
+  return positions;
+};
+
 export function Hero() {
   const t = useTranslations('hero');
+  // Use deterministic grid positions
+  const squarePositions = generateGridPositions(30);
 
   return (
-    <LazyMotion features={domAnimation}>
       <section className="relative min-h-[100dvh] w-full overflow-hidden">
-        <AnimatedGridPattern
-          numSquares={30}
-          maxOpacity={0.1}
-          duration={3}
-          repeatDelay={1}
+        {/* CSS Grid Pattern */}
+        <div 
           className={cn(
+            "absolute inset-x-0 inset-y-[-30%] h-[200%] skew-y-12 z-10",
             "[mask-image:radial-gradient(500px_circle_at_center,white,transparent)]",
-            "inset-x-0 inset-y-[-30%] h-[200%] skew-y-12",
+            "grid-pattern"
           )}
-        />
+        >
+          {/* Animated Squares */}
+          {squarePositions.map((pos, i) => (
+            <div 
+              key={i} 
+              className="animated-square"
+              style={{ 
+                animationDelay: `${i * 0.1}s`,
+                top: pos.top,
+                left: pos.left,
+                opacity: 0
+              }}
+            />
+          ))}
+        </div>
+        
+        <style jsx>{`
+          .grid-pattern {
+            background-image: linear-gradient(to right, rgba(156, 163, 175, 0.1) 1px, transparent 1px),
+                              linear-gradient(to bottom, rgba(156, 163, 175, 0.1) 1px, transparent 1px);
+            background-size: 40px 40px;
+            background-position: -1px -1px;
+          }
+          
+          .animated-square {
+            position: absolute;
+            width: 39px;
+            height: 39px;
+            background-color: currentColor;
+            opacity: 0;
+            animation: fadeInOut 3s ease-in-out infinite;
+          }
+          
+          @keyframes fadeInOut {
+            0% { opacity: 0; }
+            50% { opacity: 0.1; }
+            100% { opacity: 0; }
+          }
+        `}</style>
+        
+        {/* Add global styles for gradient text */}
+        <style jsx global>{`
+          .gradient-text {
+            background: linear-gradient(to right, #ec4899, #a855f7, #06b6d4);
+            background-size: 200% auto;
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            animation: gradient-animation 8s linear infinite;
+          }
+          
+          @keyframes gradient-animation {
+            0% {
+              background-position: 0% 50%;
+            }
+            50% {
+              background-position: 100% 50%;
+            }
+            100% {
+              background-position: 0% 50%;
+            }
+          }
+        `}</style>
+        
         {/* Background gradient */}
         <div className="absolute inset-0 -z-10">
           <div className="absolute inset-0 bg-gradient-to-b from-background via-background/95 to-background/90" />
@@ -87,6 +163,5 @@ export function Hero() {
           </div>
         </div>
       </section>
-    </LazyMotion>
   );
 }

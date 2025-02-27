@@ -574,7 +574,7 @@ export function EmojiDetailContainer({ emoji: initialEmoji }: EmojiDetailContain
 
   // 缓存主要展示区域
   const mainImageSection = useMemo(() => (
-    <div className="relative w-full aspect-square mb-6 overflow-hidden">
+    <div className="relative w-full aspect-square mb-2 overflow-hidden">
       {allVariations.length > 1 && displayIndex > 0 && (
         <PreviewImage
           emoji={allVariations[displayIndex - 1]}
@@ -633,7 +633,7 @@ export function EmojiDetailContainer({ emoji: initialEmoji }: EmojiDetailContain
       {/* <div className="mx-auto flex w-full max-w-xl flex-col items-center"> */}
 
       {/* 标题区域 */}
-      <div className="w-full mb-6">
+      <div className="w-full mb-2">
         <div className="flex items-start justify-between gap-3">
           <button
             onClick={handlePromptCopy}
@@ -775,7 +775,7 @@ export function EmojiDetailContainer({ emoji: initialEmoji }: EmojiDetailContain
       {variationsSection}
 
       {/* 信息栏 */}
-      <div className="w-full relative mb-6 space-y-2">
+      <div className="w-full relative mb-2 space-y-2">
         {/* 基本信息行 */}
         <div className="relative">
           <div className="overflow-x-auto hide-scrollbar">
