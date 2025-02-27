@@ -9,30 +9,34 @@ interface EmojiContainerProps {
   size?: 'sm' | 'md' | 'lg' | 'xl';
   lazyLoad?: boolean;
   priority?: boolean;
+  padding?: string;
+  withBorder?: boolean;
 }
 
 const EmojiContainer = ({ 
   emoji, 
   size = 'md', 
   lazyLoad = true,
-  priority = false 
+  priority = false,
+  padding = 'p-1',
+  withBorder = true
 }: EmojiContainerProps) => {
   const t = useTranslations('emoji.container');
 
-  // Define size classes for container
+  // 调整尺寸保持正方形
   const sizeClasses = {
-    sm: 'w-24 h-24',
-    md: 'w-32 h-32',
-    lg: 'w-64 h-64',
-    xl: 'w-full h-full max-w-[520px] max-h-[520px]'
+    sm: 'w-full h-full aspect-square',  // 完全正方形
+    md: 'w-36 h-36',  
+    lg: 'w-72 h-72',  
+    xl: 'w-full h-full max-w-[600px] max-h-[600px]' 
   };
 
-  // Dimensions in pixels for Next.js Image
+  // 调整尺寸为正方形
   const sizeValues = {
-    sm: 96, // 24 * 4
-    md: 128, // 32 * 4
-    lg: 256, // 64 * 4
-    xl: 520
+    sm: 100, // 宽高必须相同
+    md: 144, 
+    lg: 288, 
+    xl: 600  
   };
 
   return (
@@ -40,21 +44,22 @@ const EmojiContainer = ({
       href={`/emoji/${emoji.slug}/`}
       className={cn(
         "block relative",
-        "rounded-xl cursor-pointer flex items-center justify-center",
+        "rounded-md cursor-pointer flex items-center justify-center",
         "transition-colors duration-200",
         "hover:bg-gray-950/[.05] active:bg-gray-950/[.1]",
         "dark:hover:bg-gray-50/[.15] dark:active:bg-gray-50/[.2]",
-        "p-2",
-        sizeClasses[size] // Apply size class directly
+        withBorder && "border-2 border-purple-700/30 rounded-lg",
+        padding,
+        sizeClasses[size]
       )}
     >
-      <div className="w-full h-full relative">
+      <div className="w-full h-full flex items-center justify-center bg-slate-800/20 rounded-md">
         <Image 
           src={emoji.image_url} 
           alt={t('imageAlt', { prompt: emoji.prompt })}
           width={sizeValues[size]}
           height={sizeValues[size]}
-          className="object-contain"
+          className="w-5/6 h-5/6 object-contain"
           loading={lazyLoad && !priority ? "lazy" : "eager"}
           priority={priority}
           draggable={false}

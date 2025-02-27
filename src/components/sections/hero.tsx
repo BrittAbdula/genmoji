@@ -141,9 +141,9 @@ export function Hero() {
         <div className="relative z-20 flex min-h-[100dvh] flex-col">
           {/* Main Content */}
           <div 
-            className="flex-1 flex flex-col items-center justify-center px-4 pt-10"
+            className="flex-1 flex flex-col items-center justify-center px-4 pt-6"
           >
-            <div className="flex flex-col items-center max-w-5xl mx-auto text-center mb-8 min-h-[160px] sm:min-h-[180px] flex justify-center">
+            <div className="flex flex-col items-center max-w-5xl mx-auto text-center mb-6 min-h-[160px] sm:min-h-[180px] flex justify-center">
               <Title title={t('title')} />
               <Subtitle text={t('subtitle')} />
             </div>
@@ -165,7 +165,7 @@ export function Hero() {
           </div>
 
           <div
-            className="w-full mt-auto min-h-[200px] sm:min-h-[240px]"
+            className="w-full mt-auto min-h-[240px] sm:min-h-[280px] md:min-h-[300px] lg:min-h-[340px]"
           >
             <EmojiShowcase />
           </div>

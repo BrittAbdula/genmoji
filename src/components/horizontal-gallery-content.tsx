@@ -44,16 +44,17 @@ export function HorizontalGalleryContent() {
     fetchEmojis();
   }, [locale]);
 
-  // Set fixed dimensions to prevent layout shifts
-  const cellWidth = "w-full h-full min-h-[80px]";
-  const gridClass = "grid w-full auto-rows-max grid-cols-4 place-content-center justify-items-center gap-4 sm:grid-cols-5 md:grid-cols-6 lg:grid-cols-8 max-w-7xl mx-auto min-h-[400px]";
+  // 调整单元格样式确保完全正方形
+  const cellWidth = "w-full min-h-[90px] aspect-square";
+  // 优化网格布局，减少间距，确保正方形
+  const gridClass = "grid w-full grid-cols-4 sm:grid-cols-6 md:grid-cols-8 lg:grid-cols-8 xl:grid-cols-10 place-content-center justify-items-center gap-2 max-w-7xl mx-auto min-h-[400px]";
 
   const renderContent = () => {
     if (loading) {
       return (
         <div className={gridClass}>
           {Array.from({ length: limit }).map((_, i) => (
-            <div key={`loading-skeleton-${i}`} className={`${cellWidth} aspect-square rounded-lg bg-muted animate-pulse`} />
+            <div key={`loading-skeleton-${i}`} className={`${cellWidth} rounded-lg bg-muted animate-pulse`} />
           ))}
         </div>
       );
@@ -64,14 +65,14 @@ export function HorizontalGalleryContent() {
         <Suspense fallback={
           <div className={gridClass}>
             {[...Array(limit)].map((_, i) => (
-              <div key={i} className={`${cellWidth} aspect-square rounded-lg bg-muted animate-pulse`} />
+              <div key={i} className={`${cellWidth} rounded-lg bg-muted animate-pulse`} />
             ))}
           </div>
         }>
         <div className={gridClass}>
             {emojis.map((emoji, index) => (
-              <div key={`${emoji.slug}-${index}`} className={cellWidth + " flex items-center justify-center"}>
-                <EmojiContainer emoji={emoji} size="sm" lazyLoad={index > 8} />
+              <div key={`${emoji.slug}-${index}`} className={cellWidth}>
+                <EmojiContainer emoji={emoji} size="sm" lazyLoad={index > 8} padding="p-0.5" withBorder={true} />
               </div>
             ))}
           </div>
@@ -81,7 +82,7 @@ export function HorizontalGalleryContent() {
   };
 
   return (
-    <div className="w-full max-w-[1400px] mx-auto px-6 space-y-6">
+    <div className="w-full max-w-[1400px] mx-auto px-2 space-y-4">
       <h2 className={cn(
     "text-2xl sm:text-2xl md:text-3xl lg:text-3xl font-bold tracking-tight gradient-text",
     outfit.className

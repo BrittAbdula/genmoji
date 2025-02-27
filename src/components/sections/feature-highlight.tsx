@@ -73,8 +73,8 @@ function Feature({
     >
       <motion.div
         className={cn(
-          "w-full lg:w-1/2 mb-10 lg:mb-0",
-          isLTR ? "lg:pr-8" : "lg:pl-8"
+          "w-full lg:w-2/5 mb-10 lg:mb-0",
+          isLTR ? "lg:pr-6" : "lg:pl-6"
         )}
         initial="hidden"
         animate={isActive ? "visible" : "hidden"}
@@ -108,26 +108,26 @@ function Feature({
           </motion.div>
         </div>
       </motion.div>
-      <div className="w-full lg:w-1/2 h-[300px] sm:h-[400px] md:h-[500px] relative">
-        <div className="w-full h-full relative">
+      <div className="w-full lg:w-3/5 h-[350px] sm:h-[400px] md:h-[450px] relative">
+        <div className="w-full h-full relative flex items-center justify-center">
           {/* Dark mode image */}
-          <div className="hidden dark:block w-full h-full">
+          <div className="hidden dark:block w-full h-full max-w-[500px] max-h-[500px] aspect-square mx-auto">
             <Image
               src={imageSrcBlack}
               alt={t(`${translationKey}.title`) + ' - Dark Mode'}
               fill
-              sizes="(max-width: 768px) 100vw, 50vw"
+              sizes="(max-width: 768px) 100vw, 60vw"
               priority
               style={{ objectFit: 'contain' }}
             />
           </div>
           {/* Light mode image */}
-          <div className="block dark:hidden w-full h-full">
+          <div className="block dark:hidden w-full h-full max-w-[500px] max-h-[500px] aspect-square mx-auto">
             <Image
               src={imageSrc}
               alt={t(`${translationKey}.title`) + ' - Light Mode'}
               fill
-              sizes="(max-width: 768px) 100vw, 50vw"
+              sizes="(max-width: 768px) 100vw, 60vw"
               priority
               style={{ objectFit: 'contain' }}
             />
@@ -190,7 +190,7 @@ export function FeatureHighlight() {
       id="feature-highlight"
       title={t('title')}
       subtitle={t('subtitle')}
-      className="container px-10"
+      className="container px-6"
       ref={containerRef}
     >
       {features.map((feature, index) => (

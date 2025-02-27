@@ -3,6 +3,8 @@ import { cn } from "@/lib/utils";
 import { useLocale } from "next-intl";
 import Link from "next/link";
 import Image from "next/image";
+import EmojiContainer from "@/components/emoji-container";
+import { Emoji } from "@/types/emoji";
 
 const SHOWCASE_IMAGES = [
   {
@@ -82,29 +84,32 @@ const SHOWCASE_IMAGES = [
 
 const EmojiCard = ({ slug, image_url, index }: { slug: string; image_url: string; index: number }) => {
   const locale = useLocale();
+  const emoji: Emoji = { 
+    slug, 
+    image_url, 
+    prompt: `Showcase emoji ${index + 1}`,
+    base_slug: slug.split('--')[0],
+    created_at: new Date().toISOString(),
+    is_public: true,
+    locale: locale,
+    has_reference_image: false,
+    model: "showcase"
+  };
+  
   return (
-    <Link href={`/${locale}/emoji/${slug}/`}>
-      <div
-        className={cn(
-          "relative h-32 w-32 sm:h-40 sm:w-40 mx-4 transform-gpu transition-all duration-500",
-          "rounded-xl p-4 cursor-pointer",
-          "hover:bg-gray-950/[.05]",
-          "dark:hover:bg-gray-50/[.15]",
-          "hover:scale-105"
-        )}
-      >
-        <Image
-          src={image_url}
-          alt={`Showcase emoji ${index + 1}`}
-          width={160}
-          height={160}
-          className="w-full h-full object-contain"
-          loading="eager"
-          priority={index < 4}
-          draggable={false}
-        />
-      </div>
-    </Link>
+    <div className={cn(
+      "h-36 w-36 sm:h-44 sm:w-44 mx-1 transform-gpu transition-all duration-300",
+      "hover:scale-105"
+    )}>
+      <EmojiContainer 
+        emoji={emoji} 
+        size="sm" 
+        lazyLoad={false} 
+        priority={index < 4} 
+        padding="p-0.5" 
+        withBorder={true}
+      />
+    </div>
   );
 };
 
@@ -113,13 +118,13 @@ export function EmojiShowcase() {
   const secondRow = SHOWCASE_IMAGES.slice(Math.ceil(SHOWCASE_IMAGES.length / 2));
 
   return (
-    <div className="relative flex w-full flex-col items-center justify-center gap-8 overflow-hidden py-4">
-      <Marquee className="[--duration:40s]">
+    <div className="relative flex w-full flex-col items-center justify-center gap-3 overflow-hidden py-4">
+      <Marquee className="[--duration:40s] [--gap:0.25rem]">
         {firstRow.map((item, i) => (
           <EmojiCard key={i} {...item} index={i} />
         ))}
       </Marquee>
-      <Marquee reverse className="[--duration:35s]">
+      <Marquee reverse className="[--duration:35s] [--gap:0.25rem]">
         {secondRow.map((item, i) => (
           <EmojiCard key={i} {...item} index={i + firstRow.length} />
         ))}
