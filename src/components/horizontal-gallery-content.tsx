@@ -44,30 +44,34 @@ export function HorizontalGalleryContent() {
     fetchEmojis();
   }, [locale]);
 
+  // Set fixed dimensions to prevent layout shifts
+  const cellWidth = "w-full h-full min-h-[80px]";
+  const gridClass = "grid w-full auto-rows-max grid-cols-4 place-content-center justify-items-center gap-4 sm:grid-cols-5 md:grid-cols-6 lg:grid-cols-8 max-w-7xl mx-auto min-h-[400px]";
+
   const renderContent = () => {
     if (loading) {
       return (
-        <div className="grid w-full auto-rows-max grid-cols-4 place-content-center justify-items-center gap-4 sm:grid-cols-5 md:grid-cols-6 lg:grid-cols-8 max-w-7xl mx-auto">
+        <div className={gridClass}>
           {Array.from({ length: limit }).map((_, i) => (
-            <div key={`loading-skeleton-${i}`} className="aspect-square rounded-lg bg-muted animate-pulse w-full h-full min-h-[80px]" />
+            <div key={`loading-skeleton-${i}`} className={`${cellWidth} aspect-square rounded-lg bg-muted animate-pulse`} />
           ))}
         </div>
       );
     }
 
     return (
-      <div className="max-w-7xl mx-auto">
+      <div className="max-w-7xl mx-auto min-h-[400px]">
         <Suspense fallback={
-          <div className="grid w-full auto-rows-max grid-cols-4 place-content-stretch justify-items-stretch gap-4 sm:grid-cols-5 md:grid-cols-6 lg:grid-cols-8">
+          <div className={gridClass}>
             {[...Array(limit)].map((_, i) => (
-              <div key={i} className="aspect-square rounded-lg bg-muted animate-pulse w-full h-full min-h-[80px]" />
+              <div key={i} className={`${cellWidth} aspect-square rounded-lg bg-muted animate-pulse`} />
             ))}
           </div>
         }>
-        <div className="grid w-full auto-rows-max grid-cols-4 place-items-center justify-items-center gap-4 sm:grid-cols-5 md:grid-cols-6 lg:grid-cols-8 mx-auto">
+        <div className={gridClass}>
             {emojis.map((emoji, index) => (
-              <div key={`${emoji.slug}-${index}`} className="w-full h-full min-h-[80px] flex items-center justify-center">
-                <EmojiContainer emoji={emoji} size="sm" />
+              <div key={`${emoji.slug}-${index}`} className={cellWidth + " flex items-center justify-center"}>
+                <EmojiContainer emoji={emoji} size="sm" lazyLoad={index > 8} />
               </div>
             ))}
           </div>

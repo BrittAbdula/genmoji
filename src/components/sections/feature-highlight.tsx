@@ -10,6 +10,8 @@ import { useTranslations } from 'next-intl';
 import { useEffect, useRef, useState } from "react";
 import { UnifiedGenmojiGenerator } from "../unified-genmoji-generator";
 import { Sparkles } from "lucide-react";
+import Image from "next/image";
+
 interface FeatureProps {
   translationKey: string;
   imageSrc: string;
@@ -53,6 +55,14 @@ function Feature({
       },
     },
   };
+
+  // Pre-load both images to prevent CLS
+  useEffect(() => {
+    const imgLight = new window.Image();
+    const imgDark = new window.Image();
+    imgLight.src = imageSrc;
+    imgDark.src = imageSrcBlack;
+  }, [imageSrc, imageSrcBlack]);
 
   return (
     <motion.div
@@ -98,17 +108,31 @@ function Feature({
           </motion.div>
         </div>
       </motion.div>
-      <div className="w-full lg:w-1/2">
-        <img
-          src={imageSrcBlack}
-          className="hidden dark:block"
-          alt={t(`${translationKey}.title`) + ' - Dark Mode'}
-        />
-        <img
-          src={imageSrc}
-          className="block dark:hidden"
-          alt={t(`${translationKey}.title`) + ' - Light Mode'}
-        />
+      <div className="w-full lg:w-1/2 h-[300px] sm:h-[400px] md:h-[500px] relative">
+        <div className="w-full h-full relative">
+          {/* Dark mode image */}
+          <div className="hidden dark:block w-full h-full">
+            <Image
+              src={imageSrcBlack}
+              alt={t(`${translationKey}.title`) + ' - Dark Mode'}
+              fill
+              sizes="(max-width: 768px) 100vw, 50vw"
+              priority
+              style={{ objectFit: 'contain' }}
+            />
+          </div>
+          {/* Light mode image */}
+          <div className="block dark:hidden w-full h-full">
+            <Image
+              src={imageSrc}
+              alt={t(`${translationKey}.title`) + ' - Light Mode'}
+              fill
+              sizes="(max-width: 768px) 100vw, 50vw"
+              priority
+              style={{ objectFit: 'contain' }}
+            />
+          </div>
+        </div>
       </div>
     </motion.div>
   );
@@ -136,7 +160,7 @@ export function FeatureHighlight() {
     },
   ];
 
-  const [activeFeature, setActiveFeature] = useState(-1);
+  const [activeFeature, setActiveFeature] = useState(0); // Start with first feature visible
   const containerRef = useRef<HTMLElement>(null);
   const t = useTranslations('featureHighlight');
 
@@ -150,12 +174,14 @@ export function FeatureHighlight() {
 
         const activeIndex = Math.floor((middleOfScreen - top) / featureHeight);
         setActiveFeature(
-          Math.max(-1, Math.min(features.length - 1, activeIndex))
+          Math.max(0, Math.min(features.length - 1, activeIndex))
         );
       }
     };
 
     window.addEventListener("scroll", handleScroll);
+    // Initial check to set first feature as active if in view
+    handleScroll();
     return () => window.removeEventListener("scroll", handleScroll);
   }, [features.length]);
 

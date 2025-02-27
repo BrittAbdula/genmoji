@@ -20,6 +20,7 @@ const Title = memo(({ title }: { title: string }) => (
     {title}
   </h1>
 ));
+Title.displayName = "Title";
 
 // Memoized Subtitle component
 const Subtitle = memo(({ text }: { text: string }) => (
@@ -27,6 +28,7 @@ const Subtitle = memo(({ text }: { text: string }) => (
     {text}
   </p>
 ));
+Subtitle.displayName = "Subtitle";
 
 // Deterministic grid positions
 const generateGridPositions = (count: number) => {
@@ -50,6 +52,12 @@ export function Hero() {
   const t = useTranslations('hero');
   // Use deterministic grid positions
   const squarePositions = generateGridPositions(30);
+  const [isReady, setIsReady] = useState(false);
+  
+  // Ensure component is fully mounted before showing animations
+  useEffect(() => {
+    setIsReady(true);
+  }, []);
 
   return (
       <section className="relative min-h-[100dvh] w-full overflow-hidden">
@@ -61,8 +69,8 @@ export function Hero() {
             "grid-pattern"
           )}
         >
-          {/* Animated Squares */}
-          {squarePositions.map((pos, i) => (
+          {/* Animated Squares - only show after component is mounted */}
+          {isReady && squarePositions.map((pos, i) => (
             <div 
               key={i} 
               className="animated-square"
@@ -135,7 +143,7 @@ export function Hero() {
           <div 
             className="flex-1 flex flex-col items-center justify-center px-4 pt-10"
           >
-            <div className="flex flex-col items-center max-w-5xl mx-auto text-center mb-8">
+            <div className="flex flex-col items-center max-w-5xl mx-auto text-center mb-8 min-h-[160px] sm:min-h-[180px] flex justify-center">
               <Title title={t('title')} />
               <Subtitle text={t('subtitle')} />
             </div>
@@ -157,7 +165,7 @@ export function Hero() {
           </div>
 
           <div
-            className="w-full mt-auto"
+            className="w-full mt-auto min-h-[200px] sm:min-h-[240px]"
           >
             <EmojiShowcase />
           </div>

@@ -2,6 +2,7 @@ import Marquee from "@/components/ui/marquee";
 import { cn } from "@/lib/utils";
 import { useLocale } from "next-intl";
 import Link from "next/link";
+import Image from "next/image";
 
 const SHOWCASE_IMAGES = [
   {
@@ -92,11 +93,14 @@ const EmojiCard = ({ slug, image_url, index }: { slug: string; image_url: string
           "hover:scale-105"
         )}
       >
-        <img
+        <Image
           src={image_url}
           alt={`Showcase emoji ${index + 1}`}
+          width={160}
+          height={160}
           className="w-full h-full object-contain"
-          loading="lazy"
+          loading="eager"
+          priority={index < 4}
           draggable={false}
         />
       </div>
@@ -110,12 +114,12 @@ export function EmojiShowcase() {
 
   return (
     <div className="relative flex w-full flex-col items-center justify-center gap-8 overflow-hidden py-4">
-      <Marquee  className="[--duration:40s]">
+      <Marquee className="[--duration:40s]">
         {firstRow.map((item, i) => (
           <EmojiCard key={i} {...item} index={i} />
         ))}
       </Marquee>
-      <Marquee reverse  className="[--duration:35s]">
+      <Marquee reverse className="[--duration:35s]">
         {secondRow.map((item, i) => (
           <EmojiCard key={i} {...item} index={i + firstRow.length} />
         ))}
