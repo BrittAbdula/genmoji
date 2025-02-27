@@ -2,13 +2,15 @@ import { Link } from '@/i18n/routing';
 import { Emoji } from '@/types/emoji';
 import { useTranslations } from 'next-intl';
 import { cn } from '@/lib/utils';
+import Image from 'next/image';
 
 interface EmojiContainerProps {
   emoji: Emoji;
   size?: 'sm' | 'md' | 'lg' | 'xl';
+  lazyLoad?: boolean;
 }
 
-const EmojiContainer = ({ emoji, size = 'md' }: EmojiContainerProps) => {
+const EmojiContainer = ({ emoji, size = 'md', lazyLoad = true }: EmojiContainerProps) => {
   const t = useTranslations('emoji.container');
 
   const sizeClasses = {
@@ -16,6 +18,14 @@ const EmojiContainer = ({ emoji, size = 'md' }: EmojiContainerProps) => {
     md: 'w-32 h-32',
     lg: 'w-64 h-64',
     xl: 'w-full h-full max-w-[520px] max-h-[520px]'
+  };
+
+  // 获取尺寸的数值，用于 Next.js Image 组件
+  const sizeValues = {
+    sm: 96, // 24 * 4
+    md: 128, // 32 * 4
+    lg: 256, // 64 * 4
+    xl: 520
   };
 
   return (
@@ -30,12 +40,24 @@ const EmojiContainer = ({ emoji, size = 'md' }: EmojiContainerProps) => {
         "p-2",
       )}
     >
-      <img 
-        src={emoji.image_url} 
-        alt={t('imageAlt', { prompt: emoji.prompt })}
-        className="w-full h-full object-contain"
-        draggable={false}
-      />
+      {lazyLoad ? (
+        <Image 
+          src={emoji.image_url} 
+          alt={t('imageAlt', { prompt: emoji.prompt })}
+          width={sizeValues[size]}
+          height={sizeValues[size]}
+          className="w-full h-full object-contain"
+          loading="lazy"
+          draggable={false}
+        />
+      ) : (
+        <img 
+          src={emoji.image_url} 
+          alt={t('imageAlt', { prompt: emoji.prompt })}
+          className="w-full h-full object-contain"
+          draggable={false}
+        />
+      )}
     </Link>
   );
 };

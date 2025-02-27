@@ -10,6 +10,7 @@ import { ArrowRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useRouter } from "next/navigation";
 import { outfit } from "@/lib/fonts";
+import Image from "next/image";
 
 export function HorizontalGalleryContent() {
   const t = useTranslations();
@@ -47,8 +48,8 @@ export function HorizontalGalleryContent() {
     if (loading) {
       return (
         <div className="grid w-full auto-rows-max grid-cols-4 place-content-center justify-items-center gap-4 sm:grid-cols-5 md:grid-cols-6 lg:grid-cols-8 max-w-7xl mx-auto">
-          {Array.from({ length: 8 }).map((_, i) => (
-            <div key={`loading-skeleton-${i}`} className="aspect-square rounded-lg bg-muted animate-pulse w-full" />
+          {Array.from({ length: limit }).map((_, i) => (
+            <div key={`loading-skeleton-${i}`} className="aspect-square rounded-lg bg-muted animate-pulse w-full h-full min-h-[80px]" />
           ))}
         </div>
       );
@@ -58,14 +59,14 @@ export function HorizontalGalleryContent() {
       <div className="max-w-7xl mx-auto">
         <Suspense fallback={
           <div className="grid w-full auto-rows-max grid-cols-4 place-content-stretch justify-items-stretch gap-4 sm:grid-cols-5 md:grid-cols-6 lg:grid-cols-8">
-            {[...Array(32)].map((_, i) => (
-              <div key={i} className="aspect-square rounded-lg bg-muted animate-pulse" />
+            {[...Array(limit)].map((_, i) => (
+              <div key={i} className="aspect-square rounded-lg bg-muted animate-pulse w-full h-full min-h-[80px]" />
             ))}
           </div>
         }>
         <div className="grid w-full auto-rows-max grid-cols-4 place-items-center justify-items-center gap-4 sm:grid-cols-5 md:grid-cols-6 lg:grid-cols-8 mx-auto">
             {emojis.map((emoji, index) => (
-              <div key={`${emoji.slug}-${index}`}>
+              <div key={`${emoji.slug}-${index}`} className="w-full h-full min-h-[80px] flex items-center justify-center">
                 <EmojiContainer emoji={emoji} size="sm" />
               </div>
             ))}
