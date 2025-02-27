@@ -36,6 +36,7 @@ import { useTranslations } from 'next-intl';
 import { UnifiedGenmojiGenerator } from './unified-genmoji-generator';
 import { TimeAgo } from './time-ago';
 import { useLocale } from 'next-intl';
+import Image from "next/image";
 
 interface EmojiDetailContainerProps {
   emoji: Emoji;
@@ -70,17 +71,23 @@ const MainImage = memo(({
       }}
     >
       <AnimatePresence mode="wait">
-        <motion.img
+        <motion.div
           key={emoji.slug}
-          src={emoji.image_url}
-          alt={`prompt: ${emoji.prompt}`}
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           exit={{ opacity: 0, scale: 0.9 }}
           transition={{ duration: 0.3 }}
-          className="w-full h-full object-contain p-8"
-          draggable={false}
-        />
+          className="w-full h-full p-8"
+        >
+          <Image
+            src={emoji.image_url}
+            alt={`prompt: ${emoji.prompt}`}
+            width={512}
+            height={512}
+            className="w-full h-full object-contain"
+            draggable={false}
+          />
+        </motion.div>
       </AnimatePresence>
     </motion.div>
   );
@@ -99,7 +106,7 @@ const PreviewImage = memo(({
   return (
     <div
       className={cn(
-        "absolute top-0 bottom-0 w-1/4 flex items-center cursor-pointer transition-opacity hover:opacity-50 opacity-30",
+        "absolute top-0 bottom-0 w-1/4 flex items-center cursor-default opacity-30",
         direction === 'left' ? 'left-0 justify-start' : 'right-0 justify-end'
       )}
       onClick={onClick}
@@ -110,9 +117,11 @@ const PreviewImage = memo(({
         animate={{ opacity: 1, x: 0 }}
         exit={{ opacity: 0, x: direction === 'left' ? -20 : 20 }}
       >
-        <img
+        <Image
           src={emoji.image_url}
           alt={`${direction} variation`}
+          width={128}
+          height={128}
           className="w-full h-full object-contain"
         />
       </motion.div>
@@ -138,9 +147,11 @@ const VariationThumbnail = memo(forwardRef<HTMLButtonElement, {
         isSelected && "bg-gray-950/[.1] dark:bg-gray-50/[.2] scale-105"
       )}
     >
-      <img
+      <Image
         src={variation.image_url}
         alt={variation.prompt}
+        width={96}
+        height={96}
         className="w-full h-full object-contain p-2"
         loading="lazy"
         draggable={false}
