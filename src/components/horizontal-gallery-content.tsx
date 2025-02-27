@@ -18,7 +18,7 @@ export function HorizontalGalleryContent() {
   const [emojis, setEmojis] = useState<Emoji[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const limit = 32;
+  const limit = 50;
   const locale = useLocale();
 
   const fetchEmojis = async (retryCount = 3) => {
