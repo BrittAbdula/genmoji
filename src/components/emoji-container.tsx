@@ -64,7 +64,8 @@ const EmojiContainer = ({
           priority={priority}
           draggable={false}
           sizes={`(max-width: 768px) ${sizeValues[size]}px, ${sizeValues[size]}px`}
-          placeholder="empty"
+          placeholder="blur"
+          blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/wcAAgAB/1h1ZAAAAABJRU5ErkJggg=="
         />
       </div>
     </Link>
