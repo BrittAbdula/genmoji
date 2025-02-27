@@ -71,9 +71,15 @@ export function HorizontalGalleryContent() {
         }>
         <div className={gridClass}>
             {emojis.map((emoji, index) => (
-              <div key={`${emoji.slug}-${index}`} className={cellWidth}>
-                <EmojiContainer emoji={emoji} size="sm" lazyLoad={index > 8} padding="p-0.5" withBorder={true} />
-              </div>
+                <EmojiContainer 
+                  key={`${emoji.slug}-${index}`} 
+                  emoji={emoji} 
+                  size="sm" 
+                  lazyLoad={index > 8} 
+                  padding="p-0.5" 
+                  withBorder={true}
+                  priority={index <= 8}
+                />
             ))}
           </div>
         </Suspense>
@@ -82,7 +88,7 @@ export function HorizontalGalleryContent() {
   };
 
   return (
-    <div className="w-full max-w-[1400px] mx-auto px-2 space-y-4">
+    <div className="w-full max-w-[1400px] mx-auto px-2 space-y-4 min-h-[600px]">
       <h2 className={cn(
     "text-2xl sm:text-2xl md:text-3xl lg:text-3xl font-bold tracking-tight gradient-text",
     outfit.className
