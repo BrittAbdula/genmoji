@@ -130,7 +130,7 @@ const PreviewImage = memo(({
   );
 });
 
-// 变体缩略图组件
+// Simplified thumbnail component
 const VariationThumbnail = memo(forwardRef<HTMLButtonElement, {
   variation: Emoji;
   isSelected: boolean;
@@ -141,11 +141,8 @@ const VariationThumbnail = memo(forwardRef<HTMLButtonElement, {
       ref={ref}
       onClick={onClick}
       className={cn(
-        "relative shrink-0 w-20 h-20 sm:w-24 sm:h-24 rounded-xl overflow-hidden transition-all duration-200",
-        "hover:bg-gray-950/[.05] active:bg-gray-950/[.1]",
-        "dark:hover:bg-gray-50/[.15] dark:active:bg-gray-50/[.2]",
-        "backdrop-blur-sm bg-gradient-to-b from-muted/5 to-muted/10",
-        isSelected && "bg-gray-950/[.1] dark:bg-gray-50/[.2] scale-105"
+        "relative shrink-0 w-20 h-20 sm:w-24 sm:h-24 rounded-lg overflow-hidden",
+        isSelected ? "bg-gray-300" : "hover:bg-muted/20"
       )}
     >
       <Image
@@ -163,71 +160,61 @@ const VariationThumbnail = memo(forwardRef<HTMLButtonElement, {
 
 VariationThumbnail.displayName = 'VariationThumbnail';
 
-// 变体列表组件
+// Simplified variations list
 const VariationsList = memo(({
   variations,
   currentIndex,
   onVariationSelect,
-  onScroll,
   isLoading
 }: {
   variations: Emoji[];
   currentIndex: number;
   onVariationSelect: (index: number) => void;
-  onScroll: (e: React.UIEvent<HTMLDivElement>) => void;
-  isLoading: boolean;
+  onScroll?: (e: React.UIEvent<HTMLDivElement>) => void;
+  isLoading?: boolean;
 }) => {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const thumbnailRefs = useRef<(HTMLButtonElement | null)[]>([]);
 
-  // 当选中的索引改变时，将对应的缩略图滚动到中心位置
+  // Gentler scrolling with a small delay to avoid jumpiness
   useEffect(() => {
-    const selectedThumbnail = thumbnailRefs.current[currentIndex];
-    if (selectedThumbnail && scrollContainerRef.current) {
-      const container = scrollContainerRef.current;
-      const containerWidth = container.offsetWidth;
-      const thumbnailWidth = selectedThumbnail.offsetWidth;
-      const thumbnailLeft = selectedThumbnail.offsetLeft;
-      const scrollLeft = thumbnailLeft - (containerWidth / 2) + (thumbnailWidth / 2);
-
-      container.scrollTo({
-        left: scrollLeft,
-        behavior: 'smooth'
-      });
-    }
+    const timer = setTimeout(() => {
+      const selectedThumbnail = thumbnailRefs.current[currentIndex];
+      if (selectedThumbnail && scrollContainerRef.current) {
+        selectedThumbnail.scrollIntoView({
+          behavior: 'smooth',
+          block: 'nearest',
+          inline: 'center'
+        });
+      }
+    }, 100);
+    
+    return () => clearTimeout(timer);
   }, [currentIndex]);
 
   return (
-    <div className="w-full mb-4 relative">
+    <div className="w-full mb-4">
       <div
         ref={scrollContainerRef}
-        className="overflow-x-auto hide-scrollbar px-4 mx-auto max-w-[calc(100vw-2rem)] sm:max-w-[calc(100vw-4rem)] md:max-w-xl"
-        onScroll={onScroll}
+        className="overflow-x-auto px-2 mx-auto max-w-full md:max-w-xl"
       >
-        <div className="relative">
-          <div
-            className="flex gap-3 py-4"
-            style={{ width: 'max-content' }}
-          >
-            {variations.map((variation, index) => (
-              <VariationThumbnail
-                key={variation.slug}
-                ref={(el: HTMLButtonElement | null) => {
-                  thumbnailRefs.current[index] = el;
-                }}
-                variation={variation}
-                isSelected={index === currentIndex}
-                onClick={() => onVariationSelect(index)}
-              />
-            ))}
-            {isLoading && (
-              <div className="shrink-0 w-20 h-20 sm:w-24 sm:h-24 rounded-xl bg-muted/10 flex items-center justify-center backdrop-blur-sm">
-                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary" />
-              </div>
-            )}
-          </div>
-          <div className="absolute left-0 top-0 bottom-0 w-12 bg-gradient-to-r from-background via-background/80 to-transparent pointer-events-none" />
-          <div className="absolute right-0 top-0 bottom-0 w-12 bg-gradient-to-l from-background via-background/80 to-transparent pointer-events-none" />
+        <div className="flex gap-3 py-4 justify-center">
+          {variations.map((variation, index) => (
+            <VariationThumbnail
+              key={variation.slug}
+              ref={(el: HTMLButtonElement | null) => {
+                thumbnailRefs.current[index] = el;
+              }}
+              variation={variation}
+              isSelected={index === currentIndex}
+              onClick={() => onVariationSelect(index)}
+            />
+          ))}
+          {isLoading && (
+            <div className="shrink-0 w-20 h-20 sm:w-24 sm:h-24 rounded-lg flex items-center justify-center">
+              <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-primary" />
+            </div>
+          )}
         </div>
       </div>
     </div>
@@ -634,8 +621,7 @@ export function EmojiDetailContainer({ emoji: initialEmoji }: EmojiDetailContain
         variations={allVariations}
         currentIndex={displayIndex}
         onVariationSelect={handleVariationChange}
-        onScroll={() => { }} // 移除滚动加载逻辑
-        isLoading={false} // 移除加载状态
+        isLoading={false}
       />
     )
   ), [allVariations, displayIndex]);
