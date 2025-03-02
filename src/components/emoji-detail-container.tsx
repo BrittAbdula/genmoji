@@ -37,6 +37,7 @@ import { UnifiedGenmojiGenerator } from './unified-genmoji-generator';
 import { TimeAgo } from './time-ago';
 import { useLocale } from 'next-intl';
 import Image from "next/image";
+import Link from "next/link";
 
 interface EmojiDetailContainerProps {
   emoji: Emoji;
@@ -790,10 +791,15 @@ export function EmojiDetailContainer({ emoji: initialEmoji }: EmojiDetailContain
         {/* 基本信息行 */}
         <div className="relative">
           <div className="overflow-x-auto hide-scrollbar">
-            <div className="flex items-center justify-center gap-4 px-4 min-w-max w-full">
+            <div className="flex items-center justify-center gap-4 min-w-max w-full">
               <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
-                <span className="uppercase whitespace-nowrap">MODEL</span>
-                <span className="text-foreground">{currentEmoji.model}</span>
+                <span className="uppercase whitespace-nowrap">STYLE</span>
+                <Link 
+                  href={`/model/${encodeURIComponent(currentEmoji.model)}`}
+                  className="text-primary hover:text-primary hover:underline transition-colors"
+                >
+                  {currentEmoji.model}
+                </Link>
               </div>
               <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
                 <span className="uppercase whitespace-nowrap">MAKER</span>
@@ -815,14 +821,24 @@ export function EmojiDetailContainer({ emoji: initialEmoji }: EmojiDetailContain
         {currentEmoji.subject_count && (
           <div className="relative">
             <div className="overflow-x-auto hide-scrollbar">
-              <div className="flex items-center justify-center gap-4 px-4 min-w-max w-full">
+              <div className="flex items-center justify-center gap-4 min-w-max w-full">
                 <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
                   <span className="uppercase whitespace-nowrap">CATEGORY</span>
-                  <span className="text-foreground capitalize">{currentEmoji.category?.replace(/_/g, ' ')}</span>
+                  <Link 
+                    href={`/category/${encodeURIComponent(currentEmoji.category || '')}`}
+                    className="text-primary capitalize hover:text-primary hover:underline transition-colors"
+                  >
+                    {currentEmoji.category?.replace(/_/g, ' ')}
+                  </Link>
                 </div>
                 <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
                   <span className="uppercase whitespace-nowrap">COLOR</span>
-                  <span className="text-foreground capitalize">{currentEmoji.primary_color}</span>
+                  <Link 
+                    href={`/color/${encodeURIComponent(currentEmoji.primary_color || '')}`}
+                    className="text-primary capitalize hover:text-primary hover:underline transition-colors"
+                  >
+                    {currentEmoji.primary_color}
+                  </Link>
                 </div>
                 <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
                   <span className="uppercase whitespace-nowrap">QUALITY</span>
@@ -863,7 +879,7 @@ export function EmojiDetailContainer({ emoji: initialEmoji }: EmojiDetailContain
             return keywords.length > 0 && (
               <div className="relative">
                 <div className="overflow-x-auto hide-scrollbar">
-                  <div className="flex items-center justify-center gap-2 px-4 min-w-max w-full">
+                  <div className="flex items-center justify-center gap-2 min-w-max w-full">
                     {keywords.map((keyword: string, index: number) => (
                       <span
                         key={index}

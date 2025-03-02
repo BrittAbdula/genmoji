@@ -18,7 +18,7 @@ const EmojiContainer = ({
   size = 'md', 
   lazyLoad = true,
   priority = false,
-  padding = 'p-1',
+  padding = 'p-0',
   withBorder = true
 }: EmojiContainerProps) => {
   const t = useTranslations('emoji.container');
@@ -53,9 +53,9 @@ const EmojiContainer = ({
         sizeClasses[size]
       )}
     >
-      <div className="w-full h-full flex items-center justify-center bg-slate-800/20 rounded-md">
+      <div className="w-full h-full flex items-center justify-center rounded-md">
         <Image 
-          src={emoji.image_url} 
+          src={emoji.image_url.trim()} 
           alt={t('imageAlt', { prompt: emoji.prompt })}
           width={sizeValues[size]}
           height={sizeValues[size]}
@@ -65,7 +65,7 @@ const EmojiContainer = ({
           draggable={false}
           sizes={`(max-width: 768px) ${sizeValues[size]}px, ${sizeValues[size]}px`}
           placeholder="blur"
-          blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/wcAAgAB/1h1ZAAAAABJRU5ErkJggg=="
+          blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII="
         />
       </div>
     </Link>

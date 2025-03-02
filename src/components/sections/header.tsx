@@ -11,6 +11,7 @@ import { motion } from "framer-motion";
 import { Link, usePathname } from '@/i18n/routing';
 import { LanguageSwitcher } from "@/components/language-switcher";
 import { useTranslations } from 'next-intl';
+import { CategoryNavigation } from "@/components/category-navigation";
 
 export function Header() {
   const pathname = usePathname();
@@ -64,6 +65,9 @@ export function Header() {
             >
               {nav('gallery')}
             </Link>
+            <div className="hidden lg:flex">
+              <CategoryNavigation />
+            </div>
           </nav>
 
           <LanguageSwitcher className="hidden sm:inline-flex" />

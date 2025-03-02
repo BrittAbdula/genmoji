@@ -3,7 +3,6 @@ import { ActionType, ActionDetails, ActionResponse } from "@/types/action";
 
 const WORKER_URL = 'https://genmoji-api.genmojionline.com';
 // const WORKER_URL = 'https://gen-test.auroroa.workers.dev';
-// const WORKER_URL = 'https://genmojionline.com/api';
 
 // 1. 获取单个表情
 export async function getEmoji(slug: string, locale: string): Promise<Emoji> {
@@ -43,12 +42,34 @@ export async function getEmoji(slug: string, locale: string): Promise<Emoji> {
 }
 
 // 2. 获取表情列表或搜索
-export async function getEmojis(offset: number, limit: number, locale: string, q?: string): Promise<Emoji[]> {
+export async function getEmojis(
+  offset: number, 
+  limit: number, 
+  locale: string, 
+  options?: {
+    model?: string;
+    category?: string;
+    color?: string;
+    sort?: 'latest' | 'popular' | 'quality';
+    q?: string;
+  }
+): Promise<Emoji[]> {
+  const { model, category, color, sort, q } = options || {};
   const url = new URL(q ? '/genmoji/search' : '/genmoji/list', WORKER_URL);
+  
+  // 设置基础参数
   url.searchParams.set('offset', offset.toString());
   url.searchParams.set('limit', limit.toString());
   url.searchParams.set('locale', locale);
+  
+  // 设置可选参数
   if (q) url.searchParams.set('q', q);
+  if (model) url.searchParams.set('model', model);
+  if (category) url.searchParams.set('category', category);
+  if (color) url.searchParams.set('color', color);
+  if (sort) url.searchParams.set('sort', sort);
+  
+  // console.log("API Request URL:", url.toString());
   
   const res = await fetch(url, {
     next: { revalidate: 60 }
@@ -174,4 +195,38 @@ export async function getEmojisByBaseSlug(
 
   const emojiResponse = await res.json() as EmojiResponse;
   return emojiResponse.emojis || [];
+}
+
+// 7. 获取分组数据（模型、分类、颜色）
+export async function getEmojiGroups(locale: string): Promise<{
+  models: { name: string; translated_name: string; count?: number }[];
+  categories: { name: string; translated_name: string; count?: number }[];
+  colors: { name: string; translated_name: string; count?: number }[];
+}> {
+  const url = `${WORKER_URL}/genmoji/groups?locale=${locale}`;
+  
+  const res = await fetch(url, {
+    next: { revalidate: 86400 } // 缓存24小时
+  });
+
+  if (!res.ok) {
+    throw new Error('Failed to fetch emoji groups');
+  }
+
+  const response = await res.json() as {
+    success: boolean;
+    error?: string;
+    data?: {
+      models: { name: string; translated_name: string; count?: number }[];
+      categories: { name: string; translated_name: string; count?: number }[];
+      colors: { name: string; translated_name: string; count?: number }[];
+    }
+  };
+  // console.log("API Request URL:", response.data);
+  
+  if (!response.success) {
+    throw new Error(response.error || 'Failed to fetch emoji groups');
+  }
+  
+  return response.data || { models: [], categories: [], colors: [] };
 }

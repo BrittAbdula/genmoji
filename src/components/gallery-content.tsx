@@ -10,20 +10,8 @@ import { SearchBar } from "@/components/search-bar";
 import { useTranslations, useLocale} from 'next-intl';
 import { debounce } from "lodash";
 import { useInView } from "react-intersection-observer";
+import { EmojiGrid } from "@/components/emoji-grid";
 
-// 将内容渲染部分抽离为独立组件
-const EmojiGrid = memo(({ emojis }: { emojis: Emoji[] }) => {
-  return (
-    <div className="grid w-full auto-rows-max grid-cols-4 place-items-center justify-items-center gap-4 sm:grid-cols-5 md:grid-cols-6 lg:grid-cols-8 mx-auto">
-      {emojis.map((emoji, index) => (
-        <div key={`${emoji.slug}-${index}`}>
-          <EmojiContainer emoji={emoji} size="sm" />
-        </div>
-      ))}
-    </div>
-  );
-});
-EmojiGrid.displayName = 'EmojiGrid';
 
 // 将加载状态组件抽离
 const LoadingSkeleton = memo(() => {
@@ -67,12 +55,10 @@ export function GalleryContent() {
     if (searchQuery || loadingRef.current) return; // 如果在搜索或加载中，不检查新内容
     
     try {
-      // 构建查询字符串，包含时间戳
-      const query = latestTimestampRef.current 
-        ? `after:${latestTimestampRef.current}`
-        : "";
         
-      const newEmojis = await getEmojis(0, refreshLimit, locale, query);
+      const newEmojis = await getEmojis(0, refreshLimit, locale, {
+        sort: 'latest'
+      });
       
       if (newEmojis && newEmojis.length > 0) {
         // 更新最新时间戳
@@ -154,7 +140,10 @@ export function GalleryContent() {
         ((pageNum - 1) * limit),
         limit,
         locale,
-        query
+        {
+          sort: 'latest',
+          q: query
+        }
       );
 
       // 缓存新数据

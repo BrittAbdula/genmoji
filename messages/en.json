@@ -1,14 +1,27 @@
 {
   "common": {
     "name": "Genmoji Online",
-    "description": "let's create and share custom genmojis that perfectly express your emotions and creativity.",
-    "shortDescription": "Online Genmoji Generator",
-    "cta": "Generate Genmoji",
+    "description": "Create custom emojis that perfectly express your emotion and creativity.",
+    "shortDescription": "Online emoji generator",
+    "cta": "Create Genmoji",
     "navigation": {
       "home": "Home",
       "gallery": "Gallery",
       "switchLanguage": "Switch language",
-      "menu": "Navigation Menu"
+      "menu": "Navigation Menu",
+      "categories": "Categories",
+      "allCategories": "All Categories",
+      "colors": "Colors",
+      "allColors": "All Colors",
+      "models": "Models",
+      "allModels": "All Models",
+      "categoriesDescription": "Browse all emoji categories like smileys, animals, foods and more",
+      "colorsDescription": "Browse emojis by color - red, blue, green, and many more color options",
+      "modelsDescription": "Explore emojis created with different AI models and styles",
+      "emojiCount": "{count} emojis available",
+      "exploreCategory": "Explore this category",
+      "exploreColor": "Explore this color",
+      "exploreModel": "Explore this model"
     }
   },
   "hero": {

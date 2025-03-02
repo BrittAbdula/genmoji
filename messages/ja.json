@@ -8,7 +8,20 @@
       "home": "ホーム",
       "gallery": "ギャラリー",
       "switchLanguage": "言語を切り替える",
-      "menu": "ナビゲーションメニュー"
+      "menu": "ナビゲーションメニュー",
+      "categories": "カテゴリー",
+      "allCategories": "すべてのカテゴリー",
+      "colors": "カラー",
+      "allColors": "すべてのカラー",
+      "models": "モデル",
+      "allModels": "すべてのモデル",
+      "categoriesDescription": "スマイリー、動物、食べ物などすべての絵文字カテゴリーを閲覧",
+      "colorsDescription": "色別に絵文字を閲覧 - 赤、青、緑など多くのカラーオプション",
+      "modelsDescription": "さまざまなAIモデルとスタイルで作成された絵文字を探索",
+      "emojiCount": "{count}個の絵文字が利用可能",
+      "exploreCategory": "このカテゴリーを探索",
+      "exploreColor": "この色を探索",
+      "exploreModel": "このモデルを探索"
     }
   },
   "hero": {

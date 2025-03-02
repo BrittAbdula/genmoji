@@ -24,7 +24,9 @@ export function HorizontalGalleryContent() {
   const fetchEmojis = async (retryCount = 3) => {
     try {
       setError(null);
-      const newEmojis = await getEmojis(0, limit, locale, "");
+      const newEmojis = await getEmojis(0, limit, locale, {
+        sort: 'latest'
+      });
       setEmojis(newEmojis || []);
     } catch (error) {
       console.error('Error fetching emojis:', error);
