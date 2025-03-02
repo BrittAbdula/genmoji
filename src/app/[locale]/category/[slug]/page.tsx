@@ -84,11 +84,15 @@ export default async function CategoryPage(props: {
   const { slug } = await props.params;
   const locale = await getLocale();
   const categoryName = decodeURIComponent(slug);
+  
   if (!categoryName || categoryName === "") {
     return <div>Category not found</div>;
   }
   
+  // 获取分组数据和初始表情数据
   const groups = await getEmojiGroups(locale);
+  const categoryTranslatedName = groups.categories.find(category => category.name === slug)?.translated_name || categoryName;
+  
   const initialEmojis = await getEmojis(0, 24, locale, { 
     category: categoryName,
     sort: 'latest'
@@ -99,7 +103,7 @@ export default async function CategoryPage(props: {
       params={{ slug, locale }} 
       initialData={{ 
         emojis: initialEmojis,
-        groups: groups
+        categoryName: categoryTranslatedName
       }} 
     />
   );

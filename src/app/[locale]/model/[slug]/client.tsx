@@ -4,13 +4,14 @@ import { getEmojis } from '@/lib/api';
 import { CategoryHeader } from '@/components/category-header';
 import { RelatedCategories } from '@/components/related-categories';
 import { FilterBar } from '@/components/filter-bar';
-import { useState, useEffect, useCallback } from 'react';
-import { Emoji, EmojiGroups } from '@/types/emoji';
+import { useState, useEffect, useCallback, useRef } from 'react';
+import { Emoji } from '@/types/emoji';
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { usePathname } from 'next/navigation';
 import { Breadcrumb, generateBreadcrumb } from '@/components/breadcrumb';
 import { EmojiGrid } from '@/components/emoji-grid';
+import { useEmojiGroups } from '@/store/emoji-groups-provider';
 
 interface ModelPageClientProps {
   params: {
@@ -19,13 +20,14 @@ interface ModelPageClientProps {
   };
   initialData?: {
     emojis: Emoji[];
-    groups: EmojiGroups;
+    modelName: string;
   };
 }
 
 export default function ModelPageClient({ params, initialData }: ModelPageClientProps) {
   const { slug, locale } = params;
-  const modelName = initialData?.groups?.models.find(model => model.name === slug)?.translated_name || 'Unknown Model';
+  const { models } = useEmojiGroups();
+  const modelName = initialData?.modelName || models.find(model => model.name === slug)?.translated_name || 'Unknown Model';
   const pathname = usePathname();
   const breadcrumbItems = generateBreadcrumb(pathname, slug);
   
@@ -258,17 +260,16 @@ export default function ModelPageClient({ params, initialData }: ModelPageClient
       </div>
       
       {/* 相关模型 */}
-      {initialData?.groups && initialData.groups.models && initialData.groups.models.length > 0 && (
+      {models.length > 0 && (
         <RelatedCategories 
           group="model"
-          categories={initialData.groups.models
-            .map(model => ({
-              id: model.name,
-              name: model.name,
-              slug: model.name,
-              translated_name: model.translated_name,
-              count: model.count
-            }))} 
+          categories={models.map(model => ({
+            id: model.name,
+            name: model.name,
+            slug: model.name,
+            translated_name: model.translated_name,
+            count: model.count
+          }))} 
           currentCategory={slug}
         />
       )}

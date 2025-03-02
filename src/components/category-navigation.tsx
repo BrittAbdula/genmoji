@@ -1,9 +1,8 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { useLocale } from "next-intl";
 import { Link } from "@/i18n/routing";
-import { getEmojiGroups } from "@/lib/api";
 import { 
   NavigationMenu, 
   NavigationMenuContent, 
@@ -16,6 +15,7 @@ import { cn } from "@/lib/utils";
 import { Category } from "@/types/emoji";
 import { LayoutGrid, Palette, Shapes } from "lucide-react";
 import { useTranslations } from 'next-intl';
+import { useEmojiGroups } from "@/store/emoji-groups-provider";
 
 // 用于样式列表项的自定义组件
 const ListItem = React.forwardRef<
@@ -50,66 +50,31 @@ ListItem.displayName = "ListItem";
 export function CategoryNavigation() {
   const locale = useLocale();
   const nav = useTranslations('common.navigation');
-  const [categories, setCategories] = useState<Category[]>([]);
-  const [colors, setColors] = useState<Category[]>([]);
-  const [models, setModels] = useState<Category[]>([]);
-
-  useEffect(() => {
-    async function fetchGroups() {
-      try {
-        const groups = await getEmojiGroups(locale);
-        
-        // 设置分类数据
-        const formattedCategories = groups.categories
-          .map(category => ({
-            id: category.name,
-            name: category.name,
-            translated_name: category.translated_name,
-            slug: category.name,
-            count: category.count || 0
-          }))
-          .sort((a, b) => (b.count || 0) - (a.count || 0))
-          .slice(0, 6); // 只显示前6个分类
-        
-        // 设置颜色数据
-        const formattedColors = groups.colors
-          .map(color => ({
-            id: color.name,
-            name: color.name,
-            translated_name: color.translated_name,
-            slug: color.name,
-            count: color.count || 0
-          }))
-          .sort((a, b) => (b.count || 0) - (a.count || 0))
-          .slice(0, 6); // 只显示前6个颜色
-        
-        // 设置模型数据
-        const formattedModels = groups.models
-          .map(model => ({
-            id: model.name,
-            name: model.name,
-            translated_name: model.translated_name,
-            slug: model.name,
-            count: model.count || 0
-          }))
-          .sort((a, b) => (b.count || 0) - (a.count || 0))
-          .slice(0, 6); // 只显示前6个模型
-        
-        setCategories(formattedCategories);
-        setColors(formattedColors);
-        setModels(formattedModels);
-      } catch (error) {
-        console.error('Failed to fetch emoji groups:', error);
-      }
-    }
-    
-    fetchGroups();
-  }, [locale]);
-
+  const { categories, colors, models, isLoading } = useEmojiGroups();
+  
   // 首字母大写函数
   const capitalize = (str: string) => {
     return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
   };
+
+  // 获取排序后的前6个分类
+  const topCategories = [...categories]
+    .sort((a, b) => (b.count || 0) - (a.count || 0))
+    .slice(0, 6);
+
+  // 获取排序后的前6个颜色
+  const topColors = [...colors]
+    .sort((a, b) => (b.count || 0) - (a.count || 0))
+    .slice(0, 6);
+
+  // 获取排序后的前6个模型
+  const topModels = [...models]
+    .sort((a, b) => (b.count || 0) - (a.count || 0))
+    .slice(0, 6);
+
+  if (isLoading) {
+    return <div className="animate-pulse w-20 h-8 bg-gray-200 dark:bg-gray-700 rounded"></div>;
+  }
 
   return (
     <NavigationMenu>
@@ -135,7 +100,7 @@ export function CategoryNavigation() {
                   </Link>
                 </NavigationMenuLink>
               </li>
-              {categories.map((category) => (
+              {topCategories.map((category) => (
                 <ListItem
                   key={category.slug}
                   title={capitalize(category.translated_name.replace(/_/g, ' '))}
@@ -171,7 +136,7 @@ export function CategoryNavigation() {
                   </Link>
                 </NavigationMenuLink>
               </li>
-              {colors.map((color) => (
+              {topColors.map((color) => (
                 <ListItem
                   key={color.slug}
                   title={capitalize(color.translated_name)}
@@ -215,7 +180,7 @@ export function CategoryNavigation() {
                   </Link>
                 </NavigationMenuLink>
               </li>
-              {models.map((model) => (
+              {topModels.map((model) => (
                 <ListItem
                   key={model.slug}
                   title={capitalize(model.translated_name)}
@@ -261,5 +226,5 @@ function getColorHex(colorName: string): string {
     olive: '#808000',
   };
   
-  return colorMap[colorName.toLowerCase()] || '#808080'; // 默认为灰色
+  return colorMap[colorName.toLowerCase()] || '#CCCCCC';
 } 

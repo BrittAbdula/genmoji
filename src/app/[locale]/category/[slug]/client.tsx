@@ -1,15 +1,16 @@
 "use client";
 
-import { getEmojis, getEmojiGroups } from '@/lib/api';
+import { getEmojis } from '@/lib/api';
 import { EmojiGrid } from '@/components/emoji-grid';
 import { CategoryHeader } from '@/components/category-header';
 import { RelatedCategories } from '@/components/related-categories';
 import { FilterBar } from '@/components/filter-bar';
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { useLocale } from 'next-intl';
-import { Emoji, Category, EmojiGroups } from '@/types/emoji';
+import { Emoji, Category } from '@/types/emoji';
 import { usePathname } from 'next/navigation';
 import { Breadcrumb, generateBreadcrumb } from '@/components/breadcrumb';
+import { useEmojiGroups } from '@/store/emoji-groups-provider';
 
 interface CategoryPageClientProps {
   params: {
@@ -18,29 +19,26 @@ interface CategoryPageClientProps {
   };
   initialData?: {
     emojis: Emoji[];
-    groups: EmojiGroups;
+    categoryName: string;
   };
 }
 
 export default function CategoryPageClient({ params, initialData }: CategoryPageClientProps) {
   const { slug, locale } = params;
+  const { categories } = useEmojiGroups();
   const pathname = usePathname();
   const breadcrumbItems = generateBreadcrumb(pathname, slug);
+  
+  // 从初始数据或上下文中获取分类名称
+  const categoryName = initialData?.categoryName || 
+    categories.find(category => category.name === slug)?.translated_name || 
+    decodeURIComponent(slug);
   
   // ===== 状态管理 =====
   const [emojis, setEmojis] = useState<Emoji[]>(initialData?.emojis || []);
   const [isLoading, setIsLoading] = useState(!initialData?.emojis);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
   const [hasMore, setHasMore] = useState(true);
-  const [categories, setCategories] = useState<Category[]>(
-    initialData?.groups?.categories.map(category => ({
-      id: category.name,
-      name: category.name,
-      slug: category.name,
-      translated_name: category.translated_name
-    })) || []
-  );
-  const categoryName = initialData?.groups?.categories.find(category => category.name === slug)?.translated_name || 'Unknown Category';
   
   // 筛选与分页状态
   const [offset, setOffset] = useState(initialData?.emojis ? initialData.emojis.length : 0);
@@ -61,7 +59,7 @@ export default function CategoryPageClient({ params, initialData }: CategoryPage
       category?: string;
       sort?: 'latest' | 'popular' | 'quality';
     } = {
-      category: slug
+      category: decodeURIComponent(slug)
     };
     
     // 映射排序选项
@@ -78,28 +76,6 @@ export default function CategoryPageClient({ params, initialData }: CategoryPage
     
     return options;
   }, [slug, sortBy]);
-  
-  // ===== 获取分组数据 =====
-  useEffect(() => {
-    if (initialData?.groups && categories.length > 0) return;
-    
-    async function fetchGroups() {
-      try {
-        const groups = await getEmojiGroups(locale);
-        const formattedCategories = groups.categories.map(category => ({
-          id: category.name,
-          name: category.name,
-          slug: category.name,
-          translated_name: category.translated_name
-        }));
-        setCategories(formattedCategories);
-      } catch (error) {
-        console.error('Failed to fetch emoji groups:', error);
-      }
-    }
-    
-    fetchGroups();
-  }, [locale, initialData, categories.length]);
   
   // ===== 初始数据加载 =====
   useEffect(() => {
@@ -230,7 +206,12 @@ export default function CategoryPageClient({ params, initialData }: CategoryPage
       {categories.length > 0 && (
         <RelatedCategories 
           group="category"
-          categories={categories} 
+          categories={categories.map(category => ({
+            id: category.name,
+            name: category.name,
+            slug: category.name,
+            translated_name: category.translated_name
+          }))} 
           currentCategory={slug}
         />
       )}

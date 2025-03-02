@@ -1,15 +1,16 @@
 "use client";
 
-import { getEmojis, getEmojiGroups } from '@/lib/api';
+import { getEmojis } from '@/lib/api';
 import { EmojiGrid } from '@/components/emoji-grid';
 import { RelatedCategories } from '@/components/related-categories';
 import { FilterBar } from '@/components/filter-bar';
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { useLocale } from 'next-intl';
 import { motion } from 'framer-motion';
-import { Emoji, Category, EmojiGroups } from '@/types/emoji';
+import { Emoji, Category } from '@/types/emoji';
 import { usePathname } from 'next/navigation';
 import { Breadcrumb, generateBreadcrumb } from '@/components/breadcrumb';
+import { useEmojiGroups } from '@/store/emoji-groups-provider';
 
 interface ColorPageClientProps {
   params: {
@@ -18,13 +19,14 @@ interface ColorPageClientProps {
   };
   initialData?: {
     emojis: Emoji[];
-    groups: EmojiGroups;
+    colorName: string;
   };
 }
 
 export default function ColorPageClient({ params, initialData }: ColorPageClientProps) {
   const { slug, locale } = params;
-  const colorName = initialData?.groups?.colors.find(color => color.name === slug)?.translated_name || 'Unknown Color';
+  const { colors } = useEmojiGroups();
+  const colorName = initialData?.colorName || colors.find(color => color.name === slug)?.translated_name || 'Unknown Color';
   const pathname = usePathname();
   const breadcrumbItems = generateBreadcrumb(pathname, slug);
   
@@ -33,14 +35,6 @@ export default function ColorPageClient({ params, initialData }: ColorPageClient
   const [isLoading, setIsLoading] = useState(!initialData?.emojis);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
   const [hasMore, setHasMore] = useState(true);
-  const [colors, setColors] = useState<Category[]>(
-    initialData?.groups?.colors.map(color => ({
-      id: color.name,
-      name: color.name,
-      slug: color.name,
-      translated_name: color.translated_name
-    })) || []
-  );
   
   // 筛选与分页状态
   const [offset, setOffset] = useState(initialData?.emojis ? initialData.emojis.length : 0);
@@ -78,28 +72,6 @@ export default function ColorPageClient({ params, initialData }: ColorPageClient
     
     return options;
   }, [slug, sortBy]);
-  
-  // ===== 获取分组数据 =====
-  useEffect(() => {
-    if (initialData?.groups && colors.length > 0) return;
-    
-    async function fetchGroups() {
-      try {
-        const groups = await getEmojiGroups(locale);
-        const formattedColors = groups.colors.map(color => ({
-          id: color.name,
-          name: color.name,
-          slug: color.name,
-          translated_name: color.translated_name
-        }));
-        setColors(formattedColors);
-      } catch (error) {
-        console.error('Failed to fetch emoji groups:', error);
-      }
-    }
-    
-    fetchGroups();
-  }, [locale, initialData, colors.length]);
   
   // ===== 初始数据加载 =====
   useEffect(() => {
@@ -263,7 +235,12 @@ export default function ColorPageClient({ params, initialData }: ColorPageClient
       {colors.length > 0 && (
         <RelatedCategories 
           group="color"
-          categories={colors}
+          categories={colors.map(color => ({
+            id: color.name,
+            name: color.name,
+            slug: color.name,
+            translated_name: color.translated_name
+          }))}
           currentCategory={slug}
         />
       )}

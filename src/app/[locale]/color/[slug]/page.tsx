@@ -61,22 +61,6 @@ export async function generateMetadata(props: {
   };
 }
 
-// 预先获取数据，用于SEO和初始渲染
-async function getInitialData(slug: string, locale: string) {
-  const groups = await getEmojiGroups(locale);
-  const colorName = groups.colors.find(color => color.name === slug)?.translated_name || 'Unknown Color';
-  const initialEmojis = await getEmojis(0, 24, locale, {
-    color: slug,
-    sort: 'latest'
-  });
-  
-  return {
-    groups,
-    initialEmojis,
-    colorName
-  };
-}
-
 export default async function ColorPage(props: {
   params: Params
   searchParams: SearchParams
@@ -84,12 +68,15 @@ export default async function ColorPage(props: {
   const { slug } = await props.params;
   const locale = await getLocale();
   
+  // 预先获取分组数据和表情数据
   const groups = await getEmojiGroups(locale);
   const colorName = groups.colors.find(color => color.name === slug)?.translated_name || 'Unknown Color';
 
   if (!colorName || colorName === "") {
     return <div>Color not found</div>;
   }
+  
+  // 获取初始表情数据
   const initialEmojis = await getEmojis(0, 24, locale, { 
     color: slug,
     sort: 'latest'
@@ -100,7 +87,8 @@ export default async function ColorPage(props: {
       params={{ slug, locale }} 
       initialData={{ 
         emojis: initialEmojis,
-        groups: groups
+        colorName: colorName,
+        // 不传递完整的groups数据，因为它将通过Context Provider提供
       }} 
     />
   );

@@ -67,12 +67,16 @@ export default async function ModelPage(props: {
 }) {
   const { slug } = await props.params;
   const locale = await getLocale();
+  
+  // 获取分组数据
   const groups = await getEmojiGroups(locale);
   const modelName = groups.models.find(model => model.name === slug)?.translated_name || 'Unknown Model';
+  
   if (!modelName || modelName === "") {
     return <div>Model not found</div>;
   }
   
+  // 获取初始表情数据
   const initialEmojis = await getEmojis(0, 24, locale, { 
     model: slug,
     sort: 'latest'
@@ -83,7 +87,7 @@ export default async function ModelPage(props: {
       params={{ slug, locale }} 
       initialData={{ 
         emojis: initialEmojis,
-        groups: groups
+        modelName: modelName
       }} 
     />
   );

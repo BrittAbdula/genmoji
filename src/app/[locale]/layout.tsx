@@ -13,6 +13,7 @@ import { notFound } from 'next/navigation';
 import { routing } from '@/i18n/routing';
 import { LanguagePromptDialog } from '@/components/language-prompt-dialog';
 import { GlobalGenerationIndicator } from "@/components/global-generation-indicator";
+import { EmojiGroupsProvider } from "@/store/emoji-groups-provider";
 
 export const viewport: Viewport = {
   colorScheme: "dark light",
@@ -70,12 +71,14 @@ export default async function LocaleLayout(props: Props) {
             storageKey="genmoji-theme"
             disableTransitionOnChange
           >
-            <Header />
-            {children}
-            <Footer />
-            <LanguagePromptDialog />
-            <TailwindIndicator />
-            <GlobalGenerationIndicator />
+            <EmojiGroupsProvider locale={locale}>
+              <Header />
+              {children}
+              <Footer />
+              <LanguagePromptDialog />
+              <TailwindIndicator />
+              <GlobalGenerationIndicator />
+            </EmojiGroupsProvider>
             <GoogleAnalytics gaId="G-6T495VYMD7" />
             <GoogleTagManager gtmId="GTM-T3RLKMJR" />
           </ThemeProvider>
