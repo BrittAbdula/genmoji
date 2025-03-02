@@ -8,7 +8,7 @@ export function FilterBar({
 }: FilterBarProps) {
   // Define filter options
   const sortOptions = [
-    { value: "newest", label: "Newest" },
+    { value: "latest", label: "Latest" },
     { value: "popular", label: "Popular" },
     { value: "quality", label: "Quality" }
   ];

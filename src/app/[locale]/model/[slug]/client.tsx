@@ -37,7 +37,7 @@ export default function ModelPageClient({ params, initialData }: ModelPageClient
   
   // 筛选与分页状态
   const [offset, setOffset] = useState(initialData?.emojis ? initialData.emojis.length : 0);
-  const [sortBy, setSortBy] = useState("newest");
+  const [sortBy, setSortBy] = useState("latest");
   const [selectedColor, setSelectedColor] = useState<string | null>(null);
   
   // 添加一个状态标记来防止重复加载
@@ -46,7 +46,7 @@ export default function ModelPageClient({ params, initialData }: ModelPageClient
   // 跟踪上一次请求的参数，避免重复请求
   const [lastFetchParams, setLastFetchParams] = useState({
     offset: initialData?.emojis ? initialData.emojis.length : 0,
-    sortBy: "newest",
+    sortBy: "latest",
     color: null as string | null
   });
   
@@ -83,7 +83,7 @@ export default function ModelPageClient({ params, initialData }: ModelPageClient
         options.sort = "quality";
         break;
       default:
-        options.sort = "latest"; // 将 "newest" 映射为 "latest"
+        options.sort = "latest";
     }
     
     return options;

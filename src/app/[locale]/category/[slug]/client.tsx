@@ -44,12 +44,12 @@ export default function CategoryPageClient({ params, initialData }: CategoryPage
   
   // 筛选与分页状态
   const [offset, setOffset] = useState(initialData?.emojis ? initialData.emojis.length : 0);
-  const [sortBy, setSortBy] = useState("newest");
+  const [sortBy, setSortBy] = useState("latest");
   
   // 跟踪上一次请求的参数，避免重复请求
   const lastRequestRef = useRef({
     offset: initialData?.emojis ? initialData.emojis.length : 0,
-    sortBy: "newest",
+    sortBy: "latest",
   });
   
   // 每页数量
@@ -73,7 +73,7 @@ export default function CategoryPageClient({ params, initialData }: CategoryPage
         options.sort = "quality";
         break;
       default:
-        options.sort = "latest"; // 将 "newest" 映射为 "latest"
+        options.sort = "latest"; 
     }
     
     return options;
@@ -106,7 +106,7 @@ export default function CategoryPageClient({ params, initialData }: CategoryPage
     // 只有在初始加载或筛选条件变化时才执行
     if (offset === 0) {
       // 使用初始数据(如果合适)
-      if (initialData?.emojis && sortBy === "newest") {
+      if (initialData?.emojis && sortBy === "latest") {
         return; // 已经在状态初始化时设置了初始数据
       }
       
