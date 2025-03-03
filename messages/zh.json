@@ -181,11 +181,11 @@
       },
       "meta": {
         "title": "{prompt} | Genmoji Online",
-        "description": "探索并下载这个由 Genmoji Online 创建的 {prompt} 自定义表情符号。使用我们的 AI 驱动生成器创建您自己的个性化表情符号。",
+        "description": "免费探索并下载这个{prompt}自定义表情符号。透明背景无水印。使用我们的AI驱动生成器创建您自己的个性化表情符号。",
         "ogTitle": "{prompt} - 自定义表情符号",
-        "ogDescription": "看看这个用 Genmoji Online 创建的 {prompt} 表情符号。现在就创建您自己的自定义表情符号！",
+        "ogDescription": "查看这个透明背景的{prompt}表情符号。完全免费下载使用。立即创建您自己的自定义表情符号！",
         "twitterTitle": "{prompt} 表情符号",
-        "twitterDescription": "看看这个用 Genmoji Online 创建的 {prompt} 表情符号！"
+        "twitterDescription": "查看这个透明背景的{prompt}表情符号。完全免费下载使用！"
       },
       "time": {
         "justNow": "刚刚",
@@ -194,6 +194,11 @@
         "daysAgo": "{days}天前",
         "monthsAgo": "{months}个月前",
         "yearsAgo": "{years}年前"
+      },
+      "usage": {
+        "title": "使用方法",
+        "description": "您现在可以免费下载这个{prompt}图像。它没有背景。您可以在创意项目中使用它，或者作为贴纸分享到iMessage、Discord、Pinterest、Tumblr、WhatsApp、Facebook Messenger、TikTok、微信、X或其他消息应用程序中。",
+        "license": "许可证：免费用于个人和商业用途"
       }
     }
   },

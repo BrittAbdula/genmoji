@@ -218,19 +218,24 @@
       },
       "meta": {
         "title": "{prompt} | Genmoji Online",
-        "description": "Explorez et téléchargez ce {prompt} genmoji personnalisé créé avec Genmoji Online. Créez vos propres genmojis personnalisés avec notre générateur alimenté par l'IA.",
-        "ogTitle": "{prompt} - Genmoji Personnalisé",
-        "ogDescription": "Découvrez ce {prompt} genmoji créé avec Genmoji Online. Créez vos propres genmojis personnalisés maintenant !",
-        "twitterTitle": "{prompt} Genmoji",
-        "twitterDescription": "Découvrez ce {prompt} genmoji créé avec Genmoji Online !"
+        "description": "Explorez et téléchargez GRATUITEMENT cet emoji personnalisé {prompt}. Fond transparent sans filigrane. Créez vos propres emojis personnalisés avec notre générateur alimenté par l'IA.",
+        "ogTitle": "{prompt} - Emoji Personnalisé",
+        "ogDescription": "Découvrez cet emoji {prompt} avec fond transparent. GRATUIT à télécharger et à utiliser. Créez vos propres emojis personnalisés maintenant !",
+        "twitterTitle": "Emoji {prompt}",
+        "twitterDescription": "Découvrez cet emoji {prompt} avec fond transparent. GRATUIT à télécharger et à utiliser !"
       },
       "time": {
         "justNow": "à l'instant",
-        "minutesAgo": "il y a {minutes} minutes",
-        "hoursAgo": "il y a {hours} heures",
-        "daysAgo": "il y a {days} jours",
+        "minutesAgo": "il y a {minutes} min",
+        "hoursAgo": "il y a {hours} h",
+        "daysAgo": "il y a {days} j",
         "monthsAgo": "il y a {months} mois",
         "yearsAgo": "il y a {years} ans"
+      },
+      "usage": {
+        "title": "Comment Utiliser",
+        "description": "Vous pouvez maintenant télécharger gratuitement cette image {prompt}. Elle n'a pas de fond. Utilisez-la dans un projet créatif, ou comme autocollant que vous pouvez partager sur iMessage, Discord, Pinterest, Tumblr, WhatsApp, Facebook Messenger, TikTok, WeChat, X ou dans d'autres applications de messagerie.",
+        "license": "Licence : Gratuit pour usage personnel et commercial"
       }
     }
   },

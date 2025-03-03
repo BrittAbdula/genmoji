@@ -5,7 +5,12 @@
       "error": "Failed to load variations"
     },
     "detail": {
-      "swipeToSee": "swipe to see more"
+      "swipeToSee": "swipe to see more",
+      "usage": {
+        "title": "How to Use",
+        "description": "You can now download for free this {prompt} image. It has no background. Use it in a creative project, or as a sticker you can share on iMessage, Discord, Pinterest, Tumblr, WhatsApp, Facebook Messenger, TikTok, WeChat, X or in other messaging apps.",
+        "license": "License: Free for personal and Commercial use"
+      }
     }
   }
 } 

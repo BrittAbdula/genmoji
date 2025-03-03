@@ -181,19 +181,24 @@
       },
       "meta": {
         "title": "{prompt} | Genmoji Online",
-        "description": "Explore and Download this custom {prompt} genmoji created with Genmoji Online. Create your own personalized genmojis with our AI-powered generator.",
-        "ogTitle": "{prompt} - Custom Genmoji",
-        "ogDescription": "Check out this {prompt} genmoji created with Genmoji Online. Create your own custom genmojis now!",
-        "twitterTitle": "{prompt} Genmoji",
-        "twitterDescription": "Check out this {prompt} genmoji created with Genmoji Online!"
+        "description": "Explore and download this {prompt} custom emoji for FREE. Transparent background with no watermark. Create your own personalized emojis with our AI-powered generator.",
+        "ogTitle": "{prompt} - Custom Emoji",
+        "ogDescription": "Check out this {prompt} emoji with transparent background. FREE to download and use. Create your own custom emojis now!",
+        "twitterTitle": "{prompt} Emoji",
+        "twitterDescription": "Check out this {prompt} emoji with transparent background. FREE to download and use!"
       },
       "time": {
         "justNow": "just now",
-        "minutesAgo": "{minutes} minutes ago",
-        "hoursAgo": "{hours} hours ago",
-        "daysAgo": "{days} days ago",
-        "monthsAgo": "{months} months ago",
-        "yearsAgo": "{years} years ago"
+        "minutesAgo": "{minutes}m ago",
+        "hoursAgo": "{hours}h ago",
+        "daysAgo": "{days}d ago",
+        "monthsAgo": "{months}mo ago",
+        "yearsAgo": "{years}y ago"
+      },
+      "usage": {
+        "title": "How to Use",
+        "description": "You can now download for free this {prompt} image. It has no background. Use it in a creative project, or as a sticker you can share on iMessage, Discord, Pinterest, Tumblr, WhatsApp, Facebook Messenger, TikTok, WeChat, X or in other messaging apps.",
+        "license": "License: Free for personal and Commercial use"
       }
     }
   },

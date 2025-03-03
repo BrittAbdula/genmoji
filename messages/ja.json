@@ -205,12 +205,12 @@
         "longPressToSave": "絵文字を長押しして保存"
       },
       "meta": {
-        "title": "{prompt} | Genmoji オンライン",
-        "description": "Genmoji オンラインで作成されたカスタム{prompt}絵文字を探索・ダウンロード。AIを活用した生成器で独自の絵文字を作成しましょう。",
+        "title": "{prompt} | Genmoji Online",
+        "description": "この{prompt}カスタム絵文字を無料で探索してダウンロードできます。透明な背景で透かしなし。AI搭載ジェネレーターで独自の絵文字を作成できます。",
         "ogTitle": "{prompt} - カスタム絵文字",
-        "ogDescription": "Genmoji オンラインで作成されたこの{prompt}絵文字をチェック。今すぐ独自の絵文字を作成！",
-        "twitterTitle": "{prompt} 絵文字",
-        "twitterDescription": "Genmoji オンラインで作成されたこの{prompt}絵文字をチェック！"
+        "ogDescription": "透明な背景の{prompt}絵文字をチェックしてください。無料でダウンロードして使用できます。今すぐ独自のカスタム絵文字を作成しましょう！",
+        "twitterTitle": "{prompt}絵文字",
+        "twitterDescription": "透明な背景の{prompt}絵文字をチェックしてください。無料でダウンロードして使用できます！"
       },
       "time": {
         "justNow": "たった今",
@@ -219,6 +219,11 @@
         "daysAgo": "{days}日前",
         "monthsAgo": "{months}ヶ月前",
         "yearsAgo": "{years}年前"
+      },
+      "usage": {
+        "title": "使用方法",
+        "description": "この{prompt}画像を無料でダウンロードできます。背景はありません。クリエイティブなプロジェクトで使用したり、iMessage、Discord、Pinterest、Tumblr、WhatsApp、Facebook Messenger、TikTok、WeChat、Xなどのメッセージングアプリで共有できるステッカーとして使用したりできます。",
+        "license": "ライセンス：個人利用および商業利用は無料"
       }
     }
   },

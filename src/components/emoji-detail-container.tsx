@@ -23,6 +23,8 @@ import {
   Share2Icon,
   QrCodeIcon,
   UploadIcon,
+  ChevronDownIcon,
+  ChevronUpIcon,
 } from "lucide-react";
 import { useState, useEffect, useRef, memo, useMemo, forwardRef } from "react";
 import {
@@ -244,6 +246,7 @@ export function EmojiDetailContainer({ emoji: initialEmoji }: EmojiDetailContain
   const [hasMore, setHasMore] = useState(true);
   const [offset, setOffset] = useState(0);
   const LIMIT = 10;
+  const [isUsageExpanded, setIsUsageExpanded] = useState(false);
 
   // 获取变体 - 只在初始化时调用一次
   const fetchVariations = async () => {
@@ -886,6 +889,8 @@ export function EmojiDetailContainer({ emoji: initialEmoji }: EmojiDetailContain
         })()}
       </div>
 
+      
+
       {/* 操作按钮区 */}
       <div className="w-full max-w-sm pt-2">
         <div className="grid grid-cols-2 gap-3">
@@ -912,6 +917,42 @@ export function EmojiDetailContainer({ emoji: initialEmoji }: EmojiDetailContain
           </Button>
         </div>
       </div>
+
+      {/* Usage Information Section */}
+      <div className={cn(
+        "w-full max-w-sm mt-4  rounded-xl bg-gradient-to-br from-blue-500/5 to-purple-500/10 border border-blue-500/10 dark:border-blue-500/20 backdrop-blur-sm transition-all duration-200",
+        isUsageExpanded ? "px-5 py-4" : "px-4 py-2.5"
+      )}>
+        <button 
+          onClick={() => setIsUsageExpanded(!isUsageExpanded)}
+          className="w-full flex items-center justify-between"
+        >
+          <div className="flex items-center">
+            <Share2Icon className={cn("mr-2 text-blue-500 transition-all", 
+              isUsageExpanded ? "w-4 h-4" : "w-3.5 h-3.5")} />
+            <h3 className={cn("font-medium text-foreground transition-all", 
+              isUsageExpanded ? "text-lg" : "text-base")}>{t('usage.title')}</h3>
+          </div>
+          {isUsageExpanded ? (
+            <ChevronUpIcon className="w-4 h-4 text-muted-foreground" />
+          ) : (
+            <ChevronDownIcon className="w-4 h-4 text-muted-foreground" />
+          )}
+        </button>
+        
+        {isUsageExpanded && (
+          <div className="mt-3 pt-3 border-t border-blue-500/10 dark:border-blue-500/20">
+            <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
+              {t('usage.description', { prompt: currentEmoji.prompt })}
+            </p>
+            <div className="flex items-center">
+              <div className="w-2 h-2 rounded-full bg-green-500 mr-2"></div>
+              <p className="text-xs font-medium text-foreground/90">{t('usage.license')}</p>
+            </div>
+          </div>
+        )}
+      </div>
+      
       {/* </div> */}
     </div>
   );
