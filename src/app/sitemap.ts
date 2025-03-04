@@ -10,6 +10,12 @@ const locales = ['en', 'fr', 'ja', 'zh'];
 const routes = [
   '',
   'gallery',
+  'genmoji-maker',
+  'sticker-maker',
+  'mascot-maker',
+  'model',
+  'color',
+  'category',
 ];
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {

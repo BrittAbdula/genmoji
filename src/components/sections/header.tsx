@@ -12,6 +12,43 @@ import { Link, usePathname } from '@/i18n/routing';
 import { LanguageSwitcher } from "@/components/language-switcher";
 import { useTranslations } from 'next-intl';
 import { CategoryNavigation } from "@/components/category-navigation";
+import { 
+  NavigationMenu, 
+  NavigationMenuContent, 
+  NavigationMenuItem, 
+  NavigationMenuLink, 
+  NavigationMenuList, 
+  NavigationMenuTrigger 
+} from "@/components/ui/navigation-menu";
+import { Wand2 } from "lucide-react";
+import React from "react";
+
+// 用于样式列表项的自定义组件
+const ListItem = React.forwardRef<
+  React.ElementRef<"a">,
+  React.ComponentPropsWithoutRef<"a">
+>(({ className, title, children, ...props }, ref) => {
+  return (
+    <li>
+      <NavigationMenuLink asChild>
+        <a
+          ref={ref}
+          className={cn(
+            "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",
+            className
+          )}
+          {...props}
+        >
+          <div className="text-sm font-medium leading-none">{title}</div>
+          <p className="line-clamp-2 text-xs leading-snug text-muted-foreground">
+            {children}
+          </p>
+        </a>
+      </NavigationMenuLink>
+    </li>
+  );
+});
+ListItem.displayName = "ListItem";
 
 export function Header() {
   const pathname = usePathname();
@@ -65,6 +102,61 @@ export function Header() {
             >
               {nav('gallery')}
             </Link>
+            
+            {/* 生成器二级菜单 */}
+            <NavigationMenu>
+              <NavigationMenuList>
+                <NavigationMenuItem>
+                  <NavigationMenuTrigger className={cn(
+                    "text-sm font-medium transition-colors hover:text-foreground",
+                    isActive('/emoji-maker') || isActive('/sticker-maker') || isActive('/mascot-maker') 
+                      ? "text-foreground" 
+                      : "text-muted-foreground"
+                  )}>
+                    Generators
+                  </NavigationMenuTrigger>
+                  <NavigationMenuContent>
+                    <ul className="grid gap-3 p-4 w-[400px]">
+                      <li className="row-span-3">
+                        <NavigationMenuLink asChild>
+                          <Link
+                            href="/"
+                            className="flex h-full w-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-primary/10 to-primary/30 p-6 no-underline outline-none focus:shadow-md"
+                          >
+                            <Wand2 className="h-6 w-6 mb-2" />
+                            <div className="mb-2 mt-4 text-lg font-medium">
+                              AI Generators
+                            </div>
+                            <p className="text-sm leading-tight text-muted-foreground">
+                              Create custom emojis, stickers, and mascots with our AI-powered tools
+                            </p>
+                          </Link>
+                        </NavigationMenuLink>
+                      </li>
+                      <ListItem
+                        title="Emoji Maker"
+                        href="/genmoji-maker"
+                      >
+                        Create custom emojis for your messages and social media
+                      </ListItem>
+                      <ListItem
+                        title="Sticker Maker"
+                        href="/sticker-maker"
+                      >
+                        Design vibrant stickers that make your messages pop
+                      </ListItem>
+                      <ListItem
+                        title="Mascot Maker"
+                        href="/mascot-maker"
+                      >
+                        Build distinctive mascots for your brand or project
+                      </ListItem>
+                    </ul>
+                  </NavigationMenuContent>
+                </NavigationMenuItem>
+              </NavigationMenuList>
+            </NavigationMenu>
+            
             <div className="hidden lg:flex">
               <CategoryNavigation />
             </div>

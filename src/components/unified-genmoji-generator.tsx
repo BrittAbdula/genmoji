@@ -24,13 +24,15 @@ interface UnifiedGenmojiGeneratorProps {
   initialPrompt?: string;
   onGenerated?: (emoji: Emoji) => void;
   mode?: 'inline' | 'modal';
+  init_model?: 'genmoji' | 'sticker' | 'mascot' | null;
 }
 
 export function UnifiedGenmojiGenerator({
   trigger,
   initialPrompt = "",
   onGenerated,
-  mode = 'modal'
+  mode = 'modal',
+  init_model = null
 }: UnifiedGenmojiGeneratorProps) {
   const router = useRouter();
   const t = useTranslations('generator');
@@ -39,7 +41,8 @@ export function UnifiedGenmojiGenerator({
   const [prompt, setPrompt] = useState(initialPrompt);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [generatedEmoji, setGeneratedEmoji] = useState<Emoji | null>(null);
-  const [model, setModel] = useState<'genmoji' | 'sticker' | 'mascot'>('genmoji');
+  const [model, setModel] = useState<'genmoji' | 'sticker' | 'mascot'>(init_model || 'genmoji');
+  const isCustomModel = init_model !== null;
   const fileInputRef = useRef<HTMLInputElement>(null);
   const isMobile = useMediaQuery("(max-width: 768px)");
   
@@ -172,7 +175,8 @@ export function UnifiedGenmojiGenerator({
       )}
 
       <div className="flex flex-col gap-4">
-        {/* Model Selection */}
+        {/* Model Selection - Only show if init_model is not explicitly provided */}
+        {!isCustomModel && (
         <div className="flex items-center justify-center gap-2 p-2">
           <TooltipProvider>
             <Tooltip>
@@ -257,55 +261,32 @@ export function UnifiedGenmojiGenerator({
             </Tooltip>
           </TooltipProvider>
         </div>
+        )}
 
         <div className={cn(
-          "relative flex flex-col w-full rounded-lg border bg-muted/50",
-          mode === 'inline' && "border-muted-foreground/20"
+          "relative flex flex-col w-full rounded-xl border bg-card shadow-sm overflow-hidden",
+          mode === 'inline' && "border-muted-foreground/10"
         )}>
-          <div className="flex items-start">
-            <Textarea
-              placeholder={t('placeholder')}
-              value={prompt}
-              onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setPrompt(e.target.value)}
-              onKeyDown={(e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-                if (e.key === 'Enter' && !e.shiftKey && prompt.trim() && !isGenerating) {
-                  e.preventDefault();
-                  generateEmoji();
-                }
-              }}
-              rows={2}
-              className={cn(
-                "resize-none min-h-[80px] border-0 focus-visible:ring-0 focus-visible:ring-offset-0 rounded-r-none",
-                mode === 'inline' && "text-lg"
-              )}
-            />
-            <div className="flex flex-col items-center justify-start p-2 border-l">
-              <input
-                type="file"
-                accept="image/*"
-                onChange={handleImageSelect}
-                className="hidden"
-                ref={fileInputRef}
-              />
-              <Button
-                type="button"
-                variant="ghost"
-                size="icon"
-                className={cn(
-                  "h-8 w-8 rounded-full",
-                  selectedImage ? "text-primary" : "text-muted-foreground hover:text-foreground"
-                )}
-                onClick={() => fileInputRef.current?.click()}
-                title={t('uploadImage')}
-              >
-                <ImageIcon className="h-5 w-5" />
-              </Button>
-            </div>
-          </div>
+          <Textarea
+            placeholder={t('placeholder')}
+            value={prompt}
+            onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setPrompt(e.target.value)}
+            onKeyDown={(e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+              if (e.key === 'Enter' && !e.shiftKey && prompt.trim() && !isGenerating) {
+                e.preventDefault();
+                generateEmoji();
+              }
+            }}
+            rows={2}
+            className={cn(
+              "resize-none min-h-[80px] border-0 focus-visible:ring-0 focus-visible:ring-offset-0 rounded-t-xl rounded-b-none bg-card",
+              mode === 'inline' && "text-lg p-4"
+            )}
+          />
           
           {selectedImage && (
-            <div className="px-3 pb-2">
-              <div className="relative w-20 h-20 rounded-md overflow-hidden border bg-muted">
+            <div className="px-4 pb-2">
+              <div className="relative w-24 h-24 rounded-lg overflow-hidden border bg-muted">
                 <img
                   src={selectedImage}
                   alt="Selected reference"
@@ -322,17 +303,47 @@ export function UnifiedGenmojiGenerator({
             </div>
           )}
 
-          <div className="flex items-center justify-end p-2 border-t">
+          <div className="flex items-center justify-between px-4 py-3 border-t bg-muted/20">
+            <div className="flex items-center">
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handleImageSelect}
+                className="hidden"
+                ref={fileInputRef}
+              />
+              <Button
+                type="button"
+                variant="ghost"
+                size="sm"
+                className={cn(
+                  "rounded-full flex items-center gap-1.5 text-sm hover:bg-muted/80",
+                  selectedImage ? "text-primary" : "text-muted-foreground hover:text-foreground"
+                )}
+                onClick={() => fileInputRef.current?.click()}
+              >
+                <ImageIcon className="h-4 w-4" />
+                {/* {selectedImage ? t('changeImage') : t('uploadImage')} */}
+              </Button>
+            </div>
+            
             <Button
               onClick={generateEmoji}
               disabled={isGenerating || !prompt.trim()}
-              size={mode === 'inline' ? 'default' : 'sm'}
+              size="sm"
               className={cn(
                 "rounded-full",
-                "px-8 bg-gradient-to-r from-pink-500 to-violet-500 hover:from-pink-600 hover:to-violet-600 text-white"
+                "px-6 py-2 bg-gradient-to-r from-pink-500 to-violet-500 hover:from-pink-600 hover:to-violet-600 text-white font-medium shadow-sm"
               )}
             >
-              {isGenerating ? t('generatingButton') : t('generateButton')}
+              {isGenerating ? (
+                <div className="flex items-center gap-1.5">
+                  <span className="h-3 w-3 rounded-full bg-white/30 animate-pulse"></span>
+                  {t('generatingButton')}
+                </div>
+              ) : (
+                t('generateButton')
+              )}
             </Button>
           </div>
         </div>

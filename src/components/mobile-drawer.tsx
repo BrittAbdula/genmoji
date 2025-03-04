@@ -17,7 +17,7 @@ import { useTranslations, useLocale } from 'next-intl';
 import { LanguageSwitcher } from "@/components/language-switcher";
 import React, { useState, useEffect } from 'react';
 import { AuroraText } from "@/components/ui/aurora-text";
-import { ChevronRight, Palette, Shapes, LayoutGrid } from "lucide-react";
+import { ChevronRight, Palette, Shapes, LayoutGrid, Wand2 } from "lucide-react";
 import { getEmojiGroups } from "@/lib/api";
 import { Category } from "@/types/emoji";
 
@@ -33,6 +33,7 @@ export function MobileDrawer() {
   const [categoriesOpen, setCategoriesOpen] = useState(false);
   const [colorsOpen, setColorsOpen] = useState(false);
   const [modelsOpen, setModelsOpen] = useState(false);
+  const [generatorsOpen, setGeneratorsOpen] = useState(false);
 
   // 添加数据状态
   const [categories, setCategories] = useState<Category[]>([]);
@@ -178,9 +179,57 @@ export function MobileDrawer() {
           >
             {nav('gallery')}
           </Link>
+          
+          {/* 生成器子菜单 */}
+          <div className="border-t pt-2 mt-2">
+            <button 
+              onClick={() => setGeneratorsOpen(!generatorsOpen)}
+              className="flex items-center justify-between w-full text-sm font-medium transition-colors hover:text-foreground px-2 py-1.5 rounded-sm text-muted-foreground"
+            >
+              <div className="flex items-center gap-2">
+                <Wand2 className="w-4 h-4" />
+                <span>Generators</span>
+              </div>
+              <ChevronRight className={`w-4 h-4 transition-transform ${generatorsOpen ? 'rotate-90' : ''}`} />
+            </button>
+            {generatorsOpen && (
+              <div className="ml-6 mt-2 pl-2 border-l space-y-2">
+                <Link 
+                  href="/genmoji-maker"
+                  onClick={handleLinkClick}
+                  className={cn(
+                    "block text-sm hover:text-foreground py-1",
+                    isActive('/genmoji-maker') ? "text-foreground" : "text-muted-foreground"
+                  )}
+                >
+                  Emoji Maker
+                </Link>
+                <Link 
+                  href="/sticker-maker"
+                  onClick={handleLinkClick}
+                  className={cn(
+                    "block text-sm hover:text-foreground py-1",
+                    isActive('/sticker-maker') ? "text-foreground" : "text-muted-foreground"
+                  )}
+                >
+                  Sticker Maker
+                </Link>
+                <Link 
+                  href="/mascot-maker"
+                  onClick={handleLinkClick}
+                  className={cn(
+                    "block text-sm hover:text-foreground py-1",
+                    isActive('/mascot-maker') ? "text-foreground" : "text-muted-foreground"
+                  )}
+                >
+                  Mascot Maker
+                </Link>
+              </div>
+            )}
+          </div>
 
           {/* 分类子菜单 */}
-          <div className="border-t pt-2 mt-2">
+          <div className="border-t pt-2">
             <button 
               onClick={() => setCategoriesOpen(!categoriesOpen)}
               className="flex items-center justify-between w-full text-sm font-medium transition-colors hover:text-foreground px-2 py-1.5 rounded-sm text-muted-foreground"

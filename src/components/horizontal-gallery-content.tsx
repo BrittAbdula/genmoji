@@ -12,7 +12,7 @@ import { useRouter } from "next/navigation";
 import { outfit } from "@/lib/fonts";
 import Image from "next/image";
 
-export function HorizontalGalleryContent() {
+export function HorizontalGalleryContent({model}: {model?: string}) {
   const t = useTranslations();
   const router = useRouter();
   const [emojis, setEmojis] = useState<Emoji[]>([]);
@@ -24,7 +24,10 @@ export function HorizontalGalleryContent() {
   const fetchEmojis = async (retryCount = 3) => {
     try {
       setError(null);
-      const newEmojis = await getEmojis(0, limit, locale, {
+      const newEmojis = model ? await getEmojis(0, limit, locale, {
+        sort: 'latest',
+        model: model
+      }) : await getEmojis(0, limit, locale, {
         sort: 'latest'
       });
       setEmojis(newEmojis || []);
@@ -100,7 +103,7 @@ export function HorizontalGalleryContent() {
       {renderContent()}
       <div className="flex justify-center pt-2">
         <Button
-          onClick={() => router.push('/gallery')}
+          onClick={() => model ? router.push(`/${locale}/model/${model}/`) : router.push('/gallery')}
           variant="outline"
           className="rounded-full px-6 hover:bg-background/80 flex items-center gap-2"
         >
