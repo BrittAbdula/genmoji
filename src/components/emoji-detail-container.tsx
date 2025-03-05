@@ -144,7 +144,7 @@ const VariationThumbnail = memo(forwardRef<HTMLButtonElement, {
       onClick={onClick}
       className={cn(
         "relative shrink-0 w-20 h-20 sm:w-24 sm:h-24 rounded-lg overflow-hidden",
-        isSelected ? "bg-gray-300" : "hover:bg-muted/20"
+        isSelected ? "bg-muted/30 ring-2 ring-primary/30" : "hover:bg-muted/10"
       )}
     >
       <Image
