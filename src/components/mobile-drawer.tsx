@@ -202,7 +202,7 @@ export function MobileDrawer() {
                     isActive('/genmoji-maker') ? "text-foreground" : "text-muted-foreground"
                   )}
                 >
-                  Emoji Maker
+                  Genmoji Maker
                 </Link>
                 <Link 
                   href="/sticker-maker"

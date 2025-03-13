@@ -32,7 +32,7 @@ export function CategoryHeader({ category, totalCount, description }: CategoryHe
             animate={{ scale: 1 }}
             transition={{ duration: 0.5, type: "spring" }}
           >
-            {formattedCategory} Emojis
+            {formattedCategory} Genmojis
           </motion.h1>
           
           {/* 装饰线 */}
@@ -51,7 +51,7 @@ export function CategoryHeader({ category, totalCount, description }: CategoryHe
               animate={{ opacity: 1 }}
               transition={{ duration: 0.5, delay: 0.3 }}
             >
-              <span className="font-semibold text-primary">{totalCount.toLocaleString()}</span> emojis in this category
+              <span className="font-semibold text-primary">{totalCount.toLocaleString()}</span> genmojis in this category
             </motion.p>
           )}
           
@@ -69,7 +69,7 @@ export function CategoryHeader({ category, totalCount, description }: CategoryHe
             
             {!description && (
               <p className="text-muted-foreground leading-relaxed">
-                Browse our collection of {formattedCategory.toLowerCase()} emojis. Find the perfect emoji for your messages and social media.
+                Browse our collection of {formattedCategory.toLowerCase()} genmojis. Find the perfect genmoji for your messages and social media.
               </p>
             )}
           </motion.div>

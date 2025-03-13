@@ -15,7 +15,7 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
   const { locale } = await props.params;
   
   const title = `Genmoji Maker | ${siteConfig.name}`;
-  const description = `Create your own custom Genmoji style emojis with our AI-powered emoji generator. Express yourself with unique, cute and expressive emojis.`;
+  const description = `Create your own custom Genmoji style genmojis with our AI-powered genmoji generator. Express yourself with unique, cute and expressive genmojis.`;
   
   return {
     title,
@@ -68,7 +68,7 @@ export default async function GenmojiMakerPage(props: Props) {
       <section className="py-10 md:py-16 text-center">
         <h1 className="text-4xl md:text-5xl font-bold mb-4">Genmoji Maker</h1>
         <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-          Create adorable, expressive emoji characters that perfectly capture your emotions
+          Create adorable, expressive genmoji characters that perfectly capture your emotions
         </p>
       </section>
       
@@ -103,7 +103,7 @@ export default async function GenmojiMakerPage(props: Props) {
               <span className="text-primary text-2xl">✨</span>
             </div>
             <h3 className="text-xl font-semibold mb-3">Expressive</h3>
-            <p className="text-muted-foreground">Capture any emotion or reaction with our highly expressive emoji characters</p>
+            <p className="text-muted-foreground">Capture any emotion or reaction with our highly expressive genmoji characters</p>
           </div>
           
           <div className="bg-card p-6 rounded-xl shadow-sm">
@@ -111,7 +111,7 @@ export default async function GenmojiMakerPage(props: Props) {
               <span className="text-primary text-2xl">🎨</span>
             </div>
             <h3 className="text-xl font-semibold mb-3">Unique</h3>
-            <p className="text-muted-foreground">Create one-of-a-kind emojis that stand out from standard emoji sets</p>
+            <p className="text-muted-foreground">Create one-of-a-kind genmojis that stand out from standard genmoji sets</p>
           </div>
           
           <div className="bg-card p-6 rounded-xl shadow-sm">
@@ -137,7 +137,7 @@ export default async function GenmojiMakerPage(props: Props) {
           <div className="flex flex-col items-center text-center">
             <div className="bg-primary/10 w-12 h-12 rounded-full flex items-center justify-center text-primary font-bold text-xl mb-4">1</div>
             <h3 className="text-xl font-semibold mb-2">Describe Your Idea</h3>
-            <p className="text-muted-foreground">Enter a detailed description of the emoji you want to create</p>
+            <p className="text-muted-foreground">Enter a detailed description of the genmoji you want to create</p>
           </div>
           
           <div className="flex flex-col items-center text-center">

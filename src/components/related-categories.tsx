@@ -1,8 +1,9 @@
-"use client";
+
 
 import { RelatedCategoriesProps, Category } from "@/types/emoji";
 import { useLocale } from "next-intl";
 import { motion } from "framer-motion";
+import { cn } from "@/lib/utils";
 
 export function RelatedCategories({ group, categories, currentCategory }: RelatedCategoriesProps) {
   const locale = useLocale();
@@ -48,18 +49,33 @@ export function RelatedCategories({ group, categories, currentCategory }: Relate
             <motion.a
               key={category.name}
               href={`/${locale}/${group}/${category.slug}/`}
-              className="block p-4 bg-background/80 backdrop-blur-sm rounded-xl shadow-sm hover:shadow-md transition-all text-center border border-muted/20"
+              className={cn(
+                "block p-4 bg-background/80 backdrop-blur-sm rounded-xl transition-all text-center",
+                "border border-muted/20 hover:border-primary/30",
+                "shadow-sm hover:shadow-md",
+                "focus:outline-none focus:ring-2 focus:ring-primary/20 focus:ring-offset-2",
+                currentCategory === category.slug ? "bg-primary/10 border-primary/30" : ""
+              )}
               variants={itemVariants}
               whileHover={{ 
-                scale: 1.05, 
-                boxShadow: "0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)",
-                borderColor: "rgba(99, 102, 241, 0.3)"
+                scale: 1.03, 
+                boxShadow: "0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)"
               }}
             >
+              {group === "color" && (
+                <div className="flex justify-center mb-2">
+                  <div 
+                    className="w-5 h-5 rounded-full border border-muted/30"
+                    style={{ 
+                      backgroundColor: getColorHex(category.name)
+                    }}
+                  />
+                </div>
+              )}
               <h3 className="font-medium capitalize">{category.translated_name}</h3>
               {category.count && (
                 <p className="text-sm text-muted-foreground mt-1">
-                  {category.count} emojis
+                  {category.count} genmojis
                 </p>
               )}
             </motion.a>
@@ -68,4 +84,34 @@ export function RelatedCategories({ group, categories, currentCategory }: Relate
       </div>
     </div>
   );
+}
+
+// 辅助函数：将颜色名称转换为十六进制值
+function getColorHex(colorName: string): string {
+  const colorMap: Record<string, string> = {
+    red: '#FF0000',
+    blue: '#0000FF',
+    green: '#008000',
+    yellow: '#FFFF00',
+    orange: '#FFA500',
+    purple: '#800080',
+    pink: '#FFC0CB',
+    brown: '#A52A2A',
+    black: '#000000',
+    white: '#FFFFFF',
+    gray: '#808080',
+    gold: '#FFD700',
+    silver: '#C0C0C0',
+    cyan: '#00FFFF',
+    magenta: '#FF00FF',
+    lime: '#00FF00',
+    teal: '#008080',
+    indigo: '#4B0082',
+    violet: '#EE82EE',
+    maroon: '#800000',
+    navy: '#000080',
+    olive: '#808000',
+  };
+  
+  return colorMap[colorName.toLowerCase()] || '#CCCCCC';
 }

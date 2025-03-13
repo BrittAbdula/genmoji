@@ -1,7 +1,7 @@
 import { MetadataRoute } from "next";
 import { siteConfig } from "@/lib/config";
 import { Emoji, EmojiResponse } from "@/types/emoji";
-import { getEmojis } from "@/lib/api";
+import { getEmojiGroups, getEmojis } from "@/lib/api";
 
 // Supported locales
 const locales = ['en', 'fr', 'ja', 'zh'];
@@ -34,16 +34,49 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   try {
     // Fetch dynamically generated emoji pages
-    const emojis = await getEmojis(0, 1000, 'en');
+    // const emojis = await getEmojis(0, 1000, 'en');
+
     // Generate emoji routes for all locales
-    const dynamicRoutes = locales.flatMap(locale =>
-      emojis.map((emoji: Emoji) => ({
-        url: `${baseUrl}${locale === 'en' ? '' : '/' + locale}/emoji/${emoji.slug}/`,
-        lastModified: emoji.created_at ? new Date(emoji.created_at) : now,
-        changeFrequency: 'weekly' as const,
-        priority: 0.6,
+    // const dynamicRoutes = locales.flatMap(locale =>
+    //   emojis.map((emoji: Emoji) => ({
+    //     url: `${baseUrl}${locale === 'en' ? '' : '/' + locale}/emoji/${emoji.slug}/`,
+    //     lastModified: emoji.created_at ? new Date(emoji.created_at) : now,
+    //     changeFrequency: 'weekly' as const,
+    //     priority: 0.6,
+    //   }))
+    // );
+
+    const groups = await getEmojiGroups('en');
+    const models = groups.models;
+    const colors = groups.colors;
+    const categories = groups.categories;
+
+    let dynamicRoutes = locales.flatMap(locale =>
+      models.map(model => ({
+        url: `${baseUrl}${locale === 'en' ? '' : '/' + locale}${model.name ? `/model/${model.name}` : ''}/`,
+        lastModified: now,
+        changeFrequency: 'monthly' as const,
+        priority: model.name === '' ? 1.0 : 0.8,
       }))
     );
+
+    dynamicRoutes = dynamicRoutes.concat(locales.flatMap(locale =>
+      colors.map(color => ({
+        url: `${baseUrl}${locale === 'en' ? '' : '/' + locale}${color.name ? `/color/${color.name}` : ''}/`,
+        lastModified: now,
+        changeFrequency: 'monthly' as const,
+        priority: color.name === '' ? 1.0 : 0.8,
+      }))
+    ));
+
+    dynamicRoutes = dynamicRoutes.concat(locales.flatMap(locale =>
+      categories.map(category => ({
+        url: `${baseUrl}${locale === 'en' ? '' : '/' + locale}${category.name ? `/category/${category.name}` : ''}/`,
+        lastModified: now,
+        changeFrequency: 'monthly' as const,
+        priority: category.name === '' ? 1.0 : 0.8,
+      }))
+    ));
 
     return [
       // Root URL without locale

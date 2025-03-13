@@ -230,7 +230,7 @@ export default function ModelPageClient({ params, initialData }: ModelPageClient
       {/* 头部区域 */}
       <CategoryHeader 
         category={modelName} 
-        description={`Browse our collection of ${modelName} style emojis. These emojis are created using the ${modelName} model, perfect for your messages and social media.`}
+        description={`Browse our collection of ${modelName} style genmojis. These genmojis are created using the ${modelName} model, perfect for your messages and social media.`}
       />
       
       {/* 筛选栏 */}

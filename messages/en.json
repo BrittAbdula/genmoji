@@ -1,8 +1,8 @@
 {
   "common": {
     "name": "Genmoji Online",
-    "description": "Create custom emojis that perfectly express your emotion and creativity.",
-    "shortDescription": "Online emoji generator",
+    "description": "Create custom genmojis that perfectly express your emotion and creativity.",
+    "shortDescription": "Online genmoji generator",
     "cta": "Create Genmoji",
     "navigation": {
       "home": "Home",
@@ -15,10 +15,10 @@
       "allColors": "All Colors",
       "models": "Models",
       "allModels": "All Models",
-      "categoriesDescription": "Browse all emoji categories like smileys, animals, foods and more",
-      "colorsDescription": "Browse emojis by color - red, blue, green, and many more color options",
-      "modelsDescription": "Explore emojis created with different AI models and styles",
-      "emojiCount": "{count} emojis available",
+      "categoriesDescription": "Browse all genmoji categories like smileys, animals, foods and more",
+      "colorsDescription": "Browse genmojis by color - red, blue, green, and many more color options",
+      "modelsDescription": "Explore genmojis created with different AI models and styles",
+      "emojiCount": "{count} genmojis available",
       "exploreCategory": "Explore this category",
       "exploreColor": "Explore this color",
       "exploreModel": "Explore this model"
@@ -116,17 +116,13 @@
     ]
   },
   "gallery": {
-    "title": "Genmoji Gallery",
-    "subtitle": "Explore our collection of AI-generated emojis",
+    "title": "Gallery",
+    "subtitle": "Explore our collection of AI-generated genmojis",
     "loadMore": "Load More",
-    "loading": "Loading...",
-    "noResults": "No emojis found",
-    "search": {
-      "placeholder": {
-        "mobile": "Type to search...",
-        "desktop": "Press Enter to search..."
-      },
-      "label": "Search"
+    "noResults": "No genmojis found",
+    "filter": {
+      "title": "Filter",
+      "reset": "Reset Filters"
     }
   },
   "footer": {
@@ -146,8 +142,8 @@
       "imageAlt": "genmoji: {prompt}"
     },
     "notFound": {
-      "title": "Emoji Not Found",
-      "description": "The emoji you're looking for doesn't exist or has been removed.",
+      "title": "Genmoji Not Found",
+      "description": "The genmoji you're looking for doesn't exist or has been removed.",
       "backToHome": "← Back to Home"
     },
     "similar": "Similar Genmojis",
@@ -181,11 +177,11 @@
       },
       "meta": {
         "title": "{prompt} | Genmoji Online",
-        "description": "Explore and download this {prompt} custom emoji for FREE. Transparent background with no watermark. Create your own personalized emojis with our AI-powered generator.",
-        "ogTitle": "{prompt} - Custom Emoji",
-        "ogDescription": "Check out this {prompt} emoji with transparent background. FREE to download and use. Create your own custom emojis now!",
-        "twitterTitle": "{prompt} Emoji",
-        "twitterDescription": "Check out this {prompt} emoji with transparent background. FREE to download and use!"
+        "description": "Explore and download this {prompt} custom genmoji for FREE. Transparent background with no watermark. Create your own personalized genmojis with our AI-powered generator.",
+        "ogTitle": "{prompt} - Custom Genmoji",
+        "ogDescription": "Check out this {prompt} genmoji with transparent background. FREE to download and use. Create your own custom genmojis now!",
+        "twitterTitle": "{prompt} Genmoji",
+        "twitterDescription": "Check out this {prompt} genmoji with transparent background. FREE to download and use!"
       },
       "time": {
         "justNow": "just now",
@@ -212,7 +208,7 @@
         "description": "We may collect the following types of information:",
         "items": [
           "Account information (email, username)",
-          "Usage data (emojis created, prompts used)",
+          "Usage data (genmojis created, prompts used)",
           "Device information (IP address, browser type)",
           "Analytics data through Google Analytics"
         ]
@@ -261,7 +257,7 @@
       },
       "serviceDescription": {
         "title": "2. Service Description",
-        "description": "Genmoji Online provides AI-powered emoji generation services. Users can create custom emojis based on text prompts."
+        "description": "Genmoji Online provides AI-powered genmoji generation services. Users can create custom genmojis based on text prompts."
       },
       "userResponsibilities": {
         "title": "3. User Responsibilities",
@@ -328,7 +324,7 @@
     "models": {
       "genmoji": {
         "name": "Genmoji",
-        "description": "Classic Apple-style emoji"
+        "description": "Classic Apple-style genmoji"
       },
       "sticker": {
         "name": "Sticker",

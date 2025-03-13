@@ -109,7 +109,7 @@ export function Header() {
                 <NavigationMenuItem>
                   <NavigationMenuTrigger className={cn(
                     "text-sm font-medium transition-colors hover:text-foreground",
-                    isActive('/emoji-maker') || isActive('/sticker-maker') || isActive('/mascot-maker') 
+                    isActive('/genmoji-maker') || isActive('/sticker-maker') || isActive('/mascot-maker') 
                       ? "text-foreground" 
                       : "text-muted-foreground"
                   )}>
@@ -128,16 +128,16 @@ export function Header() {
                               AI Generators
                             </div>
                             <p className="text-sm leading-tight text-muted-foreground">
-                              Create custom emojis, stickers, and mascots with our AI-powered tools
+                              Create custom genmojis, stickers, and mascots with our AI-powered tools
                             </p>
                           </Link>
                         </NavigationMenuLink>
                       </li>
                       <ListItem
-                        title="Emoji Maker"
+                        title="Genmoji Maker"
                         href="/genmoji-maker"
                       >
-                        Create custom emojis for your messages and social media
+                        Create custom genmojis for your messages and social media
                       </ListItem>
                       <ListItem
                         title="Sticker Maker"

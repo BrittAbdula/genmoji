@@ -10,26 +10,26 @@ export const runtime = 'edge';
 export async function generateMetadata(): Promise<Metadata> {
   const locale = await getLocale();
   return {
-    title: `Emoji Colors Collection | ${siteConfig.name}`,
-    description: 'Browse our collection of emojis by color. Find emojis in your favorite colors to express yourself colorfully.',
+    title: `Genmoji Colors Collection | ${siteConfig.name}`,
+    description: 'Browse our collection of genmojis by color. Find genmojis in your favorite colors to express yourself colorfully.',
     metadataBase: new URL(siteConfig.url),
     openGraph: {
-      title: 'Emoji Colors Collection',
-      description: 'Browse our collection of emojis by color. Find emojis in your favorite colors to express yourself colorfully.',
+      title: 'Genmoji Colors Collection',
+      description: 'Browse our collection of genmojis by color. Find genmojis in your favorite colors to express yourself colorfully.',
       type: 'website',
       images: [
         {
           url: '/og-image.png',
           width: 1200,
           height: 630,
-          alt: 'Emoji Colors Collection'
+          alt: 'Genmoji Colors Collection'
         }
       ]
     },
     twitter: {
       card: 'summary_large_image',
-      title: `Emoji Colors Collection | ${siteConfig.name}`,
-      description: 'Browse our collection of emojis by color. Find emojis in your favorite colors to express yourself colorfully.',
+      title: `Genmoji Colors Collection | ${siteConfig.name}`,
+      description: 'Browse our collection of genmojis by color. Find genmojis in your favorite colors to express yourself colorfully.',
       images: ['/og-image.png'],
     },
     alternates: {
@@ -109,10 +109,10 @@ export default async function ColorIndex() {
       <div className="relative overflow-hidden bg-muted/5 py-12">
         <div className="container mx-auto px-4">
           <div className="max-w-2xl mx-auto text-center">
-            <h1 className="text-4xl font-bold mb-4">Emoji Colors</h1>
+            <h1 className="text-4xl font-bold mb-4">Genmoji Colors</h1>
             <p className="text-muted-foreground leading-relaxed">
-              Browse our collection of emojis by color. Each color group contains emojis that prominently feature that color.
-              Select a color to explore all emojis in that particular color scheme.
+              Browse our collection of genmojis by color. Each color group contains genmojis that prominently feature that color.
+              Select a color to explore all genmojis in that particular color scheme.
             </p>
           </div>
         </div>
@@ -134,7 +134,7 @@ export default async function ColorIndex() {
                   <h2 className="text-xl font-bold mb-2 capitalize">{color.translated_name}</h2>
                   <p className="text-muted-foreground text-sm">
                     {color.count 
-                      ? `${color.count} emojis available`
+                      ? `${color.count} genmojis available`
                       : 'Explore this color'}
                   </p>
                 </div>

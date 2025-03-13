@@ -10,26 +10,26 @@ export const runtime = 'edge';
 export async function generateMetadata(): Promise<Metadata> {
   const locale = await getLocale();
   return {
-    title: `Emoji Categories Collection | ${siteConfig.name}`,
-    description: 'Browse our collection of emoji categories. Find emojis organized by theme and subject to express yourself perfectly.',
+    title: `Genmoji Categories Collection | ${siteConfig.name}`,
+    description: 'Browse our collection of genmoji categories. Find genmojis organized by theme and subject to express yourself perfectly.',
     metadataBase: new URL(siteConfig.url),
     openGraph: {
-      title: 'Emoji Categories Collection',
-      description: 'Browse our collection of emoji categories. Find emojis organized by theme and subject to express yourself perfectly.',
+      title: 'Genmoji Categories Collection',
+      description: 'Browse our collection of genmoji categories. Find genmojis organized by theme and subject to express yourself perfectly.',
       type: 'website',
       images: [
         {
           url: '/og-image.png',
           width: 1200,
           height: 630,
-          alt: 'Emoji Categories Collection'
+          alt: 'Genmoji Categories Collection'
         }
       ]
     },
     twitter: {
       card: 'summary_large_image',
-      title: `Emoji Categories Collection | ${siteConfig.name}`,
-      description: 'Browse our collection of emoji categories. Find emojis organized by theme and subject to express yourself perfectly.',
+      title: `Genmoji Categories Collection | ${siteConfig.name}`,
+      description: 'Browse our collection of genmoji categories. Find genmojis organized by theme and subject to express yourself perfectly.',
       images: ['/og-image.png'],
     },
     alternates: {
@@ -49,7 +49,7 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-// Function to get a representative emoji for a category
+// Function to get a representative genmoji for a category
 function getCategoryEmoji(categoryName: string): string {
   const categoryEmojis: Record<string, string> = {
     'smileys_emotion': '😊',
@@ -103,10 +103,10 @@ export default async function CategoryIndex() {
       <div className="relative overflow-hidden bg-muted/5 py-12">
         <div className="container mx-auto px-4">
           <div className="max-w-2xl mx-auto text-center">
-            <h1 className="text-4xl font-bold mb-4">Emoji Categories</h1>
+            <h1 className="text-4xl font-bold mb-4">Genmoji Categories</h1>
             <p className="text-muted-foreground leading-relaxed">
-              Browse our collection of emoji categories. Each category contains emojis organized by theme or subject.
-              Select a category to explore all emojis in that particular group.
+              Browse our collection of genmoji categories. Each category contains genmojis organized by theme or subject.
+              Select a category to explore all genmojis in that particular group.
             </p>
           </div>
         </div>
@@ -128,7 +128,7 @@ export default async function CategoryIndex() {
                   <h2 className="text-xl font-bold mb-2 capitalize">{category.translated_name}</h2>
                   <p className="text-muted-foreground text-sm">
                     {category.count 
-                      ? `${category.count} emojis available`
+                      ? `${category.count} genmojis available`
                       : 'Explore this category'}
                   </p>
                 </div>

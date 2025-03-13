@@ -1,7 +1,7 @@
 {
   "common": {
     "name": "Genmoji Online",
-    "description": "AI驱动的表情符号创作工具。创建独特的Apple风格表情，展现个性。",
+    "description": "AI驱动的genmoji创作工具。创建独特的Apple风格genmoji，展现个性。",
     "shortDescription": "在线 Genmoji 生成器",
     "cta": "生成 Genmoji",
     "navigation": {
@@ -15,10 +15,10 @@
       "allColors": "所有颜色",
       "models": "模型",
       "allModels": "所有模型",
-      "categoriesDescription": "浏览所有表情符号分类，如笑脸、动物、食物等",
-      "colorsDescription": "按颜色浏览表情符号 - 红色、蓝色、绿色和更多颜色选项",
-      "modelsDescription": "探索使用不同AI模型和风格创建的表情符号",
-      "emojiCount": "{count} 个表情符号可用",
+      "categoriesDescription": "浏览所有genmoji分类，如笑脸、动物、食物等",
+      "colorsDescription": "按颜色浏览genmoji - 红色、蓝色、绿色和更多颜色选项",
+      "modelsDescription": "探索使用不同AI模型和风格创建的genmoji",
+      "emojiCount": "{count} 个genmoji可用",
       "exploreCategory": "探索此分类",
       "exploreColor": "探索此颜色",
       "exploreModel": "探索此模型"

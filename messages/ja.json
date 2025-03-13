@@ -1,8 +1,8 @@
 {
   "common": {
     "name": "Genmoji Online",
-    "description": "あなたの感情と創造性を完璧に表現するカスタム絵文字を一緒に作りましょう。",
-    "shortDescription": "オンライン絵文字ジェネレーター",
+    "description": "あなたの感情と創造性を完璧に表現するカスタムgenmojiを一緒に作りましょう。",
+    "shortDescription": "オンラインgenmojiジェネレーター",
     "cta": "Genmojiを作成",
     "navigation": {
       "home": "ホーム",
@@ -15,10 +15,10 @@
       "allColors": "すべてのカラー",
       "models": "モデル",
       "allModels": "すべてのモデル",
-      "categoriesDescription": "スマイリー、動物、食べ物などすべての絵文字カテゴリーを閲覧",
-      "colorsDescription": "色別に絵文字を閲覧 - 赤、青、緑など多くのカラーオプション",
-      "modelsDescription": "さまざまなAIモデルとスタイルで作成された絵文字を探索",
-      "emojiCount": "{count}個の絵文字が利用可能",
+      "categoriesDescription": "スマイリー、動物、食べ物などすべてのgenmojiカテゴリーを閲覧",
+      "colorsDescription": "色別にgenmojiを閲覧 - 赤、青、緑など多くのカラーオプション",
+      "modelsDescription": "さまざまなAIモデルとスタイルで作成されたgenmojiを探索",
+      "emojiCount": "{count}個のgenmojiが利用可能",
       "exploreCategory": "このカテゴリーを探索",
       "exploreColor": "この色を探索",
       "exploreModel": "このモデルを探索"

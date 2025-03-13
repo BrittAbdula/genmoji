@@ -10,26 +10,26 @@ export const runtime = 'edge';
 export async function generateMetadata(): Promise<Metadata> {
   const locale = await getLocale();
   return {
-    title: `Emoji Models Collection | ${siteConfig.name}`,
-    description: 'Browse our collection of emoji models. Choose from various styles to find the perfect emoji for your messages and social media.',
+    title: `Genmoji Models Collection | ${siteConfig.name}`,
+    description: 'Browse our collection of genmoji models. Choose from various styles to find the perfect genmoji for your messages and social media.',
     metadataBase: new URL(siteConfig.url),
     openGraph: {
-      title: 'Emoji Models Collection',
-      description: 'Browse our collection of emoji models. Choose from various styles to find the perfect emoji for your messages and social media.',
+      title: 'Genmoji Models Collection',
+      description: 'Browse our collection of genmoji models. Choose from various styles to find the perfect genmoji for your messages and social media.',
       type: 'website',
       images: [
         {
           url: '/og-image.png',
           width: 1200,
           height: 630,
-          alt: 'Emoji Models Collection'
+          alt: 'Genmoji Models Collection'
         }
       ]
     },
     twitter: {
       card: 'summary_large_image',
-      title: `Emoji Models Collection | ${siteConfig.name}`,
-      description: 'Browse our collection of emoji models. Choose from various styles to find the perfect emoji for your messages and social media.',
+      title: `Genmoji Models Collection | ${siteConfig.name}`,
+      description: 'Browse our collection of genmoji models. Choose from various styles to find the perfect genmoji for your messages and social media.',
       images: ['/og-image.png'],
     },
     alternates: {
@@ -102,10 +102,10 @@ export default async function ModelIndex() {
       <div className="relative overflow-hidden bg-muted/5 py-12">
         <div className="container mx-auto px-4">
           <div className="max-w-2xl mx-auto text-center">
-            <h1 className="text-4xl font-bold mb-4">Emoji Models</h1>
+            <h1 className="text-4xl font-bold mb-4">Genmoji Models</h1>
             <p className="text-muted-foreground leading-relaxed">
-              Browse our collection of emoji models. Each model offers a unique style and design aesthetic.
-              Select a model to explore all emojis created using that particular style.
+              Browse our collection of genmoji models. Each model offers a unique style and design aesthetic.
+              Select a model to explore all genmojis created using that particular style.
             </p>
           </div>
         </div>
@@ -127,7 +127,7 @@ export default async function ModelIndex() {
                   <h2 className="text-xl font-bold mb-2 capitalize">{model.translated_name}</h2>
                   <p className="text-muted-foreground text-sm">
                     {model.count 
-                      ? `${model.count} emojis available`
+                      ? `${model.count} genmojis available`
                       : 'Explore this model'}
                   </p>
                 </div>

@@ -179,7 +179,7 @@ export default function ColorPageClient({ params, initialData }: ColorPageClient
           >
             {/* 颜色名称 */}
             <h1 className="text-4xl font-bold mb-4 capitalize">
-              {colorName} Emojis
+              {colorName} Genmojis
             </h1>
             
             {/* 颜色示例 */}
@@ -193,11 +193,25 @@ export default function ColorPageClient({ params, initialData }: ColorPageClient
             
             {/* 颜色描述 */}
             <p className="text-muted-foreground leading-relaxed">
-              Browse our collection of {colorName} emojis. These emojis feature {colorName} as their primary color, perfect for matching your theme or mood.
+              Browse our collection of {colorName} genmojis. These genmojis feature {colorName} as their primary color, perfect for matching your theme or mood.
             </p>
           </motion.div>
         </div>
       </div>
+      
+      {/* 相关颜色 */}
+      {colors.length > 0 && (
+        <RelatedCategories 
+          group="color"
+          categories={colors.map(color => ({
+            id: color.name,
+            name: color.name,
+            slug: color.name,
+            translated_name: color.translated_name
+          }))}
+          currentCategory={slug}
+        />
+      )}
 
       {/* 筛选栏 */}
       <div className="container mx-auto px-4 py-4">
@@ -224,26 +238,12 @@ export default function ColorPageClient({ params, initialData }: ColorPageClient
             
             {!hasMore && emojis.length > 0 && (
               <div className="text-center text-gray-500 mt-8">
-                No more emojis
+                No more genmojis
               </div>
             )}
           </>
         )}
       </div>
-      
-      {/* 相关颜色 */}
-      {colors.length > 0 && (
-        <RelatedCategories 
-          group="color"
-          categories={colors.map(color => ({
-            id: color.name,
-            name: color.name,
-            slug: color.name,
-            translated_name: color.translated_name
-          }))}
-          currentCategory={slug}
-        />
-      )}
     </div>
   );
 }

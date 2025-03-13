@@ -25,6 +25,9 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
         const locale = await getLocale();
         const emoji = await getEmoji(slug, locale);
         const t = await getTranslations('emoji.detail.meta');
+         // 检查 slug 是否包含 '--'，如果包含则添加 robots 元标签阻止搜索引擎收录
+         const robotsMeta = slug.includes('--') ? { robots: 'noindex' } : {};
+
 
         return constructMetadata({
             title: t('title', { prompt: emoji.prompt }),
@@ -70,6 +73,7 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
                 },
             },
             path: locale === 'en' ? `emoji/${emoji.slug}/` : `${locale}/emoji/${emoji.slug}/`,
+            ...robotsMeta,
         });
     } catch (error) {
         console.error('Error generating metadata:', error);

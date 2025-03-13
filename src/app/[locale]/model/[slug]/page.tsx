@@ -18,8 +18,8 @@ export async function generateMetadata(props: {
   const groups = await getEmojiGroups(locale);
   const modelName = groups.models.find(model => model.name === slug)?.translated_name || 'Unknown Model';
   
-  const title = `${modelName} Style Emojis | ${siteConfig.name}`;
-  const description = `Browse our collection of ${modelName} style emojis. Find the perfect emoji for your messages and social media.`;
+  const title = `${modelName} Style GEmojis | ${siteConfig.name}`;
+  const description = `Browse our collection of ${modelName} style gemojis. Find the perfect emoji for your messages and social media.`;
   
   return {
     title,
@@ -34,7 +34,7 @@ export async function generateMetadata(props: {
           url: '/og-image.png',
           width: 1200,
           height: 630,
-          alt: `${modelName} Style Emojis`
+          alt: `${modelName} Style Genmojis`
         }
       ]
     },
