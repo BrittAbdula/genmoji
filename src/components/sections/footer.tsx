@@ -77,6 +77,11 @@ export function Footer() {
               <a href={link.url}>{link.text}</a>
             </li>
           ))}
+          <li>
+            <a href="https://linktr.ee/auroroa">
+            ❤️
+            </a>
+          </li>
         </ul>
         <div className="flex items-center justify-between text-sm font-medium tracking-tight text-muted-foreground">
           <p>{t('copyright')}</p>
