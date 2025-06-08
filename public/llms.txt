@@ -1,0 +1,11 @@
+# Genmoji Online
+
+> Genmoji Online is an AI-powered genmoji generator that enables users to create high-quality, personalized genmojis. As an excellent alternative to Apple's Genmoji, our platform makes professional-grade custom emoji creation accessible to everyone across all devices and platforms.
+
+Key features:
+- Text-to-Genmoji intelligent conversion using advanced AI
+- Image-to-Genmoji precise generation with Apple-style quality
+- Cross-platform accessibility (web-based, multi-language support)
+- Universal compatibility with major messaging platforms (iMessage, WhatsApp, Discord, Slack)
+- No device restrictions - works on any modern browser
+- Instant generation and easy sharing capabilities
