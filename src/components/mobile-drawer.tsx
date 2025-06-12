@@ -17,15 +17,21 @@ import { useTranslations, useLocale } from 'next-intl';
 import { LanguageSwitcher } from "@/components/language-switcher";
 import React, { useState, useEffect } from 'react';
 import { AuroraText } from "@/components/ui/aurora-text";
-import { ChevronRight, Palette, Shapes, LayoutGrid, Wand2 } from "lucide-react";
+import { ChevronRight, Palette, Shapes, LayoutGrid, Wand2, User, Heart } from "lucide-react";
 import { getEmojiGroups } from "@/lib/api";
 import { Category } from "@/types/emoji";
+import { LoginDialog } from "@/components/login-dialog";
+import { useAuthStore } from "@/store/auth-store";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Button } from "@/components/ui/button";
 
 export function MobileDrawer() {
   const pathname = usePathname();
   const t = useTranslations('common');
   const nav = useTranslations('common.navigation');
+  const authT = useTranslations('auth');
   const locale = useLocale();
+  const { isLoggedIn, user, logout, checkAuth } = useAuthStore();
   const isActive = (path: string) => pathname === path;
   const [open, setOpen] = useState(false);
 
@@ -39,6 +45,11 @@ export function MobileDrawer() {
   const [categories, setCategories] = useState<Category[]>([]);
   const [colors, setColors] = useState<Category[]>([]);
   const [models, setModels] = useState<Category[]>([]);
+
+  // 初始化认证
+  useEffect(() => {
+    checkAuth();
+  }, [checkAuth]);
 
   // 获取数据
   useEffect(() => {
@@ -130,6 +141,21 @@ export function MobileDrawer() {
 
   const handleLinkClick = () => {
     setOpen(false);
+  };
+
+  const handleLogout = () => {
+    logout();
+    setOpen(false);
+  };
+
+  // 获取用户名首字母
+  const getUserInitials = (name: string) => {
+    return name
+      .split(' ')
+      .map(n => n[0])
+      .join('')
+      .toUpperCase()
+      .slice(0, 2);
   };
 
   return (
@@ -338,7 +364,64 @@ export function MobileDrawer() {
           </div>
         </div>
 
-        <DrawerFooter className="px-6">
+        <DrawerFooter className="px-6 space-y-3">
+          {/* 用户认证区域 */}
+          {isLoggedIn && user ? (
+            <div className="space-y-3">
+              {/* 用户信息 */}
+              <div className="flex items-center gap-3 p-3 rounded-lg bg-muted/50">
+                <Avatar className="h-10 w-10">
+                  <AvatarImage src={user.avatar_url} alt={user.name} />
+                  <AvatarFallback className="text-sm">
+                    {getUserInitials(user.name)}
+                  </AvatarFallback>
+                </Avatar>
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-medium truncate">{user.name}</p>
+                  <p className="text-xs text-muted-foreground truncate">{user.email}</p>
+                </div>
+              </div>
+              
+              {/* 用户功能链接 */}
+              <div className="space-y-1">
+                <Link
+                  href="/my-emojis"
+                  onClick={handleLinkClick}
+                  className="flex items-center gap-2 px-3 py-2 text-sm rounded-lg hover:bg-muted transition-colors"
+                >
+                  <Heart className="h-4 w-4" />
+                  {authT('my_emojis')}
+                </Link>
+                <Link
+                  href="/profile"
+                  onClick={handleLinkClick}
+                  className="flex items-center gap-2 px-3 py-2 text-sm rounded-lg hover:bg-muted transition-colors"
+                >
+                  <User className="h-4 w-4" />
+                  {authT('profile')}
+                </Link>
+              </div>
+              
+              {/* 登出按钮 */}
+              <Button
+                onClick={handleLogout}
+                variant="outline"
+                className="w-full"
+              >
+                {authT('logout')}
+              </Button>
+            </div>
+          ) : (
+            <div className="space-y-3">
+              <LoginDialog>
+                <Button variant="outline" className="w-full">
+                  {authT('login')}
+                </Button>
+              </LoginDialog>
+            </div>
+          )}
+          
+          {/* CTA 按钮 */}
           <Link
             href="/"
             onClick={handleLinkClick}

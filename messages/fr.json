@@ -180,6 +180,29 @@
       "linkedin": "Suivez-nous sur LinkedIn"
     }
   },
+  "auth": {
+    "login": "Connexion",
+    "logout": "Déconnexion",
+    "profile": "Profil",
+    "my_emojis": "Mes Emojis",
+    "welcome_back": "Bon retour",
+    "login_description": "Connectez-vous pour sauvegarder vos genmojis et y accéder n'importe où.",
+    "privacy_notice": "En vous connectant, vous acceptez notre Politique de confidentialité et nos Conditions d'utilisation. Nous garderons vos données en sécurité.",
+    "signing_in": "Connexion en cours"
+  },
+  "my_emojis": {
+    "title": "Mes Emojis",
+    "description": "Votre collection de genmojis personnalisés",
+    "emoji_count": "{count} genmojis dans votre collection",
+    "login_required": "Veuillez vous connecter pour voir vos genmojis sauvegardés",
+    "login_to_view": "Se connecter pour voir mes Emojis",
+    "back": "Retour",
+    "no_emojis_title": "Aucun Emoji pour le moment",
+    "no_emojis_description": "Vous n'avez pas encore créé de genmojis. Commencez par générer votre premier genmoji personnalisé !",
+    "create_first_emoji": "Créer mon premier Genmoji",
+    "load_more": "Charger plus",
+    "loading_more": "Chargement..."
+  },
   "emoji": {
     "container": {
       "imageAlt": "genmoji : {prompt}"

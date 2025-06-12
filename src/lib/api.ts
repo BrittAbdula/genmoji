@@ -159,13 +159,21 @@ export async function genMoji(
   prompt: string, 
   locale: string, 
   image: string | null, 
-  model: 'genmoji' | 'sticker' | 'mascot' = 'genmoji'
+  model: 'genmoji' | 'sticker' | 'mascot' = 'genmoji',
+  token?: string | null
 ): Promise<EmojiResponse> {
+  const headers: Record<string, string> = {
+    'Content-Type': 'application/json'
+  };
+
+  // 如果有 token，添加认证头
+  if (token) {
+    headers['Authorization'] = `Bearer ${token}`;
+  }
+
   const res = await fetch(`${WORKER_URL}/genmoji/generate`, {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
+    headers,
     body: JSON.stringify({ prompt, locale, image, model })
   });
 

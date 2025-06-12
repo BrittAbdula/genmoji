@@ -164,6 +164,29 @@
       "linkedin": "LinkedInでフォロー"
     }
   },
+  "auth": {
+    "login": "ログイン",
+    "logout": "ログアウト",
+    "profile": "プロフィール",
+    "my_emojis": "マイ絵文字",
+    "welcome_back": "おかえりなさい",
+    "login_description": "ログインして絵文字を保存し、どこからでもアクセスできます。",
+    "privacy_notice": "ログインすることで、プライバシーポリシーと利用規約に同意したことになります。お客様のデータを安全に保護いたします。",
+    "signing_in": "ログイン中"
+  },
+  "my_emojis": {
+    "title": "マイ絵文字",
+    "description": "あなたのカスタム絵文字コレクション",
+    "emoji_count": "コレクションに{count}個の絵文字があります",
+    "login_required": "保存された絵文字を見るにはログインしてください",
+    "login_to_view": "ログインしてマイ絵文字を見る",
+    "back": "戻る",
+    "no_emojis_title": "絵文字がありません",
+    "no_emojis_description": "まだ絵文字を作成していません。最初のカスタム絵文字を生成してみましょう！",
+    "create_first_emoji": "最初の絵文字を作成",
+    "load_more": "もっと読み込む",
+    "loading_more": "読み込み中..."
+  },
   "emoji": {
     "container": {
       "imageAlt": "絵文字：{prompt}"

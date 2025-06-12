@@ -17,6 +17,7 @@ import EmojiContainer from "@/components/emoji-container";
 import { useMediaQuery } from "@/hooks/use-media-query";
 import { cn } from "@/lib/utils";
 import { useGenerationStore } from "@/store/generation-store";
+import { useAuthStore } from "@/store/auth-store";
 import Image from "next/image";
 
 interface UnifiedGenmojiGeneratorProps {
@@ -47,6 +48,7 @@ export function UnifiedGenmojiGenerator({
   const isMobile = useMediaQuery("(max-width: 768px)");
   
   const { isGenerating, progress, setGenerating, setProgress, setPrompt: setGlobalPrompt } = useGenerationStore();
+  const { token } = useAuthStore();
 
   useEffect(() => {
     setPrompt(initialPrompt);
@@ -128,7 +130,7 @@ export function UnifiedGenmojiGenerator({
     setIsOpen(false);
     
     try {
-      const emojiResponse = await genMoji(prompt.trim(), locale, selectedImage, model);
+      const emojiResponse = await genMoji(prompt.trim(), locale, selectedImage, model, token);
       
       if (emojiResponse.success && emojiResponse.emoji) {
         setGeneratedEmoji(emojiResponse.emoji);

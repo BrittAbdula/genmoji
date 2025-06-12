@@ -14,6 +14,7 @@ import { routing } from '@/i18n/routing';
 import { LanguagePromptDialog } from '@/components/language-prompt-dialog';
 import { GlobalGenerationIndicator } from "@/components/global-generation-indicator";
 import { EmojiGroupsProvider } from "@/store/emoji-groups-provider";
+import { AuthHydration } from "@/components/auth-hydration";
 
 export const viewport: Viewport = {
   colorScheme: "dark light",
@@ -71,14 +72,16 @@ export default async function LocaleLayout(props: Props) {
             storageKey="genmoji-theme"
             disableTransitionOnChange
           >
-            <EmojiGroupsProvider locale={locale}>
-              <Header />
-              {children}
-              <Footer />
-              <LanguagePromptDialog />
-              <TailwindIndicator />
-              <GlobalGenerationIndicator />
-            </EmojiGroupsProvider>
+            <AuthHydration>
+              <EmojiGroupsProvider locale={locale}>
+                <Header />
+                {children}
+                <Footer />
+                <LanguagePromptDialog />
+                <TailwindIndicator />
+                <GlobalGenerationIndicator />
+              </EmojiGroupsProvider>
+            </AuthHydration>
             <GoogleAnalytics gaId="G-6T495VYMD7" />
             <GoogleTagManager gtmId="GTM-T3RLKMJR" />
           </ThemeProvider>

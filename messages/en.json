@@ -140,6 +140,29 @@
       "linkedin": "Follow us on LinkedIn"
     }
   },
+  "auth": {
+    "login": "Login",
+    "logout": "Logout",
+    "profile": "Profile",
+    "my_emojis": "My Emojis",
+    "welcome_back": "Welcome Back",
+    "login_description": "Sign in to save your genmojis and access them anywhere.",
+    "privacy_notice": "By signing in, you agree to our Privacy Policy and Terms of Service. We'll keep your data safe and secure.",
+    "signing_in": "Signing in"
+  },
+  "my_emojis": {
+    "title": "My Emojis",
+    "description": "Your collection of custom genmojis",
+    "emoji_count": "{count} genmojis in your collection",
+    "login_required": "Please sign in to view your saved genmojis",
+    "login_to_view": "Sign In to View My Emojis",
+    "back": "Back",
+    "no_emojis_title": "No Emojis Yet",
+    "no_emojis_description": "You haven't created any genmojis yet. Start by generating your first custom genmoji!",
+    "create_first_emoji": "Create My First Genmoji",
+    "load_more": "Load More",
+    "loading_more": "Loading..."
+  },
   "emoji": {
     "container": {
       "imageAlt": "genmoji: {prompt}"
@@ -156,7 +179,7 @@
       "copyImage": "Copy image",
       "download": "Download",
       "copied": "Copied!",
-      "reGenmoji": "Re-Genmoji",
+      "reGenmoji": "Remix",
       "share": {
         "title": "Share",
         "twitter": "Share on Twitter",

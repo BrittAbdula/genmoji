@@ -12,6 +12,10 @@ import { Link, usePathname } from '@/i18n/routing';
 import { LanguageSwitcher } from "@/components/language-switcher";
 import { useTranslations } from 'next-intl';
 import { CategoryNavigation } from "@/components/category-navigation";
+import { LoginDialog } from "@/components/login-dialog";
+import { UserMenu } from "@/components/user-menu";
+import { useAuthStore } from "@/store/auth-store";
+import { useEffect } from "react";
 import { 
   NavigationMenu, 
   NavigationMenuContent, 
@@ -54,8 +58,13 @@ export function Header() {
   const pathname = usePathname();
   const t = useTranslations('common');
   const nav = useTranslations('common.navigation');
+  const { isLoggedIn, checkAuth } = useAuthStore();
 
   const isActive = (path: string) => pathname === path;
+
+  useEffect(() => {
+    checkAuth();
+  }, [checkAuth]);
 
   return (
     <header className="sticky top-0 z-50 p-0 bg-background/60 backdrop-blur">
@@ -164,17 +173,12 @@ export function Header() {
 
           <LanguageSwitcher className="hidden sm:inline-flex" />
           <ThemeToggle className="hidden sm:inline-flex" />
-          {/* <div className="hidden lg:block">
-            <Link
-              href="/"
-              className={cn(
-                buttonVariants({ variant: "default" }),
-                "h-8 text-white rounded-full group"
-              )}
-            >
-              {t('cta')}
-            </Link>
-          </div> */}
+          
+          {/* 用户认证区域 */}
+          <div className="hidden sm:flex">
+            {isLoggedIn ? <UserMenu /> : <LoginDialog />}
+          </div>
+          
           <div className="mt-2 cursor-pointer block lg:hidden">
             <MobileDrawer />
           </div>

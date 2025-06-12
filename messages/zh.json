@@ -141,6 +141,29 @@
       "linkedin": "在 LinkedIn 上关注我们"
     }
   },
+  "auth": {
+    "login": "登录",
+    "logout": "退出登录",
+    "profile": "个人资料",
+    "my_emojis": "我的表情",
+    "welcome_back": "欢迎回来",
+    "login_description": "登录以保存您的表情符号并随时访问它们。",
+    "privacy_notice": "登录即表示您同意我们的隐私政策和服务条款。我们会确保您的数据安全可靠。",
+    "signing_in": "登录中"
+  },
+  "my_emojis": {
+    "title": "我的表情",
+    "description": "您的自定义表情符号收藏",
+    "emoji_count": "您的收藏中有{count}个表情符号",
+    "login_required": "请登录以查看您保存的表情符号",
+    "login_to_view": "登录查看我的表情",
+    "back": "返回",
+    "no_emojis_title": "暂无表情",
+    "no_emojis_description": "您还没有创建任何表情符号。开始生成您的第一个自定义表情符号吧！",
+    "create_first_emoji": "创建我的第一个表情",
+    "load_more": "加载更多",
+    "loading_more": "加载中..."
+  },
   "emoji": {
     "container": {
       "imageAlt": "genmoji：{prompt}"
