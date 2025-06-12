@@ -4,6 +4,7 @@ import { useEffect, useRef } from "react";
 import { useAuthStore } from "@/store/auth-store";
 import { Button } from "@/components/ui/button";
 import { useTranslations } from "next-intl";
+import { API_BASE_URL, API_ENDPOINTS } from "@/lib/api-config";
 
 interface GoogleLoginProps {
   className?: string;
@@ -23,8 +24,8 @@ export function GoogleLogin({ className }: GoogleLoginProps) {
   const handleGoogleLogin = async (response: any) => {
     setLoading(true);
     
-    try {
-      const loginResponse = await fetch('/api/auth/google-login', {
+          try {
+        const loginResponse = await fetch(`${API_BASE_URL}${API_ENDPOINTS.AUTH_GOOGLE_LOGIN}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

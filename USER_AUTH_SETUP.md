@@ -56,9 +56,33 @@ JWT_SECRET=your-jwt-secret-key-here
 
 ## API 集成
 
-生成 emoji 时会自动携带用户认证信息（如果已登录）：
+### 统一的 API 配置
+
+项目现在使用统一的 API 配置管理所有端点：
 
 ```typescript
+// src/lib/api-config.ts
+export const API_BASE_URL = 'https://genmoji-api.genmojionline.com';
+```
+
+### API 端点
+
+所有 API 都统一使用同一个基础 URL：
+
+- **Emoji 相关**：生成、获取、搜索等
+- **用户认证相关**：登录、获取用户信息、用户 emoji 管理等
+- **操作相关**：点赞、评分等
+
+### 使用示例
+
+```typescript
+import { API_BASE_URL, API_ENDPOINTS, getAuthHeaders } from '@/lib/api-config';
+
+// 获取用户信息
+const response = await fetch(`${API_BASE_URL}${API_ENDPOINTS.AUTH_ME}`, {
+  headers: getAuthHeaders(token)
+});
+
 // 生成器组件会自动传递用户 token
 const emojiResponse = await genMoji(prompt, locale, image, model, token);
 ```

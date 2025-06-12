@@ -1,20 +1,21 @@
 import { Emoji, EmojiResponse } from "@/types/emoji";
 import { ActionType, ActionDetails, ActionResponse } from "@/types/action";
-
-const WORKER_URL = 'https://genmoji-api.genmojionline.com';
-// const WORKER_URL = 'https://gen-test.auroroa.workers.dev';
+import { 
+  API_BASE_URL,
+  API_ENDPOINTS,
+  getApiUrl,
+  DEFAULT_HEADERS,
+  getAuthHeaders
+} from "@/lib/api-config";
 
 // 1. 获取单个表情
 export async function getEmoji(slug: string, locale: string): Promise<Emoji> {
-  const url = `${WORKER_URL}/genmoji/by-slug/${slug}?locale=${locale}`;
+  const url = getApiUrl(API_ENDPOINTS.EMOJI_BY_SLUG(slug), locale);
   // console.log('--------getEmojiurl', url);
   try {
     const res = await fetch(url, {
       next: { revalidate: 86400 },
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      }
+      headers: DEFAULT_HEADERS
     });
 
     if (!res.ok) {
@@ -55,7 +56,8 @@ export async function getEmojis(
   }
 ): Promise<Emoji[]> {
   const { model, category, color, sort, q } = options || {};
-  const url = new URL(q ? '/genmoji/search' : '/genmoji/list', WORKER_URL);
+  const endpoint = q ? API_ENDPOINTS.EMOJI_SEARCH : API_ENDPOINTS.EMOJI_LIST;
+  const url = new URL(endpoint, API_BASE_URL);
   
   // 设置基础参数
   url.searchParams.set('offset', offset.toString());
@@ -85,7 +87,8 @@ export async function getEmojis(
 
 // 3. 获取相关表情
 export async function getRelatedEmojis(slug: string, locale: string): Promise<Emoji[]> {
-  const url = `${WORKER_URL}/genmoji/related/${slug}?locale=${locale}&limit=16`;
+  const baseUrl = getApiUrl(API_ENDPOINTS.EMOJI_RELATED(slug), locale);
+  const url = `${baseUrl}&limit=16`;
 
   const res = await fetch(url, {
     next: { revalidate: 120 }
@@ -101,11 +104,11 @@ export async function getRelatedEmojis(slug: string, locale: string): Promise<Em
 
 // 4. 点赞表情
 export async function toggleLike(slug: string, locale: string): Promise<{ success: boolean; data?: { liked: boolean } }> {
-  const res = await fetch(`${WORKER_URL}/action/${slug}/like`, {
+  const url = `${API_BASE_URL}${API_ENDPOINTS.ACTION_LIKE(slug)}`;
+  
+  const res = await fetch(url, {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
+    headers: DEFAULT_HEADERS,
     body: JSON.stringify({
       locale
     })
@@ -130,11 +133,11 @@ export async function performAction(
   actionType: ActionType,
   details?: ActionDetails
 ): Promise<ActionResponse> {
-  const res = await fetch(`${WORKER_URL}/action/${slug}`, {
+  const url = `${API_BASE_URL}${API_ENDPOINTS.ACTION_GENERAL(slug)}`;
+  
+  const res = await fetch(url, {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
+    headers: DEFAULT_HEADERS,
     body: JSON.stringify({
       action_type: actionType,
       locale,
@@ -162,16 +165,10 @@ export async function genMoji(
   model: 'genmoji' | 'sticker' | 'mascot' = 'genmoji',
   token?: string | null
 ): Promise<EmojiResponse> {
-  const headers: Record<string, string> = {
-    'Content-Type': 'application/json'
-  };
+  const url = `${API_BASE_URL}${API_ENDPOINTS.EMOJI_GENERATE}`;
+  const headers = token ? getAuthHeaders(token) : DEFAULT_HEADERS;
 
-  // 如果有 token，添加认证头
-  if (token) {
-    headers['Authorization'] = `Bearer ${token}`;
-  }
-
-  const res = await fetch(`${WORKER_URL}/genmoji/generate`, {
+  const res = await fetch(url, {
     method: 'POST',
     headers,
     body: JSON.stringify({ prompt, locale, image, model })
@@ -183,7 +180,7 @@ export async function genMoji(
   return res.json();
 }
 
-// 4. 获取同一base slug的表情
+// 7. 获取同一base slug的表情
 export async function getEmojisByBaseSlug(
   slug: string,
   locale: string,
@@ -191,7 +188,8 @@ export async function getEmojisByBaseSlug(
   offset: number = 0
 ): Promise<Emoji[]> {
   const baseSlug = slug.split('--')[0];
-  const url = `${WORKER_URL}/genmoji/by-base-slug/${baseSlug}?locale=${locale}&limit=${limit}&offset=${offset}`;
+  const baseUrl = getApiUrl(API_ENDPOINTS.EMOJI_BY_BASE_SLUG(baseSlug), locale);
+  const url = `${baseUrl}&limit=${limit}&offset=${offset}`;
 
   const res = await fetch(url, {
     next: { revalidate: 180 }
@@ -205,13 +203,13 @@ export async function getEmojisByBaseSlug(
   return emojiResponse.emojis || [];
 }
 
-// 7. 获取分组数据（模型、分类、颜色）
+// 8. 获取分组数据（模型、分类、颜色）
 export async function getEmojiGroups(locale: string): Promise<{
   models: { name: string; translated_name: string; count?: number }[];
   categories: { name: string; translated_name: string; count?: number }[];
   colors: { name: string; translated_name: string; count?: number }[];
 }> {
-  const url = `${WORKER_URL}/genmoji/groups?locale=${locale}`;
+  const url = getApiUrl(API_ENDPOINTS.EMOJI_GROUPS, locale);
   
   const res = await fetch(url, {
     next: { revalidate: 86400 } // 缓存24小时

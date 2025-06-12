@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
+import { API_BASE_URL, API_ENDPOINTS, getAuthHeaders } from '@/lib/api-config';
 
 export interface User {
   id: string;
@@ -60,10 +61,8 @@ export const useAuthStore = create<AuthState>()(
         set({ isLoading: true });
         
         try {
-          const response = await fetch('/auth/me', {
-            headers: {
-              'Authorization': `Bearer ${token}`,
-            },
+          const response = await fetch(`${API_BASE_URL}${API_ENDPOINTS.AUTH_ME}`, {
+            headers: getAuthHeaders(token),
           });
 
           if (!response.ok) {

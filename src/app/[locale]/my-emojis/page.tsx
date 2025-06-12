@@ -11,6 +11,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Heart, ArrowLeft } from "lucide-react";
 import { Link } from "@/i18n/routing";
 import { useRouter } from "next/navigation";
+import { API_BASE_URL, API_ENDPOINTS, getAuthHeaders } from '@/lib/api-config';
 
 export const runtime = 'edge';
 
@@ -51,10 +52,9 @@ export default function MyEmojisPage() {
     }
 
     try {
-      const response = await fetch(`/auth/my-emojis?limit=20&offset=${offset}`, {
-        headers: {
-          'Authorization': `Bearer ${token}`,
-        },
+      const url = `${API_BASE_URL}${API_ENDPOINTS.AUTH_MY_EMOJIS}?limit=20&offset=${offset}`;
+      const response = await fetch(url, {
+        headers: getAuthHeaders(token),
       });
 
       if (!response.ok) {
