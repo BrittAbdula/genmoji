@@ -12,6 +12,8 @@ import { Heart, ArrowLeft } from "lucide-react";
 import { Link } from "@/i18n/routing";
 import { useRouter } from "next/navigation";
 
+export const runtime = 'edge';
+
 interface UserEmoji {
   id: number;
   slug: string;
