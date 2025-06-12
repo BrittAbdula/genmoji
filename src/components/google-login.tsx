@@ -12,7 +12,6 @@ interface GoogleLoginProps {
 declare global {
   interface Window {
     google: any;
-    googleLoginCallback: (response: any) => void;
   }
 }
 
@@ -21,37 +20,36 @@ export function GoogleLogin({ className }: GoogleLoginProps) {
   const { login, setLoading, isLoading } = useAuthStore();
   const googleButtonRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    // 定义全局回调函数
-    window.googleLoginCallback = async (response: any) => {
-      setLoading(true);
+  const handleGoogleLogin = async (response: any) => {
+    setLoading(true);
+    
+    try {
+      const loginResponse = await fetch('/api/auth/google-login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+        body: JSON.stringify({
+          id_token: response.credential
+        })
+      });
+
+      const result = await loginResponse.json();
       
-      try {
-        const loginResponse = await fetch('/auth/google-login', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            id_token: response.credential
-          })
-        });
-
-        const result = await loginResponse.json();
-        
-        if (result.success) {
-          login(result.token, result.user);
-        } else {
-          console.error('Login failed:', result.error);
-        }
-      } catch (error) {
-        console.error('Login error:', error);
-      } finally {
-        setLoading(false);
+      if (result.success) {
+        login(result.token, result.user);
+      } else {
+        console.error('Login failed:', result.error);
       }
-    };
+    } catch (error) {
+      console.error('Login error:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-    // 加载 Google API
+  useEffect(() => {
     const loadGoogleAPI = () => {
       if (window.google) {
         initializeGoogleLogin();
@@ -68,34 +66,45 @@ export function GoogleLogin({ className }: GoogleLoginProps) {
 
     const initializeGoogleLogin = () => {
       if (window.google && googleButtonRef.current) {
-        window.google.accounts.id.initialize({
-          client_id: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID,
-          callback: 'googleLoginCallback',
-          auto_select: false,
-        });
+        try {
+          window.google.accounts.id.initialize({
+            client_id: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID,
+            callback: handleGoogleLogin, // 传递函数而不是字符串
+            auto_select: false,
+            cancel_on_tap_outside: true,
+            use_fedcm_for_prompt: false, // 禁用 FedCM 以避免某些兼容性问题
+          });
 
-        window.google.accounts.id.renderButton(
-          googleButtonRef.current,
-          {
-            theme: 'outline',
-            size: 'large',
-            text: 'signin_with',
-            shape: 'pill',
-            width: 250,
-            logo_alignment: 'center',
-          }
-        );
+          window.google.accounts.id.renderButton(
+            googleButtonRef.current,
+            {
+              theme: 'outline',
+              size: 'large',
+              text: 'signin_with',
+              shape: 'pill',
+              width: 250,
+              logo_alignment: 'center',
+            }
+          );
+        } catch (error) {
+          console.error('Google login initialization error:', error);
+        }
       }
     };
 
     loadGoogleAPI();
 
+    // 清理函数
     return () => {
-      if ('googleLoginCallback' in window) {
-        delete (window as any).googleLoginCallback;
+      if (window.google && window.google.accounts) {
+        try {
+          window.google.accounts.id.cancel();
+        } catch (error) {
+          console.log('Cleanup error:', error);
+        }
       }
     };
-  }, [login, setLoading]);
+  }, []);
 
   if (isLoading) {
     return (
@@ -106,4 +115,4 @@ export function GoogleLogin({ className }: GoogleLoginProps) {
   }
 
   return <div ref={googleButtonRef} className={className} />;
-} 
+}
