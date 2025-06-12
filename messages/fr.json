@@ -143,11 +143,9 @@
     "error": {
       "failed": "La génération a échoué. Veuillez réessayer."
     },
-    "dialog": {
-      "dialogTitle": "Générer un nouveau genmoji",
-      "dialogDescription": "Créez un nouveau genmoji basé sur votre description. Vous pouvez également télécharger une image de référence.",
-      "generatingMessage": "Votre genmoji est en cours de création. N'hésitez pas à naviguer pendant l'attente..."
-    },
+    "dialogTitle": "Générer un nouveau genmoji",
+    "dialogDescription": "Créez un nouveau genmoji basé sur votre description. Vous pouvez également télécharger une image de référence.",
+    "generatingMessage": "Votre genmoji est en cours de création. N'hésitez pas à naviguer pendant l'attente...",
     "models": {
       "genmoji": {
         "name": "Emoji",
@@ -234,7 +232,11 @@
       },
       "sharing": {
         "defaultText": "Découvrez ce superbe genmoji que j'ai créé avec Genmoji Online !",
-        "hashtags": ["Genmoji", "GemojiIA", "GemojiPersonnalisé"]
+        "hashtags": [
+          "Genmoji",
+          "GemojiIA",
+          "GemojiPersonnalisé"
+        ]
       },
       "alert": {
         "instagramShare": "Image téléchargée ! Vous pouvez maintenant la partager sur Instagram :\n1. Ouvrez Instagram\n2. Créez un nouveau post\n3. Sélectionnez l'image téléchargée\n4. Ajoutez le prompt comme légende",
@@ -376,4 +378,4 @@
       }
     }
   }
-} 
+}
