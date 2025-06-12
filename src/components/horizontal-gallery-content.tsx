@@ -18,10 +18,11 @@ export function HorizontalGalleryContent({model}: {model?: string}) {
   const [emojis, setEmojis] = useState<Emoji[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const limit = 40;
+  const [isVisible, setIsVisible] = useState(false);
+  const limit = 24; // Reduced from 40 to 24 for better performance
   const locale = useLocale();
 
-  const fetchEmojis = async (retryCount = 3) => {
+  const fetchEmojis = async (retryCount = 2) => { // Reduced retries from 3 to 2
     try {
       setError(null);
       const newEmojis = model ? await getEmojis(0, limit, locale, {
@@ -34,7 +35,7 @@ export function HorizontalGalleryContent({model}: {model?: string}) {
     } catch (error) {
       console.error('Error fetching emojis:', error);
       if (retryCount > 0) {
-        const delay = (3 - retryCount + 1) * 1000;
+        const delay = 1000 * (3 - retryCount); // Shorter delays
         await new Promise(resolve => setTimeout(resolve, delay));
         return fetchEmojis(retryCount - 1);
       }
@@ -45,9 +46,29 @@ export function HorizontalGalleryContent({model}: {model?: string}) {
     }
   };
 
+  // Lazy load when component becomes visible
   useEffect(() => {
-    fetchEmojis();
-  }, [locale]);
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !isVisible) {
+          setIsVisible(true);
+          fetchEmojis();
+        }
+      },
+      { threshold: 0.1, rootMargin: '50px' }
+    );
+
+    const element = document.getElementById('horizontal-gallery');
+    if (element) {
+      observer.observe(element);
+    }
+
+    return () => {
+      if (element) {
+        observer.unobserve(element);
+      }
+    };
+  }, [locale, isVisible]);
 
   // 调整单元格样式确保完全正方形
   const cellWidth = "w-full min-h-[90px] aspect-square";
@@ -93,7 +114,7 @@ export function HorizontalGalleryContent({model}: {model?: string}) {
   };
 
   return (
-    <div className="w-full max-w-[1400px] mx-auto px-2 space-y-4 min-h-[600px]">
+    <div id="horizontal-gallery" className="w-full max-w-[1400px] mx-auto px-2 space-y-4 min-h-[600px]">
       <h2 className={cn(
     "text-2xl sm:text-2xl md:text-3xl lg:text-3xl font-bold tracking-tight gradient-text",
     outfit.className

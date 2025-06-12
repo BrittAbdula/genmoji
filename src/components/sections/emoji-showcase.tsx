@@ -98,14 +98,13 @@ const EmojiCard = ({ slug, image_url, index }: { slug: string; image_url: string
   
   return (
     <div className={cn(
-      "h-36 w-36 sm:h-44 sm:w-44 mx-1 transform-gpu transition-all duration-300",
-      "hover:scale-105"
+      "h-32 w-32 sm:h-36 sm:w-36 mx-1 will-change-transform", // Reduced size, removed hover animation
     )}>
       <EmojiContainer 
         emoji={emoji} 
         size="sm" 
-        lazyLoad={false} 
-        priority={index < 4} 
+        lazyLoad={index > 6} // Reduced priority loading
+        priority={index < 3} // Reduced priority count
         padding="p-0.5" 
         withBorder={true}
       />
@@ -114,25 +113,27 @@ const EmojiCard = ({ slug, image_url, index }: { slug: string; image_url: string
 };
 
 export function EmojiShowcase() {
-  const firstRow = SHOWCASE_IMAGES.slice(0, Math.ceil(SHOWCASE_IMAGES.length / 2));
-  const secondRow = SHOWCASE_IMAGES.slice(Math.ceil(SHOWCASE_IMAGES.length / 2));
+  // Show fewer items for better performance
+  const displayItems = SHOWCASE_IMAGES.slice(0, 12); // Reduced from full array
+  const firstRow = displayItems.slice(0, 6);
+  const secondRow = displayItems.slice(6, 12);
 
   return (
-    <div className="relative flex w-full flex-col items-center justify-center gap-3 overflow-hidden py-4">
-      <Marquee className="[--duration:40s] [--gap:0.25rem]">
+    <div className="relative flex w-full flex-col items-center justify-center gap-2 overflow-hidden py-3">
+      <Marquee className="[--duration:50s] [--gap:0.5rem]" repeat={2}>
         {firstRow.map((item, i) => (
           <EmojiCard key={i} {...item} index={i} />
         ))}
       </Marquee>
-      <Marquee reverse className="[--duration:35s] [--gap:0.25rem]">
+      <Marquee reverse className="[--duration:45s] [--gap:0.5rem]" repeat={2}>
         {secondRow.map((item, i) => (
           <EmojiCard key={i} {...item} index={i + firstRow.length} />
         ))}
       </Marquee>
 
-      {/* Edge gradients */}
-      <div className="pointer-events-none absolute inset-y-0 left-0 w-1/4 bg-gradient-to-r from-background" />
-      <div className="pointer-events-none absolute inset-y-0 right-0 w-1/4 bg-gradient-to-l from-background" />
+      {/* Simplified edge gradients */}
+      <div className="pointer-events-none absolute inset-y-0 left-0 w-16 bg-gradient-to-r from-background" />
+      <div className="pointer-events-none absolute inset-y-0 right-0 w-16 bg-gradient-to-l from-background" />
     </div>
   );
 } 

@@ -1,11 +1,8 @@
 "use client";
 
 import { Section } from "@/components/section";
-import { Button, buttonVariants } from "@/components/ui/button";
-import { easeOutCubic } from "@/lib/animation";
+import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { motion } from "framer-motion";
-import { Link } from '@/i18n/routing';
 import { useTranslations } from 'next-intl';
 import { useEffect, useRef, useState } from "react";
 import { UnifiedGenmojiGenerator } from "../unified-genmoji-generator";
@@ -31,31 +28,6 @@ function Feature({
   const t = useTranslations('featureHighlight');
   const common = useTranslations('common');
 
-  const textVariants = {
-    hidden: { opacity: 0, x: isLTR ? -20 : 20 },
-    visible: {
-      opacity: 1,
-      x: 0,
-      transition: {
-        duration: 0.5,
-        ease: "easeOut",
-        staggerChildren: 0.15,
-      },
-    },
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, x: isLTR ? -10 : 10 },
-    visible: {
-      opacity: 1,
-      x: 0,
-      transition: {
-        duration: 0.3,
-        ease: easeOutCubic,
-      },
-    },
-  };
-
   // Pre-load both images to prevent CLS
   useEffect(() => {
     const imgLight = new window.Image();
@@ -65,32 +37,28 @@ function Feature({
   }, [imageSrc, imageSrcBlack]);
 
   return (
-    <motion.div
+    <div
       className={cn(
-        "flex flex-col items-center justify-between pb-10 transition-all duration-500 ease-out",
-        isLTR ? "lg:flex-row" : "lg:flex-row-reverse"
+        "flex flex-col items-center justify-between pb-10 transition-all duration-700 ease-out",
+        isLTR ? "lg:flex-row" : "lg:flex-row-reverse",
+        isActive ? "opacity-100 translate-y-0" : "opacity-60 translate-y-4"
       )}
     >
-      <motion.div
+      <div
         className={cn(
-          "w-full lg:w-2/5 mb-10 lg:mb-0",
-          isLTR ? "lg:pr-6" : "lg:pl-6"
+          "w-full lg:w-2/5 mb-10 lg:mb-0 transition-all duration-500 ease-out",
+          isLTR ? "lg:pr-6" : "lg:pl-6",
+          isActive ? "opacity-100 translate-x-0" : `opacity-70 ${isLTR ? "-translate-x-2" : "translate-x-2"}`
         )}
-        initial="hidden"
-        animate={isActive ? "visible" : "hidden"}
-        variants={textVariants}
       >
         <div className="flex flex-col gap-4 max-w-sm text-center lg:text-left mx-auto">
-          <motion.h2
-            className="text-4xl md:text-5xl lg:text-6xl font-bold"
-            variants={itemVariants}
-          >
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold transition-all duration-500 ease-out">
             {t(`${translationKey}.title`)}
-          </motion.h2>
-          <motion.p className="text-xl md:text-2xl" variants={itemVariants}>
+          </h2>
+          <p className="text-xl md:text-2xl transition-all duration-500 delay-100 ease-out">
             {t(`${translationKey}.description`)}
-          </motion.p>
-          <motion.div variants={itemVariants}>
+          </p>
+          <div className="transition-all duration-500 delay-200 ease-out">
             <UnifiedGenmojiGenerator
               trigger={
                 <Button
@@ -105,9 +73,9 @@ function Feature({
                 </Button>
               }
             />
-          </motion.div>
+          </div>
         </div>
-      </motion.div>
+      </div>
       <div className="w-full lg:w-3/5 h-[350px] sm:h-[400px] md:h-[450px] relative">
         <div className="w-full h-full relative flex items-center justify-center">
           {/* Dark mode image */}
@@ -134,7 +102,7 @@ function Feature({
           </div>
         </div>
       </div>
-    </motion.div>
+    </div>
   );
 }
 
@@ -160,28 +128,37 @@ export function FeatureHighlight() {
     },
   ];
 
-  const [activeFeature, setActiveFeature] = useState(0); // Start with first feature visible
+  const [activeFeature, setActiveFeature] = useState(0);
   const containerRef = useRef<HTMLElement>(null);
   const t = useTranslations('featureHighlight');
 
   useEffect(() => {
+    let ticking = false;
+    
     const handleScroll = () => {
-      const container = containerRef.current;
-      if (container) {
-        const { top, bottom } = container.getBoundingClientRect();
-        const middleOfScreen = window.innerHeight / 2;
-        const featureHeight = (bottom - top) / features.length;
-
-        const activeIndex = Math.floor((middleOfScreen - top) / featureHeight);
-        setActiveFeature(
-          Math.max(0, Math.min(features.length - 1, activeIndex))
-        );
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          const container = containerRef.current;
+          if (container) {
+            const { top, bottom } = container.getBoundingClientRect();
+            const viewportHeight = window.innerHeight;
+            
+            if (top < viewportHeight && bottom > 0) {
+              const containerHeight = bottom - top;
+              const scrollProgress = Math.max(0, Math.min(1, (viewportHeight / 2 - top) / containerHeight));
+              const newActiveIndex = Math.floor(scrollProgress * features.length);
+              setActiveFeature(Math.max(0, Math.min(features.length - 1, newActiveIndex)));
+            }
+          }
+          ticking = false;
+        });
+        ticking = true;
       }
     };
 
-    window.addEventListener("scroll", handleScroll);
-    // Initial check to set first feature as active if in view
-    handleScroll();
+    // Use passive listener for better performance
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    handleScroll(); // Initial check
     return () => window.removeEventListener("scroll", handleScroll);
   }, [features.length]);
 

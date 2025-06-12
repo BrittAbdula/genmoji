@@ -88,15 +88,9 @@ export default async function Home(props: Props) {
   return (
     <main className="items-center container mx-auto p-2">
       <Hero />
-      {/* <HomeGenerator /> */}
-      <HorizontalGalleryContent />
-      {/* <FeatureScroll /> */}
-      <FeatureHighlight />
-      {/* <BentoGrid />
-      <Benefits /> */}
       <Features />
-      {/*  <Testimonials />
-      <Pricing /> */}
+      <HorizontalGalleryContent />
+      <FeatureHighlight />
       <FAQ />
       <CTA />
     </main>
