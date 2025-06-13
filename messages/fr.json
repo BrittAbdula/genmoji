@@ -136,7 +136,7 @@
     "generatingButton": "Génération en cours...",
     "uploadImage": "Télécharger une image (Optionnel)",
     "changeImage": "Changer l'image",
-    "selectModel": "Sélectionner le modèle",
+    "selectModel": "Sélectionner le style",
     "recentTitle": "Genmojis récents",
     "generationStatus": {
       "starting": "Démarrage de la génération..."
@@ -245,7 +245,7 @@
       "alert": {
         "instagramShare": "Image téléchargée ! Vous pouvez maintenant la partager sur Instagram :\n1. Ouvrez Instagram\n2. Créez un nouveau post\n3. Sélectionnez l'image téléchargée\n4. Ajoutez le prompt comme légende",
         "wechatShare": "Ouvrez WeChat et scannez le QR code pour partager",
-        "longPressToSave": "Appuyez longuement sur le Genmoji pour sauvegarder"
+        "longPressToSaveToAlbum": "Appuyez longuement sur l'image pour la sauvegarder"
       },
       "meta": {
         "title": "{prompt} | Genmoji Online",
@@ -265,7 +265,7 @@
       },
       "usage": {
         "title": "Comment Utiliser",
-        "description": "Vous pouvez maintenant télécharger gratuitement cette image {prompt}. Elle n'a pas de fond. Utilisez-la dans un projet créatif, ou comme autocollant que vous pouvez partager sur iMessage, Discord, Pinterest, Tumblr, WhatsApp, Facebook Messenger, TikTok, WeChat, X ou dans d'autres applications de messagerie.",
+        "description": "Vous pouvez maintenant copier, télécharger ou partager gratuitement cette image {prompt}. Elle n'a pas de fond. Utilisez-la dans un projet créatif, ou comme autocollant que vous pouvez partager sur iMessage, Discord, Pinterest, Tumblr, WhatsApp, Facebook Messenger, TikTok, WeChat, X ou dans d'autres applications de messagerie.",
         "license": "Licence : Gratuit pour usage personnel et commercial"
       }
     }

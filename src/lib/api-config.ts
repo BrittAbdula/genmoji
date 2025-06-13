@@ -23,6 +23,10 @@ export const API_ENDPOINTS = {
   AUTH_ME: '/auth/me',
   AUTH_MY_EMOJIS: '/auth/my-emojis',
   AUTH_LOGOUT: '/auth/logout',
+  
+  // 上传相关
+  UPLOAD_IMAGE: '/upload/image',
+  UPLOAD_IMAGE_BY_URL: '/upload/image-by-url',
 } as const;
 
 // API 请求帮助函数

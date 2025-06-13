@@ -236,3 +236,36 @@ export async function getEmojiGroups(locale: string): Promise<{
   
   return response.data || { models: [], categories: [], colors: [] };
 }
+
+// 8. 上传图片
+export async function uploadImage(
+  file: File,
+  token?: string | null
+): Promise<{ success: boolean; image_url?: string; error?: string }> {
+  const url = `${API_BASE_URL}${API_ENDPOINTS.UPLOAD_IMAGE}`;
+  const formData = new FormData();
+  formData.append('image', file);
+  
+  const headers: Record<string, string> = {};
+  if (token) {
+    headers['Authorization'] = `Bearer ${token}`;
+  }
+
+  const res = await fetch(url, {
+    method: 'POST',
+    headers,
+    body: formData
+  });
+
+  if (!res.ok) {
+    const errorText = await res.text();
+    console.error('Upload error:', {
+      status: res.status,
+      statusText: res.statusText,
+      error: errorText
+    });
+    throw new Error(`Failed to upload image: ${res.status} ${res.statusText}`);
+  }
+  
+  return res.json();
+}

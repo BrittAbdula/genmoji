@@ -203,7 +203,7 @@
       "alert": {
         "instagramShare": "图片已下载！您现在可以在 Instagram 上分享：\n1. 打开 Instagram\n2. 创建新帖子\n3. 选择已下载的图片\n4. 添加提示词作为说明",
         "wechatShare": "打开微信扫描二维码分享",
-        "longPressToSave": "长按 Genmoji 保存"
+        "longPressToSaveToAlbum": "长按图片保存到相册"
       },
       "meta": {
         "title": "{prompt} | Genmoji Online",
@@ -223,7 +223,7 @@
       },
       "usage": {
         "title": "使用方法",
-        "description": "您现在可以免费下载这个{prompt}图像。它没有背景。您可以在创意项目中使用它，或者作为贴纸分享到iMessage、Discord、Pinterest、Tumblr、WhatsApp、Facebook Messenger、TikTok、微信、X或其他消息应用程序中。",
+        "description": "您现在可以免费复制、下载或分享这个{prompt}图像。它没有背景。您可以在创意项目中使用它，或者作为贴纸分享到iMessage、Discord、Pinterest、Tumblr、WhatsApp、Facebook Messenger、TikTok、微信、X或其他消息应用程序中。",
         "license": "许可证：免费用于个人和商业用途"
       }
     }
@@ -341,7 +341,7 @@
     "generatingButton": "生成中...",
     "uploadImage": "上传图片（可选）",
     "changeImage": "更换图片",
-    "selectModel": "选择模型",
+    "selectModel": "选择风格",
     "recentTitle": "最近生成的 Genmoji",
     "generationStatus": {
       "starting": "开始生成..."

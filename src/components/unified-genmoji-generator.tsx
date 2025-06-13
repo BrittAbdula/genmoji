@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Progress } from "@/components/ui/progress";
 import { useState, useEffect, useRef } from "react";
-import { genMoji } from "@/lib/api";
+import { genMoji, uploadImage } from "@/lib/api";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { Emoji } from "@/types/emoji";
 import { ImageIcon, X, Plus, ArrowUp, Globe } from 'lucide-react';
@@ -49,6 +49,7 @@ export function UnifiedGenmojiGenerator({
   const { token, isLoggedIn } = useAuthStore();
   const [showLoginDialog, setShowLoginDialog] = useState(false);
   const [pendingGeneration, setPendingGeneration] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
 
   // 监听登录状态变化，登录成功后自动开始生成
   useEffect(() => {
@@ -138,14 +139,25 @@ export function UnifiedGenmojiGenerator({
     };
   }, [isGenerating, setProgress]);
 
-  const handleImageSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageSelect = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setSelectedImage(reader.result as string);
-      };
-      reader.readAsDataURL(file);
+      setIsUploading(true);
+      try {
+        const uploadResponse = await uploadImage(file, token);
+        
+        if (uploadResponse.success && uploadResponse.image_url) {
+          setSelectedImage(uploadResponse.image_url);
+        } else {
+          console.error('Upload failed:', uploadResponse.error);
+          alert(`Upload failed: ${uploadResponse.error || 'Unknown error'}`);
+        }
+      } catch (error) {
+        console.error('Upload error:', error);
+        alert(`Upload error: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      } finally {
+        setIsUploading(false);
+      }
     }
   };
 
@@ -360,21 +372,31 @@ export function UnifiedGenmojiGenerator({
             className="resize-none min-h-[100px] border-0 focus-visible:ring-0 focus-visible:ring-offset-0 rounded-xl bg-card pb-16 text-lg p-4"
           />
           
-          {selectedImage && (
+          {(selectedImage || isUploading) && (
             <div className="absolute top-2 right-2">
               <div className="relative w-16 h-16 rounded-lg overflow-hidden border bg-muted">
-                <img
-                  src={selectedImage}
-                  alt="Selected reference"
-                  className="w-full h-full object-cover"
-                />
-                <button
-                  type="button"
-                  onClick={clearSelectedImage}
-                  className="absolute top-0 right-0 p-0.5 rounded-full bg-background/80 hover:bg-background text-muted-foreground hover:text-foreground"
-                >
-                  <X className="h-3 w-3" />
-                </button>
+                {isUploading ? (
+                  // 上传动画
+                  <div className="w-full h-full flex items-center justify-center bg-muted">
+                    <div className="w-6 h-6 border-2 border-primary border-t-transparent rounded-full animate-spin"></div>
+                  </div>
+                ) : selectedImage ? (
+                  // 已上传的图片
+                  <>
+                    <img
+                      src={selectedImage}
+                      alt="Selected reference"
+                      className="w-full h-full object-cover"
+                    />
+                    <button
+                      type="button"
+                      onClick={clearSelectedImage}
+                      className="absolute top-0 right-0 p-0.5 rounded-full bg-background/80 hover:bg-background text-muted-foreground hover:text-foreground"
+                    >
+                      <X className="h-3 w-3" />
+                    </button>
+                  </>
+                ) : null}
               </div>
             </div>
           )}
@@ -458,16 +480,19 @@ export function UnifiedGenmojiGenerator({
                       size="sm"
                       className={cn(
                         "w-8 h-8 p-0 rounded-full hover:bg-muted",
-                        selectedImage ? "text-primary" : ""
+                        selectedImage ? "text-primary" : "",
+                        isUploading ? "cursor-not-allowed opacity-50" : ""
                       )}
-                      onClick={() => fileInputRef.current?.click()}
+                      onClick={() => !isUploading && fileInputRef.current?.click()}
+                      disabled={isUploading}
                     >
-                      <ImageIcon className="h-4 w-4" />
+                      {isUploading ? (
+                        <div className="w-4 h-4 border border-current border-t-transparent rounded-full animate-spin"></div>
+                      ) : (
+                        <ImageIcon className="h-4 w-4" />
+                      )}
                     </Button>
                   </TooltipTrigger>
-                  <TooltipContent>
-                    <p>{selectedImage ? t('changeImage') : t('uploadImage')}</p>
-                  </TooltipContent>
                 </Tooltip>
               </TooltipProvider>
 
@@ -477,17 +502,18 @@ export function UnifiedGenmojiGenerator({
                 onChange={handleImageSelect}
                 className="hidden"
                 ref={fileInputRef}
+                disabled={isUploading}
               />
             </div>
             
             {/* Generate button */}
             <Button
               onClick={generateEmoji}
-              disabled={isGenerating || !prompt.trim()}
+              disabled={isGenerating || !prompt.trim() || isUploading}
               size="sm"
               className={cn(
                 "w-8 h-8 p-0 rounded-full transition-all",
-                prompt.trim() && !isGenerating
+                prompt.trim() && !isGenerating && !isUploading
                   ? "bg-gradient-to-r from-pink-500 to-violet-500 hover:from-pink-600 hover:to-violet-600 text-white shadow-sm"
                   : "bg-muted text-muted-foreground"
               )}

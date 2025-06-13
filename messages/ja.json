@@ -122,7 +122,7 @@
     "generatingButton": "生成中...",
     "uploadImage": "画像をアップロード（任意）",
     "changeImage": "画像を変更",
-    "selectModel": "モデルを選択",
+    "selectModel": "スタイルを選択",
     "recentTitle": "最近生成された絵文字",
     "generationStatus": {
       "starting": "生成を開始しています..."
@@ -229,7 +229,7 @@
       "alert": {
         "instagramShare": "画像をダウンロードしました！Instagramで共有できます：\n1. Instagramを開く\n2. 新しい投稿を作成\n3. ダウンロードした画像を選択\n4. プロンプトをキャプションとして追加",
         "wechatShare": "WeChatを開いてQRコードをスキャンして共有",
-        "longPressToSave": "絵文字を長押しして保存"
+        "longPressToSaveToAlbum": "画像を長押しして保存"
       },
       "meta": {
         "title": "{prompt} | Genmoji Online",
@@ -249,7 +249,7 @@
       },
       "usage": {
         "title": "使用方法",
-        "description": "この{prompt}画像を無料でダウンロードできます。背景はありません。クリエイティブなプロジェクトで使用したり、iMessage、Discord、Pinterest、Tumblr、WhatsApp、Facebook Messenger、TikTok、WeChat、Xなどのメッセージングアプリで共有できるステッカーとして使用したりできます。",
+        "description": "この{prompt}画像を無料でコピー、ダウンロード、または共有できます。背景はありません。クリエイティブなプロジェクトで使用したり、iMessage、Discord、Pinterest、Tumblr、WhatsApp、Facebook Messenger、TikTok、WeChat、Xなどのメッセージングアプリで共有できるステッカーとして使用したりできます。",
         "license": "ライセンス：個人利用および商業利用は無料"
       }
     }

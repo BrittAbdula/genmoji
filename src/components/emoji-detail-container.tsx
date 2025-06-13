@@ -50,18 +50,54 @@ interface EmojiDetailContainerProps {
 const MainImage = memo(({
   emoji,
   onSwipe,
+  onLongPress,
   className
 }: {
   emoji: Emoji;
   onSwipe: (direction: 'left' | 'right') => void;
+  onLongPress?: (e: React.MouseEvent | React.TouchEvent) => void;
   className?: string;
 }) => {
+  const [longPressTimer, setLongPressTimer] = useState<NodeJS.Timeout | null>(null);
+  const [isMobile, setIsMobile] = useState(false);
+
+  // 只在客户端检测移动设备，避免 SSR 不匹配
+  useEffect(() => {
+    const checkMobile = () => {
+      return /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    };
+    setIsMobile(checkMobile());
+  }, []);
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    if (!isMobile) {
+      const timer = setTimeout(() => {
+        onLongPress?.(e);
+      }, 800); // 800ms 长按
+      setLongPressTimer(timer);
+    }
+  };
+
+  const handleTouchEnd = () => {
+    if (longPressTimer) {
+      clearTimeout(longPressTimer);
+      setLongPressTimer(null);
+    }
+  };
+
+  const handleContextMenu = (e: React.MouseEvent) => {
+    if (!isMobile) {
+      e.preventDefault();
+      onLongPress?.(e);
+    }
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5, ease: "easeOut" }}
-      className={cn("w-full h-full rounded-xl overflow-hidden bg-gradient-to-b from-muted/5 to-muted/10 backdrop-blur-sm", className)}
+      className={cn("w-full h-full rounded-xl overflow-hidden bg-gradient-to-b from-muted/5 to-muted/10 backdrop-blur-sm relative", className)}
       drag="x"
       dragConstraints={{ left: 0, right: 0 }}
       dragElastic={0.2}
@@ -89,10 +125,43 @@ const MainImage = memo(({
             width={512}
             height={512}
             className="w-full h-full object-contain"
-            draggable={false}
+            draggable={!isMobile} // 移动端不禁用拖拽，支持原生保存行为
+            onTouchStart={handleTouchStart}
+            onTouchEnd={handleTouchEnd}
+            onTouchCancel={handleTouchEnd}
+            onContextMenu={handleContextMenu}
+            style={{
+              // 移动端允许用户选择和长按，桌面端禁用
+              userSelect: isMobile ? 'auto' : 'none',
+              WebkitUserSelect: isMobile ? 'auto' : 'none',
+              pointerEvents: 'auto'
+            }}
           />
         </motion.div>
       </AnimatePresence>
+
+      {/* 参考图片角标 */}
+      {emoji.has_reference_image && (
+        <motion.div
+          initial={{ opacity: 0, scale: 0 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.3, delay: 0.2 }}
+          className="absolute top-3 right-3 z-10"
+        >
+          <div className="relative group">
+            <div className="flex items-center justify-center w-8 h-8 bg-primary/90 hover:bg-primary rounded-full shadow-lg backdrop-blur-sm border border-white/20 transition-all duration-200 hover:scale-105">
+              <ImageIcon className="w-4 h-4 text-white" />
+            </div>
+            
+            {/* Tooltip */}
+            <div className="absolute top-full right-0 mt-2 px-2 py-1 bg-black/80 text-white text-xs rounded-md whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none">
+              {/* Generated with reference image */}
+              📷 Reference
+              <div className="absolute bottom-full right-2 w-0 h-0 border-l-2 border-r-2 border-b-2 border-transparent border-b-black/80"></div>
+            </div>
+          </div>
+        </motion.div>
+      )}
     </motion.div>
   );
 });
@@ -394,24 +463,71 @@ export function EmojiDetailContainer({ emoji: initialEmoji }: EmojiDetailContain
       const response = await fetch(initialEmoji.image_url);
       const blob = await response.blob();
 
-      await navigator.clipboard.write([
-        new ClipboardItem({
-          [blob.type]: blob
-        })
-      ]);
-      
-      setIsCopyingImage(false);
-      setShowImageCopied(true);
-      setTimeout(() => setShowImageCopied(false), 2000);
+      // 检测是否支持剪贴板 API
+      if (navigator.clipboard && navigator.clipboard.write) {
+        try {
+          await navigator.clipboard.write([
+            new ClipboardItem({
+              [blob.type]: blob
+            })
+          ]);
+          
+          setIsCopyingImage(false);
+          setShowImageCopied(true);
+          setTimeout(() => setShowImageCopied(false), 2000);
 
-      // 异步提交行为数据
-      performAction(initialEmoji.slug, locale, 'copy', { type: 'image' }).catch(error => {
-        console.error('Failed to record image copy action:', error);
-      });
+          // 异步提交行为数据
+          performAction(initialEmoji.slug, locale, 'copy', { type: 'image' }).catch(error => {
+            console.error('Failed to record image copy action:', error);
+          });
+          return;
+        } catch (clipboardError) {
+          console.log('Clipboard API failed, trying alternative method');
+        }
+      }
+
+      // 如果剪贴板不支持，提示用户长按保存
+      throw new Error('Clipboard not supported');
     } catch (err) {
       setIsCopyingImage(false);
-      // 提示用户长按保存
-      alert(t('alert.longPressToSave'));
+      console.error('Failed to copy image:', err);
+      // 对于不支持的情况，提示用户长按图片保存到相册
+      alert(t('alert.longPressToSaveToAlbum'));
+    }
+  };
+
+    // 处理长按图片保存到相册
+  const handleImageLongPress = async (e: React.MouseEvent | React.TouchEvent) => {
+    // 对于移动端，依赖浏览器原生的长按保存行为
+    const isMobile = typeof window !== 'undefined' && /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    
+    if (isMobile) {
+      // 移动端：让浏览器处理原生的长按保存到相册行为
+      // 不阻止默认行为，让系统菜单出现
+      return;
+    } else {
+      // 桌面端：右键菜单触发下载
+      e.preventDefault();
+      try {
+        const response = await fetch(currentEmoji.image_url);
+        const blob = await response.blob();
+        const url = URL.createObjectURL(blob);
+        
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = `${currentEmoji.slug}.png`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+        
+        // 记录保存行为
+        performAction(currentEmoji.slug, locale, 'download').catch(error => {
+          console.error('Failed to record longpress save action:', error);
+        });
+      } catch (error) {
+        console.error('Failed to save image on long press:', error);
+      }
     }
   };
 
@@ -599,6 +715,7 @@ export function EmojiDetailContainer({ emoji: initialEmoji }: EmojiDetailContain
       <MainImage
         emoji={currentEmoji}
         onSwipe={handleSwipe}
+        onLongPress={handleImageLongPress}
       />
 
       {allVariations.length > 1 && displayIndex < allVariations.length - 1 && (
