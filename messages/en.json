@@ -74,20 +74,20 @@
         "answer": "Genmoji is a new feature of Apple Intelligence that lets users create custom genmojis — called Genmoji. Genmoji is available on iOS 18.2 or later on iPhone 15 Pro, iPhone 15 Pro Max, and all iPhone 16 models."
       },
       {
-        "question": "What is genmojionline.com?",
-        "answer": "Genmojionline.com is a website that allows you to create custom genmojis, similar to Apple's Genmoji, but without the need for an iOS device. You can generate unique genmojis using text-based prompts, and then use them on various social media platforms."
+        "question": "What is Genmoji Online?",
+        "answer": "Genmoji Online is a website that allows you to create custom genmojis, similar to Apple's Genmoji, but without the need for an iOS device. You can generate unique genmojis using text-based prompts, and then use them on various social media platforms."
       },
       {
-        "question": "How is genmojionline.com different from Apple's Genmoji?",
-        "answer": "The primary difference is that genmojionline.com is not limited to Apple devices. You can use it on any device with a web browser. Apple's Genmoji is a feature of Apple Intelligence and is only available on devices updated to iOS 18 or later. Our site aims to provide the same functionality but with broader accessibility."
+        "question": "How is Genmoji Online different from Apple's Genmoji?",
+        "answer": "The primary difference is that Genmoji Online is not limited to Apple devices. You can use it on any device with a web browser. Apple's Genmoji is a feature of Apple Intelligence and is only available on devices updated to iOS 18 or later. Our site aims to provide the same functionality but with broader accessibility. Second, Genmoji Online provides more features, such as the ability to create genmojis from images, and the ability to create genmojis with different styles like stickers, mascots, etc."
       },
       {
-        "question": "What technology does genmojionline.com use?",
+        "question": "What technology does Genmoji Online use?",
         "answer": "Our site uses an image generation model, similar to Flux 1 Dev, which is fine-tuned using a large dataset of genmojis. We use a language model (LLM) to make your prompt more descriptive, which improves the quality of the generated image. We also use background removal and resizing processes similar to Apple's methods."
       },
       {
-        "question": "How do I create an genmoji on genmoji online?",
-        "answer": "You create genmojis by typing a few words or a phrase into the \"Describe an genmoji\" box. The website uses this prompt to generate unique genmojis. Use simple, descriptive keywords for the best results, avoid long sentences."
+        "question": "How do I create an genmoji on genmojionline.com?",
+        "answer": "You create genmojis by typing a few words or a phrase into the \"Describe an genmoji\" box, or upload an image. The website uses this prompt to generate unique genmojis. Use simple, descriptive keywords for the best results, avoid long sentences."
       },
       {
         "question": "What kind of prompts work best?",

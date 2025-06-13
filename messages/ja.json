@@ -74,19 +74,19 @@
         "answer": "Genmojiは、Apple Intelligenceの新機能で、ユーザーがカスタム絵文字（Genmoji）を作成できる機能です。GenmojiはiOS 18.2以降のiPhone 15 Pro、iPhone 15 Pro Max、およびすべてのiPhone 16モデルで利用可能です。"
       },
       {
-        "question": "genmojionline.comとは何ですか？",
-        "answer": "genmojionline.comは、iOSデバイスがなくても、Appleの絵文字に似たカスタム絵文字を作成できるウェブサイトです。テキストベースのプロンプトを使用してユニークなGenmojiを作成し、様々なソーシャルメディアで使用できます。"
+        "question": "Genmoji Onlineとは何ですか？",
+        "answer": "Genmoji Onlineは、iOSデバイスがなくても、Appleの絵文字に似たカスタム絵文字を作成できるウェブサイトです。テキストベースのプロンプトを使用してユニークなGenmojiを作成し、様々なソーシャルメディアで使用できます。"
       },
       {
-        "question": "genmojionline.comとAppleのGenmojiの違いは何ですか？",
-        "answer": "主な違いは、genmojionline.comがAppleデバイスに限定されていないことです。ウェブブラウザがあれば、どのデバイスでも使用できます。AppleのGenmojiはApple Intelligenceの機能で、iOS 18以降のデバイスでのみ利用可能ですが、当サイトはより広いアクセシビリティを提供することを目指しています。"
+        "question": "Genmoji OnlineとAppleのGenmojiの違いは何ですか？",
+        "answer": "主な違いは、Genmoji OnlineがAppleデバイスに限定されていないことです。ウェブブラウザがあれば、どのデバイスでも使用できます。AppleのGenmojiはApple Intelligenceの機能で、iOS 18以降のデバイスでのみ利用可能ですが、当サイトはより広いアクセシビリティを提供することを目指しています。また、Genmoji Onlineは、ステッカー、マスコットなど、様々なスタイルのGenmojiを作成できる機能を提供しています。"
       },
       {
-        "question": "genmojionline.comはどのような技術を使用していますか？",
+        "question": "Genmoji Onlineはどのような技術を使用していますか？",
         "answer": "当サイトはFlux 1 Devに似た画像生成モデルを使用しており、大規模な絵文字データセットで微調整されています。プロンプトをより説明的にするために言語モデル（LLM）を使用し、生成される画像の品質を向上させています。また、Appleと同様の背景除去とリサイズ処理も行っています。"
       },
       {
-        "question": "genmoji onlineで絵文字を作成するにはどうすればよいですか？",
+        "question": "Genmoji Onlineで絵文字を作成するにはどうすればよいですか？",
         "answer": "「絵文字を説明」ボックスに数単語やフレーズを入力して絵文字を作成します。ウェブサイトはこのプロンプトを使用してユニークなGenmojiを作成します。最良の結果を得るには、シンプルで説明的なキーワードを使用し、長い文章は避けてください。"
       },
       {

@@ -21,7 +21,7 @@ export function FAQ() {
         <Accordion type="single" collapsible className="mt-10">
           {items.map((item, index) => (
             <AccordionItem key={index} value={`item-${index}`}>
-              <AccordionTrigger>{item.question}</AccordionTrigger>
+              <AccordionTrigger className="text-left">{item.question}</AccordionTrigger>
               <AccordionContent>
                 {item.answer.split('\n').map((line, i) => (
                   <p key={i} className={i > 0 ? 'mt-2' : ''}>

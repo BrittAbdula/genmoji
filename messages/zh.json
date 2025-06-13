@@ -74,19 +74,19 @@
         "answer": "Genmoji 是 Apple Intelligence 的一项新功能，允许用户创建自定义表情符号 — 称为 Genmoji。Genmoji 在 iPhone 15 Pro、iPhone 15 Pro Max 和所有 iPhone 16 机型上的 iOS 18.2 或更高版本中可用。"
       },
       {
-        "question": "什么是 genmojionline.com？",
-        "answer": "Genmojionline.com 是一个允许您创建自定义表情符号的网站，类似于 Apple 的 Genmoji，但无需 iOS 设备。您可以使用文本提示生成独特的表情符号，然后在各种社交媒体平台上使用它们。"
+        "question": "什么是 Genmoji Online？",
+        "answer": "Genmoji Online 是一个允许您创建自定义表情符号的网站，类似于 Apple 的 Genmoji，但无需 iOS 设备。您可以使用文本提示生成独特的表情符号，然后在各种社交媒体平台上使用它们。"
       },
       {
-        "question": "genmojionline.com 与 Apple 的 Genmoji 有什么不同？",
-        "answer": "主要区别在于 genmojionline.com 不限于 Apple 设备。您可以在任何带有网络浏览器的设备上使用它。Apple 的 Genmoji 是 Apple Intelligence 的一项功能，仅在更新到 iOS 18 或更高版本的设备上可用。我们的网站旨在提供相同的功能，但具有更广泛的可访问性。"
+        "question": "Genmoji Online 与 Apple 的 Genmoji 有什么不同？",
+        "answer": "主要区别在于 Genmoji Online 不限于 Apple 设备。您可以在任何带有网络浏览器的设备上使用它。Apple 的 Genmoji 是 Apple Intelligence 的一项功能，仅在更新到 iOS 18 或更高版本的设备上可用。我们的网站旨在提供相同的功能，但具有更广泛的可访问性，我们不断提供新风格模型，如贴纸、吉祥物等。"
       },
       {
-        "question": "genmojionline.com 使用什么技术？",
+        "question": "Genmoji Online 使用什么技术？",
         "answer": "我们的网站使用类似于 Flux 1 Dev 的图像生成模型，该模型使用大量表情符号数据集进行微调。我们使用语言模型（LLM）使您的提示词更具描述性，从而提高生成图像的质量。我们还使用类似于 Apple 的背景移除和调整大小的处理方法。"
       },
       {
-        "question": "如何在 genmoji online 上创建表情符号？",
+        "question": "如何在 Genmoji Online 上创建表情符号？",
         "answer": "您可以在\"描述表情符号\"框中输入几个词或短语来创建表情符号。网站使用这个提示词来生成独特的表情符号。使用简单、描述性的关键词可以获得最佳效果，避免使用长句子。"
       },
       {

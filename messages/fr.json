@@ -74,20 +74,20 @@
         "answer": "Genmoji est une nouvelle fonctionnalité d'Apple Intelligence qui permet aux utilisateurs de créer des genmojis personnalisés — appelés Genmoji. Genmoji est disponible sur iOS 18.2 ou version ultérieure sur iPhone 15 Pro, iPhone 15 Pro Max et tous les modèles iPhone 16."
       },
       {
-        "question": "Qu'est-ce que genmojionline.com ?",
-        "answer": "Genmojionline.com est un site web qui vous permet de créer des genmojis personnalisés, similaires aux Genmoji d'Apple, mais sans avoir besoin d'un appareil iOS. Vous pouvez générer des genmojis uniques à l'aide de commandes textuelles, puis les utiliser sur diverses plateformes de médias sociaux."
+        "question": "Qu'est-ce que Genmoji Online ?",
+        "answer": "Genmoji Online est un site web qui vous permet de créer des genmojis personnalisés, similaires aux Genmoji d'Apple, mais sans avoir besoin d'un appareil iOS. Vous pouvez générer des genmojis uniques à l'aide de commandes textuelles, puis les utiliser sur diverses plateformes de médias sociaux."
       },
       {
-        "question": "En quoi genmojionline.com est-il différent du Genmoji d'Apple ?",
-        "answer": "La principale différence est que genmojionline.com n'est pas limité aux appareils Apple. Vous pouvez l'utiliser sur n'importe quel appareil avec un navigateur web. Genmoji d'Apple est une fonctionnalité d'Apple Intelligence et n'est disponible que sur les appareils mis à jour vers iOS 18 ou version ultérieure. Notre site vise à fournir la même fonctionnalité mais avec une accessibilité plus large."
+        "question": "En quoi Genmoji Online est-il différent du Genmoji d'Apple ?",
+        "answer": "La principale différence est que Genmoji Online n'est pas limité aux appareils Apple. Vous pouvez l'utiliser sur n'importe quel appareil avec un navigateur web. Genmoji d'Apple est une fonctionnalité d'Apple Intelligence et n'est disponible que sur les appareils mis à jour vers iOS 18 ou version ultérieure. Notre site vise à fournir la même fonctionnalité mais avec une accessibilité plus large. Deuxièmement, Genmoji Online offre plus de fonctionnalités, comme la possibilité de créer des genmojis à partir d'images, et la possibilité de créer des genmojis avec différents styles."
       },
       {
-        "question": "Quelle technologie utilise genmojionline.com ?",
-        "answer": "Notre site utilise un modèle de génération d'images, similaire à Flux 1 Dev, qui est affiné à l'aide d'un grand ensemble de données de genmojis. Nous utilisons un modèle de langage (LLM) pour rendre votre prompt plus descriptif, ce qui améliore la qualité de l'image générée. Nous utilisons également des processus de suppression d'arrière-plan et de redimensionnement similaires aux méthodes d'Apple."
+        "question": "Quelle technologie utilise Genmoji Online ?",
+        "answer": "Notre site utilise un modèle de génération d'images, similaire à Flux 1 Dev, qui est affiné à l'aide d'un grand ensemble de données de genmojis. Nous utilisons un modèle de langage (LLM) pour rendre votre prompt plus descriptif, ce qui améliore la qualité de l'image générée. Nous utilisons également des processus de suppression d'arrière-plan et de redimensionnement similaires aux méthodes d'Apple. Nous offrons également des modèles de génération de genmojis avec différents styles, comme les autocollants, les mascottes, etc."
       },
       {
-        "question": "Comment créer un genmoji sur genmoji online ?",
-        "answer": "Vous créez des genmojis en tapant quelques mots ou une phrase dans la boîte \"Décrire un genmoji\". Le site web utilise ce prompt pour générer des genmojis uniques. Utilisez des mots-clés simples et descriptifs pour de meilleurs résultats, évitez les longues phrases."
+        "question": "Comment créer un genmoji sur Genmoji Online ?",
+        "answer": "Vous créez des genmojis en tapant quelques mots ou une phrase dans la boîte \"Décrire un genmoji\", ou en téléchargeant une image. Le site web utilise ce prompt pour générer des genmojis uniques. Utilisez des mots-clés simples et descriptifs pour de meilleurs résultats, évitez les longues phrases."
       },
       {
         "question": "Quels types de prompts fonctionnent le mieux ?",
