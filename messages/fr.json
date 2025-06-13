@@ -245,7 +245,7 @@
       "alert": {
         "instagramShare": "Image téléchargée ! Vous pouvez maintenant la partager sur Instagram :\n1. Ouvrez Instagram\n2. Créez un nouveau post\n3. Sélectionnez l'image téléchargée\n4. Ajoutez le prompt comme légende",
         "wechatShare": "Ouvrez WeChat et scannez le QR code pour partager",
-        "longPressToSaveToAlbum": "Appuyez longuement sur l'image pour la sauvegarder"
+        "longPressToSave": "Appuyez longuement pour copier ou enregistrer"
       },
       "meta": {
         "title": "{prompt} | Genmoji Online",

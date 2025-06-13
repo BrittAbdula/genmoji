@@ -203,7 +203,7 @@
       "alert": {
         "instagramShare": "图片已下载！您现在可以在 Instagram 上分享：\n1. 打开 Instagram\n2. 创建新帖子\n3. 选择已下载的图片\n4. 添加提示词作为说明",
         "wechatShare": "打开微信扫描二维码分享",
-        "longPressToSaveToAlbum": "长按图片保存到相册"
+        "longPressToSave": "长按复制或保存"
       },
       "meta": {
         "title": "{prompt} | Genmoji Online",

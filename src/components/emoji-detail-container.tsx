@@ -491,8 +491,8 @@ export function EmojiDetailContainer({ emoji: initialEmoji }: EmojiDetailContain
     } catch (err) {
       setIsCopyingImage(false);
       console.error('Failed to copy image:', err);
-      // 对于不支持的情况，提示用户长按图片保存到相册
-      alert(t('alert.longPressToSaveToAlbum'));
+      // 对于不支持的情况，提示用户长按图片保存
+      alert(t('alert.longPressToSave'));
     }
   };
 

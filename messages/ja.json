@@ -229,7 +229,7 @@
       "alert": {
         "instagramShare": "画像をダウンロードしました！Instagramで共有できます：\n1. Instagramを開く\n2. 新しい投稿を作成\n3. ダウンロードした画像を選択\n4. プロンプトをキャプションとして追加",
         "wechatShare": "WeChatを開いてQRコードをスキャンして共有",
-        "longPressToSaveToAlbum": "画像を長押しして保存"
+        "longPressToSave": "長押ししてコピーまたは保存します"
       },
       "meta": {
         "title": "{prompt} | Genmoji Online",

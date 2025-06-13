@@ -202,7 +202,7 @@
       "alert": {
         "instagramShare": "Image downloaded! You can now share it on Instagram:\n1. Open Instagram\n2. Create a new post\n3. Select the downloaded image\n4. Add the prompt as caption",
         "wechatShare": "Open WeChat and scan the QR code to share",
-        "longPressToSaveToAlbum": "Long press Image to save to album"
+        "longPressToSave": "Long press Image to Copy or Save"
       },
       "meta": {
         "title": "{prompt} | Genmoji Online",
