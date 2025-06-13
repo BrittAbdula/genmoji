@@ -97,20 +97,9 @@ export function Hero() {
               <Subtitle text={t('subtitle')} />
             </div>
 
-            <UnifiedGenmojiGenerator
-              trigger={
-                <Button
-                  size="lg"
-                  className={cn(
-                    "rounded-md",
-                    "px-8 bg-gradient-to-r from-pink-500 to-violet-500 hover:from-pink-600 hover:to-violet-600 text-white"
-                  )}
-                >
-                  <Sparkles className="h-4 w-4" />
-                  {t('cta')}
-                </Button>
-              }
-            />
+            <div className="w-full max-w-2xl mx-auto">
+              <UnifiedGenmojiGenerator />
+            </div>
           </div>
 
           {/* Delayed showcase loading */}

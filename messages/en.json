@@ -180,6 +180,9 @@
       "download": "Download",
       "copied": "Copied!",
       "reGenmoji": "Remix",
+      "hideGenerator": "Hide Generator",
+      "downloading": "Downloading...",
+      "copying": "Copying...",
       "share": {
         "title": "Share",
         "twitter": "Share on Twitter",
@@ -337,6 +340,7 @@
     "generatingButton": "Generating...",
     "uploadImage": "Upload Image (Optional)",
     "changeImage": "Change Image",
+    "selectModel": "Select Model",
     "recentTitle": "Recent Genmojis",
     "generationStatus": {
       "starting": "Starting generation..."

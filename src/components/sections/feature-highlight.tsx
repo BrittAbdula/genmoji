@@ -59,20 +59,19 @@ function Feature({
             {t(`${translationKey}.description`)}
           </p>
           <div className="transition-all duration-500 delay-200 ease-out">
-            <UnifiedGenmojiGenerator
-              trigger={
                 <Button
                   size="lg"
                   className={cn(
                     "rounded-md",
                     "px-8 bg-gradient-to-r from-pink-500 to-violet-500 hover:from-pink-600 hover:to-violet-600 text-white"
                   )}
+                  onClick={() => {
+                    window.location.href = '#';
+                  }}
                 >
                   <Sparkles className="h-4 w-4" />
                   {common('cta')}
                 </Button>
-              }
-            />
           </div>
         </div>
       </div>

@@ -38,6 +38,7 @@ import { useTranslations } from 'next-intl';
 import { UnifiedGenmojiGenerator } from './unified-genmoji-generator';
 import { TimeAgo } from './time-ago';
 import { useLocale } from 'next-intl';
+import { useRouter } from 'next/navigation';
 import Image from "next/image";
 import Link from "next/link";
 
@@ -226,6 +227,7 @@ const VariationsList = memo(({
 export function EmojiDetailContainer({ emoji: initialEmoji }: EmojiDetailContainerProps) {
   const t = useTranslations('emoji.detail');
   const locale = useLocale();
+  const router = useRouter();
   const [currentEmoji, setCurrentEmoji] = useState(initialEmoji);
   const [allVariations, setAllVariations] = useState<Emoji[]>([]);
   const [displayIndex, setDisplayIndex] = useState(0);
@@ -235,6 +237,7 @@ export function EmojiDetailContainer({ emoji: initialEmoji }: EmojiDetailContain
   const [showCopied, setShowCopied] = useState(false);
   const [showPromptCopied, setShowPromptCopied] = useState(false);
   const [showImageCopied, setShowImageCopied] = useState(false);
+  const [isCopyingImage, setIsCopyingImage] = useState(false);
   const [isGeneratorOpen, setIsGeneratorOpen] = useState(false);
   const [isCopied, setIsCopied] = useState(false);
   const [isDownloading, setIsDownloading] = useState(false);
@@ -247,6 +250,7 @@ export function EmojiDetailContainer({ emoji: initialEmoji }: EmojiDetailContain
   const [offset, setOffset] = useState(0);
   const LIMIT = 10;
   const [isUsageExpanded, setIsUsageExpanded] = useState(false);
+  const [showRemixGenerator, setShowRemixGenerator] = useState(false);
 
   // 获取变体 - 只在初始化时调用一次
   const fetchVariations = async () => {
@@ -382,6 +386,10 @@ export function EmojiDetailContainer({ emoji: initialEmoji }: EmojiDetailContain
 
   // 复制图片到剪贴板
   const handleCopyImage = async () => {
+    if (isCopyingImage || showImageCopied) return;
+    
+    setIsCopyingImage(true);
+    
     try {
       const response = await fetch(initialEmoji.image_url);
       const blob = await response.blob();
@@ -391,6 +399,8 @@ export function EmojiDetailContainer({ emoji: initialEmoji }: EmojiDetailContain
           [blob.type]: blob
         })
       ]);
+      
+      setIsCopyingImage(false);
       setShowImageCopied(true);
       setTimeout(() => setShowImageCopied(false), 2000);
 
@@ -399,6 +409,7 @@ export function EmojiDetailContainer({ emoji: initialEmoji }: EmojiDetailContain
         console.error('Failed to record image copy action:', error);
       });
     } catch (err) {
+      setIsCopyingImage(false);
       // 提示用户长按保存
       alert(t('alert.longPressToSave'));
     }
@@ -647,7 +658,7 @@ export function EmojiDetailContainer({ emoji: initialEmoji }: EmojiDetailContain
               {initialEmoji.prompt}
             </h1>
             {showPromptCopied && (
-              <div className="absolute top-full left-0 mt-1 flex items-center gap-1 text-xs text-green-500">
+              <div className="absolute top-full left-0 mt-1 flex items-center gap-1 text-xs text-green-500 z-50">
                 <CheckIcon className="h-3 w-3" />
                 <span>{t('copied')}</span>
               </div>
@@ -893,28 +904,86 @@ export function EmojiDetailContainer({ emoji: initialEmoji }: EmojiDetailContain
 
       {/* 操作按钮区 */}
       <div className="w-full max-w-sm pt-2">
-        <div className="grid grid-cols-2 gap-3">
-          <UnifiedGenmojiGenerator
-            trigger={
-              <Button
-                variant="outline"
-                className="w-full text-muted-foreground hover:text-foreground relative py-4 bg-pink-500/5 hover:bg-pink-500/10 dark:bg-pink-500/10 dark:hover:bg-pink-500/20 border-pink-500/20 dark:border-pink-500/30 transition-all duration-200"
-              >
-                <ImageIcon className="mr-2 h-3.5 w-3.5" />
-                {t('reGenmoji')}
-              </Button>
-            }
-            initialPrompt={initialEmoji.prompt}
-          />
-
+        {/* 条件显示 UnifiedGenmojiGenerator */}
+        {showRemixGenerator && (
+          <div className="w-full mb-4">
+            <UnifiedGenmojiGenerator
+              initialPrompt={initialEmoji.prompt}
+              onGenerated={(newEmoji) => {
+                // 直接跳转到新生成的 emoji 页面
+                setShowRemixGenerator(false);
+                router.push(`/emoji/${newEmoji.slug}`);
+              }}
+            />
+          </div>
+        )}
+        
+        <div className="space-y-3">
+          {/* Remix 按钮单独一行 */}
           <Button
             variant="outline"
-            className="w-full text-muted-foreground hover:text-foreground py-4 bg-violet-500/5 hover:bg-violet-500/10 dark:bg-violet-500/10 dark:hover:bg-violet-500/20 border-violet-500/20 dark:border-violet-500/30 transition-all duration-200"
-            onClick={handleDownload}
+            className="w-full text-muted-foreground hover:text-foreground relative py-4 bg-pink-500/5 hover:bg-pink-500/10 dark:bg-pink-500/10 dark:hover:bg-pink-500/20 border-pink-500/20 dark:border-pink-500/30 transition-all duration-200"
+            onClick={() => setShowRemixGenerator(!showRemixGenerator)}
           >
-            <DownloadIcon className="mr-2 h-3.5 w-3.5" />
-            {t('download')}
+            <ImageIcon className="mr-2 h-4 w-4" />
+            {showRemixGenerator ? t('hideGenerator') : t('reGenmoji')}
           </Button>
+
+          {/* Copy 和 Download 按钮一行 */}
+          <div className="grid grid-cols-2 gap-3">
+            <Button
+              variant="outline"
+              className="w-full text-muted-foreground hover:text-foreground py-4 bg-blue-500/5 hover:bg-blue-500/10 dark:bg-blue-500/10 dark:hover:bg-blue-500/20 border-blue-500/20 dark:border-blue-500/30 transition-all duration-200 relative"
+              onClick={handleCopyImage}
+              disabled={isCopyingImage || showImageCopied}
+            >
+              {/* 复制成功状态 */}
+              <div className={cn(
+                "absolute inset-0 flex items-center justify-center rounded-md transition-all duration-300",
+                showImageCopied ? "bg-green-500/20 opacity-100" : "opacity-0"
+              )}>
+                <CheckIcon className="h-4 w-4 text-green-600" />
+                <span className="ml-2 text-sm text-green-600 font-medium">{t('copied')}</span>
+              </div>
+              
+              {/* 复制中状态 */}
+              <div className={cn(
+                "absolute inset-0 flex items-center justify-center rounded-md transition-all duration-300",
+                isCopyingImage ? "bg-blue-500/20 opacity-100" : "opacity-0"
+              )}>
+                <div className="mr-2 h-3.5 w-3.5 animate-spin rounded-full border-2 border-current border-t-transparent" />
+                <span className="text-sm font-medium">{t('copying')}</span>
+              </div>
+              
+              {/* 默认状态 */}
+              <div className={cn(
+                "flex items-center transition-opacity duration-300",
+                (isCopyingImage || showImageCopied) ? "opacity-0" : "opacity-100"
+              )}>
+                <CopyIcon className="mr-2 h-3.5 w-3.5" />
+                {t('copyImage')}
+              </div>
+            </Button>
+
+            <Button
+              variant="outline"
+              className="w-full text-muted-foreground hover:text-foreground py-4 bg-violet-500/5 hover:bg-violet-500/10 dark:bg-violet-500/10 dark:hover:bg-violet-500/20 border-violet-500/20 dark:border-violet-500/30 transition-all duration-200"
+              onClick={handleDownload}
+              disabled={isDownloading}
+            >
+              {isDownloading ? (
+                <div className="flex items-center">
+                  <div className="mr-2 h-3.5 w-3.5 animate-spin rounded-full border-2 border-current border-t-transparent" />
+                  {t('downloading')}
+                </div>
+              ) : (
+                <div className="flex items-center">
+                  <DownloadIcon className="mr-2 h-3.5 w-3.5" />
+                  {t('download')}
+                </div>
+              )}
+            </Button>
+          </div>
         </div>
       </div>
 

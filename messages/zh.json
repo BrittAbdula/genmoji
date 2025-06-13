@@ -181,6 +181,9 @@
       "download": "下载",
       "copied": "已复制！",
       "reGenmoji": "重新生成",
+      "hideGenerator": "收起创作器",
+      "downloading": "下载中...",
+      "copying": "复制中...",
       "share": {
         "title": "分享到",
         "twitter": "分享到 Twitter",
@@ -338,6 +341,7 @@
     "generatingButton": "生成中...",
     "uploadImage": "上传图片（可选）",
     "changeImage": "更换图片",
+    "selectModel": "选择模型",
     "recentTitle": "最近生成的 Genmoji",
     "generationStatus": {
       "starting": "开始生成..."

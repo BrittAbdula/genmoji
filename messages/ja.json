@@ -122,6 +122,7 @@
     "generatingButton": "生成中...",
     "uploadImage": "画像をアップロード（任意）",
     "changeImage": "画像を変更",
+    "selectModel": "モデルを選択",
     "recentTitle": "最近生成された絵文字",
     "generationStatus": {
       "starting": "生成を開始しています..."
@@ -205,6 +206,9 @@
       "download": "ダウンロード",
       "copied": "コピーしました！",
       "reGenmoji": "再生成",
+      "hideGenerator": "ジェネレーターを隠す",
+      "downloading": "ダウンロード中...",
+      "copying": "コピー中...",
       "share": {
         "title": "共有",
         "twitter": "Twitterで共有",

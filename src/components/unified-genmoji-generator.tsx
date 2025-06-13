@@ -1,7 +1,8 @@
 "use client";
 
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogTrigger } from "@/components/ui/dialog";
-import { Drawer, DrawerContent, DrawerHeader, DrawerTitle, DrawerDescription, DrawerTrigger } from "@/components/ui/drawer";
+
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Drawer, DrawerContent, DrawerHeader, DrawerTitle, DrawerTrigger } from "@/components/ui/drawer";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Progress } from "@/components/ui/progress";
@@ -9,7 +10,7 @@ import { useState, useEffect, useRef } from "react";
 import { genMoji } from "@/lib/api";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { Emoji } from "@/types/emoji";
-import { ImageIcon, X } from 'lucide-react';
+import { ImageIcon, X, Plus, ArrowUp, Globe } from 'lucide-react';
 import confetti from "canvas-confetti";
 import { useRouter } from "next/navigation";
 import { useTranslations, useLocale } from 'next-intl';
@@ -21,38 +22,84 @@ import { useAuthStore } from "@/store/auth-store";
 import Image from "next/image";
 
 interface UnifiedGenmojiGeneratorProps {
-  trigger?: React.ReactNode;
   initialPrompt?: string;
   onGenerated?: (emoji: Emoji) => void;
-  mode?: 'inline' | 'modal';
   init_model?: 'genmoji' | 'sticker' | 'mascot' | null;
 }
 
 export function UnifiedGenmojiGenerator({
-  trigger,
   initialPrompt = "",
   onGenerated,
-  mode = 'modal',
   init_model = null
 }: UnifiedGenmojiGeneratorProps) {
   const router = useRouter();
   const t = useTranslations('generator');
   const locale = useLocale();
-  const [isOpen, setIsOpen] = useState(mode === 'inline');
   const [prompt, setPrompt] = useState(initialPrompt);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [generatedEmoji, setGeneratedEmoji] = useState<Emoji | null>(null);
   const [model, setModel] = useState<'genmoji' | 'sticker' | 'mascot'>(init_model || 'genmoji');
-  const isCustomModel = init_model !== null;
+  const [showModelSelector, setShowModelSelector] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
   const isMobile = useMediaQuery("(max-width: 768px)");
   
   const { isGenerating, progress, setGenerating, setProgress, setPrompt: setGlobalPrompt } = useGenerationStore();
   const { token } = useAuthStore();
 
+  // Get current model info
+  const getCurrentModelInfo = () => {
+    switch (model) {
+      case 'genmoji':
+        return {
+          image: "https://store.genmojionline.com/cdn-cgi/imagedelivery/DEOVdDdfeGzASe0KdtD7FA/ba791d54-9c81-47d4-dc1f-32f2014b8300/public",
+          name: t('models.genmoji.name'),
+          description: t('models.genmoji.description')
+        };
+      case 'sticker':
+        return {
+          image: "https://store.genmojionline.com/cdn-cgi/imagedelivery/DEOVdDdfeGzASe0KdtD7FA/8ef04dd2-6612-496a-d2ea-bada5ccf9400/public",
+          name: t('models.sticker.name'),
+          description: t('models.sticker.description')
+        };
+      case 'mascot':
+        return {
+          image: "https://store.genmojionline.com/cdn-cgi/imagedelivery/DEOVdDdfeGzASe0KdtD7FA/14a1b15b-9263-4d20-443d-67c5e4c4c900/public",
+          name: t('models.mascot.name'),
+          description: t('models.mascot.description')
+        };
+      default:
+        return {
+          image: "https://store.genmojionline.com/cdn-cgi/imagedelivery/DEOVdDdfeGzASe0KdtD7FA/ba791d54-9c81-47d4-dc1f-32f2014b8300/public",
+          name: t('models.genmoji.name'),
+          description: t('models.genmoji.description')
+        };
+    }
+  };
+
+  const currentModel = getCurrentModelInfo();
+
   useEffect(() => {
     setPrompt(initialPrompt);
   }, [initialPrompt]);
+
+  // 自动聚焦到输入框，如果有文字则定位到最后
+  useEffect(() => {
+    // 使用 setTimeout 确保组件完全渲染后再执行
+    const timer = setTimeout(() => {
+      if (textareaRef.current) {
+        textareaRef.current.focus();
+        // 如果有文字，将光标定位到最后
+        const currentPrompt = textareaRef.current.value;
+        if (currentPrompt) {
+          const length = currentPrompt.length;
+          textareaRef.current.setSelectionRange(length, length);
+        }
+      }
+    }, 100); // 稍微延迟确保 prompt 已经设置
+
+    return () => clearTimeout(timer);
+  }, []); // 只在组件挂载时执行一次
 
   useEffect(() => {
     let intervalId: NodeJS.Timeout;
@@ -127,7 +174,6 @@ export function UnifiedGenmojiGenerator({
     setGenerating(true);
     setProgress(0);
     setGlobalPrompt(prompt.trim());
-    setIsOpen(false);
     
     try {
       const emojiResponse = await genMoji(prompt.trim(), locale, selectedImage, model, token);
@@ -138,13 +184,10 @@ export function UnifiedGenmojiGenerator({
         
         if (onGenerated) {
           onGenerated(emojiResponse.emoji);
+          // 不需要清空表单，因为页面会跳转
         } else {
           router.push(`/emoji/${emojiResponse.emoji.slug}`);
-        }
-        
-        if (mode === 'modal') {
-          setIsOpen(false);
-        } else {
+          // 立即清空表单，因为要跳转页面
           setPrompt("");
           setSelectedImage(null);
           if (fileInputRef.current) {
@@ -161,6 +204,103 @@ export function UnifiedGenmojiGenerator({
     }
   };
 
+  // 模型数据，方便未来扩展
+  const models = [
+    {
+      id: 'genmoji' as const,
+      name: t('models.genmoji.name'),
+      description: t('models.genmoji.description'),
+      image: "https://store.genmojionline.com/cdn-cgi/imagedelivery/DEOVdDdfeGzASe0KdtD7FA/ba791d54-9c81-47d4-dc1f-32f2014b8300/public",
+      alt: "Genmoji"
+    },
+    {
+      id: 'sticker' as const,
+      name: t('models.sticker.name'),
+      description: t('models.sticker.description'),
+      image: "https://store.genmojionline.com/cdn-cgi/imagedelivery/DEOVdDdfeGzASe0KdtD7FA/8ef04dd2-6612-496a-d2ea-bada5ccf9400/public",
+      alt: "Sticker"
+    },
+    {
+      id: 'mascot' as const,
+      name: t('models.mascot.name'),
+      description: t('models.mascot.description'),
+      image: "https://store.genmojionline.com/cdn-cgi/imagedelivery/DEOVdDdfeGzASe0KdtD7FA/14a1b15b-9263-4d20-443d-67c5e4c4c900/public",
+      alt: "Mascot"
+    }
+  ];
+
+  const handleModelSelect = (modelId: 'genmoji' | 'sticker' | 'mascot') => {
+    setModel(modelId);
+    setShowModelSelector(false);
+  };
+
+  // PC端模型选择器内容
+  const desktopModelSelectorContent = (
+    <div className={cn(
+      "grid gap-4 p-6",
+      models.length <= 3 ? "grid-cols-3 max-w-xl" : "grid-cols-2 max-w-lg"
+    )}>
+      {models.map((modelItem) => (
+        <div
+          key={modelItem.id}
+          className={cn(
+            "flex flex-col items-center gap-3 p-4 rounded-2xl border-2 cursor-pointer transition-all hover:shadow-lg hover:scale-105",
+            model === modelItem.id ? "border-primary bg-primary/5 shadow-lg" : "border-gray-200 hover:border-gray-300"
+          )}
+          onClick={() => handleModelSelect(modelItem.id)}
+        >
+          <div className="w-20 h-20 rounded-2xl overflow-hidden shadow-md">
+            <Image
+              src={modelItem.image}
+              alt={modelItem.alt}
+              width={80}
+              height={80}
+              className="w-full h-full object-cover"
+            />
+          </div>
+          <div className="text-center">
+            <div className="font-semibold text-sm">{modelItem.name}</div>
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+
+  // 移动端模型选择器内容
+  const mobileModelSelectorContent = (
+    <div className="grid grid-cols-1 gap-3 p-4">
+      {models.map((modelItem) => (
+        <div
+          key={modelItem.id}
+          className={cn(
+            "flex items-center gap-4 p-4 rounded-xl border-2 cursor-pointer transition-all hover:shadow-md",
+            model === modelItem.id ? "border-primary bg-primary/5 shadow-md" : "border-gray-200 hover:border-gray-300"
+          )}
+          onClick={() => handleModelSelect(modelItem.id)}
+        >
+          <div className="w-16 h-16 rounded-xl overflow-hidden shadow-sm flex-shrink-0">
+            <Image
+              src={modelItem.image}
+              alt={modelItem.alt}
+              width={64}
+              height={64}
+              className="w-full h-full object-cover"
+            />
+          </div>
+          <div className="flex-1">
+            <div className="font-semibold text-base">{modelItem.name}</div>
+            <div className="text-sm text-muted-foreground mt-1">{modelItem.description}</div>
+          </div>
+          {model === modelItem.id && (
+            <div className="w-5 h-5 rounded-full bg-primary flex items-center justify-center flex-shrink-0">
+              <div className="w-2 h-2 rounded-full bg-white"></div>
+            </div>
+          )}
+        </div>
+      ))}
+    </div>
+  );
+
   const content = (
     <div className="grid gap-4 py-4">
       {isGenerating && (
@@ -169,7 +309,7 @@ export function UnifiedGenmojiGenerator({
         </div>
       )}
 
-      {mode === 'inline' && generatedEmoji && (
+      {generatedEmoji && (
           <EmojiContainer 
             emoji={generatedEmoji} 
             size="lg"
@@ -177,99 +317,9 @@ export function UnifiedGenmojiGenerator({
       )}
 
       <div className="flex flex-col gap-4">
-        {/* Model Selection - Only show if init_model is not explicitly provided */}
-        {!isCustomModel && (
-        <div className="flex items-center justify-center gap-2 p-2">
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Button
-                  type="button"
-                  variant={model === 'genmoji' ? 'default' : 'outline'}
-                  size="sm"
-                  className={cn(
-                    "flex items-center gap-2 px-4 py-2 rounded-full transition-all",
-                    model === 'genmoji' ? "bg-primary text-primary-foreground" : "hover:bg-muted"
-                  )}
-                  onClick={() => setModel('genmoji')}
-                >
-                  <Image 
-                    src="https://store.genmojionline.com/cdn-cgi/imagedelivery/DEOVdDdfeGzASe0KdtD7FA/ba791d54-9c81-47d4-dc1f-32f2014b8300/public"
-                    alt="Genmoji"
-                    width={20}
-                    height={20}
-                    className="rounded-full"
-                  />
-                  {t('models.genmoji.name')}
-                </Button>
-              </TooltipTrigger>
-              <TooltipContent>
-                <p>{t('models.genmoji.description')}</p>
-              </TooltipContent>
-            </Tooltip>
-
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Button
-                  type="button"
-                  variant={model === 'sticker' ? 'default' : 'outline'}
-                  size="sm"
-                  className={cn(
-                    "flex items-center gap-2 px-4 py-2 rounded-full transition-all",
-                    model === 'sticker' ? "bg-primary text-primary-foreground" : "hover:bg-muted"
-                  )}
-                  onClick={() => setModel('sticker')}
-                >
-                  <Image 
-                    src="https://store.genmojionline.com/cdn-cgi/imagedelivery/DEOVdDdfeGzASe0KdtD7FA/8ef04dd2-6612-496a-d2ea-bada5ccf9400/public"
-                    alt="Sticker"
-                    width={20}
-                    height={20}
-                    className="rounded-full"
-                  />
-                  {t('models.sticker.name')}
-                </Button>
-              </TooltipTrigger>
-              <TooltipContent>
-                <p>{t('models.sticker.description')}</p>
-              </TooltipContent>
-            </Tooltip>
-
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Button
-                  type="button"
-                  variant={model === 'mascot' ? 'default' : 'outline'}
-                  size="sm"
-                  className={cn(
-                    "flex items-center gap-2 px-4 py-2 rounded-full transition-all",
-                    model === 'mascot' ? "bg-primary text-primary-foreground" : "hover:bg-muted"
-                  )}
-                  onClick={() => setModel('mascot')}
-                >
-                  <Image 
-                    src="https://store.genmojionline.com/cdn-cgi/imagedelivery/DEOVdDdfeGzASe0KdtD7FA/14a1b15b-9263-4d20-443d-67c5e4c4c900/public"
-                    alt="Mascot"
-                    width={20}
-                    height={20}
-                    className="rounded-full"
-                  />
-                  {t('models.mascot.name')}
-                </Button>
-              </TooltipTrigger>
-              <TooltipContent>
-                <p>{t('models.mascot.description')}</p>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
-        </div>
-        )}
-
-        <div className={cn(
-          "relative flex flex-col w-full rounded-xl border bg-card shadow-sm overflow-hidden",
-          mode === 'inline' && "border-muted-foreground/10"
-        )}>
+        <div className="relative flex flex-col w-full rounded-xl border bg-card shadow-sm overflow-hidden border-muted-foreground/10">
           <Textarea
+            ref={textareaRef}
             placeholder={t('placeholder')}
             value={prompt}
             onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setPrompt(e.target.value)}
@@ -279,16 +329,13 @@ export function UnifiedGenmojiGenerator({
                 generateEmoji();
               }
             }}
-            rows={2}
-            className={cn(
-              "resize-none min-h-[80px] border-0 focus-visible:ring-0 focus-visible:ring-offset-0 rounded-t-xl rounded-b-none bg-card",
-              mode === 'inline' && "text-lg p-4"
-            )}
+            rows={3}
+            className="resize-none min-h-[100px] border-0 focus-visible:ring-0 focus-visible:ring-offset-0 rounded-xl bg-card pb-16 text-lg p-4"
           />
           
           {selectedImage && (
-            <div className="px-4 pb-2">
-              <div className="relative w-24 h-24 rounded-lg overflow-hidden border bg-muted">
+            <div className="absolute top-2 right-2">
+              <div className="relative w-16 h-16 rounded-lg overflow-hidden border bg-muted">
                 <img
                   src={selectedImage}
                   alt="Selected reference"
@@ -297,7 +344,7 @@ export function UnifiedGenmojiGenerator({
                 <button
                   type="button"
                   onClick={clearSelectedImage}
-                  className="absolute top-1 right-1 p-1 rounded-full bg-background/80 hover:bg-background text-muted-foreground hover:text-foreground"
+                  className="absolute top-0 right-0 p-0.5 rounded-full bg-background/80 hover:bg-background text-muted-foreground hover:text-foreground"
                 >
                   <X className="h-3 w-3" />
                 </button>
@@ -305,8 +352,98 @@ export function UnifiedGenmojiGenerator({
             </div>
           )}
 
-          <div className="flex items-center justify-between px-4 py-3 border-t bg-muted/20">
-            <div className="flex items-center">
+          {/* Bottom toolbar inside textarea */}
+          <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              {/* Model selector button - always show */}
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    {isMobile ? (
+                      <Drawer open={showModelSelector} onOpenChange={setShowModelSelector}>
+                        <DrawerTrigger asChild>
+                          <Button
+                            type="button"
+                            variant="ghost"
+                            size="sm"
+                            className="h-8 px-2 rounded-full hover:bg-muted flex items-center gap-2"
+                          >
+                            <Image 
+                              src={currentModel.image}
+                              alt={currentModel.name}
+                              width={16}
+                              height={16}
+                              className="rounded-full"
+                            />
+                            <span className="text-sm font-medium">{currentModel.name}</span>
+                          </Button>
+                        </DrawerTrigger>
+                        <DrawerContent>
+                          <DrawerHeader>
+                            <DrawerTitle>{t('selectModel')}</DrawerTitle>
+                          </DrawerHeader>
+                          <div className="pb-8">
+                            {mobileModelSelectorContent}
+                          </div>
+                        </DrawerContent>
+                      </Drawer>
+                    ) : (
+                      <Dialog open={showModelSelector} onOpenChange={setShowModelSelector}>
+                        <DialogTrigger asChild>
+                          <Button
+                            type="button"
+                            variant="ghost"
+                            size="sm"
+                            className="h-8 px-2 rounded-full hover:bg-muted flex items-center gap-2"
+                          >
+                            <Image 
+                              src={currentModel.image}
+                              alt={currentModel.name}
+                              width={16}
+                              height={16}
+                              className="rounded-full"
+                            />
+                            <span className="text-sm font-medium">{currentModel.name}</span>
+                          </Button>
+                        </DialogTrigger>
+                        <DialogContent className="sm:max-w-fit">
+                          <DialogHeader>
+                            <DialogTitle>{t('selectModel')}</DialogTitle>
+                          </DialogHeader>
+                          {desktopModelSelectorContent}
+                        </DialogContent>
+                      </Dialog>
+                    )}
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>{t('selectModel')}</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+
+              {/* Image upload button */}
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="sm"
+                      className={cn(
+                        "w-8 h-8 p-0 rounded-full hover:bg-muted",
+                        selectedImage ? "text-primary" : ""
+                      )}
+                      onClick={() => fileInputRef.current?.click()}
+                    >
+                      <ImageIcon className="h-4 w-4" />
+                    </Button>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>{selectedImage ? t('changeImage') : t('uploadImage')}</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+
               <input
                 type="file"
                 accept="image/*"
@@ -314,82 +451,33 @@ export function UnifiedGenmojiGenerator({
                 className="hidden"
                 ref={fileInputRef}
               />
-              <Button
-                type="button"
-                variant="ghost"
-                size="sm"
-                className={cn(
-                  "rounded-full flex items-center gap-1.5 text-sm hover:bg-muted/80",
-                  selectedImage ? "text-primary" : "text-muted-foreground hover:text-foreground"
-                )}
-                onClick={() => fileInputRef.current?.click()}
-              >
-                <ImageIcon className="h-4 w-4" />
-                {/* {selectedImage ? t('changeImage') : t('uploadImage')} */}
-              </Button>
             </div>
             
+            {/* Generate button */}
             <Button
               onClick={generateEmoji}
               disabled={isGenerating || !prompt.trim()}
               size="sm"
               className={cn(
-                "rounded-full",
-                "px-6 py-2 bg-gradient-to-r from-pink-500 to-violet-500 hover:from-pink-600 hover:to-violet-600 text-white font-medium shadow-sm"
+                "w-8 h-8 p-0 rounded-full transition-all",
+                prompt.trim() && !isGenerating
+                  ? "bg-gradient-to-r from-pink-500 to-violet-500 hover:from-pink-600 hover:to-violet-600 text-white shadow-sm"
+                  : "bg-muted text-muted-foreground"
               )}
             >
               {isGenerating ? (
-                <div className="flex items-center gap-1.5">
-                  <span className="h-3 w-3 rounded-full bg-white/30 animate-pulse"></span>
-                  {t('generatingButton')}
-                </div>
+                <div className="w-4 h-4 rounded-full bg-white/30 animate-pulse"></div>
               ) : (
-                t('generateButton')
+                <ArrowUp className="h-4 w-4" />
               )}
             </Button>
           </div>
         </div>
       </div>
+
+
     </div>
   );
 
-  return (
-    <>
-      {mode === 'inline' ? (
-        content
-      ) : isMobile ? (
-        <Drawer open={isOpen} onOpenChange={setIsOpen}>
-          <DrawerTrigger asChild>
-            {trigger}
-          </DrawerTrigger>
-          <DrawerContent className="px-0">
-            <DrawerHeader className="px-6">
-              <DrawerTitle>{t('dialogTitle')}</DrawerTitle>
-              <DrawerDescription>
-                {t('dialogDescription')}
-              </DrawerDescription>
-            </DrawerHeader>
-            <div className="px-6 pb-8">
-              {content}
-            </div>
-          </DrawerContent>
-        </Drawer>
-      ) : (
-        <Dialog open={isOpen} onOpenChange={setIsOpen}>
-          <DialogTrigger asChild>
-            {trigger}
-          </DialogTrigger>
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>{t('dialogTitle')}</DialogTitle>
-              <DialogDescription>
-                {t('dialogDescription')}
-              </DialogDescription>
-            </DialogHeader>
-            {content}
-          </DialogContent>
-        </Dialog>
-      )}
-    </>
-  );
+  return content;
 } 

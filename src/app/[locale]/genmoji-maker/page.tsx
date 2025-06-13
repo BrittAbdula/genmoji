@@ -74,7 +74,7 @@ export default async function GenmojiMakerPage(props: Props) {
       
       {/* 2. Generator 模块 */}
       <section className="py-8 max-w-3xl mx-auto">
-        <UnifiedGenmojiGenerator mode="inline" initialPrompt="" init_model="genmoji" />
+        <UnifiedGenmojiGenerator initialPrompt="" init_model="genmoji" />
       </section>
       
       {/* 3. HorizontalGalleryContent 模块 */}

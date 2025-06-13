@@ -136,6 +136,7 @@
     "generatingButton": "Génération en cours...",
     "uploadImage": "Télécharger une image (Optionnel)",
     "changeImage": "Changer l'image",
+    "selectModel": "Sélectionner le modèle",
     "recentTitle": "Genmojis récents",
     "generationStatus": {
       "starting": "Démarrage de la génération..."
@@ -217,7 +218,10 @@
       "copyImage": "Copier l'image",
       "download": "Télécharger",
       "copied": "Copié !",
-      "reGenmoji": "Re-Genmoji",
+      "reGenmoji": "Refaire",
+      "hideGenerator": "Masquer le générateur",
+      "downloading": "Téléchargement...",
+      "copying": "Copie en cours...",
       "share": {
         "title": "Partager sur",
         "twitter": "Partager sur Twitter",
