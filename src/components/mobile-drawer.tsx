@@ -392,14 +392,14 @@ export function MobileDrawer() {
                   <Heart className="h-4 w-4" />
                   {authT('my_emojis')}
                 </Link>
-                <Link
+                {/* <Link
                   href="/profile"
                   onClick={handleLinkClick}
                   className="flex items-center gap-2 px-3 py-2 text-sm rounded-lg hover:bg-muted transition-colors"
                 >
                   <User className="h-4 w-4" />
                   {authT('profile')}
-                </Link>
+                </Link> */}
               </div>
               
               {/* 登出按钮 */}

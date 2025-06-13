@@ -19,6 +19,7 @@ import { useMediaQuery } from "@/hooks/use-media-query";
 import { cn } from "@/lib/utils";
 import { useGenerationStore } from "@/store/generation-store";
 import { useAuthStore } from "@/store/auth-store";
+import { LoginDialog } from "./login-dialog";
 import Image from "next/image";
 
 interface UnifiedGenmojiGeneratorProps {
@@ -45,7 +46,21 @@ export function UnifiedGenmojiGenerator({
   const isMobile = useMediaQuery("(max-width: 768px)");
   
   const { isGenerating, progress, setGenerating, setProgress, setPrompt: setGlobalPrompt } = useGenerationStore();
-  const { token } = useAuthStore();
+  const { token, isLoggedIn } = useAuthStore();
+  const [showLoginDialog, setShowLoginDialog] = useState(false);
+  const [pendingGeneration, setPendingGeneration] = useState(false);
+
+  // 监听登录状态变化，登录成功后自动开始生成
+  useEffect(() => {
+    if (isLoggedIn && pendingGeneration && prompt.trim()) {
+      setPendingGeneration(false);
+      setShowLoginDialog(false);
+      // 延迟一点时间确保对话框关闭动画完成
+      setTimeout(() => {
+        startGeneration();
+      }, 300);
+    }
+  }, [isLoggedIn, pendingGeneration, prompt]);
 
   // Get current model info
   const getCurrentModelInfo = () => {
@@ -168,9 +183,8 @@ export function UnifiedGenmojiGenerator({
     });
   };
 
-  const generateEmoji = async () => {
-    if (!prompt.trim()) return;
-    
+  // 实际的生成逻辑
+  const startGeneration = async () => {
     setGenerating(true);
     setProgress(0);
     setGlobalPrompt(prompt.trim());
@@ -202,6 +216,19 @@ export function UnifiedGenmojiGenerator({
     } finally {
       setGenerating(false);
     }
+  };
+
+  const generateEmoji = async () => {
+    if (!prompt.trim()) return;
+    
+    // 检查用户是否已登录
+    if (!isLoggedIn) {
+      setPendingGeneration(true);
+      setShowLoginDialog(true);
+      return;
+    }
+    
+    await startGeneration();
   };
 
   // 模型数据，方便未来扩展
@@ -479,5 +506,15 @@ export function UnifiedGenmojiGenerator({
     </div>
   );
 
-  return content;
+  return (
+    <>
+      {content}
+      
+      {/* 登录对话框 */}
+      <LoginDialog 
+        open={showLoginDialog} 
+        onOpenChange={setShowLoginDialog}
+      />
+    </>
+  );
 } 

@@ -25,12 +25,18 @@ import { useMediaQuery } from "@/hooks/use-media-query";
 
 interface LoginDialogProps {
   children?: React.ReactNode;
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
 }
 
-export function LoginDialog({ children }: LoginDialogProps) {
+export function LoginDialog({ children, open: controlledOpen, onOpenChange }: LoginDialogProps) {
   const t = useTranslations('auth');
-  const [open, setOpen] = useState(false);
+  const [internalOpen, setInternalOpen] = useState(false);
   const isMobile = useMediaQuery("(max-width: 768px)");
+  
+  // 使用外部控制的 open 状态，如果没有则使用内部状态
+  const open = controlledOpen !== undefined ? controlledOpen : internalOpen;
+  const setOpen = onOpenChange || setInternalOpen;
 
   const content = (
     <div className="flex flex-col items-center gap-4 py-4">
@@ -48,12 +54,17 @@ export function LoginDialog({ children }: LoginDialogProps) {
     </Button>
   );
 
+  // 如果是外部控制且没有 children，直接返回对话框内容
+  const isControlled = controlledOpen !== undefined;
+
   if (isMobile) {
     return (
       <Drawer open={open} onOpenChange={setOpen}>
-        <DrawerTrigger asChild>
-          {trigger}
-        </DrawerTrigger>
+        {!isControlled || children ? (
+          <DrawerTrigger asChild>
+            {trigger}
+          </DrawerTrigger>
+        ) : null}
         <DrawerContent className="px-0">
           <DrawerHeader className="px-6">
             <DrawerTitle>{t('welcome_back')}</DrawerTitle>
@@ -69,9 +80,11 @@ export function LoginDialog({ children }: LoginDialogProps) {
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        {trigger}
-      </DialogTrigger>
+      {!isControlled || children ? (
+        <DialogTrigger asChild>
+          {trigger}
+        </DialogTrigger>
+      ) : null}
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle>{t('welcome_back')}</DialogTitle>

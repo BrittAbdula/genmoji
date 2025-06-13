@@ -641,7 +641,7 @@ export function EmojiDetailContainer({ emoji: initialEmoji }: EmojiDetailContain
   ), [allVariations, displayIndex]);
 
   return (
-    <div className="container mx-auto px-2 flex w-full max-w-xl flex-col items-center">
+    <div className="mx-auto px-4 flex w-full max-w-2xl flex-col items-center">
       {/* <div className="mx-auto flex w-full max-w-xl flex-col items-center"> */}
 
       {/* 标题区域 */}

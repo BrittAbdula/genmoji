@@ -75,30 +75,30 @@ function Feature({
           </div>
         </div>
       </div>
-      <div className="w-full lg:w-3/5 h-[350px] sm:h-[400px] md:h-[450px] relative">
-        <div className="w-full h-full relative flex items-center justify-center">
+      <div className="w-full lg:w-3/5 flex items-center justify-center py-8">
+        <div className="w-full max-w-[320px] sm:max-w-[380px] md:max-w-[480px] lg:max-w-[520px] xl:max-w-[580px] relative">
           {/* Dark mode image */}
-          <div className="hidden dark:block w-full h-full max-w-[500px] max-h-[500px] aspect-square mx-auto">
-            <Image
-              src={imageSrcBlack}
-              alt={t(`${translationKey}.title`) + ' - Dark Mode'}
-              fill
-              sizes="(max-width: 768px) 100vw, 60vw"
-              priority
-              style={{ objectFit: 'contain' }}
-            />
-          </div>
+                      <div className="hidden dark:block w-full aspect-[967/1958] relative">
+              <Image
+                src={imageSrcBlack}
+                alt={t(`${translationKey}.title`) + ' - Dark Mode'}
+                fill
+                sizes="(max-width: 640px) 320px, (max-width: 768px) 380px, (max-width: 1024px) 480px, (max-width: 1280px) 520px, 580px"
+                priority
+                style={{ objectFit: 'contain' }}
+              />
+            </div>
           {/* Light mode image */}
-          <div className="block dark:hidden w-full h-full max-w-[500px] max-h-[500px] aspect-square mx-auto">
-            <Image
-              src={imageSrc}
-              alt={t(`${translationKey}.title`) + ' - Light Mode'}
-              fill
-              sizes="(max-width: 768px) 100vw, 60vw"
-              priority
-              style={{ objectFit: 'contain' }}
-            />
-          </div>
+                      <div className="block dark:hidden w-full aspect-[967/1958] relative">
+              <Image
+                src={imageSrc}
+                alt={t(`${translationKey}.title`) + ' - Light Mode'}
+                fill
+                sizes="(max-width: 640px) 320px, (max-width: 768px) 380px, (max-width: 1024px) 480px, (max-width: 1280px) 520px, 580px"
+                priority
+                style={{ objectFit: 'contain' }}
+              />
+            </div>
         </div>
       </div>
     </div>

@@ -124,12 +124,13 @@ export default async function EmojiPage(props: Props) {
         };
 
         return (
-            <div className="container mx-auto py-4">
+            <div className="py-4">
                 <ScrollToTop />
                 <Script id="json-ld" type="application/ld+json">
                     {JSON.stringify(jsonLd)}
                 </Script>
-                    <EmojiDetailContainer emoji={emoji} />
+                <EmojiDetailContainer emoji={emoji} />
+                <div className="container mx-auto mt-8">
                     <div className="mt-8">
                         <h2 className="text-2xl font-bold mb-8 text-left">{t('similar')}</h2>
                     </div>
@@ -142,6 +143,7 @@ export default async function EmojiPage(props: Props) {
                     }>
                         <RelatedEmojis slug={slug} />
                     </Suspense>
+                </div>
             </div>
         );
     } catch (error) {
