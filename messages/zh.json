@@ -336,10 +336,11 @@
   },
   "generator": {
     "title": "从几个词或短语开始，最好地描述您的想法",
-    "placeholder": "例如：'戴帽子的红色猫'",
+    "placeholder": "描述您的 genmoji",
     "generateButton": "生成 genmoji",
     "generatingButton": "生成中...",
     "uploadImage": "上传图片（可选）",
+    "uploadReference": "上传参考图片",
     "changeImage": "更换图片",
     "selectModel": "选择风格",
     "recentTitle": "最近生成的 Genmoji",
@@ -365,6 +366,35 @@
         "name": "吉祥物",
         "description": "卡通吉祥物风格"
       }
+    },
+    "prompts": {
+      "genmoji": [
+        "企鹅魔法师",
+        "戴墨镜的猫",
+        "带爱心的笑脸",
+        "喷火龙",
+        "跳舞机器人",
+        "彩虹独角兽",
+        "忍者龟"
+      ],
+      "sticker": [
+        "戴蝴蝶结的小狗",
+        "微笑的皮卡丘",
+        "尤达宝宝",
+        "戴皇冠的柯基",
+        "可爱牛油果",
+        "微笑太阳",
+        "快乐云朵"
+      ],
+      "mascot": [
+        "酷狗说唱歌手",
+        "商业猫咪CEO",
+        "运动员熊",
+        "厨师大象",
+        "科学家猫头鹰",
+        "艺术家狐狸",
+        "飞行员企鹅"
+      ]
     }
   },
   "cta": {

@@ -131,10 +131,11 @@
   },
   "generator": {
     "title": "Commencez par quelques mots ou une phrase qui décrit le mieux votre idée",
-    "placeholder": "ex : 'un chat rouge avec un chapeau'",
+    "placeholder": "Décrivez votre genmoji",
     "generateButton": "Générer un genmoji",
     "generatingButton": "Génération en cours...",
     "uploadImage": "Télécharger une image (Optionnel)",
+    "uploadReference": "Télécharger une image de référence",
     "changeImage": "Changer l'image",
     "selectModel": "Sélectionner le style",
     "recentTitle": "Genmojis récents",
@@ -160,6 +161,35 @@
         "name": "Mascotte",
         "description": "Style mascotte de dessin animé"
       }
+    },
+    "prompts": {
+      "genmoji": [
+        "Pingouin magicien",
+        "Chat avec lunettes de soleil",
+        "Visage souriant avec cœur",
+        "Dragon crachant du feu",
+        "Robot qui danse",
+        "Licorne avec arc-en-ciel",
+        "Tortue ninja"
+      ],
+      "sticker": [
+        "Chiot mignon avec nœud papillon",
+        "Pikachu souriant",
+        "Bébé Yoda",
+        "Corgi avec couronne",
+        "Avocat kawaii",
+        "Soleil souriant",
+        "Nuage heureux"
+      ],
+      "mascot": [
+        "Chien rappeur cool",
+        "Chat PDG d'entreprise",
+        "Ours athlète",
+        "Éléphant chef",
+        "Hibou scientifique",
+        "Renard artiste",
+        "Pingouin pilote"
+      ]
     }
   },
   "cta": {

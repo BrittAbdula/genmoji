@@ -1,6 +1,5 @@
 "use client";
 
-
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Drawer, DrawerContent, DrawerHeader, DrawerTitle, DrawerTrigger } from "@/components/ui/drawer";
 import { Button } from "@/components/ui/button";
@@ -50,6 +49,19 @@ export function UnifiedGenmojiGenerator({
   const [showLoginDialog, setShowLoginDialog] = useState(false);
   const [pendingGeneration, setPendingGeneration] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
+
+  // Get localized prompts based on current model
+  const getDefaultPrompts = () => {
+    try {
+      // Get prompts from translation file based on current model
+      const prompts = t.raw(`prompts.${model}`);
+      return Array.isArray(prompts) ? prompts : [];
+    } catch (error) {
+      // Fallback to empty array if translation is missing
+      console.warn(`Missing translation for prompts.${model}:`, error);
+      return [];
+    }
+  };
 
   // 监听登录状态变化，登录成功后自动开始生成
   useEffect(() => {
@@ -243,6 +255,22 @@ export function UnifiedGenmojiGenerator({
     await startGeneration();
   };
 
+  // Handle prompt click
+  const handlePromptClick = (promptText: string) => {
+    setPrompt(promptText);
+    // Focus textarea after setting prompt
+    if (textareaRef.current) {
+      textareaRef.current.focus();
+      // Move cursor to end
+      setTimeout(() => {
+        if (textareaRef.current) {
+          const length = promptText.length;
+          textareaRef.current.setSelectionRange(length, length);
+        }
+      }, 0);
+    }
+  };
+
   // 模型数据，方便未来扩展
   const models = [
     {
@@ -369,7 +397,10 @@ export function UnifiedGenmojiGenerator({
               }
             }}
             rows={3}
-            className="resize-none min-h-[100px] border-0 focus-visible:ring-0 focus-visible:ring-offset-0 rounded-xl bg-card pb-16 text-lg p-4"
+            className={cn(
+              "resize-none min-h-[100px] border-0 focus-visible:ring-0 focus-visible:ring-offset-0 rounded-xl bg-card text-lg p-4",
+              "pb-16" // Fixed padding bottom for consistent layout
+            )}
           />
           
           {(selectedImage || isUploading) && (
@@ -491,9 +522,12 @@ export function UnifiedGenmojiGenerator({
                       ) : (
                         <ImageIcon className="h-4 w-4" />
                       )}
-                    </Button>
+                                        </Button>
                   </TooltipTrigger>
-                </Tooltip>
+                  <TooltipContent>
+                    <p>{t('uploadReference')}</p>
+                  </TooltipContent>
+                  </Tooltip>
               </TooltipProvider>
 
               <input
@@ -526,9 +560,39 @@ export function UnifiedGenmojiGenerator({
             </Button>
           </div>
         </div>
+
+        {/* Prompt suggestions - moved outside input box and below it */}
+        <div className="w-full">
+          <div className="flex flex-wrap gap-2 justify-center">
+            {getDefaultPrompts().map((promptText, index) => (
+              <button
+                key={index}
+                type="button"
+                onClick={() => handlePromptClick(promptText)}
+                className={cn(
+                  "px-4 py-2 text-sm rounded-full border border-border/50",
+                  "bg-muted/40 hover:bg-muted/70 text-muted-foreground hover:text-foreground",
+                  "transition-all duration-200 hover:shadow-md hover:border-border/70 hover:scale-105",
+                  "backdrop-blur-sm",
+                  "whitespace-nowrap"
+                )}
+              >
+                {promptText}
+              </button>
+            ))}
+          </div>
+        </div>
       </div>
-
-
+      {/* Add CSS for hiding scrollbar */}
+      <style jsx>{`
+        .scrollbar-hide {
+          -ms-overflow-style: none;
+          scrollbar-width: none;
+        }
+        .scrollbar-hide::-webkit-scrollbar {
+          display: none;
+        }
+      `}</style>
     </div>
   );
 
@@ -543,4 +607,4 @@ export function UnifiedGenmojiGenerator({
       />
     </>
   );
-} 
+}

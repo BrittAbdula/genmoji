@@ -335,10 +335,11 @@
   },
   "generator": {
     "title": "Start with a few words or a phrase that best describes your idea",
-    "placeholder": "e.g. 'a red cat with a hat'",
+    "placeholder": "Describe your genmoji",
     "generateButton": "Generate genmoji",
     "generatingButton": "Generating...",
     "uploadImage": "Upload Image (Optional)",
+    "uploadReference": "Upload reference image",
     "changeImage": "Change Image",
     "selectModel": "Select Style",
     "recentTitle": "Recent Genmojis",
@@ -364,6 +365,35 @@
         "name": "Mascot",
         "description": "Cartoon mascot style"
       }
+    },
+    "prompts": {
+      "genmoji": [
+        "Penguin Wizard",
+        "Cat wearing sunglasses",
+        "Happy face with heart",
+        "Dragon breathing fire",
+        "Robot dancing",
+        "Unicorn with rainbow",
+        "Ninja turtle"
+      ],
+      "sticker": [
+        "Cute puppy with bow tie",
+        "Pikachu smiling",
+        "Baby Yoda",
+        "Corgi with crown",
+        "Kawaii avocado",
+        "Smiling sun",
+        "Happy cloud"
+      ],
+      "mascot": [
+        "Cool dog rapper",
+        "Business cat CEO",
+        "Athlete bear",
+        "Chef elephant",
+        "Scientist owl",
+        "Artist fox",
+        "Pilot penguin"
+      ]
     }
   },
   "cta": {
