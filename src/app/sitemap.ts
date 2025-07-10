@@ -33,18 +33,18 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   );
 
   try {
-    // Fetch dynamically generated emoji pages
-    // const emojis = await getEmojis(0, 1000, 'en');
+    // Fetch indexable emojis for sitemap
+    const emojis = await getEmojis(0, 5000, 'en', { isIndexable: true });
 
     // Generate emoji routes for all locales
-    // const dynamicRoutes = locales.flatMap(locale =>
-    //   emojis.map((emoji: Emoji) => ({
-    //     url: `${baseUrl}${locale === 'en' ? '' : '/' + locale}/emoji/${emoji.slug}/`,
-    //     lastModified: emoji.created_at ? new Date(emoji.created_at) : now,
-    //     changeFrequency: 'weekly' as const,
-    //     priority: 0.6,
-    //   }))
-    // );
+    const emojiRoutes = locales.flatMap(locale =>
+      emojis.map((emoji: Emoji) => ({
+        url: `${baseUrl}${locale === 'en' ? '' : '/' + locale}/emoji/${emoji.slug}/`,
+        lastModified: emoji.created_at ? new Date(emoji.created_at) : now,
+        changeFrequency: 'weekly' as const,
+        priority: 0.6,
+      }))
+    );
 
     const groups = await getEmojiGroups('en');
     const models = groups.models;
@@ -88,6 +88,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       },
       ...staticRoutes,
       ...dynamicRoutes,
+      ...emojiRoutes,
     ];
   } catch (error) {
     console.error('Error generating sitemap:', error);

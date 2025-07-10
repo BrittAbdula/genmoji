@@ -107,6 +107,7 @@ export default function MyEmojisPage() {
     locale: 'en',
     has_reference_image: false,
     quality_score: 0,
+    is_indexable: false,
   });
 
   if (!isLoggedIn) {

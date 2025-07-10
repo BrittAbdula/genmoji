@@ -93,7 +93,8 @@ const EmojiCard = ({ slug, image_url, index }: { slug: string; image_url: string
     is_public: true,
     locale: locale,
     has_reference_image: false,
-    model: "showcase"
+    model: "showcase",
+    is_indexable: false
   };
   
   return (

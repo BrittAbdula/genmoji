@@ -29,6 +29,7 @@ export interface Emoji {
   subject_count?: number;
   keywords?: string | string[];
   likes_count?: number;
+  is_indexable: boolean;
 }
 
 export interface EmojiResponse {
