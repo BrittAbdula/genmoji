@@ -3,10 +3,7 @@ import { siteConfig } from "@/lib/config";
 import { Emoji, EmojiResponse } from "@/types/emoji";
 import { getEmojiGroups, getEmojis } from "@/lib/api";
 
-// Supported locales
-const locales = ['en', 'fr', 'ja', 'zh'];
-
-// Static routes that should be available in all locales
+// Static routes (only default language for sitemap)
 const routes = [
   '',
   'gallery',
@@ -22,15 +19,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = siteConfig.url;
   const now = new Date();
 
-  // Generate static routes for all locales
-  const staticRoutes = locales.flatMap(locale => 
-    routes.map(route => ({
-      url: `${baseUrl}${locale === 'en' ? '' : '/' + locale}${route ? `/${route}` : ''}/`,
-      lastModified: now,
-      changeFrequency: 'daily' as const,
-      priority: route === '' ? 1.0 : 0.8,
-    }))
-  );
+  // Generate static routes for default language only
+  const staticRoutes = routes.map(route => ({
+    url: `${baseUrl}${route ? `/${route}` : ''}/`,
+    lastModified: now,
+    changeFrequency: 'daily' as const,
+    priority: route === '' ? 1.0 : 0.8,
+  }));
 
   try {
     // Fetch indexable emojis for sitemap
@@ -53,47 +48,43 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     // Trim to exactly maxEmojis if we got more
     emojis.splice(maxEmojis);
 
-    // Generate emoji routes for all locales
-    const emojiRoutes = locales.flatMap(locale =>
-      emojis.map((emoji: Emoji) => ({
-        url: `${baseUrl}${locale === 'en' ? '' : '/' + locale}/emoji/${emoji.slug}/`,
-        lastModified: emoji.created_at ? new Date(emoji.created_at) : now,
-        changeFrequency: 'weekly' as const,
-        priority: 0.6,
-      }))
-    );
+    // Generate emoji routes for default language only
+    const emojiRoutes = emojis.map((emoji: Emoji) => ({
+      url: `${baseUrl}/emoji/${emoji.slug}/`,
+      lastModified: emoji.created_at ? new Date(emoji.created_at) : now,
+      changeFrequency: 'weekly' as const,
+      priority: 0.6,
+    }));
 
     const groups = await getEmojiGroups('en');
     const models = groups.models;
     const colors = groups.colors;
     const categories = groups.categories;
 
-    let dynamicRoutes = locales.flatMap(locale =>
-      models.map(model => ({
-        url: `${baseUrl}${locale === 'en' ? '' : '/' + locale}${model.name ? `/model/${model.name}` : ''}/`,
-        lastModified: now,
-        changeFrequency: 'monthly' as const,
-        priority: model.name === '' ? 1.0 : 0.8,
-      }))
-    );
+    let dynamicRoutes = models.map(model => ({
+      url: `${baseUrl}${model.name ? `/model/${model.name}` : ''}/`,
+      lastModified: now,
+      changeFrequency: 'monthly' as const,
+      priority: model.name === '' ? 1.0 : 0.8,
+    }));
 
-    dynamicRoutes = dynamicRoutes.concat(locales.flatMap(locale =>
+    dynamicRoutes = dynamicRoutes.concat(
       colors.map(color => ({
-        url: `${baseUrl}${locale === 'en' ? '' : '/' + locale}${color.name ? `/color/${color.name}` : ''}/`,
+        url: `${baseUrl}${color.name ? `/color/${color.name}` : ''}/`,
         lastModified: now,
         changeFrequency: 'monthly' as const,
         priority: color.name === '' ? 1.0 : 0.8,
       }))
-    ));
+    );
 
-    dynamicRoutes = dynamicRoutes.concat(locales.flatMap(locale =>
+    dynamicRoutes = dynamicRoutes.concat(
       categories.map(category => ({
-        url: `${baseUrl}${locale === 'en' ? '' : '/' + locale}${category.name ? `/category/${category.name}` : ''}/`,
+        url: `${baseUrl}${category.name ? `/category/${category.name}` : ''}/`,
         lastModified: now,
         changeFrequency: 'monthly' as const,
         priority: category.name === '' ? 1.0 : 0.8,
       }))
-    ));
+    );
 
     return [
       // Root URL without locale
