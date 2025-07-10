@@ -64,7 +64,8 @@ export function GlobalGenerationIndicator() {
                   variant="ghost"
                   size="sm"
                   className="h-8 w-8 p-0"
-                  onClick={(e) => {
+                  onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
+                    e.stopPropagation();
                     setShouldAutoCollapse(true);
                     setIsExpanded(false);
                   }}
