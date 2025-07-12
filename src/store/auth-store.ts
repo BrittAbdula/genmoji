@@ -71,7 +71,15 @@ const authStore: StateCreator<
       });
 
       if (!response.ok) {
-        throw new Error('Token invalid');
+        // 只有在明确的认证失败时才清除状态
+        if (response.status === 401 || response.status === 403) {
+          console.log('Token invalid, logging out');
+          get().logout();
+        } else {
+          // 其他错误（如网络错误）不立即清除认证状态
+          console.warn('Auth check failed with status:', response.status);
+        }
+        return;
       }
 
       const result = await response.json();
