@@ -102,10 +102,11 @@ export function SubscriptionLimitDialog({
       const response = await getSubscriptionPlans();
       if (response.success) {
         setPlans(response.plans.filter(plan => plan.is_active));
-        const firstPaidPlan = response.plans.find(plan => plan.price_monthly > 0);
-        if (firstPaidPlan) {
-          setSelectedPlan(firstPaidPlan.id);
-        }
+        // Initialize selected plan based on current billing cycle
+        const yearlyPlan = response.plans.find(plan => (plan.price_yearly ?? 0) > 0);
+        const monthlyPlan = response.plans.find(plan => (plan.price_monthly ?? 0) > 0);
+        const initialPlan = billingCycle === 'yearly' ? yearlyPlan : monthlyPlan;
+        if (initialPlan) setSelectedPlan(initialPlan.id);
       }
     } catch (error) {
       console.error('Failed to load subscription plans:', error);
@@ -113,6 +114,17 @@ export function SubscriptionLimitDialog({
       setLoading(false);
     }
   };
+
+  // Keep selected plan in sync with billing cycle and available plans
+  useEffect(() => {
+    if (!plans.length) return;
+    const yearlyPlan = plans.find(plan => (plan.price_yearly ?? 0) > 0);
+    const monthlyPlan = plans.find(plan => (plan.price_monthly ?? 0) > 0);
+    const nextPlan = billingCycle === 'yearly' ? yearlyPlan : monthlyPlan;
+    if (nextPlan && selectedPlan !== nextPlan.id) {
+      setSelectedPlan(nextPlan.id);
+    }
+  }, [billingCycle, plans]);
 
   const handleSubscribe = async () => {
     if (!selectedPlan || !token) return;
