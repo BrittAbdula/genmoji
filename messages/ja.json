@@ -186,7 +186,8 @@
   "footer": {
     "links": {
       "privacy": "プライバシーポリシー",
-      "terms": "利用規約"
+      "terms": "利用規約",
+      "refund": "返金ポリシー"
     },
     "copyright": "© 2025 GenmojiOnline.com 無断転載を禁じます。",
     "social": {
@@ -201,9 +202,15 @@
     "profile": "プロフィール",
     "my_emojis": "マイ絵文字",
     "welcome_back": "おかえりなさい",
-    "login_description": "ログインして絵文字を保存し、どこからでもアクセスできます。",
-    "privacy_notice": "ログインすることで、プライバシーポリシーと利用規約に同意したことになります。お客様のデータを安全に保護いたします。",
-    "signing_in": "ログイン中"
+    "login_description": "ログインしてgenmojiを保存し、どこからでもアクセスできます。",
+    "privacy_notice": "ログインすることで、プライバシーポリシーと利用規約に同意したことになります。データを安全に保護いたします。",
+    "signing_in": "ログイン中",
+    "premium": "プレミアム",
+    "manage_subscription": "サブスクリプション管理",
+    "upgrade_to_premium": "プレミアムにアップグレード",
+    "free_plan": "無料プラン",
+    "generations_today": "今日の生成回数",
+    "credits_this_month": "今月のクレジット"
   },
   "my_emojis": {
     "title": "マイ絵文字",
@@ -285,6 +292,38 @@
     }
   },
   "legal": {
+    "refundPolicy": {
+      "title": "返金ポリシー",
+      "metaDescription": "Genmoji Onlineの返金ポリシー（適用条件、申請方法、処理について）をご確認ください。",
+      "lastRevised": "最終更新日：2025年8月07日",
+      "ourRefundPolicy": {
+        "title": "当社の返金ポリシー",
+        "description": "Genmoji Onlineでは、最高の体験を提供するよう努めています。状況が変わり、返金を希望される場合があることも理解しています。購入前に本返金ポリシーをよくお読みください。"
+      },
+      "eligibility": {
+        "title": "返金の対象条件",
+        "items": [
+          "期限：返金リクエストは購入後3日以内に行ってください。この期間を過ぎた場合、返金の対応はできません。",
+          "クレジット使用量：使用済みクレジットが50を超える場合、購入からの経過時間に関わらず返金の対象外となります。"
+        ]
+      },
+      "howToRequest": {
+        "title": "返金の申請方法",
+        "steps": [
+          "お問い合わせ：support@genmojionline.com までサポートチームにご連絡ください。",
+          "詳細の提供：アカウント情報、注文番号、購入日、返金理由を記載してください。",
+          "3日以内の提出：購入から3日以内に申請を完了してください。"
+        ]
+      },
+      "processing": {
+        "title": "返金の処理",
+        "description": "返金リクエストを受領後、内容を確認し、結果を速やかにご連絡します。承認された場合、返金は元のお支払い方法に処理されます。"
+      },
+      "changes": {
+        "title": "本ポリシーの変更",
+        "description": "当社は本返金ポリシーを随時更新する権利を有します。変更は本ページに反映されますので、定期的にご確認ください。"
+      }
+    },
     "privacyPolicy": {
       "title": "プライバシーポリシー",
       "effectiveDate": "発効日：2025年1月21日",
@@ -409,5 +448,114 @@
     "description": "ブラウザの言語が現在のページの言語と異なることに気付きました。優先言語に切り替えますか？",
     "stayIn": "{language}のままにする",
     "switchTo": "{language}に切り替える"
+  },
+  "subscription": {
+    "seo": {
+      "title": "サブスクリプションプラン - Genmoji Online",
+      "description": "絵文字作成ニーズに最適なプランを選択。無制限生成、高度な機能など。"
+    },
+    "title": "プランを選択",
+    "subtitle": "プレミアムプランで無限の創造性を解放",
+    "bestValue": "最もお得",
+    "saveWithYearly": "年額で{off}お得",
+    "usdPerMonth": "USD/月",
+    "billedYearly": "年額請求",
+    "upgradeToPro": "Proにアップグレード",
+    "secureCheckoutShort": "安全なチェックアウト • いつでも解約可能",
+    "paymentMethods": "Visa / MasterCard / Apple Pay",
+    "proPlan": "Pro",
+    "monthlyCreditsDescription": "月間クレジット使用量",
+    "currentPlan": "現在のプラン",
+    "mostPopular": "最も人気",
+    "dailyUsage": "日次使用量",
+    "monthlyCredits": "月間クレジット",
+    "unlimited": "無制限",
+    "generations": "生成回数",
+    "monthly": "月額",
+    "yearly": "年額",
+    "save": "節約",
+    "upgrade": "{plan}にアップグレード",
+    "currentPlanButton": "現在のプラン",
+    "processing": "処理中...",
+    "features": {
+      "unlimitedGenerations": "無制限の日次生成",
+      "prioritySupport": "優先カスタマーサポート",
+      "advancedModels": "高度なAIモデルへのアクセス",
+      "highQuality": "高品質出力",
+      "commercialUse": "商業利用権",
+      "noWatermark": "透かしなし",
+      "fastGeneration": "高速生成"
+    },
+    "footer": {
+      "securePayment": "すべてのプランにStripeによる安全な決済処理が含まれています",
+      "guarantee": "いつでもキャンセル可能。隠れた料金なし。30日間返金保証。"
+    },
+    "limitDialog": {
+      "upgradeHeroTitle": "Proでなんでも想像しよう",
+      "upgradeHeroSubtitle": "より高品質・より高速な生成・商用利用権",
+      "creditsPerMonth": "月{count}クレジットまで",
+      "generationsPerDay": "1日{count}回まで",
+      "standardSpeed": "標準速度",
+      "personalUse": "個人利用",
+      "prioritySpeed": "優先速度",
+      "monthlyCreditsUsed": "月間クレジットの使用状況",
+      "dailyLimitReached": "日次制限に達しました",
+      "monthlyUsage": "月間クレジット{limit}のうち{current}を使用しました",
+      "dailyUsage": "1日の生成{limit}回のうち{current}回を使用しました",
+      "freeComeBackIn": "無料で、{time}後に戻ってください",
+      "comeBackIn": "{time}後に戻ってください",
+      "title": "日次生成制限に達しました",
+      "description": "日次生成{limit}回中{current}回を使用しました",
+      "resetsIn": "{time}後にリセット",
+      "waitButton": "{time}待つ",
+      "upgradeButton": "今すぐアップグレード",
+      "securePayment": "Stripeによる安全な決済。いつでもキャンセル可能。"
+    },
+    "management": {
+      "amount": "金額",
+      "perMonth": "月",
+      "perYear": "年",
+      "nextBilling": "次回請求",
+      "yearlyBilling": "年額請求",
+      "monthlyBilling": "月額請求",
+      "resetsAt": "リセット時刻",
+      "usedThisMonth": "今月の使用",
+      "title": "サブスクリプション管理",
+      "subtitle": "サブスクリプションと使用状況を管理",
+      "backToHome": "ホームに戻る",
+      "currentPlan": "現在のプラン",
+      "currentPlanDescription": "現在のサブスクリプション詳細",
+      "dailyUsage": "日次使用量",
+      "dailyUsageDescription": "今日の生成使用状況",
+      "usedToday": "今日使用済み",
+      "resetsIn": "リセット時間",
+      "planFeatures": "プラン機能",
+      "premiumBenefits": "プレミアム特典",
+      "unlimitedGenerations": "無制限の日次生成",
+      "prioritySupport": "優先サポート",
+      "commercialRights": "商業利用権",
+      "freePlan": "無料プラン",
+      "freePlanDescription": "現在無料プランを使用しており、日次生成回数が制限されています。",
+      "upgradeToPremium": "プレミアムにアップグレード",
+      "subscriptionActions": "サブスクリプション操作",
+      "subscriptionActionsDescription": "サブスクリプション設定を管理",
+      "cancelSubscription": "サブスクリプションをキャンセル",
+      "cancelDescription": "キャンセルすると、現在の請求期間の終了時にプレミアム機能へのアクセスが終了します。いつでも再アクティベートできます。",
+      "cancelling": "キャンセル中...",
+      "billingInformation": "請求情報",
+      "billingDescription": "Stripeカスタマーポータルを通じて支払い方法と請求詳細を管理します。",
+      "manageBilling": "請求を管理",
+      "needHelp": "ヘルプが必要ですか？",
+      "needHelpDescription": "サブスクリプションのサポートを受ける",
+      "contactSupport": "サポートに連絡",
+      "contactSupportDescription": "サブスクリプションについて質問がありますか？サポートチームがお手伝いします。",
+      "faq": "よくある質問",
+      "faqDescription": "一般的なサブスクリプションの質問の答えを見つける。",
+      "viewFaq": "よくある質問を見る",
+      "loading": "サブスクリプション情報を読み込み中...",
+      "error": "サブスクリプション情報の読み込みに失敗しました",
+      "cancelError": "サブスクリプションのキャンセルに失敗しました",
+      "confirmCancel": "サブスクリプションをキャンセルしてもよろしいですか？現在の請求期間の終了時にプレミアム機能へのアクセスが終了します。"
+    }
   }
 } 

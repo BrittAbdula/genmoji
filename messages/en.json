@@ -131,7 +131,8 @@
   "footer": {
     "links": {
       "privacy": "Privacy Policy",
-      "terms": "Terms of Service"
+      "terms": "Terms of Service",
+      "refund": "Refund Policy"
     },
     "copyright": "© 2025 GenmojiOnline.com All rights reserved.",
     "social": {
@@ -148,7 +149,13 @@
     "welcome_back": "Welcome Back",
     "login_description": "Sign in to save your genmojis and access them anywhere.",
     "privacy_notice": "By signing in, you agree to our Privacy Policy and Terms of Service. We'll keep your data safe and secure.",
-    "signing_in": "Signing in"
+    "signing_in": "Signing in",
+    "premium": "Premium",
+    "manage_subscription": "Manage Subscription",
+    "upgrade_to_premium": "Upgrade to Premium",
+    "free_plan": "Free Plan",
+    "generations_today": "generations today",
+    "credits_this_month": "credits this month"
   },
   "my_emojis": {
     "title": "My Emojis",
@@ -228,6 +235,38 @@
     }
   },
   "legal": {
+    "refundPolicy": {
+      "title": "Refund Policy",
+      "metaDescription": "Read Genmoji Online's refund policy, including eligibility, how to request a refund, and processing details.",
+      "lastRevised": "Last revised: Aug 07, 2025",
+      "ourRefundPolicy": {
+        "title": "Our Refund Policy",
+        "description": "At Genmoji Online, we strive to provide the best experience possible. We understand that circumstances may change, and you might need to request a refund. Please read our refund policy carefully before making a purchase."
+      },
+      "eligibility": {
+        "title": "Refund Eligibility",
+        "items": [
+          "Time Limit: Refund requests must be made within 3 days of your purchase. After this period, we cannot process any refund requests.",
+          "Credit Usage: If you have used more than 50 credits, you are not eligible for a refund, regardless of the time since purchase."
+        ]
+      },
+      "howToRequest": {
+        "title": "How to Request a Refund",
+        "steps": [
+          "Contact Us: Reach out to our support team at support@genmojionline.com.",
+          "Provide Details: Include your account details, order number, purchase date, and reason for the refund request.",
+          "Submit Within 3 Days: Ensure your request is submitted within 3 days of your purchase."
+        ]
+      },
+      "processing": {
+        "title": "Processing Refunds",
+        "description": "Once we receive your refund request, we will review it and notify you of the outcome soon. If approved, your refund will be processed to your original payment method."
+      },
+      "changes": {
+        "title": "Changes to This Policy",
+        "description": "We reserve the right to update our refund policy at any time. Any changes will be reflected on this page, and we encourage you to review it periodically."
+      }
+    },
     "privacyPolicy": {
       "title": "Privacy Policy",
       "effectiveDate": "Effective Date: January 21, 2025",
@@ -406,5 +445,114 @@
     "description": "We noticed your browser language differs from the current page language. Would you like to switch to your preferred language?",
     "stayIn": "Stay in {language}",
     "switchTo": "Switch to {language}"
+  },
+  "subscription": {
+    "seo": {
+      "title": "Subscription Plans - Genmoji Online",
+      "description": "Choose the perfect plan for your genmoji creation needs. Unlimited generations, advanced features, and more."
+    },
+    "title": "Choose Your Plan",
+    "subtitle": "Unlock unlimited creativity with our premium plans",
+    "bestValue": "Best value",
+    "saveWithYearly": "Save {off} with yearly",
+    "usdPerMonth": "USD/month",
+    "billedYearly": "billed yearly",
+    "upgradeToPro": "Upgrade to Pro",
+    "secureCheckoutShort": "Secure checkout • Cancel anytime",
+    "paymentMethods": "Visa / MasterCard / Apple Pay",
+    "proPlan": "Pro",
+    "monthlyCreditsDescription": "Your monthly credit usage",
+    "currentPlan": "Current Plan",
+    "mostPopular": "Most Popular",
+    "dailyUsage": "Daily Usage",
+    "monthlyCredits": "Monthly Credits",
+    "unlimited": "Unlimited",
+    "generations": "generations",
+    "monthly": "Monthly",
+    "yearly": "Yearly",
+    "save": "Save",
+    "upgrade": "Upgrade to {plan}",
+    "currentPlanButton": "Current Plan",
+    "processing": "Processing...",
+    "features": {
+      "unlimitedGenerations": "Unlimited daily generations",
+      "prioritySupport": "Priority customer support",
+      "advancedModels": "Access to advanced AI models",
+      "highQuality": "High-quality output",
+      "commercialUse": "Commercial usage rights",
+      "noWatermark": "No watermark",
+      "fastGeneration": "Faster generation speed"
+    },
+    "footer": {
+      "securePayment": "All plans include secure payment processing by Stripe",
+      "guarantee": "Cancel anytime. No hidden fees. 30-day money-back guarantee."
+    },
+    "limitDialog": {
+      "upgradeHeroTitle": "Imagine anything with Pro",
+      "upgradeHeroSubtitle": "Higher quality, faster generations, and commercial rights",
+      "creditsPerMonth": "Up to {count} credits/month",
+      "generationsPerDay": "Up to {count} generations/day",
+      "standardSpeed": "Standard speed",
+      "personalUse": "Personal use",
+      "prioritySpeed": "Priority speed",
+      "monthlyCreditsUsed": "Monthly Credits Used",
+      "dailyLimitReached": "Daily Limit Reached",
+      "monthlyUsage": "You've used {current} of {limit} monthly credits",
+      "dailyUsage": "You've used {current} of {limit} daily generations",
+      "freeComeBackIn": "Free, come back in {time}",
+      "comeBackIn": "Come back in {time}",
+      "title": "Generation Limit Reached",
+      "description": "You've used {current} of {limit}",
+      "resetsIn": "Resets in {time}",
+      "waitButton": "Wait {time}",
+      "upgradeButton": "Upgrade Now",
+      "securePayment": "Secure payment powered by Stripe. Cancel anytime."
+    },
+    "management": {
+      "amount": "Amount",
+      "perMonth": "month",
+      "perYear": "year",
+      "nextBilling": "Next billing",
+      "yearlyBilling": "Yearly billing",
+      "monthlyBilling": "Monthly billing",
+      "resetsAt": "Resets at",
+      "usedThisMonth": "Used this month",
+      "title": "Subscription Management",
+      "subtitle": "Manage your subscription and usage",
+      "backToHome": "Back to Home",
+      "currentPlan": "Current Plan",
+      "currentPlanDescription": "Your current subscription details",
+      "dailyUsage": "Daily Usage",
+      "dailyUsageDescription": "Your generation usage for today",
+      "usedToday": "Used today",
+      "resetsIn": "Resets in",
+      "planFeatures": "Plan Features",
+      "premiumBenefits": "Premium Benefits",
+      "unlimitedGenerations": "Unlimited daily generations",
+      "prioritySupport": "Priority support",
+      "commercialRights": "Commercial usage rights",
+      "freePlan": "Free Plan",
+      "freePlanDescription": "You're currently on the free plan with limited daily generations.",
+      "upgradeToPremium": "Upgrade to Premium",
+      "subscriptionActions": "Subscription Actions",
+      "subscriptionActionsDescription": "Manage your subscription settings",
+      "cancelSubscription": "Cancel Subscription",
+      "cancelDescription": "Cancelling will end your premium access at the end of your current billing period. You can reactivate anytime.",
+      "cancelling": "Cancelling...",
+      "billingInformation": "Billing Information",
+      "billingDescription": "Manage your payment method and billing details through your Stripe customer portal.",
+      "manageBilling": "Manage Billing",
+      "needHelp": "Need Help?",
+      "needHelpDescription": "Get support with your subscription",
+      "contactSupport": "Contact Support",
+      "contactSupportDescription": "Have questions about your subscription? Our support team is here to help.",
+      "faq": "FAQ",
+      "faqDescription": "Find answers to common subscription questions.",
+      "viewFaq": "View FAQ",
+      "loading": "Loading subscription information...",
+      "error": "Failed to load subscription information",
+      "cancelError": "Failed to cancel subscription",
+      "confirmCancel": "Are you sure you want to cancel your subscription? You will lose access to premium features at the end of your current billing period."
+    }
   }
 } 

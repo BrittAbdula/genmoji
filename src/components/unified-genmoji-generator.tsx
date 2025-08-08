@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Progress } from "@/components/ui/progress";
 import { useState, useEffect, useRef } from "react";
-import { genMoji, uploadImage } from "@/lib/api";
+import { genMoji, uploadImage, GenerationLimitError } from "@/lib/api";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { Emoji } from "@/types/emoji";
 import { ImageIcon, X, Plus, ArrowUp, Globe } from 'lucide-react';
@@ -19,6 +19,7 @@ import { cn } from "@/lib/utils";
 import { useGenerationStore } from "@/store/generation-store";
 import { useAuthStore } from "@/store/auth-store";
 import { LoginDialog } from "./login-dialog";
+import { SubscriptionLimitDialog } from "./subscription-limit-dialog";
 import Image from "next/image";
 
 interface UnifiedGenmojiGeneratorProps {
@@ -49,6 +50,13 @@ export function UnifiedGenmojiGenerator({
   const [showLoginDialog, setShowLoginDialog] = useState(false);
   const [pendingGeneration, setPendingGeneration] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
+  const [showSubscriptionDialog, setShowSubscriptionDialog] = useState(false);
+  const [limitInfo, setLimitInfo] = useState<{
+    currentCount: number;
+    limit: number;
+    resetTime: string;
+    type?: 'monthly' | 'daily';
+  } | null>(null);
 
   // Get localized prompts based on current model
   const getDefaultPrompts = () => {
@@ -235,8 +243,22 @@ export function UnifiedGenmojiGenerator({
       } else {
         throw new Error(emojiResponse.error || t('error.failed'));
       }
-    } catch (error) {
-      console.error('Error:', error);
+    } catch (error: any) {
+      // 处理生成限制错误 - 这是预期的用户流程
+      if (error instanceof GenerationLimitError) {
+        setLimitInfo({
+          currentCount: error.details.currentCount || 0,
+          limit: error.details.limit || 0,
+          resetTime: error.details.resetTime, // 完全依赖API返回的重置时间
+          type: error.details.type
+        });
+        setShowSubscriptionDialog(true);
+        // 不在控制台记录限制错误，因为这是正常的用户流程
+      } else {
+        // 只记录非预期的错误
+        console.error('Generation error:', error);
+        // 这里可以添加用户友好的错误提示，比如 toast 通知
+      }
     } finally {
       setGenerating(false);
     }
@@ -605,6 +627,15 @@ export function UnifiedGenmojiGenerator({
         open={showLoginDialog} 
         onOpenChange={setShowLoginDialog}
       />
+      
+      {/* 订阅限制对话框 */}
+      {limitInfo && (
+        <SubscriptionLimitDialog
+          open={showSubscriptionDialog}
+          onOpenChange={setShowSubscriptionDialog}
+          limitInfo={limitInfo}
+        />
+      )}
     </>
   );
 }

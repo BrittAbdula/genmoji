@@ -8,6 +8,23 @@ import {
   getAuthHeaders
 } from "@/lib/api-config";
 
+// 自定义错误类用于处理生成限制
+export class GenerationLimitError extends Error {
+  status: number = 429;
+  details: {
+    currentCount: number;
+    limit: number;
+    resetTime: string;
+    type?: 'monthly' | 'daily';
+  };
+
+  constructor(message: string, details: any) {
+    super(message);
+    this.name = 'GenerationLimitError';
+    this.details = details;
+  }
+}
+
 // 1. 获取单个表情
 export async function getEmoji(slug: string, locale: string): Promise<Emoji> {
   const url = getApiUrl(API_ENDPOINTS.EMOJI_BY_SLUG(slug), locale);
@@ -177,7 +194,15 @@ export async function genMoji(
   });
 
   if (!res.ok) {
-    throw new Error('Failed to generate emoji');
+    const errorData = await res.json().catch(() => null);
+    
+    // 处理 429 状态码 - 达到生成限制/credits
+    if (res.status === 429) {
+      const message = errorData?.error || 'Generation limit exceeded';
+      throw new GenerationLimitError(message, errorData?.details || {});
+    }
+    
+    throw new Error(errorData?.error || 'Failed to generate emoji');
   }
   return res.json();
 }
@@ -267,6 +292,110 @@ export async function uploadImage(
       error: errorText
     });
     throw new Error(`Failed to upload image: ${res.status} ${res.statusText}`);
+  }
+  
+  return res.json();
+}
+
+// 订阅相关 API 函数
+
+// 获取订阅计划
+export async function getSubscriptionPlans(): Promise<{
+  success: boolean;
+  plans: Array<{
+    id: number;
+    name: string;
+    description: string;
+    price_monthly: number;
+    price_yearly: number;
+    features: string[];
+    daily_generation_limit: number;
+    is_active: boolean;
+  }>;
+}> {
+  const url = `${API_BASE_URL}${API_ENDPOINTS.SUBSCRIPTION_PLANS}`;
+  
+  const res = await fetch(url, {
+    headers: DEFAULT_HEADERS
+  });
+
+  if (!res.ok) {
+    throw new Error('Failed to fetch subscription plans');
+  }
+  
+  return res.json();
+}
+
+// 获取用户订阅状态
+export async function getSubscriptionStatus(token: string): Promise<{
+  success: boolean;
+  data: {
+    subscription: any;
+    usage: {
+      type: 'monthly' | 'daily';
+      current: number;
+      limit: number;
+      resetTime: string;
+    }
+  };
+}> {
+  const url = `${API_BASE_URL}${API_ENDPOINTS.SUBSCRIPTION_STATUS}`;
+  
+  const res = await fetch(url, {
+    headers: getAuthHeaders(token)
+  });
+
+  if (!res.ok) {
+    throw new Error('Failed to fetch subscription status');
+  }
+  
+  return res.json();
+}
+
+// 创建订阅
+export async function createSubscription(
+  planId: number,
+  billingCycle: 'monthly' | 'yearly',
+  token: string
+): Promise<{
+  success: boolean;
+  data: {
+    checkoutUrl: string;
+    planId: number;
+    billingCycle: string;
+    amount: number;
+  };
+}> {
+  const url = `${API_BASE_URL}${API_ENDPOINTS.SUBSCRIPTION_CREATE}`;
+  
+  const res = await fetch(url, {
+    method: 'POST',
+    headers: getAuthHeaders(token),
+    body: JSON.stringify({ planId, billingCycle })
+  });
+
+  if (!res.ok) {
+    throw new Error('Failed to create subscription');
+  }
+  
+  return res.json();
+}
+
+// 取消订阅
+export async function cancelSubscription(token: string): Promise<{
+  success: boolean;
+  message?: string;
+  error?: string;
+}> {
+  const url = `${API_BASE_URL}${API_ENDPOINTS.SUBSCRIPTION_CANCEL}`;
+  
+  const res = await fetch(url, {
+    method: 'POST',
+    headers: getAuthHeaders(token)
+  });
+
+  if (!res.ok) {
+    throw new Error('Failed to cancel subscription');
   }
   
   return res.json();

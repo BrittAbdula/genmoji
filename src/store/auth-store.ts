@@ -109,7 +109,6 @@ export const useAuthStore = create<AuthState>()(
       token: state.token,
       user: state.user,
       isLoggedIn: state.isLoggedIn,
-    }),
-    skipHydration: true,
+    })
   })
 ); 

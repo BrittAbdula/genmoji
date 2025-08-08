@@ -200,7 +200,8 @@
   "footer": {
     "links": {
       "privacy": "Politique de Confidentialité",
-      "terms": "Conditions d'Utilisation"
+      "terms": "Conditions d'Utilisation",
+      "refund": "Politique de Remboursement"
     },
     "copyright": "© 2025 GenmojiOnline.com Tous droits réservés.",
     "social": {
@@ -215,9 +216,15 @@
     "profile": "Profil",
     "my_emojis": "Mes Emojis",
     "welcome_back": "Bon retour",
-    "login_description": "Connectez-vous pour sauvegarder vos genmojis et y accéder n'importe où.",
-    "privacy_notice": "En vous connectant, vous acceptez notre Politique de confidentialité et nos Conditions d'utilisation. Nous garderons vos données en sécurité.",
-    "signing_in": "Connexion en cours"
+    "login_description": "Connectez-vous pour sauvegarder vos genmojis et y accéder partout.",
+    "privacy_notice": "En vous connectant, vous acceptez notre Politique de confidentialité et nos Conditions d'utilisation. Nous garderons vos données sûres et sécurisées.",
+    "signing_in": "Connexion en cours",
+    "premium": "Premium",
+    "manage_subscription": "Gérer l'abonnement",
+    "upgrade_to_premium": "Passer à Premium",
+    "free_plan": "Plan gratuit",
+    "generations_today": "générations aujourd'hui",
+    "credits_this_month": "crédits ce mois-ci"
   },
   "my_emojis": {
     "title": "Mes Emojis",
@@ -307,6 +314,38 @@
     "switchTo": "Passer à {language}"
   },
   "legal": {
+    "refundPolicy": {
+      "title": "Politique de Remboursement",
+      "metaDescription": "Lisez la politique de remboursement de Genmoji Online, y compris l'éligibilité, la procédure de demande et le traitement.",
+      "lastRevised": "Dernière révision : 07 août 2025",
+      "ourRefundPolicy": {
+        "title": "Notre Politique de Remboursement",
+        "description": "Chez Genmoji Online, nous nous efforçons d'offrir la meilleure expérience possible. Nous comprenons que des circonstances peuvent changer et que vous pourriez avoir besoin de demander un remboursement. Veuillez lire attentivement notre politique de remboursement avant d'effectuer un achat."
+      },
+      "eligibility": {
+        "title": "Éligibilité au Remboursement",
+        "items": [
+          "Délai : Les demandes de remboursement doivent être effectuées dans les 3 jours suivant votre achat. Passé ce délai, nous ne pourrons pas traiter les demandes de remboursement.",
+          "Utilisation des crédits : Si vous avez utilisé plus de 50 crédits, vous n'êtes pas éligible au remboursement, quel que soit le temps écoulé depuis l'achat."
+        ]
+      },
+      "howToRequest": {
+        "title": "Comment Demander un Remboursement",
+        "steps": [
+          "Contactez-nous : Écrivez à notre équipe de support à support@genmojionline.com.",
+          "Fournissez les détails : Incluez les informations de votre compte, le numéro de commande, la date d'achat et la raison de votre demande de remboursement.",
+          "Soumettre sous 3 jours : Assurez-vous que votre demande est soumise dans les 3 jours suivant votre achat."
+        ]
+      },
+      "processing": {
+        "title": "Traitement des Remboursements",
+        "description": "Une fois votre demande reçue, nous l'examinerons et vous informerons rapidement du résultat. Si elle est approuvée, votre remboursement sera traité vers votre mode de paiement d'origine."
+      },
+      "changes": {
+        "title": "Modifications de cette Politique",
+        "description": "Nous nous réservons le droit de mettre à jour cette politique de remboursement à tout moment. Toute modification sera reflétée sur cette page ; nous vous encourageons à la consulter périodiquement."
+      }
+    },
     "privacyPolicy": {
       "title": "Politique de Confidentialité",
       "effectiveDate": "Date d'effet : 21 janvier 2025",
@@ -410,6 +449,115 @@
         "title": "8. Informations de contact",
         "description": "Pour toute question concernant ces conditions, contactez-nous à support@genmojionline.com."
       }
+    }
+  },
+  "subscription": {
+    "seo": {
+      "title": "Plans d'Abonnement - Genmoji Online",
+      "description": "Choisissez le plan parfait pour vos besoins de création de genmojis. Générations illimitées, fonctionnalités avancées et plus."
+    },
+    "title": "Choisissez Votre Plan",
+    "subtitle": "Débloquez une créativité illimitée avec nos plans premium",
+    "bestValue": "Meilleure offre",
+    "saveWithYearly": "Économisez {off} avec l'annuel",
+    "usdPerMonth": "USD/mois",
+    "billedYearly": "facturé annuellement",
+    "upgradeToPro": "Passer à Pro",
+    "secureCheckoutShort": "Paiement sécurisé • Annulation à tout moment",
+    "paymentMethods": "Visa / MasterCard / Apple Pay",
+    "proPlan": "Pro",
+    "monthlyCreditsDescription": "Votre utilisation mensuelle de crédits",
+    "currentPlan": "Plan Actuel",
+    "mostPopular": "Le Plus Populaire",
+    "dailyUsage": "Utilisation Quotidienne",
+    "monthlyCredits": "Crédits Mensuels",
+    "unlimited": "Illimité",
+    "generations": "générations",
+    "monthly": "Mensuel",
+    "yearly": "Annuel",
+    "save": "Économisez",
+    "upgrade": "Passer à {plan}",
+    "currentPlanButton": "Plan Actuel",
+    "processing": "Traitement...",
+    "features": {
+      "unlimitedGenerations": "Générations quotidiennes illimitées",
+      "prioritySupport": "Support client prioritaire",
+      "advancedModels": "Accès aux modèles IA avancés",
+      "highQuality": "Sortie haute qualité",
+      "commercialUse": "Droits d'utilisation commerciale",
+      "noWatermark": "Sans filigrane",
+      "fastGeneration": "Vitesse de génération plus rapide"
+    },
+    "footer": {
+      "securePayment": "Tous les plans incluent un traitement de paiement sécurisé par Stripe",
+      "guarantee": "Annulez à tout moment. Aucuns frais cachés. Garantie de remboursement de 30 jours."
+    },
+    "limitDialog": {
+      "upgradeHeroTitle": "Imaginez tout avec Pro",
+      "upgradeHeroSubtitle": "Meilleure qualité, génération plus rapide et droits commerciaux",
+      "creditsPerMonth": "Jusqu'à {count} crédits/mois",
+      "generationsPerDay": "Jusqu'à {count} générations/jour",
+      "standardSpeed": "Vitesse standard",
+      "personalUse": "Usage personnel",
+      "prioritySpeed": "Vitesse prioritaire",
+      "monthlyCreditsUsed": "Crédits Mensuels Utilisés",
+      "dailyLimitReached": "Limite Quotidienne Atteinte",
+      "monthlyUsage": "Vous avez utilisé {current} sur {limit} crédits mensuels",
+      "dailyUsage": "Vous avez utilisé {current} sur {limit} générations quotidiennes",
+      "freeComeBackIn": "Gratuit, revenez dans {time}",
+      "comeBackIn": "Revenez dans {time}",
+      "title": "Limite de Génération Quotidienne Atteinte",
+      "description": "Vous avez utilisé {current} sur {limit} générations quotidiennes",
+      "resetsIn": "Se réinitialise dans {time}",
+      "waitButton": "Attendre {time}",
+      "upgradeButton": "Passer Maintenant",
+      "securePayment": "Paiement sécurisé alimenté par Stripe. Annulez à tout moment."
+    },
+    "management": {
+      "amount": "Montant",
+      "perMonth": "mois",
+      "perYear": "an",
+      "nextBilling": "Prochaine facturation",
+      "yearlyBilling": "Facturation annuelle",
+      "monthlyBilling": "Facturation mensuelle",
+      "resetsAt": "Réinitialise à",
+      "usedThisMonth": "Utilisé ce mois-ci",
+      "title": "Gestion de l'Abonnement",
+      "subtitle": "Gérez votre abonnement et votre utilisation",
+      "backToHome": "Retour à l'Accueil",
+      "currentPlan": "Plan Actuel",
+      "currentPlanDescription": "Détails de votre abonnement actuel",
+      "dailyUsage": "Utilisation Quotidienne",
+      "dailyUsageDescription": "Votre utilisation de génération pour aujourd'hui",
+      "usedToday": "Utilisé aujourd'hui",
+      "resetsIn": "Se réinitialise dans",
+      "planFeatures": "Fonctionnalités du Plan",
+      "premiumBenefits": "Avantages Premium",
+      "unlimitedGenerations": "Générations quotidiennes illimitées",
+      "prioritySupport": "Support prioritaire",
+      "commercialRights": "Droits d'utilisation commerciale",
+      "freePlan": "Plan Gratuit",
+      "freePlanDescription": "Vous utilisez actuellement le plan gratuit avec des générations quotidiennes limitées.",
+      "upgradeToPremium": "Passer au Premium",
+      "subscriptionActions": "Actions d'Abonnement",
+      "subscriptionActionsDescription": "Gérez les paramètres de votre abonnement",
+      "cancelSubscription": "Annuler l'Abonnement",
+      "cancelDescription": "L'annulation mettra fin à votre accès premium à la fin de votre période de facturation actuelle. Vous pouvez réactiver à tout moment.",
+      "cancelling": "Annulation...",
+      "billingInformation": "Informations de Facturation",
+      "billingDescription": "Gérez votre méthode de paiement et les détails de facturation via votre portail client Stripe.",
+      "manageBilling": "Gérer la Facturation",
+      "needHelp": "Besoin d'Aide ?",
+      "needHelpDescription": "Obtenez de l'aide pour votre abonnement",
+      "contactSupport": "Contacter le Support",
+      "contactSupportDescription": "Des questions sur votre abonnement ? Notre équipe de support est là pour vous aider.",
+      "faq": "FAQ",
+      "faqDescription": "Trouvez des réponses aux questions courantes sur l'abonnement.",
+      "viewFaq": "Voir la FAQ",
+      "loading": "Chargement des informations d'abonnement...",
+      "error": "Échec du chargement des informations d'abonnement",
+      "cancelError": "Échec de l'annulation de l'abonnement",
+      "confirmCancel": "Êtes-vous sûr de vouloir annuler votre abonnement ? Vous perdrez l'accès aux fonctionnalités premium à la fin de votre période de facturation actuelle."
     }
   }
 }

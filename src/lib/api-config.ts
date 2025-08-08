@@ -27,6 +27,12 @@ export const API_ENDPOINTS = {
   // 上传相关
   UPLOAD_IMAGE: '/upload/image',
   UPLOAD_IMAGE_BY_URL: '/upload/image-by-url',
+  
+  // 订阅相关
+  SUBSCRIPTION_PLANS: '/subscription/plans',
+  SUBSCRIPTION_STATUS: '/subscription/status',
+  SUBSCRIPTION_CREATE: '/subscription/create',
+  SUBSCRIPTION_CANCEL: '/subscription/cancel',
 } as const;
 
 // API 请求帮助函数

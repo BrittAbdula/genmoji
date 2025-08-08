@@ -132,7 +132,8 @@
   "footer": {
     "links": {
       "privacy": "隐私政策",
-      "terms": "服务条款"
+      "terms": "服务条款",
+      "refund": "退款政策"
     },
     "copyright": "© 2025 GenmojiOnline.com 保留所有权利。",
     "social": {
@@ -149,7 +150,13 @@
     "welcome_back": "欢迎回来",
     "login_description": "登录以保存您的表情符号并随时访问它们。",
     "privacy_notice": "登录即表示您同意我们的隐私政策和服务条款。我们会确保您的数据安全可靠。",
-    "signing_in": "登录中"
+    "signing_in": "登录中",
+    "premium": "高级版",
+    "manage_subscription": "管理订阅",
+    "upgrade_to_premium": "升级到高级版",
+    "free_plan": "免费版",
+    "generations_today": "今日生成次数",
+    "credits_this_month": "本月积分"
   },
   "my_emojis": {
     "title": "我的表情",
@@ -229,6 +236,38 @@
     }
   },
   "legal": {
+    "refundPolicy": {
+      "title": "退款政策",
+      "metaDescription": "阅读 Genmoji Online 的退款政策，包括资格、申请流程和处理说明。",
+      "lastRevised": "最后修订：2025年8月07日",
+      "ourRefundPolicy": {
+        "title": "我们的退款政策",
+        "description": "在 Genmoji Online，我们致力于为用户提供最佳体验。我们理解情况可能发生变化，您可能需要申请退款。请在购买前仔细阅读本退款政策。"
+      },
+      "eligibility": {
+        "title": "退款资格",
+        "items": [
+          "时间限制：退款请求必须在购买后3天内提出。超过该期限，我们将无法处理任何退款请求。",
+          "积分使用：如果您已使用超过50个积分，则无论购买时间多久，都不符合退款条件。"
+        ]
+      },
+      "howToRequest": {
+        "title": "如何申请退款",
+        "steps": [
+          "联系我们：发送邮件至 support@genmojionline.com 与我们的支持团队联系。",
+          "提供信息：请附上您的账户信息、订单号、购买日期和退款原因。",
+          "3天内提交：请确保在购买后3天内提交申请。"
+        ]
+      },
+      "processing": {
+        "title": "退款处理",
+        "description": "收到您的退款请求后，我们将进行审核并尽快通知您结果。若通过审核，退款将退回至您的原支付方式。"
+      },
+      "changes": {
+        "title": "政策变更",
+        "description": "我们保留随时更新本退款政策的权利。任何更改将反映在本页面上，建议您定期查看。"
+      }
+    },
     "privacyPolicy": {
       "title": "隐私政策",
       "effectiveDate": "生效日期：2025年1月21日",
@@ -407,5 +446,114 @@
     "description": "我们注意到您的浏览器语言与当前页面语言不同。是否切换到您的首选语言？",
     "stayIn": "继续使用{language}",
     "switchTo": "切换到{language}"
+  },
+  "subscription": {
+    "seo": {
+      "title": "订阅计划 - Genmoji Online",
+      "description": "为您的表情符号创建需求选择完美计划。无限生成、高级功能等。"
+    },
+    "title": "选择您的计划",
+    "subtitle": "通过我们的高级计划释放无限创造力",
+    "bestValue": "最划算",
+    "saveWithYearly": "年付立省{off}",
+    "usdPerMonth": "USD/月",
+    "billedYearly": "按年结算",
+    "upgradeToPro": "升级到 Pro",
+    "secureCheckoutShort": "安全结账 • 随时可取消",
+    "paymentMethods": "Visa / MasterCard / Apple Pay",
+    "proPlan": "Pro",
+    "monthlyCreditsDescription": "每月积分使用情况",
+    "currentPlan": "当前计划",
+    "mostPopular": "最受欢迎",
+    "dailyUsage": "每日使用量",
+    "monthlyCredits": "每月积分",
+    "unlimited": "无限",
+    "generations": "生成次数",
+    "monthly": "月付",
+    "yearly": "年付",
+    "save": "节省",
+    "upgrade": "升级到{plan}",
+    "currentPlanButton": "当前计划",
+    "processing": "处理中...",
+    "features": {
+      "unlimitedGenerations": "无限每日生成",
+      "prioritySupport": "优先客户支持",
+      "advancedModels": "访问高级AI模型",
+      "highQuality": "高质量输出",
+      "commercialUse": "商业使用权限",
+      "noWatermark": "无水印",
+      "fastGeneration": "更快的生成速度"
+    },
+    "footer": {
+      "securePayment": "所有计划都包含由Stripe提供的安全支付处理",
+      "guarantee": "随时取消。无隐藏费用。30天退款保证。"
+    },
+    "limitDialog": {
+      "upgradeHeroTitle": "使用 Pro，尽情想象",
+      "upgradeHeroSubtitle": "更高质量、更快生成、商业使用权",
+      "creditsPerMonth": "每月最多 {count} 积分",
+      "generationsPerDay": "每天最多 {count} 次生成",
+      "standardSpeed": "标准速度",
+      "personalUse": "个人使用",
+      "prioritySpeed": "优先速度",
+      "monthlyCreditsUsed": "每月积分使用情况",
+      "dailyLimitReached": "已达到每日限制",
+      "monthlyUsage": "您已使用 {limit} 个每月积分中的 {current} 个",
+      "dailyUsage": "您已使用每日 {limit} 次生成中的 {current} 次",
+      "freeComeBackIn": "免费用户，请在 {time} 后再来",
+      "comeBackIn": "请在 {time} 后再来",
+      "title": "达到每日生成限制",
+      "description": "您已使用{current}次，共{limit}次每日生成",
+      "resetsIn": "在{time}后重置",
+      "waitButton": "等待{time}",
+      "upgradeButton": "立即升级",
+      "securePayment": "由Stripe提供安全支付。随时取消。"
+    },
+    "management": {
+      "amount": "金额",
+      "perMonth": "月",
+      "perYear": "年",
+      "nextBilling": "下次扣费",
+      "yearlyBilling": "按年计费",
+      "monthlyBilling": "按月计费",
+      "resetsAt": "重置时间",
+      "usedThisMonth": "本月已用",
+      "title": "订阅管理",
+      "subtitle": "管理您的订阅和使用情况",
+      "backToHome": "返回首页",
+      "currentPlan": "当前计划",
+      "currentPlanDescription": "您当前的订阅详情",
+      "dailyUsage": "每日使用量",
+      "dailyUsageDescription": "您今天的生成使用情况",
+      "usedToday": "今日已使用",
+      "resetsIn": "重置时间",
+      "planFeatures": "计划功能",
+      "premiumBenefits": "高级权益",
+      "unlimitedGenerations": "无限每日生成",
+      "prioritySupport": "优先支持",
+      "commercialRights": "商业使用权限",
+      "freePlan": "免费计划",
+      "freePlanDescription": "您当前使用免费计划，每日生成次数有限。",
+      "upgradeToPremium": "升级到高级版",
+      "subscriptionActions": "订阅操作",
+      "subscriptionActionsDescription": "管理您的订阅设置",
+      "cancelSubscription": "取消订阅",
+      "cancelDescription": "取消后，您将在当前计费期结束时失去高级功能访问权限。您可以随时重新激活。",
+      "cancelling": "取消中...",
+      "billingInformation": "账单信息",
+      "billingDescription": "通过您的Stripe客户门户管理您的支付方式和账单详情。",
+      "manageBilling": "管理账单",
+      "needHelp": "需要帮助？",
+      "needHelpDescription": "获取订阅支持",
+      "contactSupport": "联系支持",
+      "contactSupportDescription": "对您的订阅有疑问？我们的支持团队随时为您服务。",
+      "faq": "常见问题",
+      "faqDescription": "查找常见订阅问题的答案。",
+      "viewFaq": "查看常见问题",
+      "loading": "正在加载订阅信息...",
+      "error": "加载订阅信息失败",
+      "cancelError": "取消订阅失败",
+      "confirmCancel": "您确定要取消订阅吗？您将在当前计费期结束时失去高级功能访问权限。"
+    }
   }
 } 

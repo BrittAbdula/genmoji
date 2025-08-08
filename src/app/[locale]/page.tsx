@@ -6,7 +6,6 @@ import { FeatureHighlight } from "@/components/sections/feature-highlight";
 import { FeatureScroll } from "@/components/sections/feature-scroll";
 import { Features } from "@/components/sections/features";
 import { Hero } from "@/components/sections/hero";
-import { Pricing } from "@/components/sections/pricing";
 import { Testimonials } from "@/components/sections/testimonials";
 import { HomeGenerator } from '@/components/sections/home-generator';
 import { getTranslations, setRequestLocale } from 'next-intl/server';

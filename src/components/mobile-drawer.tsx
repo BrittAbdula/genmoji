@@ -9,7 +9,6 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "@/components/ui/drawer";
-import { siteConfig } from "@/lib/config";
 import { cn } from "@/lib/utils";
 import { Link, usePathname } from '@/i18n/routing';
 import { IoMenuSharp } from "react-icons/io5";
@@ -17,13 +16,36 @@ import { useTranslations, useLocale } from 'next-intl';
 import { LanguageSwitcher } from "@/components/language-switcher";
 import React, { useState, useEffect } from 'react';
 import { AuroraText } from "@/components/ui/aurora-text";
-import { ChevronRight, Palette, Shapes, LayoutGrid, Wand2, User, Heart } from "lucide-react";
-import { getEmojiGroups } from "@/lib/api";
+import { ChevronRight, Palette, Shapes, LayoutGrid, Wand2, User, Heart, Crown, CreditCard } from "lucide-react";
+import { getEmojiGroups, getSubscriptionStatus } from "@/lib/api";
 import { Category } from "@/types/emoji";
 import { LoginDialog } from "@/components/login-dialog";
 import { useAuthStore } from "@/store/auth-store";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { SubscriptionLimitDialog } from "@/components/subscription-limit-dialog";
+
+interface SubscriptionStatus {
+  subscription: {
+    id: number;
+    plan_name: string;
+    status: 'active' | 'cancelled' | 'expired' | 'pending';
+    billing_cycle: 'monthly' | 'yearly';
+    amount: number;
+    currency: string;
+    daily_generation_limit: number;
+    current_period_start: string;
+    current_period_end: string;
+    plan_features: string[];
+  } | null;
+  usage: {
+    type: 'monthly' | 'daily';
+    current: number;
+    limit: number;
+    resetTime: string;
+  };
+}
 
 export function MobileDrawer() {
   const pathname = usePathname();
@@ -31,7 +53,7 @@ export function MobileDrawer() {
   const nav = useTranslations('common.navigation');
   const authT = useTranslations('auth');
   const locale = useLocale();
-  const { isLoggedIn, user, logout, checkAuth } = useAuthStore();
+  const { isLoggedIn, user, logout, checkAuth, token } = useAuthStore();
   const isActive = (path: string) => pathname === path;
   const [open, setOpen] = useState(false);
 
@@ -46,10 +68,34 @@ export function MobileDrawer() {
   const [colors, setColors] = useState<Category[]>([]);
   const [models, setModels] = useState<Category[]>([]);
 
+  // 订阅状态
+  const [subscriptionStatus, setSubscriptionStatus] = useState<SubscriptionStatus | null>(null);
+  const [isLoadingSubscription, setIsLoadingSubscription] = useState(false);
+  const [showSubscriptionDialog, setShowSubscriptionDialog] = useState(false);
+
   // 初始化认证
   useEffect(() => {
     checkAuth();
   }, [checkAuth]);
+
+  // 获取订阅状态
+  useEffect(() => {
+    if (isLoggedIn && token) {
+      setIsLoadingSubscription(true);
+      getSubscriptionStatus(token)
+        .then((response) => {
+          if (response.success) {
+            setSubscriptionStatus(response.data);
+          }
+        })
+        .catch((error) => {
+          console.error('Failed to fetch subscription status:', error);
+        })
+        .finally(() => setIsLoadingSubscription(false));
+    } else {
+      setSubscriptionStatus(null);
+    }
+  }, [isLoggedIn, token]);
 
   // 获取数据
   useEffect(() => {
@@ -156,6 +202,19 @@ export function MobileDrawer() {
       .join('')
       .toUpperCase()
       .slice(0, 2);
+  };
+
+  const isPremium = subscriptionStatus?.subscription?.status === 'active';
+  const handleUpgradeClick = () => {
+    if (!isPremium) {
+      setShowSubscriptionDialog(true);
+    }
+  };
+  const handleDialogOpenChange = (dialogOpen: boolean) => {
+    setShowSubscriptionDialog(dialogOpen);
+    if (!dialogOpen) {
+      // 保持抽屉状态不变
+    }
   };
 
   return (
@@ -370,15 +429,40 @@ export function MobileDrawer() {
             <div className="space-y-3">
               {/* 用户信息 */}
               <div className="flex items-center gap-3 p-3 rounded-lg bg-muted/50">
-                <Avatar className="h-10 w-10">
-                  <AvatarImage src={user.avatar_url} alt={user.name} />
-                  <AvatarFallback className="text-sm">
-                    {getUserInitials(user.name)}
-                  </AvatarFallback>
-                </Avatar>
+                <div className="relative">
+                  <Avatar className="h-10 w-10">
+                    <AvatarImage src={user.avatar_url} alt={user.name} />
+                    <AvatarFallback className="text-sm">
+                      {getUserInitials(user.name)}
+                    </AvatarFallback>
+                  </Avatar>
+                  {isPremium && (
+                    <div className="absolute -top-1 -right-1 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full p-0.5">
+                      <Crown className="h-3.5 w-3.5 text-white" />
+                    </div>
+                  )}
+                </div>
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium truncate">{user.name}</p>
-                  <p className="text-xs text-muted-foreground truncate">{user.email}</p>
+                  <div className="flex items-center gap-2">
+                    <p className="text-sm font-medium truncate">{user.name}</p>
+                    {isPremium && (
+                      <Badge variant="secondary" className="text-[10px] px-1.5 py-0.5 bg-gradient-to-r from-purple-500 to-pink-500 text-white border-0">Pro</Badge>
+                    )}
+                  </div>
+                  {/* <p className="text-xs text-muted-foreground truncate">{user.email}</p> */}
+                  {subscriptionStatus && (
+                    <div className="text-[11px] text-muted-foreground mt-0.5">
+                      {subscriptionStatus.usage.type === 'monthly' ? (
+                        <span className="text-green-600">
+                          {subscriptionStatus.subscription?.plan_name} • {subscriptionStatus.usage.current}/{subscriptionStatus.usage.limit} credits
+                        </span>
+                      ) : (
+                        <span className="text-orange-600">
+                          {authT('free_plan')} • {subscriptionStatus.usage.current}/{subscriptionStatus.usage.limit} {authT('generations_today')}
+                        </span>
+                      )}
+                    </div>
+                  )}
                 </div>
               </div>
               
@@ -392,6 +476,24 @@ export function MobileDrawer() {
                   <Heart className="h-4 w-4" />
                   {authT('my_emojis')}
                 </Link>
+                {isPremium ? (
+                  <Link
+                    href="/subscription"
+                    onClick={handleLinkClick}
+                    className="flex items-center gap-2 px-3 py-2 text-sm rounded-lg hover:bg-muted transition-colors"
+                  >
+                    <CreditCard className="h-4 w-4" />
+                    {authT('manage_subscription')}
+                  </Link>
+                ) : (
+                  <button
+                    onClick={handleUpgradeClick}
+                    className="flex items-center gap-2 w-full px-3 py-2 text-sm rounded-lg hover:bg-muted transition-colors"
+                  >
+                    <CreditCard className="h-4 w-4" />
+                    {authT('upgrade_to_premium')}
+                  </button>
+                )}
                 {/* <Link
                   href="/profile"
                   onClick={handleLinkClick}
@@ -432,6 +534,20 @@ export function MobileDrawer() {
           >
             {t('cta')}
           </Link>
+
+          {/* 订阅弹窗 */}
+          {subscriptionStatus && (
+            <SubscriptionLimitDialog
+              open={showSubscriptionDialog}
+              onOpenChange={handleDialogOpenChange}
+              limitInfo={{
+                currentCount: subscriptionStatus.usage.current,
+                limit: subscriptionStatus.usage.limit,
+                resetTime: subscriptionStatus.usage.resetTime,
+                type: subscriptionStatus.usage.type
+              }}
+            />
+          )}
         </DrawerFooter>
       </DrawerContent>
     </Drawer>

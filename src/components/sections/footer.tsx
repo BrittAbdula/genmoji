@@ -42,6 +42,7 @@ export function Footer() {
   const links: Link[] = [
     { text: t('links.privacy'), url: "/privacy-policy" },
     { text: t('links.terms'), url: "/terms-of-service" },
+    { text: t('links.refund'), url: "/refund-policy" },
   ];
 
   return (

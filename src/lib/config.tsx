@@ -186,39 +186,6 @@ export const siteConfig = {
     },
   ],
   pricing: [
-    {
-      name: "Basic",
-      href: "#",
-      price: "$0",
-      period: "month",
-      yearlyPrice: "$0",
-      features: [
-        "AI-powered scheduling (up to 10 events/month)",
-        "Basic time blocking",
-        "Cloud sync for 1 device",
-        "Email reminders",
-      ],
-      description: "Perfect for individual users",
-      buttonText: "Start Free",
-      isPopular: false,
-    },
-    {
-      name: "Pro",
-      href: "#",
-      price: "$12",
-      period: "month",
-      yearlyPrice: "$120",
-      features: [
-        "Unlimited AI-powered scheduling",
-        "Advanced time blocking and analysis",
-        "Cloud sync for unlimited devices",
-        "Smart notifications across all devices",
-        "Team collaboration features",
-      ],
-      description: "Ideal for professionals and small teams",
-      buttonText: "Upgrade to Pro",
-      isPopular: true,
-    },
   ],
   faqs: [
     {

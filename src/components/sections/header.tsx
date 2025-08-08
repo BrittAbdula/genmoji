@@ -1,8 +1,6 @@
 "use client";
 
-import { Icons } from "@/components/icons";
 import { MobileDrawer } from "@/components/mobile-drawer";
-import { buttonVariants } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { outfit } from '@/lib/fonts';
 import { AuroraText } from "@/components/ui/aurora-text";
@@ -166,9 +164,9 @@ export function Header() {
               </NavigationMenuList>
             </NavigationMenu>
             
-            <div className="hidden lg:flex">
+            {/* <div className="hidden lg:flex">
               <CategoryNavigation />
-            </div>
+            </div> */}
           </nav>
 
           <LanguageSwitcher className="hidden sm:inline-flex" />
