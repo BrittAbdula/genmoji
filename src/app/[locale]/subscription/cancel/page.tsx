@@ -5,6 +5,8 @@ import { Card } from "@/components/ui/card";
 import { XCircle, ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
 
+export const runtime = 'edge';
+
 export const metadata: Metadata = {
   title: 'Subscription Cancelled - Genmoji Online',
   description: 'Your subscription process was cancelled. You can still enjoy our free features.',

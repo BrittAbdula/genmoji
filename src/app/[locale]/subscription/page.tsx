@@ -27,6 +27,8 @@ import { getSubscriptionStatus, cancelSubscription } from '@/lib/api';
 import { useRouter } from '@/i18n/routing';
 import Link from 'next/link';
 
+export const runtime = 'edge';
+
 export default function SubscriptionPage() {
   const t = useTranslations('subscription');
   const tm = useTranslations('subscription.management');
