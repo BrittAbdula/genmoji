@@ -24,8 +24,8 @@ export function generateStaticParams() {
 // 强制静态渲染
 export const dynamic = 'force-static';
 
-// 设置重新验证时间（秒）
-export const revalidate = 86400; // 24小时
+// 禁用重新验证，确保数据只获取一次
+export const revalidate = false;
 
 // 禁用动态参数
 export const dynamicParams = false;

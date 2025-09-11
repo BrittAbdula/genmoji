@@ -8,7 +8,6 @@ export const API_ENDPOINTS = {
   // Emoji 相关
   EMOJI_BY_SLUG: (slug: string) => `/genmoji/by-slug/${slug}`,
   EMOJI_LIST: '/genmoji/list',
-  EMOJI_SEARCH: '/genmoji/search',
   EMOJI_RELATED: (slug: string) => `/genmoji/related/${slug}`,
   EMOJI_BY_BASE_SLUG: (baseSlug: string) => `/genmoji/by-base-slug/${baseSlug}`,
   EMOJI_GROUPS: '/genmoji/groups',

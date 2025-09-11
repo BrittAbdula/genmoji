@@ -9,7 +9,6 @@ import { motion } from "framer-motion";
 import { Link, usePathname } from '@/i18n/routing';
 import { LanguageSwitcher } from "@/components/language-switcher";
 import { useTranslations } from 'next-intl';
-import { CategoryNavigation } from "@/components/category-navigation";
 import { LoginDialog } from "@/components/login-dialog";
 import { UserMenu } from "@/components/user-menu";
 import { useAuthStore } from "@/store/auth-store";
@@ -100,15 +99,6 @@ export function Header() {
             >
               {nav('home')}
             </Link>
-            <Link
-              href="/gallery"
-              className={cn(
-                "text-sm font-medium transition-colors hover:text-foreground",
-                isActive('/gallery') ? "text-foreground" : "text-muted-foreground"
-              )}
-            >
-              {nav('gallery')}
-            </Link>
             
             {/* 生成器二级菜单 */}
             <NavigationMenu>
@@ -163,10 +153,6 @@ export function Header() {
                 </NavigationMenuItem>
               </NavigationMenuList>
             </NavigationMenu>
-            
-            {/* <div className="hidden lg:flex">
-              <CategoryNavigation />
-            </div> */}
           </nav>
 
           <LanguageSwitcher className="hidden sm:inline-flex" />

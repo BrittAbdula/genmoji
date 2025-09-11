@@ -120,14 +120,7 @@
     "subtitle": "Explorez notre collection de genmojis générés par l'IA",
     "loadMore": "Charger Plus",
     "loading": "Chargement...",
-    "noResults": "Aucun genmoji trouvé",
-    "search": {
-      "placeholder": {
-        "mobile": "Tapez pour rechercher...",
-        "desktop": "Appuyez sur Entrée pour rechercher..."
-      },
-      "label": "Rechercher"
-    }
+    "noResults": "Aucun genmoji trouvé"
   },
   "generator": {
     "title": "Commencez par quelques mots ou une phrase qui décrit le mieux votre idée",

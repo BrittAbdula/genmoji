@@ -59,7 +59,7 @@ export async function getEmoji(slug: string, locale: string): Promise<Emoji> {
   }
 }
 
-// 2. 获取表情列表或搜索
+// 2. 获取表情列表
 export async function getEmojis(
   offset: number, 
   limit: number, 
@@ -69,12 +69,11 @@ export async function getEmojis(
     category?: string;
     color?: string;
     sort?: 'latest' | 'popular' | 'quality';
-    q?: string;
     isIndexable?: boolean;
   }
 ): Promise<Emoji[]> {
-  const { model, category, color, sort, q, isIndexable } = options || {};
-  const endpoint = q ? API_ENDPOINTS.EMOJI_SEARCH : API_ENDPOINTS.EMOJI_LIST;
+  const { model, category, color, sort, isIndexable } = options || {};
+  const endpoint = API_ENDPOINTS.EMOJI_LIST;
   const url = new URL(endpoint, API_BASE_URL);
   
   // 设置基础参数
@@ -83,7 +82,6 @@ export async function getEmojis(
   url.searchParams.set('locale', locale);
   
   // 设置可选参数
-  if (q) url.searchParams.set('q', q);
   if (model) url.searchParams.set('model', model);
   if (category) url.searchParams.set('category', category);
   if (color) url.searchParams.set('color', color);

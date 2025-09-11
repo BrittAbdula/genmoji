@@ -434,14 +434,7 @@
     "subtitle": "AIが生成した絵文字コレクションを探索",
     "loadMore": "もっと見る",
     "loading": "読み込み中...",
-    "noResults": "絵文字が見つかりません",
-    "search": {
-      "placeholder": {
-        "mobile": "検索キーワードを入力...",
-        "desktop": "Enterキーで検索..."
-      },
-      "label": "検索"
-    }
+    "noResults": "絵文字が見つかりません"
   },
   "languagePrompt": {
     "title": "言語設定",

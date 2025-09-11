@@ -6,9 +6,7 @@ import { getEmojis } from '@/lib/api'
 import EmojiContainer from "@/components/emoji-container";
 import { Emoji } from "@/types/emoji";
 import { Button } from "@/components/ui/button";
-import { SearchBar } from "@/components/search-bar";
 import { useTranslations, useLocale} from 'next-intl';
-import { debounce } from "lodash";
 import { useInView } from "react-intersection-observer";
 import { EmojiGrid } from "@/components/emoji-grid";
 
@@ -31,7 +29,6 @@ export function GalleryContent() {
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
-  const [searchQuery, setSearchQuery] = useState("");
   const [error, setError] = useState<string | null>(null);
   const limit = 24; // 减小每页加载数量以提升性能
   const locale = useLocale();
@@ -52,7 +49,7 @@ export function GalleryContent() {
 
   // 检查新的 genmoji
   const checkNewEmojis = async () => {
-    if (searchQuery || loadingRef.current) return; // 如果在搜索或加载中，不检查新内容
+    if (loadingRef.current) return; // 如果在加载中，不检查新内容
     
     try {
         
@@ -98,17 +95,15 @@ export function GalleryContent() {
 
   // 初始化自动刷新
   useEffect(() => {
-    if (!searchQuery) {
-      startAutoRefresh();
-    }
+    startAutoRefresh();
     return () => stopAutoRefresh();
-  }, [locale, searchQuery]);
+  }, [locale]);
 
-  const fetchEmojis = async (pageNum: number, query: string = "", retryCount = 3) => {
+  const fetchEmojis = async (pageNum: number, retryCount = 3) => {
     if (loadingRef.current) return;
     loadingRef.current = true;
     
-    const cacheKey = `${query}-${pageNum}-${locale}`;
+    const cacheKey = `${pageNum}-${locale}`;
 
     // 如果有缓存数据，直接使用
     if (cache.current.has(cacheKey)) {
@@ -141,8 +136,7 @@ export function GalleryContent() {
         limit,
         locale,
         {
-          sort: 'latest',
-          q: query
+          sort: 'latest'
         }
       );
 
@@ -182,35 +176,16 @@ export function GalleryContent() {
     }
   };
 
-  // 使用防抖处理搜索查询
-  const debouncedSearch = useCallback(
-    debounce((query: string) => {
-      setEmojis([]);
-      setPage(1);
-      setLoading(true);
-      // 重置最新时间戳
-      latestTimestampRef.current = undefined;
-      // 如果搜索为空，重新启动自动刷新
-      if (!query) {
-        startAutoRefresh();
-      } else {
-        stopAutoRefresh();
-      }
-      fetchEmojis(1, query);
-    }, 300),
-    [locale]
-  );
-
+  // 初始化加载数据
   useEffect(() => {
-    debouncedSearch(searchQuery);
+    fetchEmojis(1);
     
     return () => {
-      debouncedSearch.cancel();
       if (abortControllerRef.current) {
         abortControllerRef.current.abort();
       }
     };
-  }, [searchQuery, locale]);
+  }, [locale]);
 
   // 监听滚动加载更多
   useEffect(() => {
@@ -221,7 +196,7 @@ export function GalleryContent() {
 
   useEffect(() => {
     if (page > 1) {
-      fetchEmojis(page, searchQuery);
+      fetchEmojis(page);
     }
   }, [page]);
 
@@ -235,7 +210,7 @@ export function GalleryContent() {
         <div className="text-center py-12">
           <p className="text-red-500">{error}</p>
           <Button
-            onClick={() => fetchEmojis(page, searchQuery)}
+            onClick={() => fetchEmojis(page)}
             variant="outline"
             className="mt-4"
           >
@@ -270,16 +245,9 @@ export function GalleryContent() {
     );
   };
 
-  const handleSearch = useCallback((query: string) => {
-    setSearchQuery(query);
-  }, []);
-
   return (
     <div className="w-full">
-      <SearchBar onSearch={handleSearch} loading={loading} />
-      <div className="mt-8">
-        {renderContent()}
-      </div>
+      {renderContent()}
     </div>
   );
 } 

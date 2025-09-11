@@ -120,14 +120,7 @@
     "subtitle": "探索我们的 AI 生成表情符号集",
     "loadMore": "加载更多",
     "loading": "加载中...",
-    "noResults": "未找到表情符号",
-    "search": {
-      "placeholder": {
-        "mobile": "输入关键词搜索...",
-        "desktop": "按回车键搜索..."
-      },
-      "label": "搜索"
-    }
+    "noResults": "未找到表情符号"
   },
   "footer": {
     "links": {

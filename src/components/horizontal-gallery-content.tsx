@@ -18,8 +18,8 @@ export function HorizontalGalleryContent({model}: {model?: string}) {
   const [emojis, setEmojis] = useState<Emoji[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [isVisible, setIsVisible] = useState(false);
-  const limit = 24; // Reduced from 40 to 24 for better performance
+  const [hasFetched, setHasFetched] = useState(false); // 添加标志位防止重复获取
+  const limit = 40; // Reduced from 40 to 24 for better performance
   const locale = useLocale();
 
   const fetchEmojis = async (retryCount = 2) => { // Reduced retries from 3 to 2
@@ -46,29 +46,13 @@ export function HorizontalGalleryContent({model}: {model?: string}) {
     }
   };
 
-  // Lazy load when component becomes visible
+  // 只在组件首次挂载时获取数据，不重复获取
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting && !isVisible) {
-          setIsVisible(true);
-          fetchEmojis();
-        }
-      },
-      { threshold: 0.1, rootMargin: '50px' }
-    );
-
-    const element = document.getElementById('horizontal-gallery');
-    if (element) {
-      observer.observe(element);
+    if (!hasFetched) {
+      setHasFetched(true);
+      fetchEmojis();
     }
-
-    return () => {
-      if (element) {
-        observer.unobserve(element);
-      }
-    };
-  }, [locale, isVisible]);
+  }, []); // 空依赖数组，只在组件挂载时执行一次
 
   // 调整单元格样式确保完全正方形
   const cellWidth = "w-full min-h-[90px] aspect-square";

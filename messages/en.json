@@ -119,14 +119,7 @@
     "title": "Gallery",
     "subtitle": "Explore our collection of AI-generated genmojis",
     "loadMore": "Load More",
-    "noResults": "No genmojis found",
-    "search": {
-      "placeholder": {
-        "mobile": "Search for genmojis...",
-        "desktop": "Search for genmojis..."
-      },
-      "label": "Search"
-    }
+    "noResults": "No genmojis found"
   },
   "footer": {
     "links": {
