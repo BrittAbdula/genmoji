@@ -164,7 +164,7 @@ export function GalleryContent() {
         const delay = (3 - retryCount + 1) * 1000;
         await new Promise(resolve => setTimeout(resolve, delay));
         loadingRef.current = false;
-        return fetchEmojis(pageNum, query, retryCount - 1);
+        return fetchEmojis(pageNum, retryCount - 1);
       }
       
       setError(t('error.failed'));
