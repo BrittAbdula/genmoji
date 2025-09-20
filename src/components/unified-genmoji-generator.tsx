@@ -252,10 +252,16 @@ export function UnifiedGenmojiGenerator({
   const startGeneration = async () => {
     setGenerating(true);
     setProgress(0);
-    setGlobalPrompt(prompt.trim());
+    
+    // 对于 image 模式，固定使用 "based on the image" 作为 prompt
+    const effectivePrompt = activeTab === 'image' 
+      ? "based on the image" 
+      : (prompt || '').trim();
+      
+    setGlobalPrompt(effectivePrompt);
     
     try {
-      const emojiResponse = await genMoji(prompt.trim(), locale, selectedImage, model, token);
+      const emojiResponse = await genMoji(effectivePrompt, locale, selectedImage, model, token);
       
       if (emojiResponse.success && emojiResponse.emoji) {
         setGeneratedEmoji(emojiResponse.emoji);
@@ -298,7 +304,8 @@ export function UnifiedGenmojiGenerator({
   };
 
   const generateEmoji = async () => {
-    if (!prompt.trim()) return;
+    if (activeTab === 'text' && !prompt.trim()) return;
+    if (activeTab === 'image' && !selectedImage) return;
     
     // 检查用户是否已登录
     if (!isLoggedIn) {
@@ -578,16 +585,6 @@ export function UnifiedGenmojiGenerator({
                   disabled={isUploading}
                 />
               </div>
-              {/* Optional prompt for image mode */}
-              <div className="mt-3">
-                <Textarea
-                  placeholder={t('placeholder')}
-                  value={prompt}
-                  onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setPrompt(e.target.value)}
-                  rows={2}
-                  className="resize-none border-0 focus-visible:ring-0 focus-visible:ring-offset-0 rounded-xl bg-card text-sm"
-                />
-              </div>
             </div>
           )}
 
@@ -676,11 +673,13 @@ export function UnifiedGenmojiGenerator({
             {/* Generate button */}
             <Button
               onClick={generateEmoji}
-              disabled={isGenerating || !prompt.trim() || isUploading}
+              disabled={
+                isGenerating || isUploading || (activeTab === 'text' ? !prompt.trim() : !selectedImage)
+              }
               size="sm"
               className={cn(
                 "w-8 h-8 p-0 rounded-full transition-all",
-                prompt.trim() && !isGenerating && !isUploading
+                ((activeTab === 'text' && prompt.trim()) || (activeTab === 'image' && selectedImage)) && !isGenerating && !isUploading
                   ? "bg-gradient-to-r from-pink-500 to-violet-500 hover:from-pink-600 hover:to-violet-600 text-white shadow-sm"
                   : "bg-muted text-muted-foreground"
               )}
@@ -694,27 +693,29 @@ export function UnifiedGenmojiGenerator({
           </div>
         </div>
 
-        {/* Prompt suggestions - moved outside input box and below it */}
-        <div className="w-full">
-          <div className="flex flex-wrap gap-2 justify-center">
-            {getDefaultPrompts().map((promptText, index) => (
-              <button
-                key={index}
-                type="button"
-                onClick={() => handlePromptClick(promptText)}
-                className={cn(
-                  "px-4 py-2 text-sm rounded-full border border-border/50",
-                  "bg-muted/40 hover:bg-muted/70 text-muted-foreground hover:text-foreground",
-                  "transition-all duration-200 hover:shadow-md hover:border-border/70 hover:scale-105",
-                  "backdrop-blur-sm",
-                  "whitespace-nowrap"
-                )}
-              >
-                {promptText}
-              </button>
-            ))}
+        {/* Prompt suggestions only in Text tab */}
+        {activeTab === 'text' && (
+          <div className="w-full">
+            <div className="flex flex-wrap gap-2 justify-center">
+              {getDefaultPrompts().map((promptText, index) => (
+                <button
+                  key={index}
+                  type="button"
+                  onClick={() => handlePromptClick(promptText)}
+                  className={cn(
+                    "px-4 py-2 text-sm rounded-full border border-border/50",
+                    "bg-muted/40 hover:bg-muted/70 text-muted-foreground hover:text-foreground",
+                    "transition-all duration-200 hover:shadow-md hover:border-border/70 hover:scale-105",
+                    "backdrop-blur-sm",
+                    "whitespace-nowrap"
+                  )}
+                >
+                  {promptText}
+                </button>
+              ))}
+            </div>
           </div>
-        </div>
+        )}
       </div>
       {/* Add CSS for hiding scrollbar */}
       <style jsx>{`
