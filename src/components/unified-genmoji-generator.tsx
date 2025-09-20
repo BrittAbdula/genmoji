@@ -42,6 +42,9 @@ export function UnifiedGenmojiGenerator({
   const fileInputRef = useRef<HTMLInputElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const modelSelectorRef = useRef<HTMLDivElement>(null);
+  const itemRefs = useRef<Record<string, HTMLButtonElement | null>>({});
+  const hasCenteredOnce = useRef(false);
+  const hasPlayedIntroAnimation = useRef(false);
   const isMobile = useMediaQuery("(max-width: 768px)");
   
   const { isGenerating, progress, setGenerating, setProgress, setPrompt: setGlobalPrompt } = useGenerationStore();
@@ -92,26 +95,26 @@ export function UnifiedGenmojiGenerator({
     }
   }, [isLoggedIn, pendingGeneration, prompt]);
 
-  // 居中模型选择器
+  // 居中模型选择器（仅首次）
   useEffect(() => {
+    if (hasCenteredOnce.current) return;
     const centerModelSelector = () => {
       if (modelSelectorRef.current) {
         const container = modelSelectorRef.current;
         const scrollWidth = container.scrollWidth;
         const clientWidth = container.clientWidth;
-        
         if (scrollWidth > clientWidth) {
-          // 计算居中位置
           const centerPosition = (scrollWidth - clientWidth) / 2;
           container.scrollLeft = centerPosition;
         }
       }
     };
-
-    // 延迟执行以确保DOM完全渲染
-    const timer = setTimeout(centerModelSelector, 100);
+    const timer = setTimeout(() => {
+      centerModelSelector();
+      hasCenteredOnce.current = true;
+    }, 100);
     return () => clearTimeout(timer);
-  }, [model]); // 当模型变化时重新居中
+  }, []);
 
   // Get current model info
   const getCurrentModelInfo = () => {
@@ -402,14 +405,88 @@ export function UnifiedGenmojiGenerator({
     } catch {}
   };
 
+  // 初始进入时跑马灯快速预览一遍，最后停留在上次选择
+  useEffect(() => {
+    if (hasPlayedIntroAnimation.current) return;
+
+    let raf = 0 as number | undefined;
+
+    const run = () => {
+      // 读取上次选择
+      let saved: string | null = null;
+      try { saved = localStorage.getItem('genmoji:selectedModel'); } catch {}
+      const endModel = saved || init_model || model;
+
+      const ids = models.map((m) => m.id as string);
+      const container = modelSelectorRef.current;
+      if (!container || ids.length === 0) {
+        hasPlayedIntroAnimation.current = true;
+        return;
+      }
+
+      // 从头滚到尾（一次），快速马灯效果
+      const scrollMax = Math.max(0, container.scrollWidth - container.clientWidth);
+      container.scrollTo({ left: 0, behavior: 'auto' });
+      const duration = 1000; // 1s 快速过一遍
+      const start = performance.now();
+      let lastIdx = -1;
+
+      const step = (now: number) => {
+        const t = Math.min(1, (now - start) / duration);
+        container.scrollLeft = scrollMax * t;
+
+        // 根据进度快速切换预览（避免每帧都 setModel）
+        const idx = Math.min(ids.length - 1, Math.floor(t * ids.length));
+        if (idx !== lastIdx) {
+          lastIdx = idx;
+          setModel(ids[idx]);
+        }
+
+        if (t < 1) {
+          raf = requestAnimationFrame(step);
+        } else {
+          // 停留在上次选择
+          setTimeout(() => {
+            if (endModel) {
+              setModel(endModel);
+              const el = itemRefs.current[endModel];
+              try {
+                el?.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+              } catch {}
+            }
+            hasPlayedIntroAnimation.current = true;
+          }, 50);
+        }
+      };
+
+      raf = requestAnimationFrame(step);
+    };
+
+    const timer = setTimeout(run, 200);
+    return () => {
+      clearTimeout(timer);
+      if (raf) cancelAnimationFrame(raf);
+    };
+  }, []);
+
   // Removed old dialog/drawer model selectors in favor of inline selector bar
 
   const content = (
     <div className="flex flex-col gap-4 py-4">
       {/* Inline style selector bar */}
       <div className="w-full">
-        <div className="flex items-center justify-center mb-2 px-1">
-          <div className="text-xs sm:text-sm font-medium text-muted-foreground">{t('selectModel')}</div>
+        {/* Large preview of the currently selected style */}
+        <div className="w-full px-4 mb-3">
+          <div className="relative mx-auto w-full max-w-[160px]">
+            <Image
+              src={currentModel.image}
+              alt={currentModel.name}
+              width={160}
+              height={160}
+              priority
+              className="w-full h-auto rounded-xl object-cover"
+            />
+          </div>
         </div>
         <div className="w-full px-4">
           <div 
@@ -426,6 +503,7 @@ export function UnifiedGenmojiGenerator({
               onClick={() => handleModelSelect(m.id)}
               title={m.name}
               aria-pressed={model === m.id}
+              ref={(el) => { itemRefs.current[m.id] = el; }}
               className={cn(
                 "flex items-center gap-2 shrink-0 border rounded-full pr-3 pl-2 py-2",
                 "transition-colors bg-background",
