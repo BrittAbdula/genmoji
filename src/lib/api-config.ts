@@ -26,6 +26,7 @@ export const API_ENDPOINTS = {
   // 上传相关
   UPLOAD_IMAGE: '/upload/image',
   UPLOAD_IMAGE_BY_URL: '/upload/image-by-url',
+  UPLOAD_STREAM_PROXY: '/upload/stream-proxy',
   
   // 订阅相关
   SUBSCRIPTION_PLANS: '/subscription/plans',

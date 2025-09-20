@@ -9,7 +9,7 @@ import { useState, useEffect, useRef } from "react";
 import { genMoji, uploadImage, GenerationLimitError } from "@/lib/api";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { Emoji } from "@/types/emoji";
-import { ImageIcon, X, Plus, ArrowUp, Globe } from 'lucide-react';
+import { X, Plus, ArrowUp, Globe } from 'lucide-react';
 import confetti from "canvas-confetti";
 import { useRouter } from "next/navigation";
 import { useTranslations, useLocale } from 'next-intl';
@@ -39,7 +39,7 @@ export function UnifiedGenmojiGenerator({
   const [prompt, setPrompt] = useState(initialPrompt);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [generatedEmoji, setGeneratedEmoji] = useState<Emoji | null>(null);
-  const [model, setModel] = useState<'genmoji' | 'sticker' | 'mascot'>(init_model || 'genmoji');
+  const [model, setModel] = useState<string>(init_model || 'genmoji');
   const [showModelSelector, setShowModelSelector] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -57,6 +57,7 @@ export function UnifiedGenmojiGenerator({
     resetTime: string;
     type?: 'monthly' | 'daily';
   } | null>(null);
+  const [activeTab, setActiveTab] = useState<'text' | 'image'>('text');
 
   // Get localized prompts based on current model
   const getDefaultPrompts = () => {
@@ -85,32 +86,64 @@ export function UnifiedGenmojiGenerator({
 
   // Get current model info
   const getCurrentModelInfo = () => {
-    switch (model) {
-      case 'genmoji':
-        return {
-          image: "https://store.genmojionline.com/cdn-cgi/imagedelivery/DEOVdDdfeGzASe0KdtD7FA/ba791d54-9c81-47d4-dc1f-32f2014b8300/public",
-          name: t('models.genmoji.name'),
-          description: t('models.genmoji.description')
-        };
-      case 'sticker':
-        return {
-          image: "https://store.genmojionline.com/cdn-cgi/imagedelivery/DEOVdDdfeGzASe0KdtD7FA/8ef04dd2-6612-496a-d2ea-bada5ccf9400/public",
-          name: t('models.sticker.name'),
-          description: t('models.sticker.description')
-        };
-      case 'mascot':
-        return {
-          image: "https://store.genmojionline.com/cdn-cgi/imagedelivery/DEOVdDdfeGzASe0KdtD7FA/14a1b15b-9263-4d20-443d-67c5e4c4c900/public",
-          name: t('models.mascot.name'),
-          description: t('models.mascot.description')
-        };
-      default:
-        return {
-          image: "https://store.genmojionline.com/cdn-cgi/imagedelivery/DEOVdDdfeGzASe0KdtD7FA/ba791d54-9c81-47d4-dc1f-32f2014b8300/public",
-          name: t('models.genmoji.name'),
-          description: t('models.genmoji.description')
-        };
-    }
+    const map: Record<string, { image: string; name: string; description: string }> = {
+      genmoji: {
+        image: "https://store.genmojionline.com/cdn-cgi/imagedelivery/DEOVdDdfeGzASe0KdtD7FA/4ad1e218-eae7-4976-8496-b68cd6374f00/public",
+        name: t('models.genmoji.name'),
+        description: t('models.genmoji.description')
+      },
+      sticker: {
+        image: "https://store.genmojionline.com/cdn-cgi/imagedelivery/DEOVdDdfeGzASe0KdtD7FA/8ef04dd2-6612-496a-d2ea-bada5ccf9400/public",
+        name: t('models.sticker.name'),
+        description: t('models.sticker.description')
+      },
+      // mascot: {
+      //   image: "https://store.genmojionline.com/cdn-cgi/imagedelivery/DEOVdDdfeGzASe0KdtD7FA/14a1b15b-9263-4d20-443d-67c5e4c4c900/public",
+      //   name: t('models.mascot.name'),
+      //   description: t('models.mascot.description')
+      // },
+      'claymation': {
+        image: "/emojis/Claymation.png",
+        name: t('models.claymation.name'),
+        description: t('models.claymation.description')
+      },
+      '3d': {
+        image: "/emojis/3d.png",
+        name: t('models.3d.name'),
+        description: t('models.3d.description')
+      },
+      'origami': {
+        image: "/emojis/Origami.png",
+        name: t('models.origami.name'),
+        description: t('models.origami.description')
+      },
+      'cross-stitch': {
+        image: "/emojis/Cross-stitch-Pixel.png",
+        name: t('models.cross-stitch.name'),
+        description: t('models.cross-stitch.description')
+      },
+      'steampunk': {
+        image: "/emojis/Steampunk.png",
+        name: t('models.steampunk.name'),
+        description: t('models.steampunk.description')
+      },
+      'liquid-metal': {
+        image: "/emojis/Liquid-Metal.png",
+        name: t('models.liquid-metal.name'),
+        description: t('models.liquid-metal.description')
+      },
+      'pixel': {
+        image: "/emojis/pixel.png",
+        name: t('models.pixel.name'),
+        description: t('models.pixel.description')
+      },
+      'handdrawn': {
+        image: "/emojis/handdrawn.png",
+        name: t('models.handdrawn.name'),
+        description: t('models.handdrawn.description')
+      }
+    };
+    return map[model] ?? map['genmoji'];
   };
 
   const currentModel = getCurrentModelInfo();
@@ -299,7 +332,7 @@ export function UnifiedGenmojiGenerator({
       id: 'genmoji' as const,
       name: t('models.genmoji.name'),
       description: t('models.genmoji.description'),
-      image: "https://store.genmojionline.com/cdn-cgi/imagedelivery/DEOVdDdfeGzASe0KdtD7FA/ba791d54-9c81-47d4-dc1f-32f2014b8300/public",
+      image: "https://store.genmojionline.com/cdn-cgi/imagedelivery/DEOVdDdfeGzASe0KdtD7FA/4ad1e218-eae7-4976-8496-b68cd6374f00/public",
       alt: "Genmoji"
     },
     {
@@ -309,82 +342,100 @@ export function UnifiedGenmojiGenerator({
       image: "https://store.genmojionline.com/cdn-cgi/imagedelivery/DEOVdDdfeGzASe0KdtD7FA/8ef04dd2-6612-496a-d2ea-bada5ccf9400/public",
       alt: "Sticker"
     },
-    {
-      id: 'mascot' as const,
-      name: t('models.mascot.name'),
-      description: t('models.mascot.description'),
-      image: "https://store.genmojionline.com/cdn-cgi/imagedelivery/DEOVdDdfeGzASe0KdtD7FA/14a1b15b-9263-4d20-443d-67c5e4c4c900/public",
-      alt: "Mascot"
-    }
+    // {
+    //   id: 'mascot' as const,
+    //   name: t('models.mascot.name'),
+    //   description: t('models.mascot.description'),
+    //   image: "https://store.genmojionline.com/cdn-cgi/imagedelivery/DEOVdDdfeGzASe0KdtD7FA/14a1b15b-9263-4d20-443d-67c5e4c4c900/public",
+    //   alt: "Mascot"
+    // },
+    { id: 'claymation' as const, name: t('models.claymation.name'), description: t('models.claymation.description'), image: "/emojis/Claymation.png", alt: 'Claymation Emoji' },
+    { id: '3d' as const, name: t('models.3d.name'), description: t('models.3d.description'), image: "/emojis/3d.png", alt: '3D Emoji' },
+    { id: 'origami' as const, name: t('models.origami.name'), description: t('models.origami.description'), image: "/emojis/Origami.png", alt: 'Origami Emoji' },
+    { id: 'cross-stitch' as const, name: t('models.cross-stitch.name'), description: t('models.cross-stitch.description'), image: "/emojis/Cross-stitch-Pixel.png", alt: 'Cross-stitch Emoji' },
+    { id: 'steampunk' as const, name: t('models.steampunk.name'), description: t('models.steampunk.description'), image: "/emojis/Steampunk.png", alt: 'Steampunk Emoji' },
+    { id: 'liquid-metal' as const, name: t('models.liquid-metal.name'), description: t('models.liquid-metal.description'), image: "/emojis/Liquid-Metal.png", alt: 'Liquid Metal Emoji' },
+    { id: 'pixel' as const, name: t('models.pixel.name'), description: t('models.pixel.description'), image: "/emojis/pixel.png", alt: 'Pixel Emoji' },
+    { id: 'handdrawn' as const, name: t('models.handdrawn.name'), description: t('models.handdrawn.description'), image: "/emojis/handdrawn.png", alt: 'Hand-drawn Emoji' }
   ];
 
-  const handleModelSelect = (modelId: 'genmoji' | 'sticker' | 'mascot') => {
+  const handleModelSelect = (modelId: string) => {
     setModel(modelId);
     setShowModelSelector(false);
   };
 
-  // PC端模型选择器内容
+  // PC端模型选择器内容（更大缩略图，文字置于底部）
   const desktopModelSelectorContent = (
     <div className={cn(
-      "grid gap-4 p-6",
-      models.length <= 3 ? "grid-cols-3 max-w-xl" : "grid-cols-2 max-w-lg"
+      "grid max-w-6xl",
+      // Responsive column count for web/desktop
+      "grid-cols-2 sm:grid-cols-3 lg:grid-cols-4",
+      // Systematic, responsive gaps and padding
+      "gap-4 sm:gap-5 lg:gap-6",
+      "px-4 sm:px-6 lg:px-8 py-5"
     )}>
       {models.map((modelItem) => (
         <div
           key={modelItem.id}
           className={cn(
-            "flex flex-col items-center gap-3 p-4 rounded-2xl border-2 cursor-pointer transition-all hover:shadow-lg hover:scale-105",
-            model === modelItem.id ? "border-primary bg-primary/5 shadow-lg" : "border-gray-200 hover:border-gray-300"
+            "flex flex-col items-center select-none",
+            "gap-2 sm:gap-3 p-3 sm:p-4 lg:p-5 rounded-3xl cursor-pointer",
+            "transition-transform motion-safe:hover:scale-[1.015] hover:shadow-lg",
+            model === modelItem.id
+              ? "ring-2 ring-primary/50 bg-primary/5"
+              : "hover:ring-1 hover:ring-border/50"
           )}
           onClick={() => handleModelSelect(modelItem.id)}
+          role="button"
+          tabIndex={0}
+          onKeyDown={(e) => (e.key === 'Enter' || e.key === ' ') && handleModelSelect(modelItem.id)}
         >
-          <div className="w-20 h-20 rounded-2xl overflow-hidden shadow-md">
+          <div className="rounded-2xl overflow-hidden shadow-md 
+                          w-36 h-36 sm:w-40 sm:h-40 lg:w-44 lg:h-44">
             <Image
               src={modelItem.image}
               alt={modelItem.alt}
-              width={80}
-              height={80}
-              className="w-full h-full object-cover"
+              width={176}
+              height={176}
+              className="w-full h-full object-contain"
             />
           </div>
-          <div className="text-center">
-            <div className="font-semibold text-sm">{modelItem.name}</div>
+          <div className="text-center flex flex-col items-center">
+            <div className="font-semibold text-sm md:text-base leading-tight">{modelItem.name}</div>
           </div>
         </div>
       ))}
     </div>
   );
 
-  // 移动端模型选择器内容
+  // 移动端模型选择器内容（更大缩略图 + 网格展示，文字置底）
   const mobileModelSelectorContent = (
-    <div className="grid grid-cols-1 gap-3 p-4">
+    <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 sm:gap-5 px-3 sm:px-4 py-4 max-h-[72vh] overflow-y-auto overscroll-contain pr-1 scrollbar-hide">
       {models.map((modelItem) => (
         <div
           key={modelItem.id}
           className={cn(
-            "flex items-center gap-4 p-4 rounded-xl border-2 cursor-pointer transition-all hover:shadow-md",
-            model === modelItem.id ? "border-primary bg-primary/5 shadow-md" : "border-gray-200 hover:border-gray-300"
+            "flex flex-col items-center select-none",
+            "gap-2 p-2 rounded-2xl cursor-pointer transition-transform",
+            model === modelItem.id ? "ring-2 ring-primary/40 bg-primary/5" : "hover:ring-1 hover:ring-border/40"
           )}
           onClick={() => handleModelSelect(modelItem.id)}
+          role="button"
+          tabIndex={0}
+          onKeyDown={(e) => (e.key === 'Enter' || e.key === ' ') && handleModelSelect(modelItem.id)}
         >
-          <div className="w-16 h-16 rounded-xl overflow-hidden shadow-sm flex-shrink-0">
+          <div className="w-32 h-32 sm:w-36 sm:h-36 rounded-2xl overflow-hidden">
             <Image
               src={modelItem.image}
               alt={modelItem.alt}
-              width={64}
-              height={64}
-              className="w-full h-full object-cover"
+              width={144}
+              height={144}
+              className="w-full h-full object-contain"
             />
           </div>
-          <div className="flex-1">
-            <div className="font-semibold text-base">{modelItem.name}</div>
-            <div className="text-sm text-muted-foreground mt-1">{modelItem.description}</div>
+          <div className="text-center flex flex-col items-center">
+            <div className="text-[11px] sm:text-xs font-medium leading-tight">{modelItem.name}</div>
           </div>
-          {model === modelItem.id && (
-            <div className="w-5 h-5 rounded-full bg-primary flex items-center justify-center flex-shrink-0">
-              <div className="w-2 h-2 rounded-full bg-white"></div>
-            </div>
-          )}
         </div>
       ))}
     </div>
@@ -407,49 +458,135 @@ export function UnifiedGenmojiGenerator({
 
       <div className="flex flex-col gap-4">
         <div className="relative flex flex-col w-full rounded-xl border bg-card shadow-sm overflow-hidden border-muted-foreground/10">
-          <Textarea
-            ref={textareaRef}
-            placeholder={t('placeholder')}
-            value={prompt}
-            onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setPrompt(e.target.value)}
-            onKeyDown={(e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-              if (e.key === 'Enter' && !e.shiftKey && prompt.trim() && !isGenerating) {
-                e.preventDefault();
-                generateEmoji();
-              }
-            }}
-            rows={3}
-            className={cn(
-              "resize-none min-h-[100px] border-0 focus-visible:ring-0 focus-visible:ring-offset-0 rounded-xl bg-card text-lg p-4",
-              "pb-16" // Fixed padding bottom for consistent layout
-            )}
-          />
-          
-          {(selectedImage || isUploading) && (
-            <div className="absolute top-2 right-2">
-              <div className="relative w-16 h-16 rounded-lg overflow-hidden border bg-muted">
+          {/* Tabs header */}
+          <div className="flex w-full justify-center sm:justify-start p-2">
+            <div className="inline-flex items-center gap-1 bg-muted rounded-full p-1">
+              <button
+                type="button"
+                onClick={() => setActiveTab('text')}
+                className={cn(
+                  "px-3 py-1.5 text-xs sm:text-sm rounded-full",
+                  activeTab === 'text' ? 'bg-background shadow font-medium' : 'text-muted-foreground hover:text-foreground'
+                )}
+              >
+                {t('tabs.text')}
+              </button>
+              <button
+                type="button"
+                onClick={() => setActiveTab('image')}
+                className={cn(
+                  "px-3 py-1.5 text-xs sm:text-sm rounded-full",
+                  activeTab === 'image' ? 'bg-background shadow font-medium' : 'text-muted-foreground hover:text-foreground'
+                )}
+              >
+                {t('tabs.image')}
+              </button>
+            </div>
+          </div>
+
+          {/* Tab content */}
+          {activeTab === 'text' ? (
+            <Textarea
+              ref={textareaRef}
+              placeholder={t('placeholder')}
+              value={prompt}
+              onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setPrompt(e.target.value)}
+              onKeyDown={(e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+                if (e.key === 'Enter' && !e.shiftKey && prompt.trim() && !isGenerating) {
+                  e.preventDefault();
+                  generateEmoji();
+                }
+              }}
+              rows={3}
+              className={cn(
+                "resize-none min-h-[120px] border-0 focus-visible:ring-0 focus-visible:ring-offset-0 rounded-xl bg-card text-lg p-4",
+                "pb-16"
+              )}
+            />
+          ) : (
+            <div className="px-4 pb-20">
+              <div
+                className={cn(
+                  "relative rounded-xl border-2 border-dashed",
+                  "border-muted-foreground/30 hover:border-muted-foreground/50",
+                  "min-h-[200px] flex flex-col items-center justify-center gap-3 p-6 text-center"
+                )}
+                onDragOver={(e) => { e.preventDefault(); e.stopPropagation(); }}
+                onDrop={async (e) => {
+                  e.preventDefault();
+                  const file = e.dataTransfer.files?.[0];
+                  if (file) {
+                    setIsUploading(true);
+                    try {
+                      const uploadResponse = await uploadImage(file, token);
+                      if (uploadResponse.success && uploadResponse.image_url) {
+                        setSelectedImage(uploadResponse.image_url);
+                      }
+                    } finally {
+                      setIsUploading(false);
+                    }
+                  }
+                }}
+                onPaste={async (e) => {
+                  const file = e.clipboardData?.files?.[0];
+                  if (file) {
+                    setIsUploading(true);
+                    try {
+                      const uploadResponse = await uploadImage(file, token);
+                      if (uploadResponse.success && uploadResponse.image_url) {
+                        setSelectedImage(uploadResponse.image_url);
+                      }
+                    } finally {
+                      setIsUploading(false);
+                    }
+                  }
+                }}
+              >
                 {isUploading ? (
-                  // 上传动画
-                  <div className="w-full h-full flex items-center justify-center bg-muted">
-                    <div className="w-6 h-6 border-2 border-primary border-t-transparent rounded-full animate-spin"></div>
-                  </div>
+                  <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin" />
                 ) : selectedImage ? (
-                  // 已上传的图片
-                  <>
-                    <img
-                      src={selectedImage}
-                      alt="Selected reference"
-                      className="w-full h-full object-cover"
-                    />
+                  <div className="relative w-full max-w-xs">
+                    <img src={selectedImage} alt="Reference" className="w-full h-auto rounded-lg shadow" />
                     <button
                       type="button"
                       onClick={clearSelectedImage}
-                      className="absolute top-0 right-0 p-0.5 rounded-full bg-background/80 hover:bg-background text-muted-foreground hover:text-foreground"
+                      className="absolute -top-2 -right-2 p-1 rounded-full bg-background/90 hover:bg-background shadow"
                     >
-                      <X className="h-3 w-3" />
+                      <X className="w-4 h-4" />
                     </button>
+                  </div>
+                ) : (
+                  <>
+                    <Button
+                      type="button"
+                      onClick={() => fileInputRef.current?.click()}
+                      className="rounded-full"
+                      variant="default"
+                      disabled={isUploading}
+                    >
+                      {t('uploadReference')}
+                    </Button>
+                    <div className="text-xs text-muted-foreground">or drag & drop / paste</div>
                   </>
-                ) : null}
+                )}
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImageSelect}
+                  className="hidden"
+                  ref={fileInputRef}
+                  disabled={isUploading}
+                />
+              </div>
+              {/* Optional prompt for image mode */}
+              <div className="mt-3">
+                <Textarea
+                  placeholder={t('placeholder')}
+                  value={prompt}
+                  onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setPrompt(e.target.value)}
+                  rows={2}
+                  className="resize-none border-0 focus-visible:ring-0 focus-visible:ring-offset-0 rounded-xl bg-card text-sm"
+                />
               </div>
             </div>
           )}
@@ -527,39 +664,13 @@ export function UnifiedGenmojiGenerator({
               <TooltipProvider>
                 <Tooltip>
                   <TooltipTrigger asChild>
-                    <Button
-                      type="button"
-                      variant="ghost"
-                      size="sm"
-                      className={cn(
-                        "w-8 h-8 p-0 rounded-full hover:bg-muted",
-                        selectedImage ? "text-primary" : "",
-                        isUploading ? "cursor-not-allowed opacity-50" : ""
-                      )}
-                      onClick={() => !isUploading && fileInputRef.current?.click()}
-                      disabled={isUploading}
-                    >
-                      {isUploading ? (
-                        <div className="w-4 h-4 border border-current border-t-transparent rounded-full animate-spin"></div>
-                      ) : (
-                        <ImageIcon className="h-4 w-4" />
-                      )}
-                                        </Button>
+                    {/* Upload icon removed; handled by Image tab */}
                   </TooltipTrigger>
                   <TooltipContent>
-                    <p>{t('uploadReference')}</p>
+                    <p>{t('selectModel')}</p>
                   </TooltipContent>
                   </Tooltip>
               </TooltipProvider>
-
-              <input
-                type="file"
-                accept="image/*"
-                onChange={handleImageSelect}
-                className="hidden"
-                ref={fileInputRef}
-                disabled={isUploading}
-              />
             </div>
             
             {/* Generate button */}

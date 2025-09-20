@@ -131,6 +131,10 @@
     "uploadReference": "Télécharger une image de référence",
     "changeImage": "Changer l'image",
     "selectModel": "Sélectionner le style",
+    "tabs": {
+      "text": "Texte vers Emoji",
+      "image": "Image vers Emoji"
+    },
     "recentTitle": "Genmojis récents",
     "generationStatus": {
       "starting": "Démarrage de la génération..."
@@ -153,6 +157,38 @@
       "mascot": {
         "name": "Mascotte",
         "description": "Style mascotte de dessin animé"
+      },
+      "claymation": {
+        "name": "Pâte à modeler (Claymation)",
+        "description": "Style stop‑motion fait main en pâte"
+      },
+      "3d": {
+        "name": "3D",
+        "description": "Aspect plastique lisse, éclairage studio"
+      },
+      "origami": {
+        "name": "Origami",
+        "description": "Texture de papier plié, plis nets"
+      },
+      "cross-stitch": {
+        "name": "Point de croix pixel art",
+        "description": "Texture brodée sur toile de tissu"
+      },
+      "steampunk": {
+        "name": "Steampunk",
+        "description": "Engrenages en laiton et machines vintage"
+      },
+      "liquid-metal": {
+        "name": "Métal liquide",
+        "description": "Chrome fondu, brillance irisée"
+      },
+      "pixel": {
+        "name": "Pixel",
+        "description": "Esthétique pixel‑art nette"
+      },
+      "handdrawn": {
+        "name": "Dessiné à la main",
+        "description": "Style croquis au feutre"
       }
     },
     "prompts": {
@@ -182,6 +218,70 @@
         "Hibou scientifique",
         "Renard artiste",
         "Pingouin pilote"
+      ],
+      "claymation": [
+        "Sourire en pâte",
+        "Robot en pâte qui salue",
+        "Coeur en pâte",
+        "Chat en pâte avec chapeau",
+        "Pouce en pâte",
+        "Rire en pâte"
+      ],
+      "3d": [
+        "Sourire 3D brillant",
+        "Rire aux larmes 3D",
+        "Yeux en coeur 3D",
+        "Pouce levé 3D",
+        "Visage surpris 3D",
+        "Cotillon 3D"
+      ],
+      "origami": [
+        "Renard origami",
+        "Coeur origami",
+        "Étoile origami",
+        "Panda origami",
+        "Grue origami",
+        "Fleur origami"
+      ],
+      "cross-stitch": [
+        "Coeur au point de croix",
+        "Smiley au point de croix",
+        "Chat au point de croix",
+        "Étoile au point de croix",
+        "Arc-en-ciel au point de croix",
+        "Pouce au point de croix"
+      ],
+      "steampunk": [
+        "Sourire engrenages",
+        "Visage robot steampunk",
+        "Coeur en laiton",
+        "Emoji lunettes de protection",
+        "Hibou steampunk",
+        "Clé à remontoir"
+      ],
+      "liquid-metal": [
+        "Sourire métal liquide",
+        "Coeur en métal fondu",
+        "Étoile qui coule",
+        "Goutte irisée",
+        "Pouce liquide",
+        "Flamme chromée"
+      ],
+      "pixel": [
+        "Smiley pixel 32px",
+        "Coeur pixel",
+        "Chat pixel",
+        "Étoile pixel",
+        "Épée pixel",
+        "Visage lunettes pixel"
+      ],
+      "handdrawn": [
+        "Sourire griffonné",
+        "Coeur esquissé",
+        "Étoile au feutre",
+        "Chat dessiné à la main",
+        "Pouce griffonné",
+        "Fleur gribouillée"
       ]
     }
   },

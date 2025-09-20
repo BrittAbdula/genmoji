@@ -179,7 +179,7 @@ export async function genMoji(
   prompt: string, 
   locale: string, 
   image: string | null, 
-  model: 'genmoji' | 'sticker' | 'mascot' = 'genmoji',
+  model: string = 'genmoji',
   token?: string | null
 ): Promise<EmojiResponse> {
   const url = `${API_BASE_URL}${API_ENDPOINTS.EMOJI_GENERATE}`;
@@ -267,32 +267,28 @@ export async function uploadImage(
   file: File,
   token?: string | null
 ): Promise<{ success: boolean; image_url?: string; error?: string }> {
-  const url = `${API_BASE_URL}${API_ENDPOINTS.UPLOAD_IMAGE}`;
+  // Use server-side proxy to keep API key secret
+  const url = `${API_BASE_URL}${API_ENDPOINTS.UPLOAD_STREAM_PROXY}`;
   const formData = new FormData();
-  formData.append('image', file);
-  
+  formData.append('file', file);
+  formData.append('uploadPath', 'images/user-uploads');
+  if (file?.name) formData.append('fileName', file.name);
+
   const headers: Record<string, string> = {};
-  if (token) {
-    headers['Authorization'] = `Bearer ${token}`;
-  }
+  if (token) headers['Authorization'] = `Bearer ${token}`;
 
-  const res = await fetch(url, {
-    method: 'POST',
-    headers,
-    body: formData
-  });
-
-  if (!res.ok) {
-    const errorText = await res.text();
-    console.error('Upload error:', {
-      status: res.status,
-      statusText: res.statusText,
-      error: errorText
-    });
-    throw new Error(`Failed to upload image: ${res.status} ${res.statusText}`);
+  const res = await fetch(url, { method: 'POST', headers, body: formData });
+  let data: any = null;
+  try {
+    data = await res.json();
+  } catch {
+    const text = await res.text().catch(() => '');
+    return { success: false, error: `Upload failed: ${res.status} ${res.statusText} ${text}` };
   }
-  
-  return res.json();
+  if (!res.ok || !data?.success) {
+    return { success: false, error: data?.error || data?.msg || `${res.status} ${res.statusText}` };
+  }
+  return { success: true, image_url: data?.image_url };
 }
 
 // 订阅相关 API 函数

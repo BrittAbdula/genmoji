@@ -374,6 +374,10 @@
     "uploadReference": "Upload reference image",
     "changeImage": "Change Image",
     "selectModel": "Select Style",
+    "tabs": {
+      "text": "Text to Emoji",
+      "image": "Image to Emoji"
+    },
     "recentTitle": "Recent Genmojis",
     "generationStatus": {
       "starting": "Starting generation..."
@@ -396,6 +400,38 @@
       "mascot": {
         "name": "Mascot",
         "description": "Cartoon mascot style"
+      },
+      "claymation": {
+        "name": "Claymation",
+        "description": "Handmade stop-motion clay style"
+      },
+      "3d": {
+        "name": "3D",
+        "description": "Glossy, studio-lit 3D look"
+      },
+      "origami": {
+        "name": "Origami",
+        "description": "Folded paper texture with sharp creases"
+      },
+      "cross-stitch": {
+        "name": "Cross-stitch Pixel Art",
+        "description": "Embroidered pixel-art with fabric texture"
+      },
+      "steampunk": {
+        "name": "Steampunk",
+        "description": "Brass gears and vintage machinery"
+      },
+      "liquid-metal": {
+        "name": "Liquid Metal",
+        "description": "Molten chrome with glossy iridescence"
+      },
+      "pixel": {
+        "name": "Pixel",
+        "description": "Crisp pixel-art aesthetic"
+      },
+      "handdrawn": {
+        "name": "Hand-drawn",
+        "description": "Sketchy doodle marker style"
       }
     },
     "prompts": {
@@ -425,6 +461,70 @@
         "Scientist owl",
         "Artist fox",
         "Pilot penguin"
+      ],
+      "claymation": [
+        "Clay penguin smile",
+        "Clay robot waving",
+        "Clay heart emoji",
+        "Clay cat with hat",
+        "Clay thumbs up",
+        "Clay laughing face"
+      ],
+      "3d": [
+        "3D glossy smile",
+        "3D crying laughing",
+        "3D heart eyes",
+        "3D thumbs up",
+        "3D shocked face",
+        "3D party popper"
+      ],
+      "origami": [
+        "Origami fox face",
+        "Origami heart",
+        "Origami star",
+        "Origami panda",
+        "Origami crane emoji",
+        "Origami flower"
+      ],
+      "cross-stitch": [
+        "Cross-stitch heart",
+        "Cross-stitch smiley",
+        "Cross-stitch cat",
+        "Cross-stitch star",
+        "Cross-stitch rainbow",
+        "Cross-stitch thumbs up"
+      ],
+      "steampunk": [
+        "Steampunk gear smile",
+        "Steampunk robot face",
+        "Brass heart",
+        "Goggles emoji",
+        "Steampunk owl",
+        "Clockwork key"
+      ],
+      "liquid-metal": [
+        "Liquid chrome smile",
+        "Molten metal heart",
+        "Dripping star",
+        "Iridescent droplet",
+        "Liquid thumbs up",
+        "Chrome flame"
+      ],
+      "pixel": [
+        "Pixel smiley 32px",
+        "Pixel heart",
+        "Pixel cat",
+        "Pixel star",
+        "Pixel sword",
+        "Pixel sunglasses face"
+      ],
+      "handdrawn": [
+        "Doodle smile",
+        "Sketch heart",
+        "Marker star",
+        "Hand-drawn cat",
+        "Rough thumbs up",
+        "Scribble flower"
       ]
     }
   },
