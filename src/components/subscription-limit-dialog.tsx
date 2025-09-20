@@ -285,7 +285,7 @@ export function SubscriptionLimitDialog({
       {/* 限制状态提示 */}
       <div className="text-center space-y-2">
         <div className="w-10 h-10 mx-auto flex items-center justify-center">
-          <img src="/logo.png" alt="Logo" className="w-8 h-8" />
+          <img src="/logo.png" alt="Genmoji Online logo" className="w-8 h-8" />
         </div>
         <h3 className="text-lg font-semibold">{limitInfo.type === 'monthly' ? t('limitDialog.monthlyCreditsUsed') : t('limitDialog.dailyLimitReached')}</h3>
         <p className="text-sm text-muted-foreground">

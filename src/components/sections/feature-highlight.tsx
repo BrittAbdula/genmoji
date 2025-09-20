@@ -28,13 +28,7 @@ function Feature({
   const t = useTranslations('featureHighlight');
   const common = useTranslations('common');
 
-  // Pre-load both images to prevent CLS
-  useEffect(() => {
-    const imgLight = new window.Image();
-    const imgDark = new window.Image();
-    imgLight.src = imageSrc;
-    imgDark.src = imageSrcBlack;
-  }, [imageSrc, imageSrcBlack]);
+  // No eager preloading to keep bandwidth light; aspect ratio containers prevent CLS
 
   return (
     <div
@@ -84,7 +78,7 @@ function Feature({
                 alt={t(`${translationKey}.title`) + ' - Dark Mode'}
                 fill
                 sizes="(max-width: 640px) 320px, (max-width: 768px) 380px, (max-width: 1024px) 480px, (max-width: 1280px) 520px, 580px"
-                priority
+                loading="lazy"
                 style={{ objectFit: 'contain' }}
               />
             </div>
@@ -95,7 +89,7 @@ function Feature({
                 alt={t(`${translationKey}.title`) + ' - Light Mode'}
                 fill
                 sizes="(max-width: 640px) 320px, (max-width: 768px) 380px, (max-width: 1024px) 480px, (max-width: 1280px) 520px, 580px"
-                priority
+                loading="lazy"
                 style={{ objectFit: 'contain' }}
               />
             </div>

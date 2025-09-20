@@ -171,7 +171,7 @@
         "description": "Texture de papier plié, plis nets"
       },
       "cross-stitch": {
-        "name": "Point de croix pixel art",
+        "name": "Point de croix",
         "description": "Texture brodée sur toile de tissu"
       },
       "steampunk": {

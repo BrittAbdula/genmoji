@@ -11,6 +11,7 @@ interface EmojiContainerProps {
   priority?: boolean;
   padding?: string;
   withBorder?: boolean;
+  showModelBadge?: boolean;
 }
 
 const EmojiContainer = ({ 
@@ -19,7 +20,8 @@ const EmojiContainer = ({
   lazyLoad = true,
   priority = false,
   padding = 'p-0',
-  withBorder = true
+  withBorder = true,
+  showModelBadge = false
 }: EmojiContainerProps) => {
   const t = useTranslations('emoji.container');
 
@@ -39,31 +41,47 @@ const EmojiContainer = ({
     xl: 600  
   };
 
+  // Responsive sizes hint for better loading behavior
+  const sizesMap = {
+    sm: '(min-width:1280px) 10vw, (min-width:1024px) 12.5vw, (min-width:768px) 16.6vw, (min-width:640px) 25vw, 33vw',
+    md: `${sizeValues.md}px`,
+    lg: `${sizeValues.lg}px`,
+    xl: `${sizeValues.xl}px`
+  } as const;
+
+  // Badges removed per new gallery style
+
+  const altText = t('imageAlt', { prompt: emoji.prompt });
+
   return (
     <Link 
       href={`/emoji/${emoji.slug}/`}
+      aria-label={altText}
+      title={altText}
       className={cn(
-        "block relative",
-        "rounded-md cursor-pointer flex items-center justify-center",
-        "transition-colors duration-200",
-        "hover:bg-gray-950/[.05] active:bg-gray-950/[.1]",
-        "dark:hover:bg-gray-50/[.15] dark:active:bg-gray-50/[.2]",
-        withBorder && "border-2 border-purple-700/30 rounded-lg",
+        'group block relative outline-none',
+        'cursor-pointer flex items-center justify-center',
+        'transition-colors duration-200',
+        // No tile background per updated style
+        withBorder ? 'border border-border/60' : 'border-0',
+        'focus-visible:ring-2 focus-visible:ring-primary/40',
         padding,
         sizeClasses[size]
       )}
     >
-      <div className="w-full h-full flex items-center justify-center rounded-md">
+      {/* remove badges per new gallery style */}
+      {/* optional vignette removed for fully flat tiles */}
+      <div className="w-full h-full flex items-center justify-center">
         <Image 
           src={emoji.image_url.trim()} 
-          alt={t('imageAlt', { prompt: emoji.prompt })}
+          alt={altText}
           width={sizeValues[size]}
           height={sizeValues[size]}
           className="w-full h-full object-contain"
-          loading={lazyLoad && !priority ? "lazy" : "eager"}
+          loading={priority ? 'eager' : (lazyLoad ? 'lazy' : 'eager')}
           priority={priority}
           draggable={false}
-          sizes={`(max-width: 768px) ${sizeValues[size]}px, ${sizeValues[size]}px`}
+          sizes={sizesMap[size]}
           placeholder="blur"
           blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII="
         />

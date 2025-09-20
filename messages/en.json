@@ -414,7 +414,7 @@
         "description": "Folded paper texture with sharp creases"
       },
       "cross-stitch": {
-        "name": "Cross-stitch Pixel Art",
+        "name": "Cross-stitch",
         "description": "Embroidered pixel-art with fabric texture"
       },
       "steampunk": {
@@ -436,95 +436,94 @@
     },
     "prompts": {
       "genmoji": [
-        "Penguin Wizard",
+        "Penguin wizard",
         "Cat wearing sunglasses",
-        "Happy face with heart",
+        "Heart eyes smile",
         "Dragon breathing fire",
-        "Robot dancing",
+        "Dancing robot",
         "Unicorn with rainbow",
-        "Ninja turtle"
+        "Pirate turtle"
       ],
       "sticker": [
-        "Cute puppy with bow tie",
-        "Pikachu smiling",
-        "Baby Yoda",
+        "Puppy with bow tie",
         "Corgi with crown",
-        "Kawaii avocado",
+        "Cute avocado",
         "Smiling sun",
-        "Happy cloud"
+        "Happy cloud",
+        "Sparkling star"
       ],
       "mascot": [
         "Cool dog rapper",
         "Business cat CEO",
-        "Athlete bear",
+        "Athletic bear",
         "Chef elephant",
         "Scientist owl",
         "Artist fox",
         "Pilot penguin"
       ],
       "claymation": [
-        "Clay penguin smile",
-        "Clay robot waving",
-        "Clay heart emoji",
-        "Clay cat with hat",
-        "Clay thumbs up",
-        "Clay laughing face"
+        "Soft, rounded penguin smile",
+        "Toy-like robot waving",
+        "Squishy heart face",
+        "Cat with floppy hat",
+        "Thumbs up with fingerprints",
+        "Laughing face with soft texture"
       ],
       "3d": [
-        "3D glossy smile",
-        "3D crying laughing",
-        "3D heart eyes",
-        "3D thumbs up",
-        "3D shocked face",
-        "3D party popper"
+        "Glossy smile",
+        "Crying-laughing with highlights",
+        "Heart eyes with reflections",
+        "Shiny thumbs up",
+        "Surprised face, studio lighting",
+        "Confetti popper with glow"
       ],
       "origami": [
-        "Origami fox face",
-        "Origami heart",
-        "Origami star",
-        "Origami panda",
-        "Origami crane emoji",
-        "Origami flower"
+        "Paper fox with crisp folds",
+        "Folded paper heart",
+        "Star with crease lines",
+        "Panda made of paper",
+        "Paper crane",
+        "Paper flower"
       ],
       "cross-stitch": [
-        "Cross-stitch heart",
-        "Cross-stitch smiley",
-        "Cross-stitch cat",
-        "Cross-stitch star",
-        "Cross-stitch rainbow",
-        "Cross-stitch thumbs up"
+        "Heart on fabric grid",
+        "Smiley with stitched X pattern",
+        "Cat stitched on cloth",
+        "Star with cross threads",
+        "Rainbow embroidered",
+        "Thumbs up on linen"
       ],
       "steampunk": [
-        "Steampunk gear smile",
-        "Steampunk robot face",
+        "Gear-filled smile",
+        "Mechanical robot face",
         "Brass heart",
         "Goggles emoji",
-        "Steampunk owl",
+        "Owl with cogs",
         "Clockwork key"
       ],
       "liquid-metal": [
-        "Liquid chrome smile",
-        "Molten metal heart",
+        "Chrome smile",
+        "Molten heart",
         "Dripping star",
         "Iridescent droplet",
-        "Liquid thumbs up",
+        "Shiny thumbs up",
         "Chrome flame"
       ],
       "pixel": [
-        "Pixel smiley 32px",
-        "Pixel heart",
-        "Pixel cat",
-        "Pixel star",
-        "Pixel sword",
-        "Pixel sunglasses face"
+        "Retro game smiley",
+        "Heart, low resolution",
+        "Cat with square pixels",
+        "Star, blocky look",
+        "Sword from retro game",
+        "Sunglasses face, low-res"
       ],
       "handdrawn": [
-        "Doodle smile",
-        "Sketch heart",
-        "Marker star",
-        "Hand-drawn cat",
-        "Rough thumbs up",
-        "Scribble flower"
+        "Smiley with rough lines",
+        "Heart with scribbled lines",
+        "Star with bold marker lines",
+        "Cat with loose strokes",
+        "Thumbs up with bold strokes",
+        "Messy line flower"
       ]
     }
   },

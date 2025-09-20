@@ -48,7 +48,7 @@ export function EmojiGrid({
 
   return (
     <div className="w-full">
-      <div className="grid w-full grid-cols-4 sm:grid-cols-6 md:grid-cols-8 lg:grid-cols-8 xl:grid-cols-10 place-content-center justify-items-center gap-2 max-w-7xl mx-auto min-h-[400px]">
+      <div className="grid w-full grid-cols-4 sm:grid-cols-6 md:grid-cols-8 lg:grid-cols-8 xl:grid-cols-10 place-content-stretch justify-items-stretch gap-1 max-w-7xl mx-auto">
         {emojis.map((emoji, index) => (
           <EmojiContainer
             key={`${emoji.slug}-${index}`}
@@ -56,7 +56,8 @@ export function EmojiGrid({
             size="sm"
             lazyLoad={index > 12}
             priority={index < 6}
-            withBorder={true}
+            withBorder={false}
+            padding="p-0"
           />
         ))}
       </div>

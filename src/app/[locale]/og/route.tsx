@@ -77,6 +77,7 @@ export async function GET(req: NextRequest) {
 
         <img
           src={`${siteConfig.url}/logo.png`}
+          alt={`${siteConfig.name} logo`}
           width={900}
           style={{
             position: "relative",

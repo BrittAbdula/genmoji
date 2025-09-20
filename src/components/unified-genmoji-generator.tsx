@@ -1,13 +1,12 @@
 "use client";
 
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { Drawer, DrawerContent, DrawerHeader, DrawerTitle, DrawerTrigger } from "@/components/ui/drawer";
+// Dialog was used for the old model selector; no longer needed here
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Progress } from "@/components/ui/progress";
 import { useState, useEffect, useRef } from "react";
 import { genMoji, uploadImage, GenerationLimitError } from "@/lib/api";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+// Tooltip not needed after removing bottom model selector trigger
 import { Emoji } from "@/types/emoji";
 import { X, Plus, ArrowUp, Globe } from 'lucide-react';
 import confetti from "canvas-confetti";
@@ -40,9 +39,9 @@ export function UnifiedGenmojiGenerator({
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [generatedEmoji, setGeneratedEmoji] = useState<Emoji | null>(null);
   const [model, setModel] = useState<string>(init_model || 'genmoji');
-  const [showModelSelector, setShowModelSelector] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const modelSelectorRef = useRef<HTMLDivElement>(null);
   const isMobile = useMediaQuery("(max-width: 768px)");
   
   const { isGenerating, progress, setGenerating, setProgress, setPrompt: setGlobalPrompt } = useGenerationStore();
@@ -58,6 +57,15 @@ export function UnifiedGenmojiGenerator({
     type?: 'monthly' | 'daily';
   } | null>(null);
   const [activeTab, setActiveTab] = useState<'text' | 'image'>('text');
+
+  // 初始化模型：优先 props，其次 localStorage 记忆
+  useEffect(() => {
+    if (init_model) return;
+    try {
+      const saved = localStorage.getItem('genmoji:selectedModel');
+      if (saved) setModel(saved);
+    } catch {}
+  }, [init_model]);
 
   // Get localized prompts based on current model
   const getDefaultPrompts = () => {
@@ -83,6 +91,27 @@ export function UnifiedGenmojiGenerator({
       }, 300);
     }
   }, [isLoggedIn, pendingGeneration, prompt]);
+
+  // 居中模型选择器
+  useEffect(() => {
+    const centerModelSelector = () => {
+      if (modelSelectorRef.current) {
+        const container = modelSelectorRef.current;
+        const scrollWidth = container.scrollWidth;
+        const clientWidth = container.clientWidth;
+        
+        if (scrollWidth > clientWidth) {
+          // 计算居中位置
+          const centerPosition = (scrollWidth - clientWidth) / 2;
+          container.scrollLeft = centerPosition;
+        }
+      }
+    };
+
+    // 延迟执行以确保DOM完全渲染
+    const timer = setTimeout(centerModelSelector, 100);
+    return () => clearTimeout(timer);
+  }, [model]); // 当模型变化时重新居中
 
   // Get current model info
   const getCurrentModelInfo = () => {
@@ -368,88 +397,50 @@ export function UnifiedGenmojiGenerator({
 
   const handleModelSelect = (modelId: string) => {
     setModel(modelId);
-    setShowModelSelector(false);
+    try {
+      localStorage.setItem('genmoji:selectedModel', modelId);
+    } catch {}
   };
 
-  // PC端模型选择器内容（更大缩略图，文字置于底部）
-  const desktopModelSelectorContent = (
-    <div className={cn(
-      "grid max-w-6xl",
-      // Responsive column count for web/desktop
-      "grid-cols-2 sm:grid-cols-3 lg:grid-cols-4",
-      // Systematic, responsive gaps and padding
-      "gap-4 sm:gap-5 lg:gap-6",
-      "px-4 sm:px-6 lg:px-8 py-5"
-    )}>
-      {models.map((modelItem) => (
-        <div
-          key={modelItem.id}
-          className={cn(
-            "flex flex-col items-center select-none",
-            "gap-2 sm:gap-3 p-3 sm:p-4 lg:p-5 rounded-3xl cursor-pointer",
-            "transition-transform motion-safe:hover:scale-[1.015] hover:shadow-lg",
-            model === modelItem.id
-              ? "ring-2 ring-primary/50 bg-primary/5"
-              : "hover:ring-1 hover:ring-border/50"
-          )}
-          onClick={() => handleModelSelect(modelItem.id)}
-          role="button"
-          tabIndex={0}
-          onKeyDown={(e) => (e.key === 'Enter' || e.key === ' ') && handleModelSelect(modelItem.id)}
-        >
-          <div className="rounded-2xl overflow-hidden shadow-md 
-                          w-36 h-36 sm:w-40 sm:h-40 lg:w-44 lg:h-44">
-            <Image
-              src={modelItem.image}
-              alt={modelItem.alt}
-              width={176}
-              height={176}
-              className="w-full h-full object-contain"
-            />
-          </div>
-          <div className="text-center flex flex-col items-center">
-            <div className="font-semibold text-sm md:text-base leading-tight">{modelItem.name}</div>
-          </div>
-        </div>
-      ))}
-    </div>
-  );
-
-  // 移动端模型选择器内容（更大缩略图 + 网格展示，文字置底）
-  const mobileModelSelectorContent = (
-    <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 sm:gap-5 px-3 sm:px-4 py-4 max-h-[72vh] overflow-y-auto overscroll-contain pr-1 scrollbar-hide">
-      {models.map((modelItem) => (
-        <div
-          key={modelItem.id}
-          className={cn(
-            "flex flex-col items-center select-none",
-            "gap-2 p-2 rounded-2xl cursor-pointer transition-transform",
-            model === modelItem.id ? "ring-2 ring-primary/40 bg-primary/5" : "hover:ring-1 hover:ring-border/40"
-          )}
-          onClick={() => handleModelSelect(modelItem.id)}
-          role="button"
-          tabIndex={0}
-          onKeyDown={(e) => (e.key === 'Enter' || e.key === ' ') && handleModelSelect(modelItem.id)}
-        >
-          <div className="w-32 h-32 sm:w-36 sm:h-36 rounded-2xl overflow-hidden">
-            <Image
-              src={modelItem.image}
-              alt={modelItem.alt}
-              width={144}
-              height={144}
-              className="w-full h-full object-contain"
-            />
-          </div>
-          <div className="text-center flex flex-col items-center">
-            <div className="text-[11px] sm:text-xs font-medium leading-tight">{modelItem.name}</div>
-          </div>
-        </div>
-      ))}
-    </div>
-  );
+  // Removed old dialog/drawer model selectors in favor of inline selector bar
 
   const content = (
-    <div className="grid gap-4 py-4">
+    <div className="flex flex-col gap-4 py-4">
+      {/* Inline style selector bar */}
+      <div className="w-full">
+        <div className="flex items-center justify-center mb-2 px-1">
+          <div className="text-xs sm:text-sm font-medium text-muted-foreground">{t('selectModel')}</div>
+        </div>
+        <div className="w-full px-4">
+          <div 
+            ref={modelSelectorRef}
+            className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide touch-pan-x justify-start" 
+            role="listbox" 
+            aria-label={t('selectModel')}
+          >
+          {/* All models horizontally scrollable */}
+          {models.map((m) => (
+            <button
+              key={m.id}
+              type="button"
+              onClick={() => handleModelSelect(m.id)}
+              title={m.name}
+              aria-pressed={model === m.id}
+              className={cn(
+                "flex items-center gap-2 shrink-0 border rounded-full pr-3 pl-2 py-2",
+                "transition-colors bg-background",
+                model === m.id
+                  ? "border-primary/40 bg-primary/5"
+                  : "border-border hover:bg-muted/60"
+              )}
+            >
+              <Image src={m.image} alt={m.alt} width={28} height={28} className="rounded-full" />
+              <span className="text-[13px] sm:text-sm whitespace-nowrap">{m.name}</span>
+            </button>
+          ))}
+          </div>
+        </div>
+      </div>
       {isGenerating && (
         <div className="w-full">
           <Progress value={progress} className="h-1" />
@@ -466,7 +457,7 @@ export function UnifiedGenmojiGenerator({
       <div className="flex flex-col gap-4">
         <div className="relative flex flex-col w-full rounded-xl border bg-card shadow-sm overflow-hidden border-muted-foreground/10">
           {/* Tabs header */}
-          <div className="flex w-full justify-center sm:justify-start p-2">
+          <div className="flex w-full justify-center p-2">
             <div className="inline-flex items-center gap-1 bg-muted rounded-full p-1">
               <button
                 type="button"
@@ -504,10 +495,10 @@ export function UnifiedGenmojiGenerator({
                   generateEmoji();
                 }
               }}
-              rows={3}
+              rows={1}
               className={cn(
-                "resize-none min-h-[120px] border-0 focus-visible:ring-0 focus-visible:ring-offset-0 rounded-xl bg-card text-lg p-4",
-                "pb-16"
+                "resize-none min-h-[60px] border-0 focus-visible:ring-0 focus-visible:ring-offset-0 rounded-xl bg-card text-lg p-4",
+                "pb-16 placeholder:text-muted-foreground/50 placeholder:font-normal"
               )}
             />
           ) : (
@@ -553,7 +544,7 @@ export function UnifiedGenmojiGenerator({
                   <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin" />
                 ) : selectedImage ? (
                   <div className="relative w-full max-w-xs">
-                    <img src={selectedImage} alt="Reference" className="w-full h-auto rounded-lg shadow" />
+                    <img src={selectedImage} alt={`${t('uploadReference')}${prompt ? `: ${prompt}` : ''}`} className="w-full h-auto rounded-lg shadow" />
                     <button
                       type="button"
                       onClick={clearSelectedImage}
@@ -589,85 +580,9 @@ export function UnifiedGenmojiGenerator({
           )}
 
           {/* Bottom toolbar inside textarea */}
-          <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between">
+          <div className="absolute bottom-3 left-3 right-2 flex items-center justify-between">
             <div className="flex items-center gap-2">
-              {/* Model selector button - always show */}
-              <TooltipProvider>
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    {isMobile ? (
-                      <Drawer open={showModelSelector} onOpenChange={setShowModelSelector}>
-                        <DrawerTrigger asChild>
-                          <Button
-                            type="button"
-                            variant="ghost"
-                            size="sm"
-                            className="h-8 px-2 rounded-full hover:bg-muted flex items-center gap-2"
-                          >
-                            <Image 
-                              src={currentModel.image}
-                              alt={currentModel.name}
-                              width={16}
-                              height={16}
-                              className="rounded-full"
-                            />
-                            <span className="text-sm font-medium">{currentModel.name}</span>
-                          </Button>
-                        </DrawerTrigger>
-                        <DrawerContent>
-                          <DrawerHeader>
-                            <DrawerTitle>{t('selectModel')}</DrawerTitle>
-                          </DrawerHeader>
-                          <div className="pb-8">
-                            {mobileModelSelectorContent}
-                          </div>
-                        </DrawerContent>
-                      </Drawer>
-                    ) : (
-                      <Dialog open={showModelSelector} onOpenChange={setShowModelSelector}>
-                        <DialogTrigger asChild>
-                          <Button
-                            type="button"
-                            variant="ghost"
-                            size="sm"
-                            className="h-8 px-2 rounded-full hover:bg-muted flex items-center gap-2"
-                          >
-                            <Image 
-                              src={currentModel.image}
-                              alt={currentModel.name}
-                              width={16}
-                              height={16}
-                              className="rounded-full"
-                            />
-                            <span className="text-sm font-medium">{currentModel.name}</span>
-                          </Button>
-                        </DialogTrigger>
-                        <DialogContent className="sm:max-w-fit">
-                          <DialogHeader>
-                            <DialogTitle>{t('selectModel')}</DialogTitle>
-                          </DialogHeader>
-                          {desktopModelSelectorContent}
-                        </DialogContent>
-                      </Dialog>
-                    )}
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <p>{t('selectModel')}</p>
-                  </TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
-
-              {/* Image upload button */}
-              <TooltipProvider>
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    {/* Upload icon removed; handled by Image tab */}
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <p>{t('selectModel')}</p>
-                  </TooltipContent>
-                  </Tooltip>
-              </TooltipProvider>
+              {/* Left side of toolbar reserved for future quick actions (kept minimal for cross-platform) */}
             </div>
             
             {/* Generate button */}

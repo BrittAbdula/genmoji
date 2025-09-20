@@ -14,9 +14,9 @@ import { EmojiGrid } from "@/components/emoji-grid";
 // 将加载状态组件抽离
 const LoadingSkeleton = memo(() => {
   return (
-    <div className="grid w-full auto-rows-max grid-cols-4 place-content-stretch justify-items-stretch gap-4 sm:grid-cols-5 md:grid-cols-6 lg:grid-cols-8">
+    <div className="grid w-full auto-rows-max grid-cols-4 place-content-stretch justify-items-stretch gap-1 sm:grid-cols-5 md:grid-cols-6 lg:grid-cols-8">
       {Array.from({ length: 32 }).map((_, i) => (
-        <div key={`loading-skeleton-${i}`} className="aspect-square rounded-lg bg-muted animate-pulse" />
+        <div key={`loading-skeleton-${i}`} className="aspect-square bg-muted/20 animate-pulse" />
       ))}
     </div>
   );

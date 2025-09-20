@@ -121,7 +121,7 @@ const MainImage = memo(({
         >
           <Image
             src={emoji.image_url}
-            alt={`prompt: ${emoji.prompt}`}
+            alt={`genmoji: ${emoji.prompt}`}
             width={512}
             height={512}
             className="w-full h-full object-contain"
@@ -192,7 +192,7 @@ const PreviewImage = memo(({
       >
         <Image
           src={emoji.image_url}
-          alt={`${direction} variation`}
+          alt={`genmoji: ${direction} variation`}
           width={128}
           height={128}
           className="w-full h-full object-contain"
@@ -213,13 +213,18 @@ const VariationThumbnail = memo(forwardRef<HTMLButtonElement, {
       ref={ref}
       onClick={onClick}
       className={cn(
-        "relative shrink-0 w-20 h-20 sm:w-24 sm:h-24 rounded-lg overflow-hidden",
-        isSelected ? "bg-muted/30 ring-2 ring-primary/30" : "hover:bg-muted/10"
+        "relative shrink-0 w-20 h-20 sm:w-24 sm:h-24 overflow-hidden",
+        // 强化选中态边框，方角、无背景，提升对比度
+        isSelected
+          ? "ring-2 ring-primary/60 outline outline-1 outline-white/10"
+          : "ring-1 ring-transparent hover:ring-border/60"
       )}
+      aria-pressed={isSelected}
+      title={variation.prompt}
     >
       <Image
         src={variation.image_url}
-        alt={variation.prompt}
+        alt={`genmoji: ${variation.prompt}`}
         width={96}
         height={96}
         className="w-full h-full object-contain p-2"
@@ -283,7 +288,7 @@ const VariationsList = memo(({
             />
           ))}
           {isLoading && (
-            <div className="shrink-0 w-20 h-20 sm:w-24 sm:h-24 rounded-lg flex items-center justify-center">
+            <div className="shrink-0 w-20 h-20 sm:w-24 sm:h-24 flex items-center justify-center">
               <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-primary" />
             </div>
           )}
