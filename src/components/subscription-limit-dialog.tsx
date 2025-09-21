@@ -153,7 +153,7 @@ export function SubscriptionLimitDialog({
 
       {/* 主标题 */}
       <div className="text-center">
-        <h2 className="text-xl font-bold mb-1">
+        <h2 className="text-xl font-bold mb-1 text-foreground">
           {t('limitDialog.upgradeHeroTitle')}
         </h2>
         <p className="text-xs text-muted-foreground">{t('limitDialog.upgradeHeroSubtitle')}</p>
@@ -166,7 +166,7 @@ export function SubscriptionLimitDialog({
         <div className="rounded-lg border p-3 bg-muted/30">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
             <div className="pr-2">
-              <div className="font-semibold">{t('management.freePlan')}</div>
+              <div className="font-semibold text-foreground">{t('management.freePlan')}</div>
               <ul className="mt-1 space-y-1 list-disc list-inside text-muted-foreground">
                 <li>
                   {limitInfo.type === 'monthly'
@@ -179,7 +179,7 @@ export function SubscriptionLimitDialog({
             </div>
             <div className="pl-0 sm:pl-2 sm:border-l">
               <div className="font-semibold text-primary">{t('proPlan')}</div>
-              <ul className="mt-1 space-y-1 list-disc list-inside">
+              <ul className="mt-1 space-y-1 list-disc list-inside text-foreground">
                 <li>{t('limitDialog.creditsPerMonth', { count: 1000 })}</li>
                 <li>{t('limitDialog.prioritySpeed')}</li>
                 <li>{t('features.commercialUse')}</li>
@@ -216,9 +216,9 @@ export function SubscriptionLimitDialog({
               </Badge>
             </div>
             <div className="mt-5 flex-1">
-              <h3 className="font-semibold text-sm">{t('yearly')}</h3>
+              <h3 className="font-semibold text-sm text-foreground">{t('yearly')}</h3>
               <div className="mt-1">
-                <span className="text-lg font-bold">{PRO_PLAN.yearlyPrice}</span>
+                <span className="text-lg font-bold text-foreground">{PRO_PLAN.yearlyPrice}</span>
                 <span className="text-muted-foreground ml-1 text-xs">{t('usdPerMonth')}</span>
               </div>
               <div className="text-xs text-muted-foreground mt-1">{t('billedYearly')}</div>
@@ -241,9 +241,9 @@ export function SubscriptionLimitDialog({
               </div>
             )}
             <div className="mt-5 flex-1">
-              <h3 className="font-semibold text-sm">{t('monthly')}</h3>
+              <h3 className="font-semibold text-sm text-foreground">{t('monthly')}</h3>
               <div className="mt-1">
-                <span className="text-lg font-bold">{PRO_PLAN.monthPrice}</span>
+                <span className="text-lg font-bold text-foreground">{PRO_PLAN.monthPrice}</span>
                 <span className="text-muted-foreground ml-1 text-xs">{t('usdPerMonth')}</span>
               </div>
             </div>
@@ -252,7 +252,7 @@ export function SubscriptionLimitDialog({
       </div>
 
       {/* 操作按钮 */}
-      <div className="space-y-3 pt-2 sticky bottom-0 left-0 right-0 bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/70 border-t z-20 px-1 pb-[calc(env(safe-area-inset-bottom)+12px)]">
+      <div className="space-y-3 pt-2 sticky bottom-0 left-0 right-0 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/70 border-t z-20 px-1 pb-[calc(env(safe-area-inset-bottom)+12px)]">
         <Button
           onClick={handleSubscribe}
           disabled={creatingSubscription}
@@ -287,7 +287,7 @@ export function SubscriptionLimitDialog({
         <div className="w-10 h-10 mx-auto flex items-center justify-center">
           <img src="/logo.png" alt="Genmoji Online logo" className="w-8 h-8" />
         </div>
-        <h3 className="text-lg font-semibold">{limitInfo.type === 'monthly' ? t('limitDialog.monthlyCreditsUsed') : t('limitDialog.dailyLimitReached')}</h3>
+        <h3 className="text-lg font-semibold text-foreground">{limitInfo.type === 'monthly' ? t('limitDialog.monthlyCreditsUsed') : t('limitDialog.dailyLimitReached')}</h3>
         <p className="text-sm text-muted-foreground">
           {limitInfo.type === 'monthly'
             ? t('limitDialog.monthlyUsage', { current: limitInfo.currentCount, limit: limitInfo.limit })
@@ -297,7 +297,7 @@ export function SubscriptionLimitDialog({
 
       {/* 主标题 */}
       <div className="text-center">
-        <h2 className="text-2xl font-bold mb-1">
+        <h2 className="text-2xl font-bold mb-1 text-foreground">
           {t('limitDialog.upgradeHeroTitle')}
         </h2>
         <p className="text-sm text-muted-foreground">{t('limitDialog.upgradeHeroSubtitle')}</p>
@@ -310,7 +310,7 @@ export function SubscriptionLimitDialog({
         <div className="rounded-xl border p-4 bg-muted/30">
           <div className="grid grid-cols-2 gap-3 text-sm">
             <div className="pr-4">
-              <div className="font-semibold">{t('management.freePlan')}</div>
+              <div className="font-semibold text-foreground">{t('management.freePlan')}</div>
               <ul className="mt-1 space-y-1 list-disc list-inside text-muted-foreground">
                 <li>
                   {limitInfo.type === 'monthly'
@@ -323,7 +323,7 @@ export function SubscriptionLimitDialog({
             </div>
             <div className="pl-4 border-l">
               <div className="font-semibold text-primary">{t('proPlan')}</div>
-              <ul className="mt-1 space-y-1 list-disc list-inside">
+              <ul className="mt-1 space-y-1 list-disc list-inside text-foreground">
                 <li>{t('limitDialog.creditsPerMonth', { count: 1000 })}</li>
                 <li>{t('limitDialog.prioritySpeed')}</li>
                 <li>{t('features.commercialUse')}</li>
@@ -360,9 +360,9 @@ export function SubscriptionLimitDialog({
               </Badge>
             </div>
             <div className="mt-6 flex-1">
-              <h3 className="font-semibold">{t('yearly')}</h3>
+              <h3 className="font-semibold text-foreground">{t('yearly')}</h3>
               <div className="mt-2">
-                <span className="text-2xl font-bold">{PRO_PLAN.yearlyPrice}</span>
+                <span className="text-2xl font-bold text-foreground">{PRO_PLAN.yearlyPrice}</span>
                 <span className="text-muted-foreground ml-1">{t('usdPerMonth')}</span>
               </div>
               <div className="text-xs text-muted-foreground mt-1">{t('billedYearly')}</div>
@@ -385,9 +385,9 @@ export function SubscriptionLimitDialog({
               </div>
             )}
             <div className="mt-6 flex-1">
-              <h3 className="font-semibold">{t('monthly')}</h3>
+              <h3 className="font-semibold text-foreground">{t('monthly')}</h3>
               <div className="mt-2">
-                <span className="text-2xl font-bold">{PRO_PLAN.monthPrice}</span>
+                <span className="text-2xl font-bold text-foreground">{PRO_PLAN.monthPrice}</span>
                 <span className="text-muted-foreground ml-1">{t('usdPerMonth')}</span>
               </div>
             </div>
@@ -423,8 +423,8 @@ export function SubscriptionLimitDialog({
   if (isMobile) {
     return (
       <Drawer open={open} onOpenChange={onOpenChange}>
-        <DrawerContent className="bg-white h-[85dvh] overflow-hidden flex flex-col">
-          <DrawerHeader className="px-4 pb-0 sticky top-0 bg-white z-10">
+        <DrawerContent className="bg-background h-[85dvh] overflow-hidden flex flex-col">
+          <DrawerHeader className="px-4 pb-0 sticky top-0 bg-background z-10">
             <DrawerTitle className="sr-only">{t('title')}</DrawerTitle>
           </DrawerHeader>
           <div className="px-4 py-2 overflow-y-auto flex-1">

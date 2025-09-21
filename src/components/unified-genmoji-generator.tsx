@@ -116,66 +116,42 @@ export function UnifiedGenmojiGenerator({
     return () => clearTimeout(timer);
   }, []);
 
-  // Get current model info
+  // 模型数据，统一管理所有模型信息
+  const models = [
+    {
+      id: 'genmoji' as const,
+      name: t('models.genmoji.name'),
+      description: t('models.genmoji.description'),
+      image: "https://store.genmojionline.com/cdn-cgi/imagedelivery/DEOVdDdfeGzASe0KdtD7FA/4ad1e218-eae7-4976-8496-b68cd6374f00/public",
+      alt: "Genmoji"
+    },
+    {
+      id: 'sticker' as const,
+      name: t('models.sticker.name'),
+      description: t('models.sticker.description'),
+      image: "https://store.genmojionline.com/cdn-cgi/imagedelivery/DEOVdDdfeGzASe0KdtD7FA/8ef04dd2-6612-496a-d2ea-bada5ccf9400/public",
+      alt: "Sticker"
+    },
+    // {
+    //   id: 'mascot' as const,
+    //   name: t('models.mascot.name'),
+    //   description: t('models.mascot.description'),
+    //   image: "https://store.genmojionline.com/cdn-cgi/imagedelivery/DEOVdDdfeGzASe0KdtD7FA/14a1b15b-9263-4d20-443d-67c5e4c4c900/public",
+    //   alt: "Mascot"
+    // },
+    { id: 'claymation' as const, name: t('models.claymation.name'), description: t('models.claymation.description'), image: "/emojis/Claymation.png", alt: 'Claymation Emoji' },
+    { id: '3d' as const, name: t('models.3d.name'), description: t('models.3d.description'), image: "/emojis/3d.png", alt: '3D Emoji' },
+    { id: 'origami' as const, name: t('models.origami.name'), description: t('models.origami.description'), image: "/emojis/Origami.png", alt: 'Origami Emoji' },
+    { id: 'cross-stitch' as const, name: t('models.cross-stitch.name'), description: t('models.cross-stitch.description'), image: "/emojis/Cross-stitch-Pixel.png", alt: 'Cross-stitch Emoji' },
+    { id: 'steampunk' as const, name: t('models.steampunk.name'), description: t('models.steampunk.description'), image: "/emojis/Steampunk.png", alt: 'Steampunk Emoji' },
+    { id: 'liquid-metal' as const, name: t('models.liquid-metal.name'), description: t('models.liquid-metal.description'), image: "/emojis/Liquid-Metal.png", alt: 'Liquid Metal Emoji' },
+    { id: 'pixel' as const, name: t('models.pixel.name'), description: t('models.pixel.description'), image: "/emojis/pixel.png", alt: 'Pixel Emoji' },
+    { id: 'handdrawn' as const, name: t('models.handdrawn.name'), description: t('models.handdrawn.description'), image: "/emojis/handdrawn.png", alt: 'Hand-drawn Emoji' }
+  ];
+
+  // Get current model info from the unified models array
   const getCurrentModelInfo = () => {
-    const map: Record<string, { image: string; name: string; description: string }> = {
-      genmoji: {
-        image: "https://store.genmojionline.com/cdn-cgi/imagedelivery/DEOVdDdfeGzASe0KdtD7FA/4ad1e218-eae7-4976-8496-b68cd6374f00/public",
-        name: t('models.genmoji.name'),
-        description: t('models.genmoji.description')
-      },
-      sticker: {
-        image: "https://store.genmojionline.com/cdn-cgi/imagedelivery/DEOVdDdfeGzASe0KdtD7FA/8ef04dd2-6612-496a-d2ea-bada5ccf9400/public",
-        name: t('models.sticker.name'),
-        description: t('models.sticker.description')
-      },
-      // mascot: {
-      //   image: "https://store.genmojionline.com/cdn-cgi/imagedelivery/DEOVdDdfeGzASe0KdtD7FA/14a1b15b-9263-4d20-443d-67c5e4c4c900/public",
-      //   name: t('models.mascot.name'),
-      //   description: t('models.mascot.description')
-      // },
-      'claymation': {
-        image: "/emojis/Claymation.png",
-        name: t('models.claymation.name'),
-        description: t('models.claymation.description')
-      },
-      '3d': {
-        image: "/emojis/3d.png",
-        name: t('models.3d.name'),
-        description: t('models.3d.description')
-      },
-      'origami': {
-        image: "/emojis/Origami.png",
-        name: t('models.origami.name'),
-        description: t('models.origami.description')
-      },
-      'cross-stitch': {
-        image: "/emojis/Cross-stitch-Pixel.png",
-        name: t('models.cross-stitch.name'),
-        description: t('models.cross-stitch.description')
-      },
-      'steampunk': {
-        image: "/emojis/Steampunk.png",
-        name: t('models.steampunk.name'),
-        description: t('models.steampunk.description')
-      },
-      'liquid-metal': {
-        image: "/emojis/Liquid-Metal.png",
-        name: t('models.liquid-metal.name'),
-        description: t('models.liquid-metal.description')
-      },
-      'pixel': {
-        image: "/emojis/pixel.png",
-        name: t('models.pixel.name'),
-        description: t('models.pixel.description')
-      },
-      'handdrawn': {
-        image: "/emojis/handdrawn.png",
-        name: t('models.handdrawn.name'),
-        description: t('models.handdrawn.description')
-      }
-    };
-    return map[model] ?? map['genmoji'];
+    return models.find(m => m.id === model) ?? models[0];
   };
 
   const currentModel = getCurrentModelInfo();
@@ -296,13 +272,14 @@ export function UnifiedGenmojiGenerator({
       const emojiResponse = await genMoji(effectivePrompt, locale, selectedImage, model, token);
       
       if (emojiResponse.success && emojiResponse.emoji) {
-        setGeneratedEmoji(emojiResponse.emoji);
-        triggerConfetti();
-        
         if (onGenerated) {
+          // 如果有回调函数，设置状态并显示在当前页面
+          setGeneratedEmoji(emojiResponse.emoji);
+          triggerConfetti();
           onGenerated(emojiResponse.emoji);
-          // 不需要清空表单，因为页面会跳转
         } else {
+          // 没有回调函数，直接跳转到详情页，不设置 generatedEmoji 状态
+          triggerConfetti();
           router.push(`/emoji/${emojiResponse.emoji.slug}`);
           // 立即清空表单，因为要跳转页面
           setPrompt("");
@@ -365,38 +342,6 @@ export function UnifiedGenmojiGenerator({
     }
   };
 
-  // 模型数据，方便未来扩展
-  const models = [
-    {
-      id: 'genmoji' as const,
-      name: t('models.genmoji.name'),
-      description: t('models.genmoji.description'),
-      image: "https://store.genmojionline.com/cdn-cgi/imagedelivery/DEOVdDdfeGzASe0KdtD7FA/4ad1e218-eae7-4976-8496-b68cd6374f00/public",
-      alt: "Genmoji"
-    },
-    {
-      id: 'sticker' as const,
-      name: t('models.sticker.name'),
-      description: t('models.sticker.description'),
-      image: "https://store.genmojionline.com/cdn-cgi/imagedelivery/DEOVdDdfeGzASe0KdtD7FA/8ef04dd2-6612-496a-d2ea-bada5ccf9400/public",
-      alt: "Sticker"
-    },
-    // {
-    //   id: 'mascot' as const,
-    //   name: t('models.mascot.name'),
-    //   description: t('models.mascot.description'),
-    //   image: "https://store.genmojionline.com/cdn-cgi/imagedelivery/DEOVdDdfeGzASe0KdtD7FA/14a1b15b-9263-4d20-443d-67c5e4c4c900/public",
-    //   alt: "Mascot"
-    // },
-    { id: 'claymation' as const, name: t('models.claymation.name'), description: t('models.claymation.description'), image: "/emojis/Claymation.png", alt: 'Claymation Emoji' },
-    { id: '3d' as const, name: t('models.3d.name'), description: t('models.3d.description'), image: "/emojis/3d.png", alt: '3D Emoji' },
-    { id: 'origami' as const, name: t('models.origami.name'), description: t('models.origami.description'), image: "/emojis/Origami.png", alt: 'Origami Emoji' },
-    { id: 'cross-stitch' as const, name: t('models.cross-stitch.name'), description: t('models.cross-stitch.description'), image: "/emojis/Cross-stitch-Pixel.png", alt: 'Cross-stitch Emoji' },
-    { id: 'steampunk' as const, name: t('models.steampunk.name'), description: t('models.steampunk.description'), image: "/emojis/Steampunk.png", alt: 'Steampunk Emoji' },
-    { id: 'liquid-metal' as const, name: t('models.liquid-metal.name'), description: t('models.liquid-metal.description'), image: "/emojis/Liquid-Metal.png", alt: 'Liquid Metal Emoji' },
-    { id: 'pixel' as const, name: t('models.pixel.name'), description: t('models.pixel.description'), image: "/emojis/pixel.png", alt: 'Pixel Emoji' },
-    { id: 'handdrawn' as const, name: t('models.handdrawn.name'), description: t('models.handdrawn.description'), image: "/emojis/handdrawn.png", alt: 'Hand-drawn Emoji' }
-  ];
 
   const handleModelSelect = (modelId: string) => {
     setModel(modelId);
@@ -562,23 +507,41 @@ export function UnifiedGenmojiGenerator({
 
           {/* Tab content */}
           {activeTab === 'text' ? (
-            <Textarea
-              ref={textareaRef}
-              placeholder={t('placeholder')}
-              value={prompt}
-              onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setPrompt(e.target.value)}
-              onKeyDown={(e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-                if (e.key === 'Enter' && !e.shiftKey && prompt.trim() && !isGenerating) {
-                  e.preventDefault();
-                  generateEmoji();
-                }
-              }}
-              rows={1}
-              className={cn(
-                "resize-none min-h-[60px] border-0 focus-visible:ring-0 focus-visible:ring-offset-0 rounded-xl bg-card text-lg p-4",
-                "pb-16 placeholder:text-muted-foreground/50 placeholder:font-normal"
+            <div className="relative">
+              <Textarea
+                ref={textareaRef}
+                placeholder={t('placeholder')}
+                value={prompt}
+                onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setPrompt(e.target.value)}
+                onKeyDown={(e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+                  if (e.key === 'Enter' && !e.shiftKey && prompt.trim() && !isGenerating) {
+                    e.preventDefault();
+                    generateEmoji();
+                  }
+                }}
+                rows={1}
+                className={cn(
+                  "resize-none min-h-[60px] border-0 focus-visible:ring-0 focus-visible:ring-offset-0 rounded-xl bg-card text-lg p-4",
+                  "pb-16 placeholder:text-muted-foreground/50 placeholder:font-normal"
+                )}
+              />
+              {/* Clear button - only show when there's text */}
+              {prompt.trim() && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    setPrompt("");
+                    if (textareaRef.current) {
+                      textareaRef.current.focus();
+                    }
+                  }}
+                  className="absolute top-3 right-3 p-1.5 rounded-full bg-muted/80 hover:bg-muted text-muted-foreground hover:text-foreground transition-all duration-200 hover:scale-110"
+                  title="Clear input"
+                >
+                  <X className="w-4 h-4" />
+                </button>
               )}
-            />
+            </div>
           ) : (
             <div className="px-4 pb-20">
               <div

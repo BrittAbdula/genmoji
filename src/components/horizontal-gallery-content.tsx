@@ -18,7 +18,7 @@ export function HorizontalGalleryContent({model}: {model?: string}) {
   const [emojis, setEmojis] = useState<Emoji[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const limit = 24; // Reduce initial grid for better performance
+  const limit = 40; // Reduce initial grid for better performance
   const locale = useLocale();
   const [selectedModel, setSelectedModel] = useState<string | null>(null);
 
