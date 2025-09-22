@@ -386,6 +386,10 @@
     "error": {
       "failed": "生成失败。请重试。"
     },
+    "privateOption": {
+      "title": "私密",
+      "membersOnly": "仅会员可用"
+    },
     "cameraModalTitle": "拍摄照片",
     "camera": {
       "takePhoto": "拍照",

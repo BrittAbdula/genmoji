@@ -55,38 +55,52 @@ const EmojiContainer = ({
 
   return (
     <Link 
-      href={`/emoji/${emoji.slug}/`}
-      aria-label={altText}
-      title={altText}
-      className={cn(
-        'group block relative outline-none',
-        'cursor-pointer flex items-center justify-center',
-        'transition-colors duration-200',
-        // No tile background per updated style
-        withBorder ? 'border border-border/60' : 'border-0',
-        'focus-visible:ring-2 focus-visible:ring-primary/40',
-        padding,
-        sizeClasses[size]
-      )}
-    >
-      {/* remove badges per new gallery style */}
-      {/* optional vignette removed for fully flat tiles */}
-      <div className="w-full h-full flex items-center justify-center">
-        <Image 
-          src={emoji.image_url.trim()} 
-          alt={altText}
-          width={sizeValues[size]}
-          height={sizeValues[size]}
-          className="w-full h-full object-contain"
-          loading={priority ? 'eager' : (lazyLoad ? 'lazy' : 'eager')}
-          priority={priority}
-          draggable={false}
-          sizes={sizesMap[size]}
-          placeholder="blur"
-          blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII="
-        />
-      </div>
-    </Link>
+    href={`/emoji/${emoji.slug}/`}
+    aria-label={altText}
+    title={altText}
+    className={cn(
+      'group block relative outline-none',
+      'cursor-pointer flex items-center justify-center',
+      'transition-colors duration-200',
+      // No tile background per updated style
+      withBorder ? 'border border-border/60' : 'border-0',
+      'focus-visible:ring-2 focus-visible:ring-primary/40',
+      padding,
+      sizeClasses[size]
+    )}
+  >
+    {/* remove badges per new gallery style */}
+    {/* optional vignette removed for fully flat tiles */}
+    <div className={cn(
+      'w-full h-full flex items-center justify-center',
+      // 浅色模式：极浅深色底 + 内描边，避免白色元素“隐身”
+      'bg-black/5',
+      '[box-shadow:inset_0_0_0_1px_rgba(0,0,0,0.06)]',
+      // 深色模式：极浅浅色底 + 内描边，避免黑色元素“隐身”
+      'dark:bg-white/5',
+      'dark:[box-shadow:inset_0_0_0_1px_rgba(255,255,255,0.08)]'
+    )}>
+      <Image 
+        src={emoji.image_url.trim()} 
+        alt={altText}
+        width={sizeValues[size]}
+        height={sizeValues[size]}
+        className={cn(
+          'w-full h-full object-contain',
+          // 浅色模式：微弱深色投影，增强白线条/淡色图形对比
+          'drop-shadow-[0_0_0.75px_rgba(0,0,0,0.6)]',
+          // 深色模式：微弱浅色投影，增强黑线条对比
+          'dark:drop-shadow-[0_0_0.75px_rgba(255,255,255,0.7)]'
+        )}
+        loading={priority ? 'eager' : (lazyLoad ? 'lazy' : 'eager')}
+        priority={priority}
+        draggable={false}
+        sizes={sizesMap[size]}
+        placeholder="blur"
+        blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII="
+      />
+    </div>
+  </Link>
   );
 };
 

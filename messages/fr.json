@@ -142,6 +142,10 @@
     "error": {
       "failed": "La génération a échoué. Veuillez réessayer."
     },
+    "privateOption": {
+      "title": "Privé",
+      "membersOnly": "Réservé aux membres"
+    },
     "cameraModalTitle": "Prendre une photo",
     "camera": {
       "takePhoto": "Prendre une photo",

@@ -135,6 +135,10 @@
     "error": {
       "failed": "生成に失敗しました。もう一度お試しください。"
     },
+    "privateOption": {
+      "title": "非公開",
+      "membersOnly": "メンバー限定"
+    },
     "cameraModalTitle": "写真を撮影",
     "camera": {
       "takePhoto": "撮影",

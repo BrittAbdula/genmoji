@@ -181,7 +181,7 @@ export async function genMoji(
   image: string | null,
   model: string = 'genmoji',
   token?: string | null,
-  options?: { styleId?: string | null; emotion?: string | null }
+  options?: { styleId?: string | null; emotion?: string | null; isPublic?: boolean | null }
 ): Promise<EmojiResponse> {
   const url = `${API_BASE_URL}${API_ENDPOINTS.EMOJI_GENERATE}`;
   const headers = token ? getAuthHeaders(token) : DEFAULT_HEADERS;
@@ -189,7 +189,7 @@ export async function genMoji(
   const res = await fetch(url, {
     method: 'POST',
     headers,
-    body: JSON.stringify({ prompt, locale, image, model, styleId: options?.styleId ?? null, emotion: options?.emotion ?? null })
+    body: JSON.stringify({ prompt, locale, image, model, styleId: options?.styleId ?? null, emotion: options?.emotion ?? null, is_public: options?.isPublic ?? null })
   });
 
   if (!res.ok) {

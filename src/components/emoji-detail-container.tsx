@@ -119,24 +119,39 @@ const MainImage = memo(({
           transition={{ duration: 0.3 }}
           className="w-full h-full p-8"
         >
-          <Image
-            src={emoji.image_url}
-            alt={`genmoji: ${emoji.prompt}`}
-            width={512}
-            height={512}
-            className="w-full h-full object-contain"
-            draggable={!isMobile} // 移动端不禁用拖拽，支持原生保存行为
-            onTouchStart={handleTouchStart}
-            onTouchEnd={handleTouchEnd}
-            onTouchCancel={handleTouchEnd}
-            onContextMenu={handleContextMenu}
-            style={{
-              // 移动端允许用户选择和长按，桌面端禁用
-              userSelect: isMobile ? 'auto' : 'none',
-              WebkitUserSelect: isMobile ? 'auto' : 'none',
-              pointerEvents: 'auto'
-            }}
-          />
+          <div className={cn(
+            "w-full h-full flex items-center justify-center rounded-lg",
+            // 浅色模式：极浅深色底 + 内描边
+            "bg-black/5",
+            "[box-shadow:inset_0_0_0_1px_rgba(0,0,0,0.06)]",
+            // 深色模式：极浅浅色底 + 内描边
+            "dark:bg-white/5",
+            "dark:[box-shadow:inset_0_0_0_1px_rgba(255,255,255,0.08)]"
+          )}>
+            <Image
+              src={emoji.image_url}
+              alt={`genmoji: ${emoji.prompt}`}
+              width={512}
+              height={512}
+              className={cn(
+                "w-full h-full object-contain",
+                // 浅色模式：微弱深色投影；深色：微弱浅色投影
+                "drop-shadow-[0_0_0.75px_rgba(0,0,0,0.6)]",
+                "dark:drop-shadow-[0_0_0.75px_rgba(255,255,255,0.7)]"
+              )}
+              draggable={!isMobile} // 移动端不禁用拖拽，支持原生保存行为
+              onTouchStart={handleTouchStart}
+              onTouchEnd={handleTouchEnd}
+              onTouchCancel={handleTouchEnd}
+              onContextMenu={handleContextMenu}
+              style={{
+                // 移动端允许用户选择和长按，桌面端禁用
+                userSelect: isMobile ? 'auto' : 'none',
+                WebkitUserSelect: isMobile ? 'auto' : 'none',
+                pointerEvents: 'auto'
+              }}
+            />
+          </div>
         </motion.div>
       </AnimatePresence>
 
@@ -190,13 +205,25 @@ const PreviewImage = memo(({
         animate={{ opacity: 1, x: 0 }}
         exit={{ opacity: 0, x: direction === 'left' ? -20 : 20 }}
       >
-        <Image
-          src={emoji.image_url}
-          alt={`genmoji: ${direction} variation`}
-          width={128}
-          height={128}
-          className="w-full h-full object-contain"
-        />
+        <div className={cn(
+          "w-full h-full flex items-center justify-center rounded-md",
+          "bg-black/5",
+          "[box-shadow:inset_0_0_0_1px_rgba(0,0,0,0.06)]",
+          "dark:bg-white/5",
+          "dark:[box-shadow:inset_0_0_0_1px_rgba(255,255,255,0.08)]"
+        )}>
+          <Image
+            src={emoji.image_url}
+            alt={`genmoji: ${direction} variation`}
+            width={128}
+            height={128}
+            className={cn(
+              "w-full h-full object-contain",
+              "drop-shadow-[0_0_0.75px_rgba(0,0,0,0.6)]",
+              "dark:drop-shadow-[0_0_0.75px_rgba(255,255,255,0.7)]"
+            )}
+          />
+        </div>
       </motion.div>
     </div>
   );
@@ -222,15 +249,27 @@ const VariationThumbnail = memo(forwardRef<HTMLButtonElement, {
       aria-pressed={isSelected}
       title={variation.prompt}
     >
-      <Image
-        src={variation.image_url}
-        alt={`genmoji: ${variation.prompt}`}
-        width={96}
-        height={96}
-        className="w-full h-full object-contain p-2"
-        loading="lazy"
-        draggable={false}
-      />
+      <div className={cn(
+        "absolute inset-0 m-1 rounded-md flex items-center justify-center",
+        "bg-black/5",
+        "[box-shadow:inset_0_0_0_1px_rgba(0,0,0,0.06)]",
+        "dark:bg-white/5",
+        "dark:[box-shadow:inset_0_0_0_1px_rgba(255,255,255,0.08)]"
+      )}>
+        <Image
+          src={variation.image_url}
+          alt={`genmoji: ${variation.prompt}`}
+          width={96}
+          height={96}
+          className={cn(
+            "w-full h-full object-contain p-2",
+            "drop-shadow-[0_0_0.75px_rgba(0,0,0,0.6)]",
+            "dark:drop-shadow-[0_0_0.75px_rgba(255,255,255,0.7)]"
+          )}
+          loading="lazy"
+          draggable={false}
+        />
+      </div>
     </button>
   );
 }));

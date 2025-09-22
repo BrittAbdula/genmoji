@@ -256,7 +256,7 @@ export function SubscriptionLimitDialog({
         <Button
           onClick={handleSubscribe}
           disabled={creatingSubscription}
-          className="w-full py-3 text-base font-semibold rounded-xl"
+          className="w-full py-3 text-base font-semibold rounded-xl bg-gradient-to-r from-pink-500 to-violet-500 hover:from-pink-600 hover:to-violet-600"
         >
           {creatingSubscription ? t('processing') : t('upgradeToPro')}
         </Button>
@@ -266,6 +266,8 @@ export function SubscriptionLimitDialog({
             <span className="whitespace-nowrap">{t('secureCheckoutShort')}</span>
           </div>
           <div className="mt-0.5">{t('paymentMethods')}</div>
+          <div className="mt-1 text-[10px]">{t('footer.securePayment')}</div>
+          <div className="text-[10px]">{t('footer.guarantee')}</div>
         </div>
         
         <Button
@@ -400,13 +402,17 @@ export function SubscriptionLimitDialog({
         <Button
           onClick={handleSubscribe}
           disabled={creatingSubscription}
-          className="w-full"
+          className="w-full bg-gradient-to-r from-pink-500 to-violet-500 hover:from-pink-600 hover:to-violet-600"
         >
           {creatingSubscription ? t('processing') : t('upgradeToPro')}
         </Button>
-        <div className="flex items-center justify-center gap-1 text-xs text-muted-foreground">
-          <ShieldCheck className="w-4 h-4" />
-          <span>{t('secureCheckoutShort')} • {t('paymentMethods')}</span>
+        <div className="space-y-1 text-center">
+          <div className="flex items-center justify-center gap-1 text-xs text-muted-foreground">
+            <ShieldCheck className="w-4 h-4" />
+            <span>{t('secureCheckoutShort')} • {t('paymentMethods')}</span>
+          </div>
+          <div className="text-[11px] text-muted-foreground">{t('footer.securePayment')}</div>
+          <div className="text-[11px] text-muted-foreground">{t('footer.guarantee')}</div>
         </div>
         
         <Button
@@ -423,7 +429,7 @@ export function SubscriptionLimitDialog({
   if (isMobile) {
     return (
       <Drawer open={open} onOpenChange={onOpenChange}>
-        <DrawerContent className="bg-background h-[85dvh] overflow-hidden flex flex-col">
+        <DrawerContent className="bg-background h-[85dvh] overflow-hidden flex flex-col border-t border-border/60 rounded-t-2xl">
           <DrawerHeader className="px-4 pb-0 sticky top-0 bg-background z-10">
             <DrawerTitle className="sr-only">{t('title')}</DrawerTitle>
           </DrawerHeader>
@@ -437,7 +443,7 @@ export function SubscriptionLimitDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-lg">
+      <DialogContent className="sm:max-w-lg bg-card border border-border/60 rounded-2xl shadow-2xl">
         <DialogHeader>
           <DialogTitle className="text-center">{t('title')}</DialogTitle>
         </DialogHeader>

@@ -5,10 +5,10 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Progress } from "@/components/ui/progress";
 import { useState, useEffect, useRef } from "react";
-import { genMoji, uploadImage, GenerationLimitError } from "@/lib/api";
+import { genMoji, uploadImage, GenerationLimitError, getSubscriptionStatus } from "@/lib/api";
 // Tooltip not needed after removing bottom model selector trigger
 import { Emoji } from "@/types/emoji";
-import { X, Plus, ArrowUp, Globe } from 'lucide-react';
+import { X, Plus, ArrowUp, Globe, Crown } from 'lucide-react';
 import confetti from "canvas-confetti";
 import { useRouter } from "next/navigation";
 import { useTranslations, useLocale } from 'next-intl';
@@ -21,6 +21,23 @@ import { LoginDialog } from "./login-dialog";
 import { SubscriptionLimitDialog } from "./subscription-limit-dialog";
 import Image from "next/image";
 import CameraModal from "@/components/camera-modal";
+
+// Gem Stickers substyle typing (avoid never when indexing)
+type GemSubStyleId =
+  | 'pop-art'
+  | 'japanese-matchbox'
+  | 'cartoon-dino'
+  | 'pixel-art'
+  | 'royal'
+  | 'football-sticker'
+  | 'claymation'
+  | 'vintage-bollywood'
+  | 'sticker-bomb';
+type GemSubStyle = { id: GemSubStyleId; imgUrl: string; selectedImgUrl: string };
+const isGemSubStyleId = (v: unknown): v is GemSubStyleId =>
+  typeof v === 'string' && [
+    'pop-art','japanese-matchbox','cartoon-dino','pixel-art','royal','football-sticker','claymation','vintage-bollywood','sticker-bomb'
+  ].includes(v);
 
 interface UnifiedGenmojiGeneratorProps {
   initialPrompt?: string;
@@ -47,6 +64,7 @@ export function UnifiedGenmojiGenerator({
   const hasCenteredOnce = useRef(false);
   const hasPlayedIntroAnimation = useRef(false);
   const isMobile = useMediaQuery("(max-width: 768px)");
+  const [mounted, setMounted] = useState(false);
   
   const { isGenerating, progress, setGenerating, setProgress, setPrompt: setGlobalPrompt } = useGenerationStore();
   const { token, isLoggedIn } = useAuthStore();
@@ -61,14 +79,16 @@ export function UnifiedGenmojiGenerator({
     type?: 'monthly' | 'daily';
   } | null>(null);
   const [activeTab, setActiveTab] = useState<'text' | 'image'>('image');
-  const [selectedStyleId, setSelectedStyleId] = useState<string | null>(null);
+  const [selectedStyleId, setSelectedStyleId] = useState<GemSubStyleId | null>(null);
   const [selectedEmotionKey, setSelectedEmotionKey] = useState<string>('Happy');
+  const [isPrivate, setIsPrivate] = useState(false);
+  const [isMember, setIsMember] = useState(false);
   const [showCamera, setShowCamera] = useState(false);
   const [cameraFacing, setCameraFacing] = useState<'user' | 'environment'>('user');
   const cameraVideoRef = useRef<HTMLVideoElement>(null);
   const cameraStreamRef = useRef<MediaStream | null>(null);
   // Secondary style options (substyles) for the Gem Stickers model
-  const gemSubStyles = [
+  const gemSubStyles: readonly GemSubStyle[] = [
     { id: 'pop-art', imgUrl: 'https://gstatic.com/synthidtextdemo/images/gemstickers/dot/pop_art_love.png', selectedImgUrl: 'https://gstatic.com/synthidtextdemo/images/gemstickers/dot/pop_art_love_out.png' },
     { id: 'japanese-matchbox', imgUrl: 'https://gstatic.com/synthidtextdemo/images/gemstickers/dot/matchbox_no_text.png', selectedImgUrl: 'https://gstatic.com/synthidtextdemo/images/gemstickers/dot/matchbox_no_text_out.png' },
     { id: 'cartoon-dino', imgUrl: 'https://gstatic.com/synthidtextdemo/images/gemstickers/dot/dragon.png', selectedImgUrl: 'https://gstatic.com/synthidtextdemo/images/gemstickers/dot/dragon_out.png' },
@@ -119,11 +139,37 @@ export function UnifiedGenmojiGenerator({
   useEffect(() => {
     try {
       const s = localStorage.getItem('genmoji:selectedStyleId');
-      if (s) setSelectedStyleId(s);
+      if (s && isGemSubStyleId(s)) setSelectedStyleId(s);
       const e = localStorage.getItem('genmoji:selectedEmotionKey');
       if (e) setSelectedEmotionKey(e);
     } catch {}
   }, []);
+
+  // 防止 SSR 与客户端初始渲染不一致导致的水合报错
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  // 检查会员（订阅）状态，仅登录后查询
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      try {
+        if (token) {
+          const res = await getSubscriptionStatus(token);
+          if (!cancelled) {
+            const sub = res?.data?.subscription;
+            setIsMember(!!(sub && sub.monthly_credit_limit));
+          }
+        } else {
+          setIsMember(false);
+        }
+      } catch {
+        setIsMember(false);
+      }
+    })();
+    return () => { cancelled = true; };
+  }, [token]);
 
   // 居中模型选择器（仅首次）
   useEffect(() => {
@@ -193,8 +239,8 @@ export function UnifiedGenmojiGenerator({
 
   const currentModel = getCurrentModelInfo();
   // Top preview image adapts when Gem Stickers sub-style selected
-  const currentGemSubStyle = (model === 'gemstickers' && selectedStyleId)
-    ? gemSubStyles.find((s) => s.id === selectedStyleId) || null
+  const currentGemSubStyle: GemSubStyle | null = (model === 'gemstickers' && selectedStyleId)
+    ? (gemSubStyles.find((s) => s.id === selectedStyleId) ?? null)
     : null;
   const currentPreviewImage = currentGemSubStyle?.selectedImgUrl || currentGemSubStyle?.imgUrl || currentModel.image;
   const currentPreviewAlt = (model === 'gemstickers' && selectedStyleId)
@@ -419,7 +465,8 @@ export function UnifiedGenmojiGenerator({
       const submitModel = model; // always send top-level model; backend handles styleId/emotion
       const emojiResponse = await genMoji(effectivePrompt, locale, selectedImage, submitModel, token, {
         styleId: selectedStyleId,
-        emotion: selectedEmotionKey
+        emotion: selectedEmotionKey,
+        isPublic: !isPrivate
       });
       
       if (emojiResponse.success && emojiResponse.emoji) {
@@ -489,8 +536,8 @@ export function UnifiedGenmojiGenerator({
     } catch {}
   };
 
-  const handleStyleSelect = (styleId: string) => {
-    setSelectedStyleId((prev) => (prev === styleId ? null : styleId));
+  const handleStyleSelect = (styleId: GemSubStyleId) => {
+    setSelectedStyleId((prev: GemSubStyleId | null) => (prev === styleId ? null : styleId));
     try { localStorage.setItem('genmoji:selectedStyleId', styleId); } catch {}
   };
 
@@ -838,7 +885,43 @@ export function UnifiedGenmojiGenerator({
 
           {/* Bottom toolbar inside textarea */}
           <div className="absolute bottom-3 left-3 right-2 flex items-center justify-between">
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-3">
+              {/* Members-only private option */}
+              <button
+                type="button"
+                aria-pressed={isPrivate}
+                onClick={() => {
+                  if (!isMember) {
+                    // Open subscription dialog like quota reached
+                    const in24h = new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString();
+                    setLimitInfo({ currentCount: 0, limit: 0, resetTime: in24h, type: 'monthly' });
+                    setShowSubscriptionDialog(true);
+                    return;
+                  }
+                  setIsPrivate((v) => !v);
+                }}
+                className={cn(
+                  "group inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs",
+                  isPrivate ? "border-primary/50 bg-primary/10" : "border-border bg-muted/40 hover:bg-muted/70"
+                )}
+                title={isMember ? t('privateOption.title') : t('privateOption.membersOnly')}
+              >
+                <Crown className="w-3.5 h-3.5 text-yellow-500" />
+                <span>{t('privateOption.title')}</span>
+                <span
+                  className={cn(
+                    "ml-2 inline-flex h-4 w-7 rounded-full transition-colors",
+                    isPrivate ? "bg-primary" : "bg-muted-foreground/30"
+                  )}
+                >
+                  <span
+                    className={cn(
+                      "h-3.5 w-3.5 bg-background rounded-full mt-0.5 transition-transform",
+                      isPrivate ? "translate-x-3" : "translate-x-0.5"
+                    )}
+                  />
+                </span>
+              </button>
               {/* Left side of toolbar reserved for future quick actions (kept minimal for cross-platform) */}
             </div>
             
@@ -901,6 +984,8 @@ export function UnifiedGenmojiGenerator({
       `}</style>
     </div>
   );
+
+  if (!mounted) return null;
 
   return (
     <>

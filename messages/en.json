@@ -385,6 +385,10 @@
     "error": {
       "failed": "Generation failed. Please try again."
     },
+    "privateOption": {
+      "title": "Private",
+      "membersOnly": "Members only"
+    },
     "cameraModalTitle": "Take a photo",
     "camera": {
       "takePhoto": "Take Photo",
