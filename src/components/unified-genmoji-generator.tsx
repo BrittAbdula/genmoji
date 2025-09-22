@@ -439,7 +439,8 @@ export function UnifiedGenmojiGenerator({
 
     canvas.toBlob(async (blob) => {
       if (!blob) return;
-      const file = new File([blob], 'camera.jpg', { type: 'image/jpeg' });
+      const uniqueName = `camera-${Date.now()}.jpg`;
+      const file = new File([blob], uniqueName, { type: 'image/jpeg' });
       setIsUploading(true);
       try {
         const res = await uploadImage(file, token);
@@ -887,8 +888,12 @@ export function UnifiedGenmojiGenerator({
                 {isUploading ? (
                   <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin" />
                 ) : selectedImage ? (
-                  <div className="relative w-full max-w-xs">
-                    <img src={selectedImage} alt={`${t('uploadReference')}${prompt ? `: ${prompt}` : ''}`} className="w-full h-auto rounded-lg shadow" />
+                  <div className="relative w-full max-w-xs aspect-square">
+                    <img
+                      src={selectedImage}
+                      alt={`${t('uploadReference')}${prompt ? `: ${prompt}` : ''}`}
+                      className="absolute inset-0 w-full h-full object-cover rounded-lg shadow"
+                    />
                     <button
                       type="button"
                       onClick={clearSelectedImage}

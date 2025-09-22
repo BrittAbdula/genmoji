@@ -1,6 +1,6 @@
 "use client";
 
-import { RefObject } from "react";
+import { RefObject, useEffect, useRef } from "react";
 import { Camera, X as XIcon, RefreshCw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -16,11 +16,37 @@ interface CameraModalProps {
 }
 
 export function CameraModal({ show, title, onClose, onCapture, videoRef, onSwitchCamera, switchLabel, mirrored = false }: CameraModalProps) {
+  const scrollYRef = useRef(0);
+  // Prevent background scroll and keep overlay always on top
+  useEffect(() => {
+    if (!show) return;
+    const body = document.body;
+    const html = document.documentElement;
+    scrollYRef.current = window.scrollY || window.pageYOffset || 0;
+    // Lock scroll without layout shift
+    body.style.position = 'fixed';
+    body.style.top = `-${scrollYRef.current}px`;
+    body.style.left = '0';
+    body.style.right = '0';
+    body.style.width = '100%';
+    body.style.overflow = 'hidden';
+    html.style.overscrollBehavior = 'contain';
+    return () => {
+      body.style.position = '';
+      body.style.top = '';
+      body.style.left = '';
+      body.style.right = '';
+      body.style.width = '';
+      body.style.overflow = '';
+      html.style.overscrollBehavior = '';
+      window.scrollTo(0, scrollYRef.current);
+    };
+  }, [show]);
   if (!show) return null;
 
   return (
-    <div className="fixed inset-0 z-50 grid place-items-center p-4 md:p-6 bg-black/70 backdrop-blur-sm">
-      <div className="relative w-full max-w-[min(92vw,960px)] max-h-[86vh] bg-card border border-border/50 rounded-2xl shadow-xl flex flex-col">
+    <div className="fixed inset-0 z-[1200] grid place-items-center p-4 md:p-6 bg-black/70 backdrop-blur-sm">
+      <div className="relative w-full max-w-[min(90vw,720px)] max-h-[80vh] bg-card border border-border/50 rounded-2xl shadow-xl flex flex-col overflow-hidden">
         {/* Header */}
         <div className="flex items-center justify-between px-4 pt-4 pb-2 md:px-6">
           <h3 className="text-lg md:text-xl font-semibold text-center w-full">{title}</h3>
@@ -39,7 +65,10 @@ export function CameraModal({ show, title, onClose, onCapture, videoRef, onSwitc
         {/* Video area */}
         <div className="px-4 md:px-6 pb-2">
           {/* Square preview to match 1:1 capture */}
-          <div className="relative w-full overflow-hidden rounded-xl bg-muted aspect-square">
+          <div
+            className="relative overflow-hidden rounded-xl bg-muted aspect-square mx-auto"
+            style={{ width: 'min(80vw, 70vh)' }}
+          >
             <video
               ref={videoRef}
               autoPlay
