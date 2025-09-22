@@ -46,7 +46,7 @@ export function CameraModal({ show, title, onClose, onCapture, videoRef, onSwitc
 
   return (
     <div className="fixed inset-0 z-[1200] grid place-items-center p-4 md:p-6 bg-black/70 backdrop-blur-sm">
-      <div className="relative w-full max-w-[min(90vw,720px)] max-h-[80vh] bg-card border border-border/50 rounded-2xl shadow-xl flex flex-col overflow-hidden">
+      <div className="relative w-full max-w-[min(90vw,720px)] max-h-[80vh] bg-card border border-border/50 rounded-2xl shadow-xl flex flex-col">
         {/* Header */}
         <div className="flex items-center justify-between px-4 pt-4 pb-2 md:px-6">
           <h3 className="text-lg md:text-xl font-semibold text-center w-full">{title}</h3>
@@ -63,11 +63,11 @@ export function CameraModal({ show, title, onClose, onCapture, videoRef, onSwitc
         </div>
 
         {/* Video area */}
-        <div className="px-4 md:px-6 pb-2">
-          {/* Square preview to match 1:1 capture */}
+        <div className="px-4 md:px-6 pb-2 flex-1 grid place-items-center">
+          {/* Square preview to match 1:1 capture, sized to leave room for controls */}
           <div
-            className="relative overflow-hidden rounded-xl bg-muted aspect-square mx-auto"
-            style={{ width: 'min(80vw, 70vh)' }}
+            className="relative overflow-hidden rounded-xl bg-muted aspect-square"
+            style={{ width: 'min(70vw, 52vh)' }}
           >
             <video
               ref={videoRef}

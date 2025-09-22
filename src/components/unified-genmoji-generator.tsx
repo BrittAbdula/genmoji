@@ -315,10 +315,19 @@ export function UnifiedGenmojiGenerator({
 
   // Camera helpers
   const stopCamera = () => {
-    if (cameraStreamRef.current) {
-      cameraStreamRef.current.getTracks().forEach((t) => t.stop());
+    try {
+      if (cameraStreamRef.current) {
+        cameraStreamRef.current.getTracks().forEach((t) => t.stop());
+      }
       cameraStreamRef.current = null;
-    }
+      const v = cameraVideoRef.current;
+      if (v) {
+        try { v.pause(); } catch {}
+        try { (v as any).srcObject = null; } catch {}
+        // Force reflow to drop old frame on iOS
+        try { v.removeAttribute('srcObject' as any); } catch {}
+      }
+    } catch {}
   };
 
   const startCamera = async (facing: 'user' | 'environment') => {
@@ -338,6 +347,10 @@ export function UnifiedGenmojiGenerator({
           });
         }
         await v.play().catch(() => {});
+        if (v.readyState < 2 || v.videoWidth === 0) {
+          await new Promise((r) => setTimeout(r, 150));
+          await v.play().catch(() => {});
+        }
       }
       setShowCamera(true);
     } catch (e) {
@@ -357,9 +370,12 @@ export function UnifiedGenmojiGenerator({
               });
             }
             await v.play().catch(() => {});
+            if (v.readyState < 2 || v.videoWidth === 0) {
+              await new Promise((r) => setTimeout(r, 150));
+              await v.play().catch(() => {});
+            }
           }
           setCameraFacing('user');
-          setShowCamera(true);
           return;
         } catch (e2) {
           console.error('Camera open error (fallback failed):', e2);
@@ -380,9 +396,12 @@ export function UnifiedGenmojiGenerator({
               });
             }
             await v.play().catch(() => {});
+            if (v.readyState < 2 || v.videoWidth === 0) {
+              await new Promise((r) => setTimeout(r, 150));
+              await v.play().catch(() => {});
+            }
           }
           setCameraFacing('environment');
-          setShowCamera(true);
           return;
         } catch (e3) {
           console.error('Camera open error (both facings failed):', e3);
@@ -394,6 +413,10 @@ export function UnifiedGenmojiGenerator({
   };
 
   const openCamera = async () => {
+    // Ensure previous stream fully stopped before requesting again
+    stopCamera();
+    // Show the modal immediately so user can see the interface
+    setShowCamera(true);
     await startCamera(cameraFacing);
   };
 
