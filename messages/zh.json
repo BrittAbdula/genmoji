@@ -376,8 +376,8 @@
     "changeImage": "更换图片",
     "selectModel": "选择风格",
     "tabs": {
-      "text": "文字生成表情",
-      "image": "图片生成表情"
+      "text": "文字生成 Genmoji",
+      "image": "图片生成 Genmoji"
     },
     "recentTitle": "最近生成的 Genmoji",
     "generationStatus": {
@@ -385,6 +385,11 @@
     },
     "error": {
       "failed": "生成失败。请重试。"
+    },
+    "cameraModalTitle": "拍摄照片",
+    "camera": {
+      "takePhoto": "拍照",
+      "switchCamera": "切换摄像头"
     },
     "dialogTitle": "生成新的 Genmoji",
     "dialogDescription": "根据您的描述创建新的 genmoji。您也可以上传参考图片。",
@@ -433,6 +438,37 @@
       "handdrawn": {
         "name": "手绘",
         "description": "手绘涂鸦笔触风"
+      },
+      "gemstickers": {
+        "name": "贴纸合集",
+        "description": "有趣的收藏贴纸风"
+      }
+    },
+    "gemstyles": {
+      "ui": {
+        "selectStyle": "选择风格",
+        "emotion": "情绪"
+      },
+      "styles": {
+        "pop-art": { "name": "波普艺术" },
+        "japanese-matchbox": { "name": "昭和风火柴盒" },
+        "cartoon-dino": { "name": "卡通恐龙" },
+        "pixel-art": { "name": "像素艺术" },
+        "royal": { "name": "皇家风格" },
+        "football-sticker": { "name": "复古足球贴纸" },
+        "claymation": { "name": "黏土动画" },
+        "vintage-bollywood": { "name": "复古宝莱坞" },
+        "sticker-bomb": { "name": "贴纸炸弹" }
+      },
+      "emotions": {
+        "Happy": "开心",
+        "Sad": "伤心",
+        "Angry": "生气",
+        "Surprised": "惊讶",
+        "Laughing": "大笑",
+        "Love": "爱意",
+        "Winking": "眨眼",
+        "Confused": "困惑"
       }
     },
     "prompts": {
@@ -525,6 +561,14 @@
         "随意线条的小猫",
         "粗线条点赞",
         "潦草线条花朵"
+      ],
+      "gemstickers": [
+        "贴纸炸弹风人像",
+        "波普艺术漫画脸",
+        "昭和火柴盒风小猫",
+        "挥手的卡通恐龙",
+        "像素心形贴纸",
+        "皇家公主贴纸"
       ]
     }
   },

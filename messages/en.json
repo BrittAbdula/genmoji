@@ -138,7 +138,7 @@
     "login": "Login",
     "logout": "Logout",
     "profile": "Profile",
-    "my_emojis": "My Emojis",
+    "my_emojis": "My Genmojis",
     "welcome_back": "Welcome Back",
     "login_description": "Sign in to save your genmojis and access them anywhere.",
     "privacy_notice": "By signing in, you agree to our Privacy Policy and Terms of Service. We'll keep your data safe and secure.",
@@ -151,13 +151,13 @@
     "credits_this_month": "credits this month"
   },
   "my_emojis": {
-    "title": "My Emojis",
+    "title": "My Genmojis",
     "description": "Your collection of custom genmojis",
     "emoji_count": "{count} genmojis in your collection",
     "login_required": "Please sign in to view your saved genmojis",
-    "login_to_view": "Sign In to View My Emojis",
+    "login_to_view": "Sign In to View My Genmojis",
     "back": "Back",
-    "no_emojis_title": "No Emojis Yet",
+    "no_emojis_title": "No Genmojis Yet",
     "no_emojis_description": "You haven't created any genmojis yet. Start by generating your first custom genmoji!",
     "create_first_emoji": "Create My First Genmoji",
     "load_more": "Load More",
@@ -375,8 +375,8 @@
     "changeImage": "Change Image",
     "selectModel": "Select Style",
     "tabs": {
-      "text": "Text to Emoji",
-      "image": "Image to Emoji"
+      "text": "Text to Genmoji",
+      "image": "Image to Genmoji"
     },
     "recentTitle": "Recent Genmojis",
     "generationStatus": {
@@ -384,6 +384,11 @@
     },
     "error": {
       "failed": "Generation failed. Please try again."
+    },
+    "cameraModalTitle": "Take a photo",
+    "camera": {
+      "takePhoto": "Take Photo",
+      "switchCamera": "Switch camera"
     },
     "dialogTitle": "Generate New Genmoji",
     "dialogDescription": "Create a new genmoji based on your description. You can also upload an image for reference.",
@@ -432,6 +437,37 @@
       "handdrawn": {
         "name": "Hand-drawn",
         "description": "Sketchy doodle marker style"
+      },
+      "gemstickers": {
+        "name": "Gem Stickers",
+        "description": "Playful collectible sticker vibes"
+      }
+    },
+    "gemstyles": {
+      "ui": {
+        "selectStyle": "Select style",
+        "emotion": "Emotion"
+      },
+      "styles": {
+        "pop-art": { "name": "Pop Art" },
+        "japanese-matchbox": { "name": "Retro Japanese Matchbox" },
+        "cartoon-dino": { "name": "Cartoon Dino" },
+        "pixel-art": { "name": "Pixel Art" },
+        "royal": { "name": "Royal" },
+        "football-sticker": { "name": "Football Sticker" },
+        "claymation": { "name": "Claymation" },
+        "vintage-bollywood": { "name": "Vintage Bollywood" },
+        "sticker-bomb": { "name": "Sticker Bomb" }
+      },
+      "emotions": {
+        "Happy": "Happy",
+        "Sad": "Sad",
+        "Angry": "Angry",
+        "Surprised": "Surprised",
+        "Laughing": "Laughing",
+        "Love": "Love",
+        "Winking": "Winking",
+        "Confused": "Confused"
       }
     },
     "prompts": {
@@ -524,6 +560,14 @@
         "Cat with loose strokes",
         "Thumbs up with bold strokes",
         "Messy line flower"
+      ],
+      "gemstickers": [
+        "Sticker bomb portrait",
+        "Pop Art comic face",
+        "Retro Japanese matchbox cat",
+        "Cartoon dino waving",
+        "Pixel art heart sticker",
+        "Royal princess sticker"
       ]
     }
   },

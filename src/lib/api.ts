@@ -176,11 +176,12 @@ export async function performAction(
 
 // 6. 生成新表情
 export async function genMoji(
-  prompt: string, 
-  locale: string, 
-  image: string | null, 
+  prompt: string,
+  locale: string,
+  image: string | null,
   model: string = 'genmoji',
-  token?: string | null
+  token?: string | null,
+  options?: { styleId?: string | null; emotion?: string | null }
 ): Promise<EmojiResponse> {
   const url = `${API_BASE_URL}${API_ENDPOINTS.EMOJI_GENERATE}`;
   const headers = token ? getAuthHeaders(token) : DEFAULT_HEADERS;
@@ -188,7 +189,7 @@ export async function genMoji(
   const res = await fetch(url, {
     method: 'POST',
     headers,
-    body: JSON.stringify({ prompt, locale, image, model })
+    body: JSON.stringify({ prompt, locale, image, model, styleId: options?.styleId ?? null, emotion: options?.emotion ?? null })
   });
 
   if (!res.ok) {

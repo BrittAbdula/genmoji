@@ -58,7 +58,7 @@
       "description": "欲しい絵文字を言葉で説明するだけで、AIが瞬時にApple風の美しい絵文字に変換します。"
     },
     "imageToGenmoji": {
-      "title": "画像から絵文字を作成",
+      "title": "画像からGenmojiを作成",
       "description": "写真をアップロードして、Apple絵文字の特徴的なスタイルを保ちながら、パーソナライズされた絵文字に変換できます。"
     },
     "compatibility": {
@@ -118,15 +118,15 @@
   "generator": {
     "title": "アイデアを最もよく表す言葉やフレーズから始めましょう",
     "placeholder": "あなたの絵文字を説明",
-    "generateButton": "絵文字を生成",
+    "generateButton": "Genmoji を生成",
     "generatingButton": "生成中...",
     "uploadImage": "画像をアップロード（任意）",
     "uploadReference": "参考画像をアップロード",
     "changeImage": "画像を変更",
     "selectModel": "スタイルを選択",
     "tabs": {
-      "text": "テキストから絵文字",
-      "image": "画像から絵文字"
+      "text": "テキストからGenmoji",
+      "image": "画像からGenmoji"
     },
     "recentTitle": "最近生成された絵文字",
     "generationStatus": {
@@ -135,7 +135,12 @@
     "error": {
       "failed": "生成に失敗しました。もう一度お試しください。"
     },
-    "dialogTitle": "新しい絵文字を生成",
+    "cameraModalTitle": "写真を撮影",
+    "camera": {
+      "takePhoto": "撮影",
+      "switchCamera": "カメラ切替"
+    },
+    "dialogTitle": "新しい Genmoji を生成",
     "dialogDescription": "説明に基づいて新しい絵文字を作成します。参考画像をアップロードすることもできます。",
     "generatingMessage": "絵文字を作成中です。その間に他のコンテンツをご覧ください...",
     "models": {
@@ -182,6 +187,37 @@
       "handdrawn": {
         "name": "手描き",
         "description": "スケッチ風の手描きタッチ"
+      },
+      "gemstickers": {
+        "name": "ジェムステッカー",
+        "description": "コレクション感のある楽しいステッカー"
+      }
+    },
+    "gemstyles": {
+      "ui": {
+        "selectStyle": "スタイルを選択",
+        "emotion": "感情"
+      },
+      "styles": {
+        "pop-art": { "name": "ポップアート" },
+        "japanese-matchbox": { "name": "レトロマッチ箱" },
+        "cartoon-dino": { "name": "恐竜漫画" },
+        "pixel-art": { "name": "ピクセルアート" },
+        "royal": { "name": "王室" },
+        "football-sticker": { "name": "サッカーシール" },
+        "claymation": { "name": "クレイアニメ" },
+        "vintage-bollywood": { "name": "ボリウッド" },
+        "sticker-bomb": { "name": "ステッカーボム" }
+      },
+      "emotions": {
+        "Happy": "ハッピー",
+        "Sad": "悲しい",
+        "Angry": "怒り",
+        "Surprised": "驚き",
+        "Laughing": "笑い",
+        "Love": "愛",
+        "Winking": "ウインク",
+        "Confused": "混乱"
       }
     },
     "prompts": {
@@ -275,6 +311,14 @@
         "手描きネコ",
         "ラフなサムズアップ",
         "走り書きの花"
+      ],
+      "gemstickers": [
+        "ステッカーボム風ポートレート",
+        "ポップアート風コミックフェイス",
+        "昭和マッチ箱風の猫",
+        "手を振るカートゥーン恐竜",
+        "ピクセルアートのハートステッカー",
+        "ロイヤルプリンセスのステッカー"
       ]
     }
   },

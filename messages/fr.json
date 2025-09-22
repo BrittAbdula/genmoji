@@ -132,8 +132,8 @@
     "changeImage": "Changer l'image",
     "selectModel": "Sélectionner le style",
     "tabs": {
-      "text": "Texte vers Emoji",
-      "image": "Image vers Emoji"
+      "text": "Texte vers Genmoji",
+      "image": "Image vers Genmoji"
     },
     "recentTitle": "Genmojis récents",
     "generationStatus": {
@@ -141,6 +141,11 @@
     },
     "error": {
       "failed": "La génération a échoué. Veuillez réessayer."
+    },
+    "cameraModalTitle": "Prendre une photo",
+    "camera": {
+      "takePhoto": "Prendre une photo",
+      "switchCamera": "Changer de caméra"
     },
     "dialogTitle": "Générer un nouveau genmoji",
     "dialogDescription": "Créez un nouveau genmoji basé sur votre description. Vous pouvez également télécharger une image de référence.",
@@ -189,6 +194,37 @@
       "handdrawn": {
         "name": "Dessiné à la main",
         "description": "Style croquis au feutre"
+      },
+      "gemstickers": {
+        "name": "Gem Stickers",
+        "description": "Ambiance d'autocollants à collectionner"
+      }
+    },
+    "gemstyles": {
+      "ui": {
+        "selectStyle": "Sélectionner un style",
+        "emotion": "Émotion"
+      },
+      "styles": {
+        "pop-art": { "name": "Pop art" },
+        "japanese-matchbox": { "name": "Boîte d'allumettes japonaise rétro" },
+        "cartoon-dino": { "name": "Dino cartoon" },
+        "pixel-art": { "name": "Pixel art" },
+        "royal": { "name": "Royal" },
+        "football-sticker": { "name": "Autocollant de football" },
+        "claymation": { "name": "Claymation" },
+        "vintage-bollywood": { "name": "Bollywood vintage" },
+        "sticker-bomb": { "name": "Sticker bomb" }
+      },
+      "emotions": {
+        "Happy": "Heureux",
+        "Sad": "Triste",
+        "Angry": "Fâché",
+        "Surprised": "Surpris",
+        "Laughing": "Rire",
+        "Love": "Amour",
+        "Winking": "Clin d’œil",
+        "Confused": "Confus"
       }
     },
     "prompts": {
@@ -282,6 +318,14 @@
         "Chat dessiné à la main",
         "Pouce griffonné",
         "Fleur gribouillée"
+      ],
+      "gemstickers": [
+        "Portrait style sticker bomb",
+        "Visage BD pop art",
+        "Chat style boîte d’allumettes japonaise rétro",
+        "Dino cartoon qui salue",
+        "Autocollant de cœur en pixel art",
+        "Autocollant princesse royale"
       ]
     }
   },
@@ -307,7 +351,7 @@
     "login": "Connexion",
     "logout": "Déconnexion",
     "profile": "Profil",
-    "my_emojis": "Mes Emojis",
+    "my_emojis": "Mes Genmojis",
     "welcome_back": "Bon retour",
     "login_description": "Connectez-vous pour sauvegarder vos genmojis et y accéder partout.",
     "privacy_notice": "En vous connectant, vous acceptez notre Politique de confidentialité et nos Conditions d'utilisation. Nous garderons vos données sûres et sécurisées.",
@@ -320,13 +364,13 @@
     "credits_this_month": "crédits ce mois-ci"
   },
   "my_emojis": {
-    "title": "Mes Emojis",
+    "title": "Mes Genmojis",
     "description": "Votre collection de genmojis personnalisés",
     "emoji_count": "{count} genmojis dans votre collection",
     "login_required": "Veuillez vous connecter pour voir vos genmojis sauvegardés",
-    "login_to_view": "Se connecter pour voir mes Emojis",
+    "login_to_view": "Se connecter pour voir mes Genmojis",
     "back": "Retour",
-    "no_emojis_title": "Aucun Emoji pour le moment",
+    "no_emojis_title": "Aucun Genmoji pour le moment",
     "no_emojis_description": "Vous n'avez pas encore créé de genmojis. Commencez par générer votre premier genmoji personnalisé !",
     "create_first_emoji": "Créer mon premier Genmoji",
     "load_more": "Charger plus",

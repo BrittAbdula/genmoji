@@ -20,6 +20,7 @@ import { useAuthStore } from "@/store/auth-store";
 import { LoginDialog } from "./login-dialog";
 import { SubscriptionLimitDialog } from "./subscription-limit-dialog";
 import Image from "next/image";
+import CameraModal from "@/components/camera-modal";
 
 interface UnifiedGenmojiGeneratorProps {
   initialPrompt?: string;
@@ -59,7 +60,26 @@ export function UnifiedGenmojiGenerator({
     resetTime: string;
     type?: 'monthly' | 'daily';
   } | null>(null);
-  const [activeTab, setActiveTab] = useState<'text' | 'image'>('text');
+  const [activeTab, setActiveTab] = useState<'text' | 'image'>('image');
+  const [selectedStyleId, setSelectedStyleId] = useState<string | null>(null);
+  const [selectedEmotionKey, setSelectedEmotionKey] = useState<string>('Happy');
+  const [showCamera, setShowCamera] = useState(false);
+  const [cameraFacing, setCameraFacing] = useState<'user' | 'environment'>('user');
+  const cameraVideoRef = useRef<HTMLVideoElement>(null);
+  const cameraStreamRef = useRef<MediaStream | null>(null);
+  // Secondary style options (substyles) for the Gem Stickers model
+  const gemSubStyles = [
+    { id: 'pop-art', imgUrl: 'https://gstatic.com/synthidtextdemo/images/gemstickers/dot/pop_art_love.png', selectedImgUrl: 'https://gstatic.com/synthidtextdemo/images/gemstickers/dot/pop_art_love_out.png' },
+    { id: 'japanese-matchbox', imgUrl: 'https://gstatic.com/synthidtextdemo/images/gemstickers/dot/matchbox_no_text.png', selectedImgUrl: 'https://gstatic.com/synthidtextdemo/images/gemstickers/dot/matchbox_no_text_out.png' },
+    { id: 'cartoon-dino', imgUrl: 'https://gstatic.com/synthidtextdemo/images/gemstickers/dot/dragon.png', selectedImgUrl: 'https://gstatic.com/synthidtextdemo/images/gemstickers/dot/dragon_out.png' },
+    { id: 'pixel-art', imgUrl: 'https://gstatic.com/synthidtextdemo/images/gemstickers/dot/pixel.png', selectedImgUrl: 'https://gstatic.com/synthidtextdemo/images/gemstickers/dot/pixel_out.png' },
+    { id: 'royal', imgUrl: 'https://gstatic.com/synthidtextdemo/images/gemstickers/dot/royal.png', selectedImgUrl: 'https://gstatic.com/synthidtextdemo/images/gemstickers/dot/royal_out.png' },
+    { id: 'football-sticker', imgUrl: 'https://gstatic.com/synthidtextdemo/images/gemstickers/dot/football.png', selectedImgUrl: 'https://gstatic.com/synthidtextdemo/images/gemstickers/dot/football_out.png' },
+    { id: 'claymation', imgUrl: 'https://gstatic.com/synthidtextdemo/images/gemstickers/dot/claymation.png', selectedImgUrl: 'https://gstatic.com/synthidtextdemo/images/gemstickers/dot/claymation_out.png' },
+    { id: 'vintage-bollywood', imgUrl: 'https://gstatic.com/synthidtextdemo/images/gemstickers/dot/bolly.png', selectedImgUrl: 'https://gstatic.com/synthidtextdemo/images/gemstickers/dot/bolly_out.png' },
+    { id: 'sticker-bomb', imgUrl: 'https://gstatic.com/synthidtextdemo/images/gemstickers/dot/bomb.png', selectedImgUrl: 'https://gstatic.com/synthidtextdemo/images/gemstickers/dot/bomb_out.png' }
+  ] as const;
+  const gemEmotionKeys = ['Happy','Sad','Angry','Surprised','Laughing','Love','Winking','Confused'] as const;
 
   // 初始化模型：优先 props，其次 localStorage 记忆
   useEffect(() => {
@@ -95,6 +115,16 @@ export function UnifiedGenmojiGenerator({
     }
   }, [isLoggedIn, pendingGeneration, prompt]);
 
+  // 恢复已保存的样式和情绪选择
+  useEffect(() => {
+    try {
+      const s = localStorage.getItem('genmoji:selectedStyleId');
+      if (s) setSelectedStyleId(s);
+      const e = localStorage.getItem('genmoji:selectedEmotionKey');
+      if (e) setSelectedEmotionKey(e);
+    } catch {}
+  }, []);
+
   // 居中模型选择器（仅首次）
   useEffect(() => {
     if (hasCenteredOnce.current) return;
@@ -119,6 +149,13 @@ export function UnifiedGenmojiGenerator({
   // 模型数据，统一管理所有模型信息
   const models = [
     {
+      id: 'gemstickers' as const,
+      name: t('models.gemstickers.name'),
+      description: t('models.gemstickers.description'),
+      image: "/emojis/handdrawn.png",
+      alt: "Gem Stickers"
+    },
+    {
       id: 'genmoji' as const,
       name: t('models.genmoji.name'),
       description: t('models.genmoji.description'),
@@ -139,14 +176,14 @@ export function UnifiedGenmojiGenerator({
     //   image: "https://store.genmojionline.com/cdn-cgi/imagedelivery/DEOVdDdfeGzASe0KdtD7FA/14a1b15b-9263-4d20-443d-67c5e4c4c900/public",
     //   alt: "Mascot"
     // },
-    { id: 'claymation' as const, name: t('models.claymation.name'), description: t('models.claymation.description'), image: "/emojis/Claymation.png", alt: 'Claymation Emoji' },
-    { id: '3d' as const, name: t('models.3d.name'), description: t('models.3d.description'), image: "/emojis/3d.png", alt: '3D Emoji' },
-    { id: 'origami' as const, name: t('models.origami.name'), description: t('models.origami.description'), image: "/emojis/Origami.png", alt: 'Origami Emoji' },
-    { id: 'cross-stitch' as const, name: t('models.cross-stitch.name'), description: t('models.cross-stitch.description'), image: "/emojis/Cross-stitch-Pixel.png", alt: 'Cross-stitch Emoji' },
-    { id: 'steampunk' as const, name: t('models.steampunk.name'), description: t('models.steampunk.description'), image: "/emojis/Steampunk.png", alt: 'Steampunk Emoji' },
-    { id: 'liquid-metal' as const, name: t('models.liquid-metal.name'), description: t('models.liquid-metal.description'), image: "/emojis/Liquid-Metal.png", alt: 'Liquid Metal Emoji' },
-    { id: 'pixel' as const, name: t('models.pixel.name'), description: t('models.pixel.description'), image: "/emojis/pixel.png", alt: 'Pixel Emoji' },
-    { id: 'handdrawn' as const, name: t('models.handdrawn.name'), description: t('models.handdrawn.description'), image: "/emojis/handdrawn.png", alt: 'Hand-drawn Emoji' }
+    { id: 'claymation' as const, name: t('models.claymation.name'), description: t('models.claymation.description'), image: "/emojis/Claymation.png", alt: 'Claymation Genmoji' },
+    { id: '3d' as const, name: t('models.3d.name'), description: t('models.3d.description'), image: "/emojis/3d.png", alt: '3D Genmoji' },
+    { id: 'origami' as const, name: t('models.origami.name'), description: t('models.origami.description'), image: "/emojis/Origami.png", alt: 'Origami Genmoji' },
+    { id: 'cross-stitch' as const, name: t('models.cross-stitch.name'), description: t('models.cross-stitch.description'), image: "/emojis/Cross-stitch-Pixel.png", alt: 'Cross-stitch Genmoji' },
+    { id: 'steampunk' as const, name: t('models.steampunk.name'), description: t('models.steampunk.description'), image: "/emojis/Steampunk.png", alt: 'Steampunk Genmoji' },
+    { id: 'liquid-metal' as const, name: t('models.liquid-metal.name'), description: t('models.liquid-metal.description'), image: "/emojis/Liquid-Metal.png", alt: 'Liquid Metal Genmoji' },
+    { id: 'pixel' as const, name: t('models.pixel.name'), description: t('models.pixel.description'), image: "/emojis/pixel.png", alt: 'Pixel Genmoji' },
+    { id: 'handdrawn' as const, name: t('models.handdrawn.name'), description: t('models.handdrawn.description'), image: "/emojis/handdrawn.png", alt: 'Hand-drawn Genmoji' }
   ];
 
   // Get current model info from the unified models array
@@ -155,6 +192,14 @@ export function UnifiedGenmojiGenerator({
   };
 
   const currentModel = getCurrentModelInfo();
+  // Top preview image adapts when Gem Stickers sub-style selected
+  const currentGemSubStyle = (model === 'gemstickers' && selectedStyleId)
+    ? gemSubStyles.find((s) => s.id === selectedStyleId) || null
+    : null;
+  const currentPreviewImage = currentGemSubStyle?.selectedImgUrl || currentGemSubStyle?.imgUrl || currentModel.image;
+  const currentPreviewAlt = (model === 'gemstickers' && selectedStyleId)
+    ? (t(`gemstyles.styles.${selectedStyleId}.name` as any) as string)
+    : currentModel.name;
 
   useEffect(() => {
     setPrompt(initialPrompt);
@@ -222,6 +267,102 @@ export function UnifiedGenmojiGenerator({
     }
   };
 
+  // Camera helpers
+  const stopCamera = () => {
+    if (cameraStreamRef.current) {
+      cameraStreamRef.current.getTracks().forEach((t) => t.stop());
+      cameraStreamRef.current = null;
+    }
+  };
+
+  const startCamera = async (facing: 'user' | 'environment') => {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: facing }, audio: false });
+      cameraStreamRef.current = stream;
+      if (cameraVideoRef.current) {
+        cameraVideoRef.current.srcObject = stream;
+        await cameraVideoRef.current.play().catch(() => {});
+      }
+      setShowCamera(true);
+    } catch (e) {
+      // Fallback to front camera when environment is not available
+      if (facing === 'environment') {
+        try {
+          const fallback = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user' }, audio: false });
+          cameraStreamRef.current = fallback;
+          if (cameraVideoRef.current) {
+            cameraVideoRef.current.srcObject = fallback;
+            await cameraVideoRef.current.play().catch(() => {});
+          }
+          setCameraFacing('user');
+          setShowCamera(true);
+          return;
+        } catch (e2) {
+          console.error('Camera open error (fallback failed):', e2);
+        }
+      }
+      console.error('Camera open error:', e);
+      alert('Unable to access camera');
+    }
+  };
+
+  const openCamera = async () => {
+    await startCamera(cameraFacing);
+  };
+
+  const closeCamera = () => {
+    stopCamera();
+    setShowCamera(false);
+  };
+
+  const switchCamera = async () => {
+    const next = cameraFacing === 'user' ? 'environment' : 'user';
+    setCameraFacing(next);
+    stopCamera();
+    await startCamera(next);
+  };
+
+  const captureFromCamera = async () => {
+    const video = cameraVideoRef.current;
+    if (!video) return;
+    const width = video.videoWidth || 512;
+    const height = video.videoHeight || 512;
+    const canvas = document.createElement('canvas');
+    canvas.width = width;
+    canvas.height = height;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+    // If front camera (mirrored preview), draw mirrored to match user expectation
+    if (cameraFacing === 'user') {
+      ctx.save();
+      ctx.translate(width, 0);
+      ctx.scale(-1, 1);
+      ctx.drawImage(video, 0, 0, width, height);
+      ctx.restore();
+    } else {
+      ctx.drawImage(video, 0, 0, width, height);
+    }
+    canvas.toBlob(async (blob) => {
+      if (!blob) return;
+      const file = new File([blob], 'camera.jpg', { type: 'image/jpeg' });
+      setIsUploading(true);
+      try {
+        const res = await uploadImage(file, token);
+        if (res.success && res.image_url) {
+          setSelectedImage(res.image_url);
+          setActiveTab('image');
+        } else {
+          alert(`Upload failed: ${res.error || 'Unknown error'}`);
+        }
+      } catch (err) {
+        console.error('Upload error:', err);
+      } finally {
+        setIsUploading(false);
+        closeCamera();
+      }
+    }, 'image/jpeg', 0.95);
+  };
+
   const clearSelectedImage = () => {
     setSelectedImage(null);
     if (fileInputRef.current) {
@@ -262,32 +403,30 @@ export function UnifiedGenmojiGenerator({
     setProgress(0);
     
     // 对于 image 模式，固定使用 "based on the image" 作为 prompt
-    const effectivePrompt = activeTab === 'image' 
-      ? "based on the image" 
-      : (prompt || '').trim();
+    const effectivePrompt = (() => {
+      const base = (prompt || '').trim();
+      if (activeTab === 'image') {
+        // Backend will build final prompt for image mode
+        return '';
+      }
+      // Text mode: send user input only; backend will augment if needed
+      return base;
+    })();
       
     setGlobalPrompt(effectivePrompt);
     
     try {
-      const emojiResponse = await genMoji(effectivePrompt, locale, selectedImage, model, token);
+      const submitModel = model; // always send top-level model; backend handles styleId/emotion
+      const emojiResponse = await genMoji(effectivePrompt, locale, selectedImage, submitModel, token, {
+        styleId: selectedStyleId,
+        emotion: selectedEmotionKey
+      });
       
       if (emojiResponse.success && emojiResponse.emoji) {
-        if (onGenerated) {
-          // 如果有回调函数，设置状态并显示在当前页面
-          setGeneratedEmoji(emojiResponse.emoji);
-          triggerConfetti();
-          onGenerated(emojiResponse.emoji);
-        } else {
-          // 没有回调函数，直接跳转到详情页，不设置 generatedEmoji 状态
-          triggerConfetti();
-          router.push(`/emoji/${emojiResponse.emoji.slug}`);
-          // 立即清空表单，因为要跳转页面
-          setPrompt("");
-          setSelectedImage(null);
-          if (fileInputRef.current) {
-            fileInputRef.current.value = '';
-          }
-        }
+        // 不跳转详情页，直接在组件底部展示，可点击跳转
+        setGeneratedEmoji(emojiResponse.emoji);
+        triggerConfetti();
+        if (onGenerated) onGenerated(emojiResponse.emoji);
       } else {
         throw new Error(emojiResponse.error || t('error.failed'));
       }
@@ -312,7 +451,7 @@ export function UnifiedGenmojiGenerator({
     }
   };
 
-  const generateEmoji = async () => {
+  const generateGenmoji = async () => {
     if (activeTab === 'text' && !prompt.trim()) return;
     if (activeTab === 'image' && !selectedImage) return;
     
@@ -348,6 +487,16 @@ export function UnifiedGenmojiGenerator({
     try {
       localStorage.setItem('genmoji:selectedModel', modelId);
     } catch {}
+  };
+
+  const handleStyleSelect = (styleId: string) => {
+    setSelectedStyleId((prev) => (prev === styleId ? null : styleId));
+    try { localStorage.setItem('genmoji:selectedStyleId', styleId); } catch {}
+  };
+
+  const handleEmotionSelect = (key: string) => {
+    setSelectedEmotionKey(key);
+    try { localStorage.setItem('genmoji:selectedEmotionKey', key); } catch {}
   };
 
   // 初始进入时跑马灯快速预览一遍，最后停留在上次选择
@@ -424,8 +573,8 @@ export function UnifiedGenmojiGenerator({
         <div className="w-full px-4 mb-3">
           <div className="relative mx-auto w-full max-w-[160px]">
             <Image
-              src={currentModel.image}
-              alt={currentModel.name}
+              src={currentPreviewImage}
+              alt={currentPreviewAlt}
               width={160}
               height={160}
               priority
@@ -463,6 +612,68 @@ export function UnifiedGenmojiGenerator({
           ))}
           </div>
         </div>
+        {model === 'gemstickers' && (
+          <div className="w-full px-4 mt-1">
+            {/* Gem Stickers sub-styles */}
+            <div className="w-full max-w-3xl mx-auto mb-3">
+              <div className="mb-2 text-sm text-muted-foreground">{t('gemstyles.ui.selectStyle')}</div>
+              <div className="flex gap-3 overflow-x-auto scrollbar-hide py-1">
+                {gemSubStyles.map((opt) => {
+                  const selected = selectedStyleId === opt.id;
+                  const label = t(`gemstyles.styles.${opt.id}.name` as any);
+                  return (
+                    <button
+                      key={opt.id}
+                      type="button"
+                      onClick={() => handleStyleSelect(opt.id)}
+                      className={cn(
+                        "shrink-0 rounded-xl border p-2 text-left",
+                        "bg-background hover:bg-muted/60",
+                        selected ? "border-primary/50 shadow-sm" : "border-border"
+                      )}
+                      aria-pressed={selected}
+                      title={label}
+                    >
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src={selected ? opt.selectedImgUrl : opt.imgUrl}
+                        alt={label}
+                        width={72}
+                        height={72}
+                        className="w-18 h-18 object-contain"
+                      />
+                      <div className="mt-1 text-xs truncate max-w-[80px]">{label}</div>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+            {/* Emotions for Gem Stickers */}
+            <div className="w-full max-w-3xl mx-auto">
+              <div className="mb-2 text-sm text-muted-foreground">{t('gemstyles.ui.emotion')}</div>
+              <div className="flex flex-wrap gap-2">
+                {gemEmotionKeys.map((key) => {
+                  const selected = selectedEmotionKey === key;
+                  const label = t(`gemstyles.emotions.${key}` as any);
+                  return (
+                    <button
+                      key={key}
+                      type="button"
+                      onClick={() => handleEmotionSelect(key)}
+                      className={cn(
+                        "px-3 py-1.5 text-xs rounded-full border",
+                        selected ? "border-primary/50 bg-primary/10" : "border-border bg-muted/40 hover:bg-muted/70"
+                      )}
+                      aria-pressed={selected}
+                    >
+                      {label}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+        )}
       </div>
       {isGenerating && (
         <div className="w-full">
@@ -470,12 +681,7 @@ export function UnifiedGenmojiGenerator({
         </div>
       )}
 
-      {generatedEmoji && (
-          <EmojiContainer 
-            emoji={generatedEmoji} 
-            size="lg"
-          />
-      )}
+      {/* Generated result will be rendered at the very bottom of the component */}
 
       <div className="flex flex-col gap-4">
         <div className="relative flex flex-col w-full rounded-xl border bg-card shadow-sm overflow-hidden border-muted-foreground/10">
@@ -503,6 +709,7 @@ export function UnifiedGenmojiGenerator({
                 {t('tabs.image')}
               </button>
             </div>
+            
           </div>
 
           {/* Tab content */}
@@ -516,7 +723,7 @@ export function UnifiedGenmojiGenerator({
                 onKeyDown={(e: React.KeyboardEvent<HTMLTextAreaElement>) => {
                   if (e.key === 'Enter' && !e.shiftKey && prompt.trim() && !isGenerating) {
                     e.preventDefault();
-                    generateEmoji();
+                    generateGenmoji();
                   }
                 }}
                 rows={1}
@@ -605,6 +812,15 @@ export function UnifiedGenmojiGenerator({
                     >
                       {t('uploadReference')}
                     </Button>
+                    <Button
+                      type="button"
+                      onClick={openCamera}
+                      className="rounded-full"
+                      variant="secondary"
+                      disabled={isUploading}
+                    >
+                      {t('camera.takePhoto')}
+                    </Button>
                     <div className="text-xs text-muted-foreground">or drag & drop / paste</div>
                   </>
                 )}
@@ -628,7 +844,7 @@ export function UnifiedGenmojiGenerator({
             
             {/* Generate button */}
             <Button
-              onClick={generateEmoji}
+              onClick={generateGenmoji}
               disabled={
                 isGenerating || isUploading || (activeTab === 'text' ? !prompt.trim() : !selectedImage)
               }
@@ -689,6 +905,22 @@ export function UnifiedGenmojiGenerator({
   return (
     <>
       {content}
+      {/* Camera modal */}
+      <CameraModal
+        show={showCamera}
+        title={t('cameraModalTitle')}
+        onClose={closeCamera}
+        onCapture={captureFromCamera}
+        videoRef={cameraVideoRef}
+        onSwitchCamera={switchCamera}
+        switchLabel={t('camera.switchCamera')}
+        mirrored={cameraFacing === 'user'}
+      />
+      {generatedEmoji && (
+        <div className="mt-4 flex justify-center">
+          <EmojiContainer emoji={generatedEmoji} size="lg" />
+        </div>
+      )}
       
       {/* 登录对话框 */}
       <LoginDialog 
