@@ -1,6 +1,7 @@
 "use client";
 
-import { RefObject, useEffect, useRef } from "react";
+import { RefObject, useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { Camera, X as XIcon, RefreshCw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -17,6 +18,8 @@ interface CameraModalProps {
 
 export function CameraModal({ show, title, onClose, onCapture, videoRef, onSwitchCamera, switchLabel, mirrored = false }: CameraModalProps) {
   const scrollYRef = useRef(0);
+  const [isClient, setIsClient] = useState(false);
+  useEffect(() => setIsClient(true), []);
   // Prevent background scroll and keep overlay always on top
   useEffect(() => {
     if (!show) return;
@@ -44,8 +47,8 @@ export function CameraModal({ show, title, onClose, onCapture, videoRef, onSwitc
   }, [show]);
   if (!show) return null;
 
-  return (
-    <div className="fixed inset-0 z-[1200] grid place-items-center p-4 md:p-6 bg-black/70 backdrop-blur-sm">
+  const overlay = (
+    <div className="fixed top-0 left-0 right-0 z-[1200] h-[100dvh] w-full grid place-items-center p-4 md:p-6 bg-black/70 backdrop-blur-sm">
       <div className="relative w-full max-w-[min(90vw,720px)] max-h-[80vh] bg-card border border-border/50 rounded-2xl shadow-xl flex flex-col">
         {/* Header */}
         <div className="flex items-center justify-between px-4 pt-4 pb-2 md:px-6">
@@ -105,6 +108,10 @@ export function CameraModal({ show, title, onClose, onCapture, videoRef, onSwitc
       </div>
     </div>
   );
+
+  if (!show) return null;
+  if (!isClient) return null;
+  return createPortal(overlay, document.body);
 }
 
 export default CameraModal;
