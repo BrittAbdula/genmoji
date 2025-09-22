@@ -38,11 +38,13 @@ export function CameraModal({ show, title, onClose, onCapture, videoRef, onSwitc
 
         {/* Video area */}
         <div className="px-4 md:px-6 pb-2">
-          <div className="relative w-full overflow-hidden rounded-xl bg-muted aspect-video">
+          {/* Square preview to match 1:1 capture */}
+          <div className="relative w-full overflow-hidden rounded-xl bg-muted aspect-square">
             <video
               ref={videoRef}
               autoPlay
               playsInline
+              muted
               className="absolute inset-0 w-full h-full object-cover"
               style={{ transform: mirrored ? 'scaleX(-1)' : undefined }}
             />

@@ -323,28 +323,69 @@ export function UnifiedGenmojiGenerator({
 
   const startCamera = async (facing: 'user' | 'environment') => {
     try {
-      const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: facing }, audio: false });
+      const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: { ideal: facing } }, audio: false });
       cameraStreamRef.current = stream;
       if (cameraVideoRef.current) {
-        cameraVideoRef.current.srcObject = stream;
-        await cameraVideoRef.current.play().catch(() => {});
+        const v = cameraVideoRef.current;
+        // Ensure autoplay on iOS Safari
+        v.muted = true;
+        try { v.setAttribute('muted', ''); } catch {}
+        v.srcObject = stream;
+        if (v.readyState < 2) {
+          await new Promise<void>((resolve) => {
+            const onReady = () => { v.removeEventListener('loadedmetadata', onReady); resolve(); };
+            v.addEventListener('loadedmetadata', onReady, { once: true });
+          });
+        }
+        await v.play().catch(() => {});
       }
       setShowCamera(true);
     } catch (e) {
       // Fallback to front camera when environment is not available
       if (facing === 'environment') {
         try {
-          const fallback = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user' }, audio: false });
+          const fallback = await navigator.mediaDevices.getUserMedia({ video: { facingMode: { ideal: 'user' } }, audio: false });
           cameraStreamRef.current = fallback;
           if (cameraVideoRef.current) {
-            cameraVideoRef.current.srcObject = fallback;
-            await cameraVideoRef.current.play().catch(() => {});
+            const v = cameraVideoRef.current;
+            v.muted = true; try { v.setAttribute('muted', ''); } catch {}
+            v.srcObject = fallback;
+            if (v.readyState < 2) {
+              await new Promise<void>((resolve) => {
+                const onReady = () => { v.removeEventListener('loadedmetadata', onReady); resolve(); };
+                v.addEventListener('loadedmetadata', onReady, { once: true });
+              });
+            }
+            await v.play().catch(() => {});
           }
           setCameraFacing('user');
           setShowCamera(true);
           return;
         } catch (e2) {
           console.error('Camera open error (fallback failed):', e2);
+        }
+      } else if (facing === 'user') {
+        // Try environment as a last fallback
+        try {
+          const fallback = await navigator.mediaDevices.getUserMedia({ video: { facingMode: { ideal: 'environment' } }, audio: false });
+          cameraStreamRef.current = fallback;
+          if (cameraVideoRef.current) {
+            const v = cameraVideoRef.current;
+            v.muted = true; try { v.setAttribute('muted', ''); } catch {}
+            v.srcObject = fallback;
+            if (v.readyState < 2) {
+              await new Promise<void>((resolve) => {
+                const onReady = () => { v.removeEventListener('loadedmetadata', onReady); resolve(); };
+                v.addEventListener('loadedmetadata', onReady, { once: true });
+              });
+            }
+            await v.play().catch(() => {});
+          }
+          setCameraFacing('environment');
+          setShowCamera(true);
+          return;
+        } catch (e3) {
+          console.error('Camera open error (both facings failed):', e3);
         }
       }
       console.error('Camera open error:', e);
@@ -371,23 +412,31 @@ export function UnifiedGenmojiGenerator({
   const captureFromCamera = async () => {
     const video = cameraVideoRef.current;
     if (!video) return;
-    const width = video.videoWidth || 512;
-    const height = video.videoHeight || 512;
+    const srcW = video.videoWidth || 1024;
+    const srcH = video.videoHeight || 1024;
+    // Center square crop from the video source to ensure 1:1
+    const side = Math.min(srcW, srcH);
+    const sx = Math.max(0, Math.floor((srcW - side) / 2));
+    const sy = Math.max(0, Math.floor((srcH - side) / 2));
+
     const canvas = document.createElement('canvas');
-    canvas.width = width;
-    canvas.height = height;
+    const target = Math.min(1024, side); // reasonable export size
+    canvas.width = target;
+    canvas.height = target;
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
-    // If front camera (mirrored preview), draw mirrored to match user expectation
+
+    // Draw cropped square, mirror if front camera to match preview
     if (cameraFacing === 'user') {
       ctx.save();
-      ctx.translate(width, 0);
+      ctx.translate(target, 0);
       ctx.scale(-1, 1);
-      ctx.drawImage(video, 0, 0, width, height);
+      ctx.drawImage(video, sx, sy, side, side, 0, 0, target, target);
       ctx.restore();
     } else {
-      ctx.drawImage(video, 0, 0, width, height);
+      ctx.drawImage(video, sx, sy, side, side, 0, 0, target, target);
     }
+
     canvas.toBlob(async (blob) => {
       if (!blob) return;
       const file = new File([blob], 'camera.jpg', { type: 'image/jpeg' });
