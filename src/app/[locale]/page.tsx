@@ -15,6 +15,8 @@ import { constructMetadata } from "@/lib/utils";
 import { getLocale } from 'next-intl/server';
 import { GalleryContent } from '@/components/gallery-content';
 import { HorizontalGalleryContent } from '@/components/horizontal-gallery-content';
+import { getEmojis } from '@/lib/api';
+import Script from 'next/script';
 
 // 为静态生成提供所有支持的语言
 export function generateStaticParams() {
@@ -83,11 +85,59 @@ export default async function Home(props: Props) {
   const { locale } = await props.params;
   // 启用静态渲染
   setRequestLocale(locale);
+  // 预取首屏可索引的最近 Genmoji（SSR）
+  // Cloudflare Pages 纯前端部署可通过 env 关闭（NEXT_PUBLIC_PREFETCH_HOME_RECENT=0）
+  const PREFETCH = process.env.NEXT_PUBLIC_PREFETCH_HOME_RECENT !== '0';
+  let initialEmojis: any[] = [];
+  if (PREFETCH) {
+    try {
+      initialEmojis = await getEmojis(0, 40, locale, { sort: 'latest' });
+    } catch (e) {
+      initialEmojis = [];
+    }
+  }
+  // FAQ 结构化数据
+  const tFaq = await getTranslations('faq');
+  const faqItems = tFaq.raw('items') as Array<{ question: string; answer: string }>;
+  const faqLd = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faqItems.map((it) => ({
+      '@type': 'Question',
+      name: it.question,
+      acceptedAnswer: { '@type': 'Answer', text: it.answer }
+    }))
+  };
+  const webSiteLd = {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    name: 'Genmoji Online',
+    url: siteConfig.url,
+    potentialAction: {
+      '@type': 'SearchAction',
+      target: `${siteConfig.url}/gallery?q={search_term_string}`,
+      'query-input': 'required name=search_term_string'
+    }
+  };
+  const orgLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Organization',
+    name: 'Genmoji Online',
+    url: siteConfig.url,
+    logo: `${siteConfig.url}/logo.png`,
+    sameAs: [
+      'https://twitter.com/genmojionline',
+      'https://instagram.com/genmojionline'
+    ]
+  };
 
   return (
     <main className="items-center container mx-auto p-2">
+      <Script id="ld-faq" type="application/ld+json">{JSON.stringify(faqLd)}</Script>
+      <Script id="ld-website" type="application/ld+json">{JSON.stringify(webSiteLd)}</Script>
+      <Script id="ld-org" type="application/ld+json">{JSON.stringify(orgLd)}</Script>
       <Hero />
-      <HorizontalGalleryContent />
+      <HorizontalGalleryContent initialEmojis={initialEmojis.length ? initialEmojis : undefined} />
       <FeatureHighlight />
       <Features />
       <FAQ />

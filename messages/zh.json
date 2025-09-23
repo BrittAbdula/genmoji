@@ -11,11 +11,14 @@
       "menu": "导航菜单",
       "categories": "分类",
       "allCategories": "所有分类",
+      "styles": "风格",
+      "allStyles": "所有风格",
       "colors": "颜色",
       "allColors": "所有颜色",
       "models": "模型",
       "allModels": "所有模型",
       "categoriesDescription": "浏览所有genmoji分类，如笑脸、动物、食物等",
+      "stylesDescription": "探索所有genmoji风格和分类，从经典到创意设计",
       "colorsDescription": "按颜色浏览genmoji - 红色、蓝色、绿色和更多颜色选项",
       "modelsDescription": "探索使用不同AI模型和风格创建的genmoji",
       "emojiCount": "{count} 个genmoji可用",
@@ -25,14 +28,14 @@
     }
   },
   "hero": {
-    "title": "创建您的完美 Genmoji",
-    "subtitle": "用 AI 驱动的自定义 genmoji 表达自我",
+    "title": "AI Genmoji 生成器 — 在线自定义 Genmoji 制作器",
+    "subtitle": "免费 AI genmoji/emoji 生成器，支持文字生成与以图生图",
     "cta": "生成 Genmoji"
   },
   "seo": {
-    "title": "Genmoji Online - AI表情符号生成器",
+    "title": "AI Genmoji 生成器 — 自定义 Genmoji 制作器 | Genmoji Online",
     "titleTemplate": "%s | Genmoji Online",
-    "defaultTitle": "使用Genmoji Online创建个性化表情符号，这是终极表情符号生成器。将文字和图片转换成精美的Apple风格表情符号。"
+    "defaultTitle": "使用 Genmoji Online 创建个性化 genmoji —— AI 表情/Genmoji 生成器与自定义制作器。支持文字生成与图片生成，秒做 Apple 风格表情，无水印可免费下载。"
   },
   "features": {
     "title": "功能特点",
@@ -401,7 +404,7 @@
     "models": {
       "genmoji": {
         "name": "表情",
-        "description": "经典苹果风格表情"
+        "description": "iOS 苹果风格表情 - 推荐默认选择"
       },
       "sticker": {
         "name": "贴纸",

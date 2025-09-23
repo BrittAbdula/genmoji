@@ -53,7 +53,7 @@ ListItem.displayName = "ListItem";
 
 export function Header() {
   const pathname = usePathname();
-  const t = useTranslations('common');
+  const t = useTranslations();
   const nav = useTranslations('common.navigation');
   const { isLoggedIn, checkAuth } = useAuthStore();
 
@@ -68,10 +68,10 @@ export function Header() {
       <div className="flex justify-between items-center container mx-auto p-2">
         <Link
           href="/"
-          title={t('name')}
+          title={t('common.name')}
           className="relative flex items-center space-x-2"
         >
-          <img src="/logo.png" alt={t('name')} width="40" height="40"/>
+          <img src="/logo.png" alt={t('common.name')} width="40" height="40"/>
           <motion.div
             className="absolute inset-0 -z-10 bg-gradient-to-b from-pink-100/30 via-purple-100/30 to-transparent dark:from-pink-950/30 dark:via-purple-950/30 rounded-full blur-3xl"
             initial={{ opacity: 0 }}
@@ -82,8 +82,8 @@ export function Header() {
             "text-xl sm:text-2xl font-bold tracking-tight",
             outfit.className
           )}>
-            <AuroraText>{t('name').split(' ')[0]}</AuroraText>{" "}
-            <span className="text-muted-foreground">{t('name').split(' ')[1]}</span>
+            <AuroraText>{t('common.name').split(' ')[0]}</AuroraText>{" "}
+            <span className="text-muted-foreground">{t('common.name').split(' ')[1]}</span>
           </p>
         </Link>
         
@@ -100,53 +100,71 @@ export function Header() {
               {nav('home')}
             </Link>
             
-            {/* 生成器二级菜单 */}
+            {/* Styles 二级菜单 */}
             <NavigationMenu>
               <NavigationMenuList>
                 <NavigationMenuItem>
                   <NavigationMenuTrigger className={cn(
                     "text-sm font-medium transition-colors hover:text-foreground",
-                    isActive('/genmoji-maker') || isActive('/sticker-maker') || isActive('/mascot-maker') 
+                    pathname.startsWith('/styles') 
                       ? "text-foreground" 
                       : "text-muted-foreground"
                   )}>
-                    Generators
+                    {nav('styles')}
                   </NavigationMenuTrigger>
                   <NavigationMenuContent>
                     <ul className="grid gap-3 p-4 w-[400px]">
                       <li className="row-span-3">
                         <NavigationMenuLink asChild>
                           <Link
-                            href="/"
+                            href="/styles"
                             className="flex h-full w-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-primary/10 to-primary/30 p-6 no-underline outline-none focus:shadow-md"
                           >
                             <Wand2 className="h-6 w-6 mb-2" />
                             <div className="mb-2 mt-4 text-lg font-medium">
-                              AI Generators
+                              {nav('allStyles')}
                             </div>
                             <p className="text-sm leading-tight text-muted-foreground">
-                              Create custom genmojis, stickers, and mascots with our AI-powered tools
+                              {nav('stylesDescription')}
                             </p>
                           </Link>
                         </NavigationMenuLink>
                       </li>
                       <ListItem
-                        title="Genmoji Maker"
-                        href="/genmoji-maker"
+                        title={t('generator.models.3d.name')}
+                        href="/styles/3d"
                       >
-                        Create custom genmojis for your messages and social media
+                        {t('generator.models.3d.description')}
                       </ListItem>
                       <ListItem
-                        title="Sticker Maker"
-                        href="/sticker-maker"
+                        title={t('generator.models.pixel.name')}
+                        href="/styles/pixel"
                       >
-                        Design vibrant stickers that make your messages pop
+                        {t('generator.models.pixel.description')}
                       </ListItem>
                       <ListItem
-                        title="Mascot Maker"
-                        href="/mascot-maker"
+                        title={t('generator.models.handdrawn.name')}
+                        href="/styles/handdrawn"
                       >
-                        Build distinctive mascots for your brand or project
+                        {t('generator.models.handdrawn.description')}
+                      </ListItem>
+                      <ListItem
+                        title={t('generator.models.claymation.name')}
+                        href="/styles/claymation"
+                      >
+                        {t('generator.models.claymation.description')}
+                      </ListItem>
+                      <ListItem
+                        title={t('generator.models.origami.name')}
+                        href="/styles/origami"
+                      >
+                        {t('generator.models.origami.description')}
+                      </ListItem>
+                      <ListItem
+                        title={t('generator.models.steampunk.name')}
+                        href="/styles/steampunk"
+                      >
+                        {t('generator.models.steampunk.description')}
                       </ListItem>
                     </ul>
                   </NavigationMenuContent>

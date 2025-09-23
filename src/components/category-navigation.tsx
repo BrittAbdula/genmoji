@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/navigation-menu";
 import { cn } from "@/lib/utils";
 import { Category } from "@/types/emoji";
-import { LayoutGrid, Palette, Shapes } from "lucide-react";
+import { LayoutGrid, Palette, Shapes, Sparkles } from "lucide-react";
 import { useTranslations } from 'next-intl';
 import { useEmojiGroups } from "@/store/emoji-groups-provider";
 
@@ -159,7 +159,43 @@ export function CategoryNavigation() {
           </NavigationMenuContent>
         </NavigationMenuItem>
 
-        {/* 模型菜单 */}
+        {/* 样式菜单 */}
+        <NavigationMenuItem>
+          <NavigationMenuTrigger>Styles</NavigationMenuTrigger>
+          <NavigationMenuContent>
+            <ul className="grid gap-3 p-4 md:w-[400px] lg:w-[500px] lg:grid-cols-2">
+              <li className="row-span-3">
+                <NavigationMenuLink asChild>
+                  <Link
+                    href={`/styles`}
+                    className="flex h-full w-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-primary/10 to-primary/30 p-6 no-underline outline-none focus:shadow-md"
+                  >
+                    <Sparkles className="h-6 w-6 mb-2" />
+                    <div className="mb-2 mt-4 text-lg font-medium">
+                      All Styles
+                    </div>
+                    <p className="text-sm leading-tight text-muted-foreground">
+                      Explore all genmoji styles and categories
+                    </p>
+                  </Link>
+                </NavigationMenuLink>
+              </li>
+              {topModels.map((model) => (
+                <ListItem
+                  key={model.slug}
+                  title={capitalize(model.translated_name)}
+                  href={`/${locale}/styles/${model.slug}/`}
+                >
+                  {model.count 
+                    ? nav('emojiCount', { count: model.count })
+                    : nav('exploreModel')}
+                </ListItem>
+              ))}
+            </ul>
+          </NavigationMenuContent>
+        </NavigationMenuItem>
+
+        {/* 模型菜单 - 保留原有的模型页面 */}
         <NavigationMenuItem>
           <NavigationMenuTrigger>{nav('models')}</NavigationMenuTrigger>
           <NavigationMenuContent>

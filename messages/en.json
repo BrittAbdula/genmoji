@@ -11,11 +11,14 @@
       "menu": "Navigation Menu",
       "categories": "Categories",
       "allCategories": "All Categories",
+      "styles": "Styles",
+      "allStyles": "All Styles",
       "colors": "Colors",
       "allColors": "All Colors",
       "models": "Models",
       "allModels": "All Models",
       "categoriesDescription": "Browse all genmoji categories like smileys, animals, foods and more",
+      "stylesDescription": "Explore all genmoji styles and categories from classic to creative designs",
       "colorsDescription": "Browse genmojis by color - red, blue, green, and many more color options",
       "modelsDescription": "Explore genmojis created with different AI models and styles",
       "emojiCount": "{count} genmojis available",
@@ -25,14 +28,14 @@
     }
   },
   "hero": {
-    "title": "Create Your Perfect Genmoji",
-    "subtitle": "Express yourself with AI-powered custom genmoji",
+    "title": "AI Genmoji Generator — Create Custom Genmojis Online",
+    "subtitle": "Free AI genmoji/emoji maker. Text-to-genmoji & image-to-genmoji.",
     "cta": "Generate Genmoji"
   },
   "seo": {
-    "title": "Genmoji Online -  Your Ultimate Genmoji Generator",
+    "title": "AI Genmoji Generator — Custom Genmoji Maker | Genmoji Online",
     "titleTemplate": "%s | Genmoji Online",
-    "defaultTitle": "Create personalized genmojis with Genmoji Online, the ultimate genmoji generator. Transform text and images into beautiful Apple-style genmojis. Start generating your custom genmojis today!"
+    "defaultTitle": "Create personalized genmojis with Genmoji Online — the AI genmoji generator and custom genmoji maker. Turn text prompts or your images into Apple‑style genmojis in seconds. Free to use, no watermark."
   },
   "features": {
     "title": "Features",
@@ -399,8 +402,8 @@
     "generatingMessage": "Your genmoji is being created. Feel free to browse while waiting...",
     "models": {
       "genmoji": {
-        "name": "Genmoji",
-        "description": "Classic Apple-style genmoji"
+        "name": "Genmoji (Default)",
+        "description": "iOS Apple-style genmoji - our recommended default"
       },
       "sticker": {
         "name": "Sticker",

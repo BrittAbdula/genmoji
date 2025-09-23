@@ -11,11 +11,14 @@
       "menu": "Menu de navigation",
       "categories": "Catégories",
       "allCategories": "Toutes les Catégories",
+      "styles": "Styles",
+      "allStyles": "Tous les Styles",
       "colors": "Couleurs",
       "allColors": "Toutes les Couleurs",
       "models": "Modèles",
       "allModels": "Tous les Modèles",
       "categoriesDescription": "Parcourez toutes les catégories de genmojis comme les sourires, les animaux, les aliments et plus encore",
+      "stylesDescription": "Explorez tous les styles et catégories de genmojis, des designs classiques aux créatifs",
       "colorsDescription": "Parcourez les genmojis par couleur - rouge, bleu, vert et bien d'autres options de couleurs",
       "modelsDescription": "Explorez les genmojis créés avec différents modèles et styles d'IA",
       "emojiCount": "{count} genmojis disponibles",
@@ -157,7 +160,7 @@
     "models": {
       "genmoji": {
         "name": "Emoji",
-        "description": "Style Apple classique"
+        "description": "Style iOS Apple - notre choix par défaut recommandé"
       },
       "sticker": {
         "name": "Sticker",

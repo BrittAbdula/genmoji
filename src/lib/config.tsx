@@ -22,6 +22,16 @@ export const siteConfig = {
     titleTemplate: "%s | Genmoji Online",
     defaultTitle: "Genmoji Online - Create Personalized Genmojis",
     keywords: [
+      "ai genmoji generator",
+      "custom genmoji maker",
+      "genmoji online",
+      "emoji generator",
+      "ai emoji maker",
+      "text to emoji",
+      "image to emoji",
+      "apple style emoji",
+      "create custom emoji",
+      "free emoji generator"
     ],
     openGraph: {
       type: "website",

@@ -42,7 +42,7 @@ const isGemSubStyleId = (v: unknown): v is GemSubStyleId =>
 interface UnifiedGenmojiGeneratorProps {
   initialPrompt?: string;
   onGenerated?: (emoji: Emoji) => void;
-  init_model?: 'genmoji' | 'sticker' | 'mascot' | null;
+  init_model?: 'genmoji' | 'sticker' | 'mascot' | 'gemstickers' | 'claymation' | '3d' | 'origami' | 'cross-stitch' | 'steampunk' | 'liquid-metal' | 'pixel' | 'handdrawn' | null;
 }
 
 export function UnifiedGenmojiGenerator({
@@ -206,7 +206,7 @@ export function UnifiedGenmojiGenerator({
       name: t('models.genmoji.name'),
       description: t('models.genmoji.description'),
       image: "https://store.genmojionline.com/cdn-cgi/imagedelivery/DEOVdDdfeGzASe0KdtD7FA/4ad1e218-eae7-4976-8496-b68cd6374f00/public",
-      alt: "Genmoji"
+      alt: "Genmoji - iOS Apple Style (Default)"
     },
     {
       id: 'sticker' as const,

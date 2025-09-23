@@ -6,11 +6,11 @@ import Script from 'next/script';
 import { getEmoji } from '@/lib/api';
 import { Link } from '@/i18n/routing';
 import { getTranslations } from 'next-intl/server';
-import { Suspense, useEffect } from 'react';
 import { RelatedEmojis } from '@/components/related-emojis';
 import { getLocale } from "next-intl/server";
 import { siteConfig } from "@/lib/config";
 import { ScrollToTop } from '@/components/scroll-to-top';
+import { ChevronRight, Home, Palette } from 'lucide-react';
 
 // Add Edge Runtime configuration
 export const runtime = 'edge';
@@ -92,6 +92,7 @@ export default async function EmojiPage(props: Props) {
         const locale = await getLocale();
         const emoji = await getEmoji(slug, locale);
         const t = await getTranslations('emoji');
+        const tCommon = await getTranslations('common');
 
         const jsonLd = {
             '@context': 'https://schema.org',
@@ -129,20 +130,52 @@ export default async function EmojiPage(props: Props) {
                 <Script id="json-ld" type="application/ld+json">
                     {JSON.stringify(jsonLd)}
                 </Script>
+                
+                {/* Breadcrumb navigation */}
+                <nav className="py-4 container mx-auto px-4">
+                    <ol className="flex items-center space-x-1 text-sm text-muted-foreground">
+                        <li>
+                            <Link 
+                                href="/"
+                                className="flex items-center hover:text-primary transition-colors"
+                            >
+                                <Home className="h-4 w-4 mr-1" />
+                                <span className="sr-only sm:not-sr-only">Home</span>
+                            </Link>
+                        </li>
+                        <li className="flex items-center">
+                            <ChevronRight className="h-4 w-4 mx-1" />
+                            <Link 
+                                href="/styles"
+                                className="hover:text-primary transition-colors"
+                            >
+                                {tCommon('navigation.styles')}
+                            </Link>
+                        </li>
+                        <li className="flex items-center">
+                            <ChevronRight className="h-4 w-4 mx-1" />
+                            <Link 
+                                href={`/styles/${emoji.model}`}
+                                className="hover:text-primary transition-colors"
+                            >
+                                {emoji.model}
+                            </Link>
+                        </li>
+                        <li className="flex items-center">
+                            <ChevronRight className="h-4 w-4 mx-1" />
+                            <span className="font-medium text-foreground truncate max-w-[200px]" title={emoji.prompt}>
+                                {emoji.prompt}
+                            </span>
+                        </li>
+                    </ol>
+                </nav>
+                
                 <EmojiDetailContainer emoji={emoji} />
                 <div className="container mx-auto mt-8">
                     <div className="mt-8">
                         <h2 className="text-2xl font-bold mb-8 text-left">{t('similar')}</h2>
                     </div>
-                    <Suspense fallback={
-                        <div className="grid w-full auto-rows-max grid-cols-4 place-content-stretch justify-items-stretch gap-4 sm:grid-cols-5 md:grid-cols-6 lg:grid-cols-8">
-                            {[...Array(16)].map((_, i) => (
-                                <div key={i} className="aspect-square rounded-lg bg-muted animate-pulse" style={{ width: '100%', height: '100%' }} />
-                            ))}
-                        </div>
-                    }>
-                        <RelatedEmojis slug={slug} />
-                    </Suspense>
+                    <RelatedEmojis slug={slug} />
                 </div>
             </div>
         );

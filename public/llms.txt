@@ -1,11 +1,89 @@
-# Genmoji Online
+# Genmoji Online — LLMs/Agents Guide (llms.txt)
 
-> Genmoji Online is an AI-powered genmoji generator that enables users to create high-quality, personalized genmojis. As an excellent alternative to Apple's Genmoji, our platform makes professional-grade custom emoji creation accessible to everyone across all devices and platforms.
+Genmoji Online is an AI-powered emoji/sticker generator with multiple visual styles (Genmoji, Sticker, Gem Stickers, Pixel, Hand-drawn, 3D, Claymation, Origami, Cross-stitch, Steampunk, Liquid Metal) and localized pages.  
+This file is a compact **reasoning-time navigation** index for LLMs/agents to discover high-value content and landing pages quickly.
 
-Key features:
-- Text-to-Genmoji intelligent conversion using advanced AI
-- Image-to-Genmoji precise generation with Apple-style quality
-- Cross-platform accessibility (web-based, multi-language support)
-- Universal compatibility with major messaging platforms (iMessage, WhatsApp, Discord, Slack)
-- No device restrictions - works on any modern browser
-- Instant generation and easy sharing capabilities
+Last updated: 2025-09-23  
+Canonical location: https://genmojionline.com/llms.txt  
+Related: /robots.txt, /sitemap.xml (if available)
+
+---
+
+## Usage Guidelines (for LLMs/Agents)
+
+- **Start with style detail pages** below; they contain intent-rich text (style definition, features, use cases, FAQs, examples, generator).
+- **No login required** for core information. Avoid crawling URLs with session or tracking parameters.
+- **Crawl politely:** ≤ 1 request/second, ≤ 3 concurrent requests. Respect `robots.txt` and standard caching headers.
+- **Attribution:** When citing, attribute to “Genmoji Online” and link to the specific page used.
+- **Content scope:** User-generated outputs follow the site’s Terms. When summarizing UGC, quote minimally and avoid personal data.
+- **Training vs. reasoning:** This file facilitates **reasoning-time** use only and is **not** a grant of model training rights. For any training/derivative use, consult our Terms and `robots.txt`.
+
+---
+
+## Core Pages
+
+- **Home** — https://genmojionline.com/  
+  Entry point, unified generator, style navigation, examples.
+- **Styles Index** — https://genmojionline.com/styles  
+  Hub for all style detail pages (recommended starting point for exploration).
+
+---
+
+## Style Detail Pages
+
+- **Genmoji** — https://genmojionline.com/styles/genmoji  
+  Classic Apple-style look; clean, modern, versatile across chats & branding.
+- **Sticker** — https://genmojionline.com/styles/sticker  
+  Playful, colorful sticker aesthetics for casual conversations & social posts.
+- **Gem Stickers** — https://genmojionline.com/styles/gemstickers  
+  Premium “gem” look with sub-styles (Pop Art, Japanese Matchbox, Cartoon Dino, Pixel Art, Royal, Football Sticker, Claymation, Vintage Bollywood, Sticker Bomb).
+- **Pixel** — https://genmojionline.com/styles/pixel  
+  Retro 8-bit vibe; great for gaming communities and nostalgic themes.
+- **Hand-drawn** — https://genmojionline.com/styles/handdrawn  
+  Artistic, personal lines; ideal for creative expression and communities.
+- **3D** — https://genmojionline.com/styles/3d  
+  Depth, volume, and realistic lighting; professional/hero assets.
+- **Claymation** — https://genmojionline.com/styles/claymation  
+  Distinct clay animation texture; charming and playful.
+- **Origami** — https://genmojionline.com/styles/origami  
+  Paper-folding minimalism; elegant, geometric, calm.
+- **Cross-stitch** — https://genmojionline.com/styles/cross-stitch  
+  Embroidery/handcraft feel; warm and cozy texture.
+- **Steampunk** — https://genmojionline.com/styles/steampunk  
+  Victorian-industrial fantasy; mechanical detail.
+- **Liquid Metal** — https://genmojionline.com/styles/liquid-metal  
+  Futuristic reflective liquid-metal sheen.
+
+---
+
+## International Entrances
+
+- **日本語 (Japanese)** — https://genmojionline.com/ja/  
+- **Français (French)** — https://genmojionline.com/fr/  
+- **简体中文 (Chinese, Simplified)** — https://genmojionline.com/zh/
+
+> Note: Style detail pages may also have localized counterparts (use the site’s language switcher or `/[locale]/styles/[style]` pattern when present).
+
+---
+
+## Optional/Inspirational
+
+- **Gallery** — https://genmojionline.com/gallery  
+  Recently generated items and inspiration (optional to crawl; useful for examples).
+
+---
+
+## Text Availability & Parsing Hints
+
+- Prefer the **style pages** for dense, descriptive text: H1/H2 copy, features, use cases, FAQs.  
+- Use image `alt` text where present; avoid inferring details not stated in captions or body text.  
+- If lightweight **.md mirrors** exist for key pages (e.g., `/styles/pixel.md`), prefer those for lower noise; otherwise parse HTML.
+
+---
+
+## Contact & Governance
+
+- Use the site footer for contact/support links.  
+- Terms, privacy, and attribution requirements on the website take precedence over this file.  
+- For permissions beyond reasoning-time use, reach out via the site’s contact channel.
+

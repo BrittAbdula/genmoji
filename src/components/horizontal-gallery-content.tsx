@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, Suspense } from "react";
+import { useState, useEffect, Suspense, useRef } from "react";
 import { getEmojis } from '@/lib/api'
 import EmojiContainer from "@/components/emoji-container";
 import { Emoji } from "@/types/emoji";
@@ -12,15 +12,16 @@ import { useRouter } from "next/navigation";
 import { outfit } from "@/lib/fonts";
 import Image from "next/image";
 
-export function HorizontalGalleryContent({model}: {model?: string}) {
+export function HorizontalGalleryContent({model, initialEmojis}: {model?: string, initialEmojis?: Emoji[]}) {
   const t = useTranslations();
   const router = useRouter();
-  const [emojis, setEmojis] = useState<Emoji[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [emojis, setEmojis] = useState<Emoji[]>(initialEmojis ?? []);
+  const [loading, setLoading] = useState<boolean>(!(initialEmojis && initialEmojis.length > 0));
   const [error, setError] = useState<string | null>(null);
   const limit = 40; // Reduce initial grid for better performance
   const locale = useLocale();
   const [selectedModel, setSelectedModel] = useState<string | null>(null);
+  const didMountRef = useRef(false);
 
   // Model chips (only show on homepage when no explicit model is passed)
   const modelItems = [
@@ -61,6 +62,13 @@ export function HorizontalGalleryContent({model}: {model?: string}) {
 
   // 获取数据：初始 + 每次风格/prop切换
   useEffect(() => {
+    if (!didMountRef.current) {
+      didMountRef.current = true;
+      // 如果有首屏SSR数据且未固定模型，则跳过首次拉取
+      if (initialEmojis && initialEmojis.length > 0 && !model) {
+        return;
+      }
+    }
     setLoading(true);
     fetchEmojis();
     // eslint-disable-next-line react-hooks/exhaustive-deps

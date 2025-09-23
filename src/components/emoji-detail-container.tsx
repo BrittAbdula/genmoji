@@ -956,7 +956,7 @@ export function EmojiDetailContainer({ emoji: initialEmoji }: EmojiDetailContain
               <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
                 <span className="uppercase whitespace-nowrap">STYLE</span>
                 <Link 
-                  href={`/model/${encodeURIComponent(currentEmoji.model)}`}
+                  href={`/styles/${encodeURIComponent(currentEmoji.model)}`}
                   className="text-primary hover:text-primary hover:underline transition-colors"
                 >
                   {currentEmoji.model}
@@ -969,7 +969,11 @@ export function EmojiDetailContainer({ emoji: initialEmoji }: EmojiDetailContain
               <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
                 <span className="uppercase whitespace-nowrap">DATE</span>
                 <span className="text-foreground whitespace-nowrap">
-                  {currentEmoji.created_at ? new Date(currentEmoji.created_at).toLocaleDateString() : '-'}
+                  {currentEmoji.created_at 
+                    ? (currentEmoji.created_at.includes('T')
+                        ? currentEmoji.created_at.split('T')[0]
+                        : currentEmoji.created_at.split(' ')[0] || currentEmoji.created_at)
+                    : '-'}
                 </span>
               </div>
             </div>

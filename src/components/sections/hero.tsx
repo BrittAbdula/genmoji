@@ -3,10 +3,15 @@
 import { outfit } from '@/lib/fonts';
 import { cn } from '@/lib/utils';
 import { useTranslations } from 'next-intl';
-import { UnifiedGenmojiGenerator } from "@/components/unified-genmoji-generator";
+import dynamic from 'next/dynamic';
 import { Button } from "@/components/ui/button";
 import { Sparkles } from "lucide-react";
 import { memo } from "react";
+
+const UnifiedGenmojiGenerator = dynamic(
+  () => import("@/components/unified-genmoji-generator").then(mod => ({ default: mod.UnifiedGenmojiGenerator })),
+  { ssr: false, loading: () => null }
+);
 
 // Memoized Title component
 const Title = memo(({ title }: { title: string }) => (

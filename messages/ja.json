@@ -11,11 +11,14 @@
       "menu": "ナビゲーションメニュー",
       "categories": "カテゴリー",
       "allCategories": "すべてのカテゴリー",
+      "styles": "スタイル",
+      "allStyles": "すべてのスタイル",
       "colors": "カラー",
       "allColors": "すべてのカラー",
       "models": "モデル",
       "allModels": "すべてのモデル",
       "categoriesDescription": "スマイリー、動物、食べ物などすべてのgenmojiカテゴリーを閲覧",
+      "stylesDescription": "クラシックからクリエイティブなデザインまで、すべてのgenmojiスタイルとカテゴリーを探索",
       "colorsDescription": "色別にgenmojiを閲覧 - 赤、青、緑など多くのカラーオプション",
       "modelsDescription": "さまざまなAIモデルとスタイルで作成されたgenmojiを探索",
       "emojiCount": "{count}個のgenmojiが利用可能",
@@ -150,7 +153,7 @@
     "models": {
       "genmoji": {
         "name": "絵文字",
-        "description": "クラシックなAppleスタイルの絵文字"
+        "description": "iOS Appleスタイル絵文字 - 推奨デフォルト選択"
       },
       "sticker": {
         "name": "ステッカー",

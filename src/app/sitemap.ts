@@ -7,12 +7,10 @@ import { getEmojiGroups, getEmojis } from "@/lib/api";
 const routes = [
   '',
   'gallery',
-  'genmoji-maker',
-  'sticker-maker',
-  'mascot-maker',
   'model',
   'color',
   'category',
+  'styles',
 ];
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
@@ -61,6 +59,21 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     const colors = groups.colors;
     const categories = groups.categories;
 
+    // Styles detail pages based on available styles
+    const styleIds = [
+      'genmoji',
+      'sticker',
+      'gemstickers',
+      'pixel',
+      'handdrawn',
+      '3d',
+      'claymation',
+      'origami',
+      'cross-stitch',
+      'steampunk',
+      'liquid-metal',
+    ] as const;
+
     let dynamicRoutes = models.map(model => ({
       url: `${baseUrl}${model.name ? `/model/${model.name}` : ''}/`,
       lastModified: now,
@@ -83,6 +96,16 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         lastModified: now,
         changeFrequency: 'monthly' as const,
         priority: category.name === '' ? 1.0 : 0.8,
+      }))
+    );
+
+    // Add /styles/[style] pages
+    dynamicRoutes = dynamicRoutes.concat(
+      styleIds.map(id => ({
+        url: `${baseUrl}/styles/${id}/`,
+        lastModified: now,
+        changeFrequency: 'monthly' as const,
+        priority: 0.7,
       }))
     );
 

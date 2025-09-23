@@ -58,6 +58,9 @@ export interface EmojiGridProps {
   onLoadMore?: () => void;
   isLoading?: boolean;
   hasMore?: boolean;
+  model?: string;
+  maxScrollRounds?: number;
+  itemsPerRound?: number;
 }
 
 export interface CategoryHeaderProps {

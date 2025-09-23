@@ -48,7 +48,7 @@ interface SubscriptionStatus {
 
 export function MobileDrawer() {
   const pathname = usePathname();
-  const t = useTranslations('common');
+  const t = useTranslations();
   const nav = useTranslations('common.navigation');
   const authT = useTranslations('auth');
   const { isLoggedIn, user, logout, checkAuth, token } = useAuthStore();
@@ -56,7 +56,7 @@ export function MobileDrawer() {
   const [open, setOpen] = useState(false);
 
   // 添加子菜单状态
-  const [generatorsOpen, setGeneratorsOpen] = useState(false);
+  const [stylesOpen, setStylesOpen] = useState(false);
 
   // 订阅状态
   const [subscriptionStatus, setSubscriptionStatus] = useState<SubscriptionStatus | null>(null);
@@ -133,12 +133,12 @@ export function MobileDrawer() {
             <Link
               href="/"
               onClick={handleLinkClick}
-              title={t('name')}
+              title={t('common.name')}
               className="relative flex items-center space-x-2"
             >
-              <img src="/logo.png" alt={t('name')} width="40" height="40"/>
-              <AuroraText>{t('name').split(' ')[0]}</AuroraText>{" "}
-                <span className="text-muted-foreground">{t('name').split(' ')[1]}</span>
+              <img src="/logo.png" alt={t('common.name')} width="40" height="40"/>
+              <AuroraText>{t('common.name').split(' ')[0]}</AuroraText>{" "}
+                <span className="text-muted-foreground">{t('common.name').split(' ')[1]}</span>
             </Link>
             <div className="flex items-center gap-2">
               <LanguageSwitcher />
@@ -159,49 +159,89 @@ export function MobileDrawer() {
             {nav('home')}
           </Link>
           
-          {/* 生成器子菜单 */}
+          {/* Styles 子菜单 */}
           <div className="border-t pt-2 mt-2">
             <button 
-              onClick={() => setGeneratorsOpen(!generatorsOpen)}
+              onClick={() => setStylesOpen(!stylesOpen)}
               className="flex items-center justify-between w-full text-sm font-medium transition-colors hover:text-foreground px-2 py-1.5 rounded-sm text-muted-foreground"
             >
               <div className="flex items-center gap-2">
                 <Wand2 className="w-4 h-4" />
-                <span>Generators</span>
+                <span>{nav('styles')}</span>
               </div>
-              <ChevronRight className={`w-4 h-4 transition-transform ${generatorsOpen ? 'rotate-90' : ''}`} />
+              <ChevronRight className={`w-4 h-4 transition-transform ${stylesOpen ? 'rotate-90' : ''}`} />
             </button>
-            {generatorsOpen && (
+            {stylesOpen && (
               <div className="ml-6 mt-2 pl-2 border-l space-y-2">
                 <Link 
-                  href="/genmoji-maker"
+                  href="/styles"
                   onClick={handleLinkClick}
                   className={cn(
-                    "block text-sm hover:text-foreground py-1",
-                    isActive('/genmoji-maker') ? "text-foreground" : "text-muted-foreground"
+                    "block text-sm hover:text-foreground py-1 font-medium",
+                    pathname.startsWith('/styles') ? "text-foreground" : "text-muted-foreground"
                   )}
                 >
-                  Genmoji Maker
+                  {nav('allStyles')}
                 </Link>
                 <Link 
-                  href="/sticker-maker"
+                  href="/styles/3d"
                   onClick={handleLinkClick}
                   className={cn(
                     "block text-sm hover:text-foreground py-1",
-                    isActive('/sticker-maker') ? "text-foreground" : "text-muted-foreground"
+                    isActive('/styles/3d') ? "text-foreground" : "text-muted-foreground"
                   )}
                 >
-                  Sticker Maker
+                  {t('generator.models.3d.name')}
                 </Link>
                 <Link 
-                  href="/mascot-maker"
+                  href="/styles/pixel"
                   onClick={handleLinkClick}
                   className={cn(
                     "block text-sm hover:text-foreground py-1",
-                    isActive('/mascot-maker') ? "text-foreground" : "text-muted-foreground"
+                    isActive('/styles/pixel') ? "text-foreground" : "text-muted-foreground"
                   )}
                 >
-                  Mascot Maker
+                  {t('generator.models.pixel.name')}
+                </Link>
+                <Link 
+                  href="/styles/handdrawn"
+                  onClick={handleLinkClick}
+                  className={cn(
+                    "block text-sm hover:text-foreground py-1",
+                    isActive('/styles/handdrawn') ? "text-foreground" : "text-muted-foreground"
+                  )}
+                >
+                  {t('generator.models.handdrawn.name')}
+                </Link>
+                <Link 
+                  href="/styles/claymation"
+                  onClick={handleLinkClick}
+                  className={cn(
+                    "block text-sm hover:text-foreground py-1",
+                    isActive('/styles/claymation') ? "text-foreground" : "text-muted-foreground"
+                  )}
+                >
+                  {t('generator.models.claymation.name')}
+                </Link>
+                <Link 
+                  href="/styles/origami"
+                  onClick={handleLinkClick}
+                  className={cn(
+                    "block text-sm hover:text-foreground py-1",
+                    isActive('/styles/origami') ? "text-foreground" : "text-muted-foreground"
+                  )}
+                >
+                  {t('generator.models.origami.name')}
+                </Link>
+                <Link 
+                  href="/styles/steampunk"
+                  onClick={handleLinkClick}
+                  className={cn(
+                    "block text-sm hover:text-foreground py-1",
+                    isActive('/styles/steampunk') ? "text-foreground" : "text-muted-foreground"
+                  )}
+                >
+                  {t('generator.models.steampunk.name')}
                 </Link>
               </div>
             )}
@@ -320,7 +360,7 @@ export function MobileDrawer() {
               "text-white rounded-full group w-full"
             )}
           >
-            {t('cta')}
+            {t('common.cta')}
           </Link>
 
           {/* 订阅弹窗 */}
