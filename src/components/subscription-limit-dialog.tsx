@@ -150,7 +150,6 @@ export function SubscriptionLimitDialog({
   // 优化的移动端内容
   const mobileContent = (
     <div className="space-y-3">
-
       {/* 主标题 */}
       <div className="text-center">
         <h2 className="text-xl font-bold mb-1 text-foreground">
@@ -158,8 +157,6 @@ export function SubscriptionLimitDialog({
         </h2>
         <p className="text-xs text-muted-foreground">{t('limitDialog.upgradeHeroSubtitle')}</p>
       </div>
-
-      {/* Features consolidated into comparison below */}
 
       {/* 定价选项卡片 */}
       <div className="space-y-3">
@@ -252,7 +249,7 @@ export function SubscriptionLimitDialog({
       </div>
 
       {/* 操作按钮 */}
-      <div className="space-y-3 pt-2 sticky bottom-0 left-0 right-0 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/70 border-t z-20 px-1 pb-[calc(env(safe-area-inset-bottom)+12px)]">
+      <div className="space-y-2 pt-1">
         <Button
           onClick={handleSubscribe}
           disabled={creatingSubscription}
@@ -433,7 +430,7 @@ export function SubscriptionLimitDialog({
           <DrawerHeader className="px-4 pb-0 sticky top-0 bg-background z-10">
             <DrawerTitle className="sr-only">{t('title')}</DrawerTitle>
           </DrawerHeader>
-          <div className="px-4 py-2 overflow-y-auto flex-1">
+          <div className="px-4 py-2 pb-4 overflow-y-auto flex-1">
             {mobileContent}
           </div>
         </DrawerContent>

@@ -963,42 +963,44 @@ export function UnifiedGenmojiGenerator({
           {/* Bottom toolbar inside textarea */}
           <div className="absolute bottom-3 left-3 right-2 flex items-center justify-between">
             <div className="flex items-center gap-3">
-              {/* Members-only private option */}
-              <button
-                type="button"
-                aria-pressed={isPrivate}
-                onClick={() => {
-                  if (!isMember) {
-                    // Open subscription dialog like quota reached
-                    const in24h = new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString();
-                    setLimitInfo({ currentCount: 0, limit: 0, resetTime: in24h, type: 'monthly' });
-                    setShowSubscriptionDialog(true);
-                    return;
-                  }
-                  setIsPrivate((v) => !v);
-                }}
-                className={cn(
-                  "group inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs",
-                  isPrivate ? "border-primary/50 bg-primary/10" : "border-border bg-muted/40 hover:bg-muted/70"
-                )}
-                title={isMember ? t('privateOption.title') : t('privateOption.membersOnly')}
-              >
-                <Crown className="w-3.5 h-3.5 text-yellow-500" />
-                <span>{t('privateOption.title')}</span>
-                <span
+              {/* Private option - only visible to logged-in users */}
+              {isLoggedIn && (
+                <button
+                  type="button"
+                  aria-pressed={isPrivate}
+                  onClick={() => {
+                    if (!isMember) {
+                      // Open subscription dialog like quota reached
+                      const in24h = new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString();
+                      setLimitInfo({ currentCount: 0, limit: 0, resetTime: in24h, type: 'monthly' });
+                      setShowSubscriptionDialog(true);
+                      return;
+                    }
+                    setIsPrivate((v) => !v);
+                  }}
                   className={cn(
-                    "ml-2 inline-flex h-4 w-7 rounded-full transition-colors",
-                    isPrivate ? "bg-primary" : "bg-muted-foreground/30"
+                    "group inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs",
+                    isPrivate ? "border-primary/50 bg-primary/10" : "border-border bg-muted/40 hover:bg-muted/70"
                   )}
+                  title={isMember ? t('privateOption.title') : t('privateOption.membersOnly')}
                 >
+                  <Crown className="w-3.5 h-3.5 text-yellow-500" />
+                  <span>{t('privateOption.title')}</span>
                   <span
                     className={cn(
-                      "h-3.5 w-3.5 bg-background rounded-full mt-0.5 transition-transform",
-                      isPrivate ? "translate-x-3" : "translate-x-0.5"
+                      "ml-2 inline-flex h-4 w-7 rounded-full transition-colors",
+                      isPrivate ? "bg-primary" : "bg-muted-foreground/30"
                     )}
-                  />
-                </span>
-              </button>
+                  >
+                    <span
+                      className={cn(
+                        "h-3.5 w-3.5 bg-background rounded-full mt-0.5 transition-transform",
+                        isPrivate ? "translate-x-3" : "translate-x-0.5"
+                      )}
+                    />
+                  </span>
+                </button>
+              )}
               {/* Left side of toolbar reserved for future quick actions (kept minimal for cross-platform) */}
             </div>
             

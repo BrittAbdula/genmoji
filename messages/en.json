@@ -371,7 +371,7 @@
     "generateButton": "Generate genmoji",
     "generatingButton": "Generating...",
     "uploadImage": "Upload Image (Optional)",
-    "uploadReference": "Upload reference image",
+    "uploadReference": "Upload Photo",
     "changeImage": "Change Image",
     "selectModel": "Select Style",
     "tabs": {
@@ -449,7 +449,7 @@
     },
     "gemstyles": {
       "ui": {
-        "selectStyle": "Select style",
+        "selectStyle": "Style",
         "emotion": "Emotion"
       },
       "styles": {

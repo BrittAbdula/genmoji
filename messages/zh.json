@@ -372,7 +372,7 @@
     "generateButton": "生成 genmoji",
     "generatingButton": "生成中...",
     "uploadImage": "上传图片（可选）",
-    "uploadReference": "上传参考图片",
+    "uploadReference": "上传照片",
     "changeImage": "更换图片",
     "selectModel": "选择风格",
     "tabs": {
@@ -450,7 +450,7 @@
     },
     "gemstyles": {
       "ui": {
-        "selectStyle": "选择风格",
+        "selectStyle": "风格",
         "emotion": "情绪"
       },
       "styles": {

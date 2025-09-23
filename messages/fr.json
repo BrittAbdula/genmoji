@@ -128,7 +128,7 @@
     "generateButton": "Générer un genmoji",
     "generatingButton": "Génération en cours...",
     "uploadImage": "Télécharger une image (Optionnel)",
-    "uploadReference": "Télécharger une image de référence",
+    "uploadReference": "Télécharger une photo",
     "changeImage": "Changer l'image",
     "selectModel": "Sélectionner le style",
     "tabs": {
@@ -206,7 +206,7 @@
     },
     "gemstyles": {
       "ui": {
-        "selectStyle": "Sélectionner un style",
+        "selectStyle": "Style",
         "emotion": "Émotion"
       },
       "styles": {

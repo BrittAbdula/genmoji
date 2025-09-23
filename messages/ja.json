@@ -121,7 +121,7 @@
     "generateButton": "Genmoji を生成",
     "generatingButton": "生成中...",
     "uploadImage": "画像をアップロード（任意）",
-    "uploadReference": "参考画像をアップロード",
+    "uploadReference": "写真をアップロード",
     "changeImage": "画像を変更",
     "selectModel": "スタイルを選択",
     "tabs": {
@@ -199,7 +199,7 @@
     },
     "gemstyles": {
       "ui": {
-        "selectStyle": "スタイルを選択",
+        "selectStyle": "スタイル",
         "emotion": "感情"
       },
       "styles": {
