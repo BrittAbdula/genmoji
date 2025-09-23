@@ -402,8 +402,8 @@
     "generatingMessage": "Your genmoji is being created. Feel free to browse while waiting...",
     "models": {
       "genmoji": {
-        "name": "Genmoji (Default)",
-        "description": "iOS Apple-style genmoji - our recommended default"
+        "name": "Genmoji",
+        "description": "Classic Apple-style genmoji"
       },
       "sticker": {
         "name": "Sticker",

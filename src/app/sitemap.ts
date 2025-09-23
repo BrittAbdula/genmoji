@@ -32,16 +32,16 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     const maxEmojis = 6282;
     let offset = 0;
     
-    while (emojis.length < maxEmojis) {
-      const batch = await getEmojis(offset, batchSize, 'en', { isIndexable: true });
-      if (batch.length === 0) break; // No more emojis to fetch
+    // while (emojis.length < maxEmojis) {
+    //   const batch = await getEmojis(offset, batchSize, 'en', { isIndexable: true });
+    //   if (batch.length === 0) break; // No more emojis to fetch
       
-      emojis.push(...batch);
-      offset += batchSize;
+    //   emojis.push(...batch);
+    //   offset += batchSize;
       
-      // If we got less than batchSize, we've reached the end
-      if (batch.length < batchSize) break;
-    }
+    //   // If we got less than batchSize, we've reached the end
+    //   if (batch.length < batchSize) break;
+    // }
     
     // Trim to exactly maxEmojis if we got more
     emojis.splice(maxEmojis);

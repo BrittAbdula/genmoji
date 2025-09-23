@@ -206,7 +206,7 @@ export function UnifiedGenmojiGenerator({
       name: t('models.genmoji.name'),
       description: t('models.genmoji.description'),
       image: "https://store.genmojionline.com/cdn-cgi/imagedelivery/DEOVdDdfeGzASe0KdtD7FA/4ad1e218-eae7-4976-8496-b68cd6374f00/public",
-      alt: "Genmoji - iOS Apple Style (Default)"
+      alt: "Genmoji - iOS Apple Style"
     },
     {
       id: 'sticker' as const,
