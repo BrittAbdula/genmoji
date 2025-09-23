@@ -620,8 +620,24 @@ export function UnifiedGenmojiGenerator({
   };
 
   // 初始进入时跑马灯快速预览一遍，最后停留在上次选择
+  // 如果有 init_model 参数，跳过动画直接显示指定模型
   useEffect(() => {
     if (hasPlayedIntroAnimation.current) return;
+
+    // 如果有 init_model 参数，直接显示指定模型，跳过跑马灯动画
+    if (init_model) {
+      hasPlayedIntroAnimation.current = true;
+      // 确保模型选择器滚动到指定模型
+      setTimeout(() => {
+        const el = itemRefs.current[init_model];
+        if (el) {
+          try {
+            el.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+          } catch {}
+        }
+      }, 100);
+      return;
+    }
 
     let raf = 0 as number | undefined;
 
@@ -629,7 +645,7 @@ export function UnifiedGenmojiGenerator({
       // 读取上次选择
       let saved: string | null = null;
       try { saved = localStorage.getItem('genmoji:selectedModel'); } catch {}
-      const endModel = saved || init_model || model;
+      const endModel = saved || model;
 
       const ids = models.map((m) => m.id as string);
       const container = modelSelectorRef.current;
@@ -681,7 +697,7 @@ export function UnifiedGenmojiGenerator({
       clearTimeout(timer);
       if (raf) cancelAnimationFrame(raf);
     };
-  }, []);
+  }, [init_model]);
 
   // Removed old dialog/drawer model selectors in favor of inline selector bar
 

@@ -15,6 +15,7 @@ import { LanguagePromptDialog } from '@/components/language-prompt-dialog';
 import { GlobalGenerationIndicator } from "@/components/global-generation-indicator";
 import { EmojiGroupsProvider } from "@/store/emoji-groups-provider";
 import { AuthHydration } from "@/components/auth-hydration";
+import { BackToTop } from "@/components/back-to-top";
 
 export const viewport: Viewport = {
   colorScheme: "dark light",
@@ -80,6 +81,7 @@ export default async function LocaleLayout(props: Props) {
                 <LanguagePromptDialog />
                 <TailwindIndicator />
                 <GlobalGenerationIndicator />
+                <BackToTop />
               </EmojiGroupsProvider>
             </AuthHydration>
             <GoogleAnalytics gaId="G-6T495VYMD7" />
