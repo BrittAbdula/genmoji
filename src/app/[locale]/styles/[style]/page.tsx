@@ -20,7 +20,7 @@ const styleCategories = [
     description: 'iOS Apple-style with clean, modern design - our recommended default',
     image: 'https://store.genmojionline.com/cdn-cgi/imagedelivery/DEOVdDdfeGzASe0KdtD7FA/4ad1e218-eae7-4976-8496-b68cd6374f00/public',
     subStyles: [],
-    seoTitle: 'iOS Apple Genmoji Style - Default High-Quality Custom Genmojis',
+    seoTitle: 'iOS Apple Genmoji Generator - Default High-Quality Custom Genmojis',
     seoDescription: 'Create iOS Apple-style genmojis with our default AI generator. Clean, modern design with rounded corners and soft gradients, perfect for all messaging platforms.',
     features: [
       'iOS Apple-style design aesthetic',
@@ -37,7 +37,7 @@ const styleCategories = [
     description: 'Fun and colorful sticker-style',
     image: 'https://store.genmojionline.com/cdn-cgi/imagedelivery/DEOVdDdfeGzASe0KdtD7FA/8ef04dd2-6612-496a-d2ea-bada5ccf9400/public',
     subStyles: [],
-    seoTitle: 'Sticker Style Genmojis - Fun & Colorful Custom Emojis',
+    seoTitle: 'Sticker Generator - Fun & Colorful Custom Stickers',
     seoDescription: 'Create fun and colorful sticker-style genmojis. Perfect for casual conversations and social media posts.',
     features: [
       'Vibrant and colorful design',
@@ -62,7 +62,7 @@ const styleCategories = [
       { id: 'vintage-bollywood', name: 'Vintage Bollywood', image: 'https://gstatic.com/synthidtextdemo/images/gemstickers/dot/bolly.png' },
       { id: 'sticker-bomb', name: 'Sticker Bomb', image: 'https://gstatic.com/synthidtextdemo/images/gemstickers/dot/bomb.png' },
     ],
-    seoTitle: 'Gem Stickers Style - Premium Multi-Style Custom Genmojis',
+    seoTitle: 'Gem Stickers Generator - Premium Multi-Style Custom Stickers',
     seoDescription: 'Create premium gem-style genmojis with 9 unique sub-styles including pop art, pixel art, claymation, and more.',
     features: [
       '9 unique sub-styles available',
@@ -77,7 +77,7 @@ const styleCategories = [
     description: 'Retro pixel art style',
     image: '/emojis/pixel.png',
     subStyles: [],
-    seoTitle: 'Pixel Art Style Genmojis - Retro 8-bit Custom Emojis',
+    seoTitle: 'Pixel Art Genmoji Generator - Retro 8-bit Custom Emojis',
     seoDescription: 'Create retro pixel art style genmojis with classic 8-bit aesthetics. Perfect for gaming and nostalgic vibes.',
     features: [
       'Classic 8-bit pixel art style',
@@ -92,7 +92,7 @@ const styleCategories = [
     description: 'Artistic hand-drawn style',
     image: '/emojis/handdrawn.png',
     subStyles: [],
-    seoTitle: 'Hand-drawn Style Genmojis - Artistic Custom Emojis',
+    seoTitle: 'Hand-drawn Genmoji Generator - Artistic Custom Emojis',
     seoDescription: 'Create artistic hand-drawn style genmojis with unique, personal touch. Perfect for creative and artistic expressions.',
     features: [
       'Artistic hand-drawn aesthetic',
@@ -107,7 +107,7 @@ const styleCategories = [
     description: 'Three-dimensional with depth and volume',
     image: '/emojis/3d.png',
     subStyles: [],
-    seoTitle: '3D Style Genmojis - Three-dimensional Custom Emojis',
+    seoTitle: '3D Genmoji Generator - Three-dimensional Custom Emojis',
     seoDescription: 'Create stunning 3D genmojis with depth and volume. Modern, realistic design perfect for professional presentations.',
     features: [
       'Three-dimensional depth and volume',
@@ -122,7 +122,7 @@ const styleCategories = [
     description: 'Clay animation style',
     image: '/emojis/Claymation.png',
     subStyles: [],
-    seoTitle: 'Claymation Style Genmojis - Clay Animation Custom Emojis',
+    seoTitle: 'Claymation Genmoji Generator - Clay Animation Custom Emojis',
     seoDescription: 'Create charming claymation style genmojis with clay animation aesthetics. Perfect for creative and playful expressions.',
     features: [
       'Clay animation aesthetic',
@@ -137,7 +137,7 @@ const styleCategories = [
     description: 'Paper folding art style',
     image: '/emojis/Origami.png',
     subStyles: [],
-    seoTitle: 'Origami Style Genmojis - Paper Folding Art Custom Emojis',
+    seoTitle: 'Origami Genmoji Generator - Paper Folding Art Custom Emojis',
     seoDescription: 'Create beautiful origami style genmojis with paper folding art aesthetics. Elegant and minimalist design.',
     features: [
       'Paper folding art aesthetic',
@@ -152,7 +152,7 @@ const styleCategories = [
     description: 'Embroidery cross-stitch style',
     image: '/emojis/Cross-stitch-Pixel.png',
     subStyles: [],
-    seoTitle: 'Cross-stitch Style Genmojis - Embroidery Custom Emojis',
+    seoTitle: 'Cross-stitch Genmoji Generator - Embroidery Custom Emojis',
     seoDescription: 'Create charming cross-stitch style genmojis with embroidery aesthetics. Handcrafted and cozy design.',
     features: [
       'Embroidery cross-stitch aesthetic',
@@ -167,7 +167,7 @@ const styleCategories = [
     description: 'Victorian steampunk style',
     image: '/emojis/Steampunk.png',
     subStyles: [],
-    seoTitle: 'Steampunk Style Genmojis - Victorian Industrial Custom Emojis',
+    seoTitle: 'Steampunk Genmoji Generator - Victorian Industrial Custom Emojis',
     seoDescription: 'Create unique steampunk style genmojis with Victorian industrial aesthetics. Perfect for fantasy and sci-fi themes.',
     features: [
       'Victorian industrial aesthetic',
@@ -182,7 +182,7 @@ const styleCategories = [
     description: 'Metallic liquid style',
     image: '/emojis/Liquid-Metal.png',
     subStyles: [],
-    seoTitle: 'Liquid Metal Style Genmojis - Metallic Custom Emojis',
+    seoTitle: 'Liquid Metal Genmoji Generator - Metallic Custom Emojis',
     seoDescription: 'Create stunning liquid metal style genmojis with metallic liquid aesthetics. Futuristic and sleek design.',
     features: [
       'Metallic liquid aesthetic',
