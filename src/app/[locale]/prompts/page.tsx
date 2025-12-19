@@ -1,7 +1,6 @@
 import { Metadata } from 'next';
 import { siteConfig } from "@/lib/config";
-import { getLocale, setRequestLocale } from 'next-intl/server';
-import { UnifiedGenmojiGenerator } from '@/components/unified-genmoji-generator';
+import { setRequestLocale } from 'next-intl/server';
 import { CTA } from '@/components/sections/cta';
 import { TrendingPrompts } from '@/components/prompts/trending-prompts';
 import { CategoryPromptTabs } from '@/components/prompts/category-prompt-tabs';
@@ -17,13 +16,13 @@ type Props = {
 export async function generateMetadata(props: Props): Promise<Metadata> {
   const { locale } = await props.params;
   
-  const title = `Genmoji Prompts Generator — 500+ AI Emoji Prompt Ideas | ${siteConfig.name}`;
-  const description = `Discover trending genmoji prompts and creative ideas. Browse by category, style, or keyword. Free AI emoji generator with 500+ prompt ideas.`;
+  const title = `Popular Genmoji Prompts — Discover Trending AI Emoji Ideas | ${siteConfig.name}`;
+  const description = `Explore popular genmoji prompts and trending emoji ideas. Click any prompt to see the generated emoji. Browse by category, style, or keyword.`;
   
   return {
     title,
     description,
-    keywords: ['genmoji prompts', 'emoji ideas', 'ai emoji generator', 'prompt generator', 'genmoji ideas', 'emoji prompt ideas'],
+    keywords: ['genmoji prompts', 'emoji ideas', 'popular emoji', 'trending emoji', 'genmoji gallery', 'emoji prompt ideas'],
     metadataBase: new URL(siteConfig.url),
     openGraph: {
       title,
@@ -34,7 +33,7 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
           url: '/og-image.png',
           width: 1200,
           height: 630,
-          alt: 'Genmoji Prompts Generator'
+          alt: 'Popular Genmoji Prompts'
         }
       ]
     },
@@ -70,16 +69,11 @@ export default async function PromptsPage(props: Props) {
       {/* Hero Section */}
       <section className="py-10 md:py-16 text-center">
         <h1 className="text-4xl md:text-5xl font-bold mb-4">
-          Genmoji Prompts Generator
+          Popular Genmoji Prompts
         </h1>
         <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-          Discover 500+ creative prompt ideas to inspire your next Genmoji creation
+          Explore trending prompts and click any to see the generated emoji
         </p>
-      </section>
-      
-      {/* Generator */}
-      <section className="py-8 max-w-3xl mx-auto">
-        <UnifiedGenmojiGenerator initialPrompt="" init_model="genmoji" />
       </section>
       
       {/* Trending Prompts */}

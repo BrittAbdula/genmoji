@@ -25,6 +25,7 @@ export function HorizontalGalleryContent({model, initialEmojis}: {model?: string
 
   // Model chips (only show on homepage when no explicit model is passed)
   const modelItems = [
+    { id: 'gemstickers', name: t('generator.models.gemstickers.name'), image: "https://gstatic.com/synthidtextdemo/images/gemstickers/dot/pixel_out.png" },
     { id: 'genmoji', name: t('generator.models.genmoji.name'), image: "https://store.genmojionline.com/cdn-cgi/imagedelivery/DEOVdDdfeGzASe0KdtD7FA/4ad1e218-eae7-4976-8496-b68cd6374f00/public" },
     { id: 'sticker', name: t('generator.models.sticker.name'), image: "https://store.genmojionline.com/cdn-cgi/imagedelivery/DEOVdDdfeGzASe0KdtD7FA/8ef04dd2-6612-496a-d2ea-bada5ccf9400/public" },
     { id: 'claymation', name: t('generator.models.claymation.name'), image: "/emojis/Claymation.png" },
