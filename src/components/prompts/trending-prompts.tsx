@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Skeleton } from '@/components/ui/skeleton';
+import { API_BASE_URL } from '@/lib/api-config';
 
 interface TrendingPrompt {
   prompt: string;
@@ -24,7 +25,7 @@ export function TrendingPrompts({ locale }: TrendingPromptsProps) {
   useEffect(() => {
     async function fetchTrending() {
       try {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/emoji/prompts/trending?limit=12`);
+        const res = await fetch(`${API_BASE_URL}/genmoji/prompts/trending?limit=12`);
         const data = await res.json();
         if (data.success) {
           setPrompts(data.data);

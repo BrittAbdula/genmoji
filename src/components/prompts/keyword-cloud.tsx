@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
+import { API_BASE_URL } from '@/lib/api-config';
 
 interface Keyword {
   keyword: string;
@@ -20,7 +21,7 @@ export function KeywordCloud({ locale }: KeywordCloudProps) {
   useEffect(() => {
     async function fetchKeywords() {
       try {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/emoji/prompts/keywords?limit=40`);
+        const res = await fetch(`${API_BASE_URL}/genmoji/prompts/keywords?limit=40`);
         const data = await res.json();
         if (data.success) {
           setKeywords(data.data);

@@ -5,6 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Skeleton } from '@/components/ui/skeleton';
+import { API_BASE_URL } from '@/lib/api-config';
 
 interface PromptItem {
   prompt: string;
@@ -43,7 +44,7 @@ export function CategoryPromptTabs({ locale }: CategoryPromptTabsProps) {
   useEffect(() => {
     async function fetchCategories() {
       try {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/emoji/prompts/by-category?limit=8`);
+        const res = await fetch(`${API_BASE_URL}/genmoji/prompts/by-category?limit=8`);
         const data = await res.json();
         if (data.success && data.data.length > 0) {
           setCategories(data.data);
