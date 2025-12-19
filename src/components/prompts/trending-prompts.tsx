@@ -24,7 +24,7 @@ export function TrendingPrompts({ locale }: TrendingPromptsProps) {
   useEffect(() => {
     async function fetchTrending() {
       try {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/emoji/prompts/trending?limit=12&hours=24`);
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/emoji/prompts/trending?limit=12`);
         const data = await res.json();
         if (data.success) {
           setPrompts(data.data);

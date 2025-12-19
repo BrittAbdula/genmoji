@@ -43,7 +43,7 @@ export function CategoryPromptTabs({ locale }: CategoryPromptTabsProps) {
   useEffect(() => {
     async function fetchCategories() {
       try {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/emoji/prompts/by-category?locale=${locale}&limit=8`);
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/emoji/prompts/by-category?limit=8`);
         const data = await res.json();
         if (data.success && data.data.length > 0) {
           setCategories(data.data);
