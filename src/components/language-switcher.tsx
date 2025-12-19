@@ -59,4 +59,4 @@ export function LanguageSwitcher({ className, ...props }: LanguageSwitcherProps)
       </DropdownMenu>
     </div>
   );
-} 
+}

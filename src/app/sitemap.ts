@@ -11,6 +11,7 @@ const routes = [
   'color',
   'category',
   'styles',
+  'prompts',
 ];
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
@@ -31,18 +32,18 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     const batchSize = 100;
     const maxEmojis = 6282;
     let offset = 0;
-    
+
     // while (emojis.length < maxEmojis) {
     //   const batch = await getEmojis(offset, batchSize, 'en', { isIndexable: true });
     //   if (batch.length === 0) break; // No more emojis to fetch
-      
+
     //   emojis.push(...batch);
     //   offset += batchSize;
-      
+
     //   // If we got less than batchSize, we've reached the end
     //   if (batch.length < batchSize) break;
     // }
-    
+
     // Trim to exactly maxEmojis if we got more
     emojis.splice(maxEmojis);
 

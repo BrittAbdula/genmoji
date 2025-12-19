@@ -99,78 +99,27 @@ export function Header() {
             >
               {nav('home')}
             </Link>
+
+            <Link
+              href="/prompts"
+              className={cn(
+                "text-sm font-medium transition-colors hover:text-foreground",
+                isActive('/prompts') ? "text-foreground" : "text-muted-foreground"
+              )}
+            >
+              {nav('prompts')}
+            </Link>
             
-            {/* Styles 二级菜单 */}
-            <NavigationMenu>
-              <NavigationMenuList>
-                <NavigationMenuItem>
-                  <NavigationMenuTrigger className={cn(
-                    "text-sm font-medium transition-colors hover:text-foreground",
-                    pathname.startsWith('/styles') 
-                      ? "text-foreground" 
-                      : "text-muted-foreground"
-                  )}>
-                    {nav('styles')}
-                  </NavigationMenuTrigger>
-                  <NavigationMenuContent>
-                    <ul className="grid gap-3 p-4 w-[400px]">
-                      <li className="row-span-3">
-                        <NavigationMenuLink asChild>
-                          <Link
-                            href="/styles"
-                            className="flex h-full w-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-primary/10 to-primary/30 p-6 no-underline outline-none focus:shadow-md"
-                          >
-                            <Wand2 className="h-6 w-6 mb-2" />
-                            <div className="mb-2 mt-4 text-lg font-medium">
-                              {nav('allStyles')}
-                            </div>
-                            <p className="text-sm leading-tight text-muted-foreground">
-                              {nav('stylesDescription')}
-                            </p>
-                          </Link>
-                        </NavigationMenuLink>
-                      </li>
-                      <ListItem
-                        title={t('generator.models.3d.name')}
-                        href="/styles/3d"
-                      >
-                        {t('generator.models.3d.description')}
-                      </ListItem>
-                      <ListItem
-                        title={t('generator.models.pixel.name')}
-                        href="/styles/pixel"
-                      >
-                        {t('generator.models.pixel.description')}
-                      </ListItem>
-                      <ListItem
-                        title={t('generator.models.handdrawn.name')}
-                        href="/styles/handdrawn"
-                      >
-                        {t('generator.models.handdrawn.description')}
-                      </ListItem>
-                      <ListItem
-                        title={t('generator.models.claymation.name')}
-                        href="/styles/claymation"
-                      >
-                        {t('generator.models.claymation.description')}
-                      </ListItem>
-                      <ListItem
-                        title={t('generator.models.origami.name')}
-                        href="/styles/origami"
-                      >
-                        {t('generator.models.origami.description')}
-                      </ListItem>
-                      <ListItem
-                        title={t('generator.models.steampunk.name')}
-                        href="/styles/steampunk"
-                      >
-                        {t('generator.models.steampunk.description')}
-                      </ListItem>
-                    </ul>
-                  </NavigationMenuContent>
-                </NavigationMenuItem>
-              </NavigationMenuList>
-            </NavigationMenu>
+            {/* Styles 链接 */}
+            <Link
+              href="/styles"
+              className={cn(
+                "text-sm font-medium transition-colors hover:text-foreground",
+                pathname.startsWith('/styles') ? "text-foreground" : "text-muted-foreground"
+              )}
+            >
+              {nav('styles')}
+            </Link>
           </nav>
 
           <LanguageSwitcher className="hidden sm:inline-flex" />

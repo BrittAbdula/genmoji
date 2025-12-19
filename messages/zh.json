@@ -6,6 +6,7 @@
     "cta": "生成 Genmoji",
     "navigation": {
       "home": "首页",
+      "prompts": "提示词",
       "gallery": "画廊",
       "switchLanguage": "切换语言",
       "menu": "导航菜单",
@@ -395,6 +396,12 @@
     },
     "privateOption": {
       "title": "私密",
+      "membersOnly": "仅会员可用"
+    },
+    "publicVisibility": {
+      "title": "公开可见",
+      "tooltip": "启用此选项后，生成的内容可能会被选中并发布到探索页面。",
+      "termsLink": "阅读我们的条款",
       "membersOnly": "仅会员可用"
     },
     "cameraModalTitle": "拍摄照片",

@@ -6,6 +6,7 @@
     "cta": "Create Genmoji",
     "navigation": {
       "home": "Home",
+      "prompts": "Prompts",
       "gallery": "Gallery",
       "switchLanguage": "Switch language",
       "menu": "Navigation Menu",
@@ -200,7 +201,11 @@
       },
       "sharing": {
         "defaultText": "Check out this awesome genmoji I made with Genmoji Online!",
-        "hashtags": ["Genmoji", "AIGenmoji", "CustomGenmoji"]
+        "hashtags": [
+          "Genmoji",
+          "AIGenmoji",
+          "CustomGenmoji"
+        ]
       },
       "alert": {
         "instagramShare": "Image downloaded! You can now share it on Instagram:\n1. Open Instagram\n2. Create a new post\n3. Select the downloaded image\n4. Add the prompt as caption",
@@ -392,6 +397,12 @@
       "title": "Private",
       "membersOnly": "Members only"
     },
+    "publicVisibility": {
+      "title": "Public Visibility",
+      "tooltip": "When this option is enabled, the output may be selected and published to the Explore feed.",
+      "termsLink": "Read our terms",
+      "membersOnly": "Members only"
+    },
     "cameraModalTitle": "Take a photo",
     "camera": {
       "takePhoto": "Take Photo",
@@ -456,15 +467,33 @@
         "emotion": "Emotion"
       },
       "styles": {
-        "pop-art": { "name": "Pop Art" },
-        "japanese-matchbox": { "name": "Retro Japanese Matchbox" },
-        "cartoon-dino": { "name": "Cartoon Dino" },
-        "pixel-art": { "name": "Pixel Art" },
-        "royal": { "name": "Royal" },
-        "football-sticker": { "name": "Football Sticker" },
-        "claymation": { "name": "Claymation" },
-        "vintage-bollywood": { "name": "Vintage Bollywood" },
-        "sticker-bomb": { "name": "Sticker Bomb" }
+        "pop-art": {
+          "name": "Pop Art"
+        },
+        "japanese-matchbox": {
+          "name": "Retro Japanese Matchbox"
+        },
+        "cartoon-dino": {
+          "name": "Cartoon Dino"
+        },
+        "pixel-art": {
+          "name": "Pixel Art"
+        },
+        "royal": {
+          "name": "Royal"
+        },
+        "football-sticker": {
+          "name": "Football Sticker"
+        },
+        "claymation": {
+          "name": "Claymation"
+        },
+        "vintage-bollywood": {
+          "name": "Vintage Bollywood"
+        },
+        "sticker-bomb": {
+          "name": "Sticker Bomb"
+        }
       },
       "emotions": {
         "Happy": "Happy",
@@ -698,4 +727,4 @@
       "confirmCancel": "Are you sure you want to cancel your subscription? You will lose access to premium features at the end of your current billing period."
     }
   }
-} 
+}

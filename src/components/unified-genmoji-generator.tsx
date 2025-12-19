@@ -8,7 +8,7 @@ import { useState, useEffect, useRef } from "react";
 import { genMoji, uploadImage, GenerationLimitError, getSubscriptionStatus } from "@/lib/api";
 // Tooltip not needed after removing bottom model selector trigger
 import { Emoji } from "@/types/emoji";
-import { X, Plus, ArrowUp, Globe, Crown } from 'lucide-react';
+import { X, Plus, ArrowUp, Globe, Crown, Info } from 'lucide-react';
 import confetti from "canvas-confetti";
 import { useRouter } from "next/navigation";
 import { useTranslations, useLocale } from 'next-intl';
@@ -81,7 +81,8 @@ export function UnifiedGenmojiGenerator({
   const [activeTab, setActiveTab] = useState<'text' | 'image'>('image');
   const [selectedStyleId, setSelectedStyleId] = useState<GemSubStyleId | null>(null);
   const [selectedEmotionKey, setSelectedEmotionKey] = useState<string>('Happy');
-  const [isPrivate, setIsPrivate] = useState(false);
+  const [isPublic, setIsPublic] = useState(true);
+  const [showPublicTooltip, setShowPublicTooltip] = useState(false);
   const [isMember, setIsMember] = useState(false);
   const [showCamera, setShowCamera] = useState(false);
   const [cameraFacing, setCameraFacing] = useState<'user' | 'environment'>('user');
@@ -539,7 +540,7 @@ export function UnifiedGenmojiGenerator({
       const emojiResponse = await genMoji(effectivePrompt, locale, selectedImage, submitModel, token, {
         styleId: selectedStyleId,
         emotion: selectedEmotionKey,
-        isPublic: !isPrivate
+        isPublic: isPublic
       });
       
       if (emojiResponse.success && emojiResponse.emoji) {
@@ -979,44 +980,72 @@ export function UnifiedGenmojiGenerator({
           {/* Bottom toolbar inside textarea */}
           <div className="absolute bottom-3 left-3 right-2 flex items-center justify-between">
             <div className="flex items-center gap-3">
-              {/* Private option - only visible to logged-in users */}
-              {isLoggedIn && (
+              {/* Public Visibility toggle - visible to all users */}
+              <div className="relative inline-flex items-center gap-2">
+                {/* Label and info icon */}
+                <span className="text-xs font-medium text-muted-foreground">
+                  {t('publicVisibility.title')}
+                </span>
                 <button
                   type="button"
-                  aria-pressed={isPrivate}
-                  onClick={() => {
-                    if (!isMember) {
-                      // Open subscription dialog like quota reached
-                      const in24h = new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString();
-                      setLimitInfo({ currentCount: 0, limit: 0, resetTime: in24h, type: 'monthly' });
-                      setShowSubscriptionDialog(true);
-                      return;
-                    }
-                    setIsPrivate((v) => !v);
-                  }}
-                  className={cn(
-                    "group inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs",
-                    isPrivate ? "border-primary/50 bg-primary/10" : "border-border bg-muted/40 hover:bg-muted/70"
-                  )}
-                  title={isMember ? t('privateOption.title') : t('privateOption.membersOnly')}
+                  className="text-muted-foreground/60 hover:text-muted-foreground transition-colors"
+                  onClick={() => setShowPublicTooltip(!showPublicTooltip)}
+                  onMouseEnter={() => setShowPublicTooltip(true)}
+                  onMouseLeave={() => setShowPublicTooltip(false)}
+                  aria-label="Info"
                 >
+                  <Info className="w-3.5 h-3.5" />
+                </button>
+                
+                {/* Tooltip */}
+                {showPublicTooltip && (
+                  <div className="absolute left-0 bottom-full mb-2 z-50 w-64 p-3 text-xs bg-popover border border-border rounded-lg shadow-lg">
+                    <p className="text-foreground/80">{t('publicVisibility.tooltip')}</p>
+                    <a href="/terms" className="text-primary hover:underline mt-1 inline-block">
+                      {t('publicVisibility.termsLink')}
+                    </a>
+                  </div>
+                )}
+                
+                {/* Crown (members only) + Toggle */}
+                <div className="flex items-center gap-1.5 ml-2">
                   <Crown className="w-3.5 h-3.5 text-yellow-500" />
-                  <span>{t('privateOption.title')}</span>
-                  <span
+                  <button
+                    type="button"
+                    role="switch"
+                    aria-checked={isPublic}
+                    onClick={() => {
+                      // Non-logged-in users: prompt login
+                      if (!isLoggedIn) {
+                        setPendingGeneration(false);
+                        setShowLoginDialog(true);
+                        return;
+                      }
+                      // Non-members: show subscription dialog
+                      if (!isMember) {
+                        const in24h = new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString();
+                        setLimitInfo({ currentCount: 0, limit: 0, resetTime: in24h, type: 'monthly' });
+                        setShowSubscriptionDialog(true);
+                        return;
+                      }
+                      setIsPublic((v: boolean) => !v);
+                    }}
+                    title={isMember ? t('publicVisibility.title') : t('publicVisibility.membersOnly')}
                     className={cn(
-                      "ml-2 inline-flex h-4 w-7 rounded-full transition-colors",
-                      isPrivate ? "bg-primary" : "bg-muted-foreground/30"
+                      "relative inline-flex h-5 w-9 shrink-0 cursor-pointer items-center rounded-full border-2 border-transparent transition-colors",
+                      "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+                      isPublic ? "bg-primary" : "bg-muted-foreground/30"
                     )}
                   >
                     <span
                       className={cn(
-                        "h-3.5 w-3.5 bg-background rounded-full mt-0.5 transition-transform",
-                        isPrivate ? "translate-x-3" : "translate-x-0.5"
+                        "pointer-events-none block h-4 w-4 rounded-full bg-background shadow-lg ring-0 transition-transform",
+                        isPublic ? "translate-x-4" : "translate-x-0"
                       )}
                     />
-                  </span>
-                </button>
-              )}
+                  </button>
+                </div>
+              </div>
               {/* Left side of toolbar reserved for future quick actions (kept minimal for cross-platform) */}
             </div>
             

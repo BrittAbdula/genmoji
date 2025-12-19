@@ -158,6 +158,17 @@ export function MobileDrawer() {
           >
             {nav('home')}
           </Link>
+
+          <Link 
+            href="/prompts" 
+            onClick={handleLinkClick}
+            className={cn(
+              "text-sm font-medium transition-colors hover:text-foreground px-2 py-1.5 rounded-sm",
+              isActive('/prompts') ? "text-foreground bg-accent" : "text-muted-foreground"
+            )}
+          >
+            {nav('prompts')}
+          </Link>
           
           {/* Styles 子菜单 */}
           <div className="border-t pt-2 mt-2">
