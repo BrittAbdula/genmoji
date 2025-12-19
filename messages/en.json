@@ -28,14 +28,14 @@
     }
   },
   "hero": {
-    "title": "AI Genmoji Generator — Create Custom Genmojis Online",
-    "subtitle": "Free AI genmoji/emoji maker. Text-to-genmoji & image-to-genmoji.",
+    "title": "Genmoji Online — Free AI Genmoji Generator",
+    "subtitle": "Create custom Apple-style genmojis from text or photos. Free, no watermark.",
     "cta": "Generate Genmoji"
   },
   "seo": {
-    "title": "AI Genmoji Generator — Custom Genmoji Maker | Genmoji Online",
+    "title": "Genmoji Online — Free AI Genmoji Generator & Custom Emoji Maker",
     "titleTemplate": "%s | Genmoji Online",
-    "defaultTitle": "Create personalized genmojis with Genmoji Online — the AI genmoji generator and custom genmoji maker. Turn text prompts or your images into Apple‑style genmojis in seconds. Free to use, no watermark."
+    "defaultTitle": "Genmoji Online is the #1 free AI genmoji generator. Create custom Apple-style genmojis from text or photos in seconds. No watermark, works on any device."
   },
   "features": {
     "title": "Features",

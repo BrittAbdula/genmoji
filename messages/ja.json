@@ -28,12 +28,12 @@
     }
   },
   "hero": {
-    "title": "あなただけのgenmojiを作成",
+    "title": "Genmoji Online — 無料AIジェンモジ生成",
     "subtitle": "AIを活用したカスタムgenmojiで自己表現",
     "cta": "Genmojiを作成"
   },
   "seo": {
-    "title": "Genmoji オンライン - AI絵文字ジェネレーター",
+    "title": "Genmoji Online — 無料AIジェンモジ・絵文字ジェネレーター",
     "titleTemplate": "%s | Genmoji オンライン",
     "defaultTitle": "Genmoji オンラインで、パーソナライズされた絵文字を作成。テキストや画像からApple風の美しい絵文字に変換できる究極の絵文字ジェネレーター。"
   },
@@ -206,15 +206,33 @@
         "emotion": "感情"
       },
       "styles": {
-        "pop-art": { "name": "ポップアート" },
-        "japanese-matchbox": { "name": "レトロマッチ箱" },
-        "cartoon-dino": { "name": "恐竜漫画" },
-        "pixel-art": { "name": "ピクセルアート" },
-        "royal": { "name": "王室" },
-        "football-sticker": { "name": "サッカーシール" },
-        "claymation": { "name": "クレイアニメ" },
-        "vintage-bollywood": { "name": "ボリウッド" },
-        "sticker-bomb": { "name": "ステッカーボム" }
+        "pop-art": {
+          "name": "ポップアート"
+        },
+        "japanese-matchbox": {
+          "name": "レトロマッチ箱"
+        },
+        "cartoon-dino": {
+          "name": "恐竜漫画"
+        },
+        "pixel-art": {
+          "name": "ピクセルアート"
+        },
+        "royal": {
+          "name": "王室"
+        },
+        "football-sticker": {
+          "name": "サッカーシール"
+        },
+        "claymation": {
+          "name": "クレイアニメ"
+        },
+        "vintage-bollywood": {
+          "name": "ボリウッド"
+        },
+        "sticker-bomb": {
+          "name": "ステッカーボム"
+        }
       },
       "emotions": {
         "Happy": "ハッピー",
@@ -412,7 +430,11 @@
       },
       "sharing": {
         "defaultText": "Genmoji オンラインで作成した素敵な絵文字をチェックしてください！",
-        "hashtags": ["Genmoji", "AI絵文字", "カスタム絵文字"]
+        "hashtags": [
+          "Genmoji",
+          "AI絵文字",
+          "カスタム絵文字"
+        ]
       },
       "alert": {
         "instagramShare": "画像をダウンロードしました！Instagramで共有できます：\n1. Instagramを開く\n2. 新しい投稿を作成\n3. ダウンロードした画像を選択\n4. プロンプトをキャプションとして追加",
@@ -702,4 +724,4 @@
       "confirmCancel": "サブスクリプションをキャンセルしてもよろしいですか？現在の請求期間の終了時にプレミアム機能へのアクセスが終了します。"
     }
   }
-} 
+}

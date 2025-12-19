@@ -28,12 +28,12 @@
     }
   },
   "hero": {
-    "title": "Créez Votre Genmoji Parfait",
+    "title": "Genmoji Online — Générateur Genmoji IA Gratuit",
     "subtitle": "Exprimez-vous avec des genmoji personnalisés alimentés par l'IA",
     "cta": "Générer un Genmoji"
   },
   "seo": {
-    "title": "Genmoji Online - Générateur d'émojis AI",
+    "title": "Genmoji Online — Générateur Genmoji IA Gratuit",
     "titleTemplate": "%s | Genmoji Online",
     "defaultTitle": "Créez des genmojis personnalisés avec Genmoji Online, le générateur d'émojis ultime. Transformez du texte et des images en magnifiques émojis style Apple."
   },
@@ -213,15 +213,33 @@
         "emotion": "Émotion"
       },
       "styles": {
-        "pop-art": { "name": "Pop art" },
-        "japanese-matchbox": { "name": "Boîte d'allumettes japonaise rétro" },
-        "cartoon-dino": { "name": "Dino cartoon" },
-        "pixel-art": { "name": "Pixel art" },
-        "royal": { "name": "Royal" },
-        "football-sticker": { "name": "Autocollant de football" },
-        "claymation": { "name": "Claymation" },
-        "vintage-bollywood": { "name": "Bollywood vintage" },
-        "sticker-bomb": { "name": "Sticker bomb" }
+        "pop-art": {
+          "name": "Pop art"
+        },
+        "japanese-matchbox": {
+          "name": "Boîte d'allumettes japonaise rétro"
+        },
+        "cartoon-dino": {
+          "name": "Dino cartoon"
+        },
+        "pixel-art": {
+          "name": "Pixel art"
+        },
+        "royal": {
+          "name": "Royal"
+        },
+        "football-sticker": {
+          "name": "Autocollant de football"
+        },
+        "claymation": {
+          "name": "Claymation"
+        },
+        "vintage-bollywood": {
+          "name": "Bollywood vintage"
+        },
+        "sticker-bomb": {
+          "name": "Sticker bomb"
+        }
       },
       "emotions": {
         "Happy": "Heureux",

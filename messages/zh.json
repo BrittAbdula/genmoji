@@ -28,14 +28,14 @@
     }
   },
   "hero": {
-    "title": "AI Genmoji 生成器 — 在线自定义 Genmoji 制作器",
+    "title": "Genmoji Online — 免费 AI Genmoji 生成器",
     "subtitle": "免费 AI genmoji/emoji 生成器，支持文字生成与以图生图",
     "cta": "生成 Genmoji"
   },
   "seo": {
-    "title": "AI Genmoji 生成器 — 自定义 Genmoji 制作器 | Genmoji Online",
+    "title": "Genmoji Online — 免费 AI Genmoji 生成器 | 自定义表情制作",
     "titleTemplate": "%s | Genmoji Online",
-    "defaultTitle": "使用 Genmoji Online 创建个性化 genmoji —— AI 表情/Genmoji 生成器与自定义制作器。支持文字生成与图片生成，秒做 Apple 风格表情，无水印可免费下载。"
+    "defaultTitle": "Genmoji Online 是免费在线 Genmoji 生成器。支持文字生成与图片生成，秒做 Apple 风格表情，无水印，无需下载应用。"
   },
   "features": {
     "title": "功能特点",
@@ -201,7 +201,11 @@
       },
       "sharing": {
         "defaultText": "看看我用 Genmoji Online 制作的这个超棒的 genmoji！",
-        "hashtags": ["Genmoji", "AIGenmoji", "自定义Genmoji"]
+        "hashtags": [
+          "Genmoji",
+          "AIGenmoji",
+          "自定义Genmoji"
+        ]
       },
       "alert": {
         "instagramShare": "图片已下载！您现在可以在 Instagram 上分享：\n1. 打开 Instagram\n2. 创建新帖子\n3. 选择已下载的图片\n4. 添加提示词作为说明",
@@ -457,15 +461,33 @@
         "emotion": "情绪"
       },
       "styles": {
-        "pop-art": { "name": "波普艺术" },
-        "japanese-matchbox": { "name": "昭和风火柴盒" },
-        "cartoon-dino": { "name": "卡通恐龙" },
-        "pixel-art": { "name": "像素艺术" },
-        "royal": { "name": "皇家风格" },
-        "football-sticker": { "name": "复古足球贴纸" },
-        "claymation": { "name": "黏土动画" },
-        "vintage-bollywood": { "name": "复古宝莱坞" },
-        "sticker-bomb": { "name": "贴纸炸弹" }
+        "pop-art": {
+          "name": "波普艺术"
+        },
+        "japanese-matchbox": {
+          "name": "昭和风火柴盒"
+        },
+        "cartoon-dino": {
+          "name": "卡通恐龙"
+        },
+        "pixel-art": {
+          "name": "像素艺术"
+        },
+        "royal": {
+          "name": "皇家风格"
+        },
+        "football-sticker": {
+          "name": "复古足球贴纸"
+        },
+        "claymation": {
+          "name": "黏土动画"
+        },
+        "vintage-bollywood": {
+          "name": "复古宝莱坞"
+        },
+        "sticker-bomb": {
+          "name": "贴纸炸弹"
+        }
       },
       "emotions": {
         "Happy": "开心",
@@ -699,4 +721,4 @@
       "confirmCancel": "您确定要取消订阅吗？您将在当前计费期结束时失去高级功能访问权限。"
     }
   }
-} 
+}
