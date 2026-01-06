@@ -206,6 +206,18 @@
       "gemstickers": {
         "name": "Gem Stickers",
         "description": "Ambiance d'autocollants à collectionner"
+      },
+      "doodle": {
+        "name": "Gribouillage",
+        "description": "Croquis enfantin aux traits hésitants"
+      },
+      "chibi": {
+        "name": "Chibi",
+        "description": "Grande tête, petit corps, super mignon"
+      },
+      "plushie": {
+        "name": "Peluche",
+        "description": "Texture peluche douce et câline"
       }
     },
     "gemstyles": {
@@ -352,6 +364,30 @@
         "Dino cartoon qui salue",
         "Autocollant de cœur en pixel art",
         "Autocollant princesse royale"
+      ],
+      "doodle": [
+        "Tête de chat gribouillée",
+        "Cœur tremblant",
+        "Étoile dessinée vite fait",
+        "Sourire griffonné",
+        "Fleur simple",
+        "Dinosaure enfantin"
+      ],
+      "chibi": [
+        "Chiot aux grands yeux",
+        "Petit magicien chibi",
+        "Fille animé étincelante",
+        "Robot chibi",
+        "Mini super-héros",
+        "Chat chibi mignon"
+      ],
+      "plushie": [
+        "Ours en peluche duveteux",
+        "Lapin peluche doux",
+        "Hibou douillet",
+        "Renard câlin",
+        "Pingouin velours",
+        "Champignon feutrine"
       ]
     }
   },

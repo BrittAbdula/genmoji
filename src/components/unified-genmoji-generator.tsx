@@ -86,6 +86,7 @@ export function UnifiedGenmojiGenerator({
   const [isMember, setIsMember] = useState(false);
   const [showCamera, setShowCamera] = useState(false);
   const [cameraFacing, setCameraFacing] = useState<'user' | 'environment'>('user');
+  const [isStylesExpanded, setIsStylesExpanded] = useState(false);
   const cameraVideoRef = useRef<HTMLVideoElement>(null);
   const cameraStreamRef = useRef<MediaStream | null>(null);
   // Secondary style options (substyles) for the Gem Stickers model
@@ -194,14 +195,10 @@ export function UnifiedGenmojiGenerator({
   }, []);
 
   // 模型数据，统一管理所有模型信息
+  // Featured models shown by default (first 4)
+  const FEATURED_MODEL_IDS = ['genmoji', 'sticker', 'doodle', 'chibi'] as const;
+  
   const models = [
-    {
-      id: 'gemstickers' as const,
-      name: t('models.gemstickers.name'),
-      description: t('models.gemstickers.description'),
-      image: "/emojis/handdrawn.png",
-      alt: "Gem Stickers"
-    },
     {
       id: 'genmoji' as const,
       name: t('models.genmoji.name'),
@@ -216,22 +213,34 @@ export function UnifiedGenmojiGenerator({
       image: "https://store.genmojionline.com/cdn-cgi/imagedelivery/DEOVdDdfeGzASe0KdtD7FA/8ef04dd2-6612-496a-d2ea-bada5ccf9400/public",
       alt: "Sticker"
     },
-    // {
-    //   id: 'mascot' as const,
-    //   name: t('models.mascot.name'),
-    //   description: t('models.mascot.description'),
-    //   image: "https://store.genmojionline.com/cdn-cgi/imagedelivery/DEOVdDdfeGzASe0KdtD7FA/14a1b15b-9263-4d20-443d-67c5e4c4c900/public",
-    //   alt: "Mascot"
-    // },
+    // New transparent background styles (featured)
+    { id: 'doodle' as const, name: t('models.doodle.name'), description: t('models.doodle.description'), image: "https://store.genmojionline.com/cdn-cgi/imagedelivery/DEOVdDdfeGzASe0KdtD7FA/671e0a40-ff72-4531-069f-6c86cb801200/public", alt: 'Doodle Genmoji' },
+    { id: 'chibi' as const, name: t('models.chibi.name'), description: t('models.chibi.description'), image: "https://store.genmojionline.com/cdn-cgi/imagedelivery/DEOVdDdfeGzASe0KdtD7FA/40baee31-30d2-4890-e853-e9fbd07ab000/public", alt: 'Chibi Genmoji' },
+    // More styles (expanded)
+    { id: 'plushie' as const, name: t('models.plushie.name'), description: t('models.plushie.description'), image: "https://store.genmojionline.com/cdn-cgi/imagedelivery/DEOVdDdfeGzASe0KdtD7FA/c084cf24-fc12-4f80-1b7c-76cab6b2da00/public", alt: 'Plushie Genmoji' },
+    { id: 'liquid-metal' as const, name: t('models.liquid-metal.name'), description: t('models.liquid-metal.description'), image: "/emojis/Liquid-Metal.png", alt: 'Liquid Metal Genmoji' },
     { id: 'claymation' as const, name: t('models.claymation.name'), description: t('models.claymation.description'), image: "/emojis/Claymation.png", alt: 'Claymation Genmoji' },
     { id: '3d' as const, name: t('models.3d.name'), description: t('models.3d.description'), image: "/emojis/3d.png", alt: '3D Genmoji' },
+    { id: 'handdrawn' as const, name: t('models.handdrawn.name'), description: t('models.handdrawn.description'), image: "/emojis/handdrawn.png", alt: 'Hand-drawn Genmoji' },
+    { id: 'steampunk' as const, name: t('models.steampunk.name'), description: t('models.steampunk.description'), image: "/emojis/Steampunk.png", alt: 'Steampunk Genmoji' },
+    { id: 'pixel' as const, name: t('models.pixel.name'), description: t('models.pixel.description'), image: "/emojis/pixel.png", alt: 'Pixel Genmoji' },
     { id: 'origami' as const, name: t('models.origami.name'), description: t('models.origami.description'), image: "/emojis/Origami.png", alt: 'Origami Genmoji' },
     { id: 'cross-stitch' as const, name: t('models.cross-stitch.name'), description: t('models.cross-stitch.description'), image: "/emojis/Cross-stitch-Pixel.png", alt: 'Cross-stitch Genmoji' },
-    { id: 'steampunk' as const, name: t('models.steampunk.name'), description: t('models.steampunk.description'), image: "/emojis/Steampunk.png", alt: 'Steampunk Genmoji' },
-    { id: 'liquid-metal' as const, name: t('models.liquid-metal.name'), description: t('models.liquid-metal.description'), image: "/emojis/Liquid-Metal.png", alt: 'Liquid Metal Genmoji' },
-    { id: 'pixel' as const, name: t('models.pixel.name'), description: t('models.pixel.description'), image: "/emojis/pixel.png", alt: 'Pixel Genmoji' },
-    { id: 'handdrawn' as const, name: t('models.handdrawn.name'), description: t('models.handdrawn.description'), image: "/emojis/handdrawn.png", alt: 'Hand-drawn Genmoji' }
+    {
+      id: 'gemstickers' as const,
+      name: t('models.gemstickers.name'),
+      description: t('models.gemstickers.description'),
+      image: "/emojis/handdrawn.png",
+      alt: "Gem Stickers"
+    }
   ];
+
+  // Split models into featured and expanded
+  const featuredModels = models.filter(m => (FEATURED_MODEL_IDS as readonly string[]).includes(m.id));
+  const expandedModels = models.filter(m => !(FEATURED_MODEL_IDS as readonly string[]).includes(m.id));
+  
+  // Auto-expand if current model is in expanded section
+  const isCurrentModelExpanded = !(FEATURED_MODEL_IDS as readonly string[]).includes(model);
 
   // Get current model info from the unified models array
   const getCurrentModelInfo = () => {
@@ -720,34 +729,80 @@ export function UnifiedGenmojiGenerator({
           </div>
         </div>
         <div className="w-full px-4">
+          {/* Featured models row */}
           <div 
             ref={modelSelectorRef}
-            className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide touch-pan-x justify-start" 
+            className="flex gap-2 flex-wrap justify-center" 
             role="listbox" 
             aria-label={t('selectModel')}
           >
-          {/* All models horizontally scrollable */}
-          {models.map((m) => (
+            {/* Featured models */}
+            {featuredModels.map((m) => (
+              <button
+                key={m.id}
+                type="button"
+                onClick={() => handleModelSelect(m.id)}
+                title={m.name}
+                aria-pressed={model === m.id}
+                ref={(el) => { itemRefs.current[m.id] = el; }}
+                className={cn(
+                  "flex items-center gap-2 shrink-0 border rounded-full pr-3 pl-2 py-2",
+                  "transition-colors bg-background",
+                  model === m.id
+                    ? "border-primary/40 bg-primary/5"
+                    : "border-border hover:bg-muted/60"
+                )}
+              >
+                <Image src={m.image} alt={m.alt} width={28} height={28} className="rounded-full" />
+                <span className="text-[13px] sm:text-sm whitespace-nowrap">{m.name}</span>
+              </button>
+            ))}
+            
+            {/* More Styles button */}
             <button
-              key={m.id}
               type="button"
-              onClick={() => handleModelSelect(m.id)}
-              title={m.name}
-              aria-pressed={model === m.id}
-              ref={(el) => { itemRefs.current[m.id] = el; }}
+              onClick={() => setIsStylesExpanded(!isStylesExpanded)}
               className={cn(
-                "flex items-center gap-2 shrink-0 border rounded-full pr-3 pl-2 py-2",
-                "transition-colors bg-background",
-                model === m.id
+                "flex items-center gap-1.5 shrink-0 border rounded-full px-3 py-2",
+                "transition-colors",
+                (isStylesExpanded || isCurrentModelExpanded)
                   ? "border-primary/40 bg-primary/5"
                   : "border-border hover:bg-muted/60"
               )}
             >
-              <Image src={m.image} alt={m.alt} width={28} height={28} className="rounded-full" />
-              <span className="text-[13px] sm:text-sm whitespace-nowrap">{m.name}</span>
+              <span className="text-[13px] sm:text-sm whitespace-nowrap">
+                {isStylesExpanded || isCurrentModelExpanded ? '−' : '+'} More
+              </span>
             </button>
-          ))}
           </div>
+          
+          {/* Expanded models grid */}
+          {(isStylesExpanded || isCurrentModelExpanded) && (
+            <div className="mt-3 pt-3 border-t border-border/50">
+              <div className="flex gap-2 flex-wrap justify-center">
+                {expandedModels.map((m) => (
+                  <button
+                    key={m.id}
+                    type="button"
+                    onClick={() => handleModelSelect(m.id)}
+                    title={m.name}
+                    aria-pressed={model === m.id}
+                    ref={(el) => { itemRefs.current[m.id] = el; }}
+                    className={cn(
+                      "flex items-center gap-2 shrink-0 border rounded-full pr-3 pl-2 py-2",
+                      "transition-colors bg-background",
+                      model === m.id
+                        ? "border-primary/40 bg-primary/5"
+                        : "border-border hover:bg-muted/60"
+                    )}
+                  >
+                    <Image src={m.image} alt={m.alt} width={28} height={28} className="rounded-full" />
+                    <span className="text-[13px] sm:text-sm whitespace-nowrap">{m.name}</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
         {model === 'gemstickers' && (
           <div className="w-full px-4 mt-1">

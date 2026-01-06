@@ -459,6 +459,18 @@
       "gemstickers": {
         "name": "Gem Stickers",
         "description": "Playful collectible sticker vibes"
+      },
+      "doodle": {
+        "name": "Doodle",
+        "description": "Childlike sketch with wobbly lines"
+      },
+      "chibi": {
+        "name": "Chibi",
+        "description": "Oversized head, tiny body, super cute"
+      },
+      "plushie": {
+        "name": "Plushie",
+        "description": "Cuddly stuffed toy with soft texture"
       }
     },
     "gemstyles": {
@@ -604,6 +616,30 @@
         "Cartoon dino waving",
         "Pixel art heart sticker",
         "Royal princess sticker"
+      ],
+      "doodle": [
+        "Scribbled cat face",
+        "Wobbly heart shape",
+        "Messy star doodle",
+        "Sketchy happy face",
+        "Simple flower drawing",
+        "Kid-style dinosaur"
+      ],
+      "chibi": [
+        "Big-eyed puppy",
+        "Tiny wizard with staff",
+        "Sparkly anime girl",
+        "Chibi robot friend",
+        "Mini superhero",
+        "Cute chibi cat"
+      ],
+      "plushie": [
+        "Fluffy teddy bear",
+        "Soft bunny plush",
+        "Cozy owl stuffie",
+        "Cuddly fox toy",
+        "Velvet penguin plush",
+        "Felt mushroom friend"
       ]
     }
   },
