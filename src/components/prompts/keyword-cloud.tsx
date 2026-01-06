@@ -12,13 +12,17 @@ interface Keyword {
 
 interface KeywordCloudProps {
   locale: string;
+  initialKeywords?: Keyword[];
 }
 
-export function KeywordCloud({ locale }: KeywordCloudProps) {
-  const [keywords, setKeywords] = useState<Keyword[]>([]);
-  const [loading, setLoading] = useState(true);
+export function KeywordCloud({ locale, initialKeywords }: KeywordCloudProps) {
+  const [keywords, setKeywords] = useState<Keyword[]>(initialKeywords ?? []);
+  const [loading, setLoading] = useState(!(initialKeywords && initialKeywords.length > 0));
 
   useEffect(() => {
+    // Skip fetch if we have initial data from SSR
+    if (initialKeywords && initialKeywords.length > 0) return;
+    
     async function fetchKeywords() {
       try {
         const res = await fetch(`${API_BASE_URL}/genmoji/prompts/keywords?limit=40`);
@@ -33,7 +37,7 @@ export function KeywordCloud({ locale }: KeywordCloudProps) {
       }
     }
     fetchKeywords();
-  }, [locale]);
+  }, [locale, initialKeywords]);
 
   const handleKeywordClick = (keyword: string) => {
     // Scroll to generator and set prompt

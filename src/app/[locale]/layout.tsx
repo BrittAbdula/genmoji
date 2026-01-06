@@ -3,6 +3,7 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { inter } from '@/lib/fonts';
 import { cn } from "@/lib/utils";
 import type { Viewport } from "next";
+import Script from 'next/script';
 import "../globals.css";
 import { GoogleAnalytics, GoogleTagManager } from '@next/third-parties/google'
 import { Header } from "@/components/sections/header";
@@ -25,8 +26,6 @@ export const viewport: Viewport = {
   ],
   width: "device-width",
   initialScale: 1,
-  maximumScale: 1,
-  userScalable: false,
 };
 
 type Props = {
@@ -55,11 +54,10 @@ export default async function LocaleLayout(props: Props) {
   return (
     <html lang={locale} suppressHydrationWarning>
       <head>
-        <script 
-          async 
-          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1555702340859042"
-          crossOrigin="anonymous"
-        />
+        {/* Preconnect to critical third-party origins */}
+        <link rel="preconnect" href="https://store.genmojionline.com" />
+        <link rel="preconnect" href="https://gstatic.com" crossOrigin="anonymous" />
+        <link rel="dns-prefetch" href="https://pagead2.googlesyndication.com" />
       </head>
       <body className={cn(
         inter.className,
@@ -86,6 +84,12 @@ export default async function LocaleLayout(props: Props) {
             </AuthHydration>
             <GoogleAnalytics gaId="G-6T495VYMD7" />
             <GoogleTagManager gtmId="GTM-T3RLKMJR" />
+            {/* AdSense - loaded after page is interactive to avoid blocking render */}
+            <Script
+              src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1555702340859042"
+              strategy="afterInteractive"
+              crossOrigin="anonymous"
+            />
           </ThemeProvider>
         </NextIntlClientProvider>
       </body>

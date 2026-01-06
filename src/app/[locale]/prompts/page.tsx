@@ -6,12 +6,39 @@ import { TrendingPrompts } from '@/components/prompts/trending-prompts';
 import { CategoryPromptTabs } from '@/components/prompts/category-prompt-tabs';
 import { KeywordCloud } from '@/components/prompts/keyword-cloud';
 import { FAQ } from '@/components/sections/faq';
+import { API_BASE_URL } from '@/lib/api-config';
 
 export const runtime = 'edge';
 
 type Props = {
   params: Promise<{ locale: string }>;
 };
+
+// Server-side data fetching for SSR
+async function getPromptsData() {
+  const PREFETCH = process.env.NEXT_PUBLIC_PREFETCH_HOME_RECENT !== '0';
+  if (!PREFETCH) return { keywords: [], trending: [] };
+  
+  try {
+    const [keywordsRes, trendingRes] = await Promise.all([
+      fetch(`${API_BASE_URL}/genmoji/prompts/keywords?limit=40`, { next: { revalidate: 3600 } }),
+      fetch(`${API_BASE_URL}/genmoji/prompts/trending?limit=12`, { next: { revalidate: 3600 } }),
+    ]);
+    
+    const [keywordsData, trendingData] = await Promise.all([
+      keywordsRes.json(),
+      trendingRes.json(),
+    ]);
+    
+    return {
+      keywords: keywordsData.success ? keywordsData.data : [],
+      trending: trendingData.success ? trendingData.data : [],
+    };
+  } catch (e) {
+    console.error('Failed to prefetch prompts data:', e);
+    return { keywords: [], trending: [] };
+  }
+}
 
 export async function generateMetadata(props: Props): Promise<Metadata> {
   const { locale } = await props.params;
@@ -63,6 +90,9 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
 export default async function PromptsPage(props: Props) {
   const { locale } = await props.params;
   setRequestLocale(locale);
+  
+  // Fetch data on server for SSR
+  const { keywords, trending } = await getPromptsData();
 
   return (
     <main className="items-center container mx-auto p-2">
@@ -86,7 +116,7 @@ export default async function PromptsPage(props: Props) {
             Most popular prompts in the last 24 hours
           </p>
         </div>
-        <TrendingPrompts locale={locale} />
+        <TrendingPrompts locale={locale} initialPrompts={trending.length ? trending : undefined} />
       </section>
       
       {/* Popular Keywords */}
@@ -99,7 +129,7 @@ export default async function PromptsPage(props: Props) {
             Click any keyword to use it as a prompt
           </p>
         </div>
-        <KeywordCloud locale={locale} />
+        <KeywordCloud locale={locale} initialKeywords={keywords.length ? keywords : undefined} />
       </section>
       
       {/* Prompts by Category */}

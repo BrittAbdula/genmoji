@@ -16,13 +16,17 @@ interface TrendingPrompt {
 
 interface TrendingPromptsProps {
   locale: string;
+  initialPrompts?: TrendingPrompt[];
 }
 
-export function TrendingPrompts({ locale }: TrendingPromptsProps) {
-  const [prompts, setPrompts] = useState<TrendingPrompt[]>([]);
-  const [loading, setLoading] = useState(true);
+export function TrendingPrompts({ locale, initialPrompts }: TrendingPromptsProps) {
+  const [prompts, setPrompts] = useState<TrendingPrompt[]>(initialPrompts ?? []);
+  const [loading, setLoading] = useState(!(initialPrompts && initialPrompts.length > 0));
 
   useEffect(() => {
+    // Skip fetch if we have initial data from SSR
+    if (initialPrompts && initialPrompts.length > 0) return;
+    
     async function fetchTrending() {
       try {
         const res = await fetch(`${API_BASE_URL}/genmoji/prompts/trending?limit=12`);
@@ -37,7 +41,7 @@ export function TrendingPrompts({ locale }: TrendingPromptsProps) {
       }
     }
     fetchTrending();
-  }, []);
+  }, [initialPrompts]);
 
   if (loading) {
     return (

@@ -4,23 +4,36 @@ import createNextIntlPlugin from 'next-intl/plugin';
 const withNextIntl = createNextIntlPlugin();
 
 const nextConfig = {
-  // 如果使用了 Images 组件，需要配置
+  // 图片优化配置
   images: {
-    unoptimized: true,
-    domains: ['store.genmojionline.com'],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'store.genmojionline.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'gstatic.com',
+      },
+      {
+        protocol: 'https',
+        hostname: '**.gstatic.com',
+      },
+    ],
+    formats: ['image/avif', 'image/webp'],
   },
   output: 'standalone',
   trailingSlash: true,
-  
+
   // 性能优化配置
   compress: true,
   poweredByHeader: false,
-  
+
   // 实验性功能
   experimental: {
     optimizePackageImports: ['@radix-ui/react-icons', 'lucide-react'],
   },
-  
+
   // 缓存配置
   async headers() {
     return [
@@ -39,7 +52,7 @@ const nextConfig = {
         source: '/api/(.*)',
         headers: [
           {
-            key: 'Cache-Control', 
+            key: 'Cache-Control',
             value: 'public, s-maxage=60, stale-while-revalidate=300',
           },
         ],
