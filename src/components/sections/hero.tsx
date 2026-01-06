@@ -10,7 +10,12 @@ import { memo } from "react";
 
 const UnifiedGenmojiGenerator = dynamic(
   () => import("@/components/unified-genmoji-generator").then(mod => ({ default: mod.UnifiedGenmojiGenerator })),
-  { ssr: false, loading: () => null }
+  { 
+    ssr: false, 
+    loading: () => (
+      <div className="w-full h-[400px] rounded-xl border bg-card/50 animate-pulse shadow-sm border-muted-foreground/10" />
+    ) 
+  }
 );
 
 // Memoized Title component

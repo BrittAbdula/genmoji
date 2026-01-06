@@ -8,8 +8,10 @@ import { useState, useEffect, useRef } from "react";
 import { genMoji, uploadImage, GenerationLimitError, getSubscriptionStatus } from "@/lib/api";
 // Tooltip not needed after removing bottom model selector trigger
 import { Emoji } from "@/types/emoji";
+// Defer loading of heavy components
+import dynamic from 'next/dynamic';
 import { X, Plus, ArrowUp, Globe, Crown, Info } from 'lucide-react';
-import confetti from "canvas-confetti";
+// confetti is now dynamically imported in triggerConfetti
 import { useRouter } from "next/navigation";
 import { useTranslations, useLocale } from 'next-intl';
 import EmojiContainer from "@/components/emoji-container";
@@ -17,10 +19,11 @@ import { useMediaQuery } from "@/hooks/use-media-query";
 import { cn } from "@/lib/utils";
 import { useGenerationStore } from "@/store/generation-store";
 import { useAuthStore } from "@/store/auth-store";
-import { LoginDialog } from "./login-dialog";
-import { SubscriptionLimitDialog } from "./subscription-limit-dialog";
+// Dynamically import heavy modals
 import Image from "next/image";
-import CameraModal from "@/components/camera-modal";
+const LoginDialog = dynamic(() => import("./login-dialog").then(mod => mod.LoginDialog), { ssr: false });
+const SubscriptionLimitDialog = dynamic(() => import("./subscription-limit-dialog").then(mod => mod.SubscriptionLimitDialog), { ssr: false });
+const CameraModal = dynamic(() => import("@/components/camera-modal"), { ssr: false });
 
 // Gem Stickers substyle typing (avoid never when indexing)
 type GemSubStyleId =
@@ -499,7 +502,8 @@ export function UnifiedGenmojiGenerator({
     }
   };
 
-  const triggerConfetti = () => {
+  const triggerConfetti = async () => {
+    const confetti = (await import("canvas-confetti")).default;
     const count = 200;
     const defaults = {
       origin: { y: 0.7 },

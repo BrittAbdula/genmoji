@@ -12,7 +12,7 @@ export const inter = Inter({
 export const outfit = Outfit({
   subsets: ['latin'],
   display: 'swap',
-  preload: false, // 只预加载主字体，减少初始加载
+  preload: true, // 预加载主字体
   fallback: ['system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
 });
 

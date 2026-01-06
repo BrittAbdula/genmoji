@@ -4,6 +4,7 @@ import { inter } from '@/lib/fonts';
 import { cn } from "@/lib/utils";
 import type { Viewport } from "next";
 import Script from 'next/script';
+import NextTopLoader from 'nextjs-toploader';
 import "../globals.css";
 import { GoogleAnalytics, GoogleTagManager } from '@next/third-parties/google'
 import { Header } from "@/components/sections/header";
@@ -63,6 +64,17 @@ export default async function LocaleLayout(props: Props) {
         inter.className,
         'min-h-screen bg-background antialiased'
       )}>
+        <NextTopLoader
+          color="#a855f7"
+          initialPosition={0.08}
+          crawlSpeed={200}
+          height={3}
+          crawl={true}
+          showSpinner={false}
+          easing="ease"
+          speed={200}
+          shadow="0 0 10px #a855f7,0 0 5px #a855f7"
+        />
         <NextIntlClientProvider messages={messages} locale={locale}>
           <ThemeProvider
             attribute="class"
@@ -95,4 +107,4 @@ export default async function LocaleLayout(props: Props) {
       </body>
     </html>
   );
-} 
+}
