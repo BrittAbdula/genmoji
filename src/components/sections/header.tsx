@@ -23,6 +23,7 @@ import {
 } from "@/components/ui/navigation-menu";
 import { Wand2 } from "lucide-react";
 import React from "react";
+import { CATEGORY_LABELS } from '@/lib/categories';
 
 // 用于样式列表项的自定义组件
 const ListItem = React.forwardRef<
@@ -100,15 +101,41 @@ export function Header() {
               {nav('home')}
             </Link>
 
-            <Link
-              href="/prompts"
-              className={cn(
-                "text-sm font-medium transition-colors hover:text-foreground",
-                isActive('/prompts') ? "text-foreground" : "text-muted-foreground"
-              )}
-            >
-              {nav('prompts')}
-            </Link>
+            <NavigationMenu>
+              <NavigationMenuList>
+                <NavigationMenuItem>
+                  <NavigationMenuTrigger className={cn(
+                    "text-sm font-medium transition-colors hover:text-foreground bg-transparent hover:bg-transparent focus:bg-transparent data-[state=open]:bg-transparent",
+                    (isActive('/prompts') || pathname.startsWith('/prompts')) ? "text-foreground" : "text-muted-foreground"
+                  )}>
+                    {nav('prompts')}
+                  </NavigationMenuTrigger>
+                  <NavigationMenuContent>
+                    <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] bg-popover text-popover-foreground">
+                       <ListItem
+                        key="all"
+                        href="/prompts"
+                        title={nav('allCategories')}
+                      >
+                         {nav('categoriesDescription')}
+                      </ListItem>
+                      {Object.entries(CATEGORY_LABELS).map(([key, info]) => {
+                         if (key === 'all') return null;
+                         return (
+                          <ListItem
+                            key={key}
+                            href={`/prompts/${key}`}
+                            title={`${info.emoji} ${info.label}`}
+                          >
+                           {nav('exploreCategory')} {info.label}
+                          </ListItem>
+                         )
+                      })}
+                    </ul>
+                  </NavigationMenuContent>
+                </NavigationMenuItem>
+              </NavigationMenuList>
+            </NavigationMenu>
             
             {/* Styles 链接 */}
             <Link

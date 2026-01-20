@@ -24,6 +24,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { SubscriptionLimitDialog } from "@/components/subscription-limit-dialog";
+import { CATEGORY_LABELS } from "@/lib/categories";
 
 interface SubscriptionStatus {
   subscription: {
@@ -159,16 +160,39 @@ export function MobileDrawer() {
             {nav('home')}
           </Link>
 
-          <Link 
-            href="/prompts" 
-            onClick={handleLinkClick}
-            className={cn(
-              "text-sm font-medium transition-colors hover:text-foreground px-2 py-1.5 rounded-sm",
-              isActive('/prompts') ? "text-foreground bg-accent" : "text-muted-foreground"
-            )}
-          >
-            {nav('prompts')}
-          </Link>
+          {/* Prompts 子菜单 */}
+          {/* 使用与 Styles 相同的 state pattern，创建一个新的 state 变量或者重用现有的折叠逻辑 */}
+          <div className="border border-border/50 rounded-md overflow-hidden">
+             <Link 
+              href="/prompts" 
+              onClick={handleLinkClick}
+              className={cn(
+                "block text-sm font-medium transition-colors hover:text-foreground px-3 py-2 bg-muted/30",
+                 isActive('/prompts') ? "text-foreground bg-accent" : "text-muted-foreground"
+              )}
+            >
+              {nav('prompts')}
+            </Link>
+            <div className="bg-background/50 px-3 py-2 grid grid-cols-2 gap-2">
+                 {Object.entries(CATEGORY_LABELS).map(([key, info]) => {
+                  if (key === 'all') return null;
+                    return (
+                        <Link 
+                          key={key}
+                          href={`/prompts/${key}`}
+                          onClick={handleLinkClick}
+                          className={cn(
+                            "text-xs transition-colors hover:text-foreground py-1 flex items-center gap-1.5",
+                             isActive(`/prompts/${key}`) ? "text-foreground font-medium" : "text-muted-foreground"
+                          )}
+                        >
+                           <span>{info.emoji}</span>
+                           <span className="truncate">{info.label}</span>
+                        </Link>
+                    )
+                 })}
+            </div>
+          </div>
           
           {/* Styles 子菜单 */}
           <div className="border-t pt-2 mt-2">

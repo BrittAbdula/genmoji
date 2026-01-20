@@ -171,6 +171,7 @@ export default async function EmojiPage(props: Props) {
                 </nav>
                 
                 <EmojiDetailContainer emoji={emoji} />
+                
                 <div className="container mx-auto mt-8">
                     <div className="mt-8">
                         <h2 className="text-2xl font-bold mb-8 text-left">{t('similar')}</h2>

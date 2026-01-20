@@ -3,7 +3,7 @@ import { siteConfig } from "@/lib/config";
 import { setRequestLocale } from 'next-intl/server';
 import { CTA } from '@/components/sections/cta';
 import { TrendingPrompts } from '@/components/prompts/trending-prompts';
-import { CategoryPromptTabs } from '@/components/prompts/category-prompt-tabs';
+import { CategoryNav } from '@/components/prompts/category-nav';
 import { KeywordCloud } from '@/components/prompts/keyword-cloud';
 import { FAQ } from '@/components/sections/faq';
 import { API_BASE_URL } from '@/lib/api-config';
@@ -136,13 +136,15 @@ export default async function PromptsPage(props: Props) {
       <section className="py-12">
         <div className="text-center mb-8">
           <h2 className="text-3xl font-bold mb-3 flex items-center justify-center gap-2">
-            <span>💡</span> Prompt Ideas by Category
+            <span>💡</span> Browse by Category
           </h2>
           <p className="text-muted-foreground">
-            Browse prompts organized by emoji category
+            Explore prompts organized by emoji category
           </p>
         </div>
-        <CategoryPromptTabs locale={locale} />
+        <div className="mb-8">
+            <CategoryNav />
+        </div>
       </section>
 
       {/* FAQ */}

@@ -218,12 +218,12 @@
         "longPressToSave": "Long press Image to Copy or Save"
       },
       "meta": {
-        "title": "{prompt} | Genmoji Online",
-        "description": "Explore and download this {prompt} custom genmoji for FREE. Transparent background with no watermark. Create your own personalized genmojis with our AI-powered generator.",
-        "ogTitle": "{prompt} - Custom Genmoji",
-        "ogDescription": "Check out this {prompt} genmoji with transparent background. FREE to download and use. Create your own custom genmojis now!",
-        "twitterTitle": "{prompt} Genmoji",
-        "twitterDescription": "Check out this {prompt} genmoji with transparent background. FREE to download and use!"
+        "title": "{prompt} Emoji ✨ Free Download | Genmoji Online",
+        "description": "Get this {prompt} emoji for FREE! Transparent PNG, no watermark. Download instantly or create your own custom genmoji with AI. Works on Discord, WhatsApp, iMessage & more.",
+        "ogTitle": "{prompt} Emoji - Free AI Genmoji",
+        "ogDescription": "Free {prompt} genmoji with transparent background. Download now or create your own custom emoji with AI!",
+        "twitterTitle": "{prompt} Emoji 🎨 Free",
+        "twitterDescription": "Get this {prompt} genmoji FREE! Transparent PNG, no watermark. Create your own at genmojionline.com"
       },
       "time": {
         "justNow": "just now",
@@ -777,6 +777,49 @@
       "error": "Failed to load subscription information",
       "cancelError": "Failed to cancel subscription",
       "confirmCancel": "Are you sure you want to cancel your subscription? You will lose access to premium features at the end of your current billing period."
+    }
+  },
+  "android": {
+    "title": "Genmoji for Android - Free AI Emoji Generator",
+    "metaTitle": "Genmoji for Android | Create Custom Genmojis on any Phone",
+    "metaDescription": "Want Genmoji on Android? Use Genmoji Online to create custom AI emojis without iOS 18. Works on Samsung, Pixel, and all Android phones. Free download for WhatsApp & Telegram.",
+    "h1": "Genmoji for Android",
+    "subtitle": "Create Apple-style custom genmojis on your Android phone. No iPhone or iOS 18 required.",
+    "features": {
+      "title": "Why use Genmoji Online on Android?",
+      "anyDevice": "Works on Any Android",
+      "anyDeviceDesc": "Whether you have a Samsung Galaxy, Google Pixel, or Xiaomi, you can create genmojis instantly.",
+      "noUpdate": "No iOS 18 Needed",
+      "noUpdateDesc": "Don't wait for Apple Intelligence. Get the same creative power right now in your browser.",
+      "apps": "Compatible with Your Apps",
+      "appsDesc": "Download as transparent stickers for WhatsApp, Telegram, Discord, and Messenger."
+    },
+    "howTo": {
+      "title": "How to use Genmoji on Android",
+      "step1": "Type your idea",
+      "step1Desc": "Describe the emoji you want to create (e.g. 't-rex eating a burger').",
+      "step2": "Generate",
+      "step2Desc": "Our AI creates your custom genmoji in seconds.",
+      "step3": "Use Everywhere",
+      "step3Desc": "Download the image and send it as a sticker in any chat app."
+    },
+    "pwa": {
+      "title": "Install as an App",
+      "desc": "For the best experience, add Genmoji Online to your home screen:",
+      "step1": "Tap the menu icon (⋮) in Chrome",
+      "step2": "Select 'Add to Home screen'",
+      "step3": "Launch Genmoji directly from your app drawer"
+    },
+    "faq": {
+      "title": "Genmoji on Android FAQ",
+      "q1": "Is Genmoji available for Android?",
+      "a1": "Apple's native Genmoji feature is only for iOS 18. However, Genmoji Online allows you to create the exact same style of custom emojis on ANY Android device.",
+      "q2": "Can I use these in WhatsApp?",
+      "a2": "Yes! You can download your genmoji as a transparent image and send it as a sticker in WhatsApp, Telegram, and other apps.",
+      "q3": "Is it free?",
+      "a3": "Yes, Genmoji Online is free to use on Android. You can generate and download custom emojis without paying.",
+      "q4": "Do I need an app?",
+      "a4": "No, it runs directly in your Chrome browser. You can 'Add to Home Screen' for an app-like experience."
     }
   }
 }

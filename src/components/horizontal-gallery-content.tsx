@@ -1,5 +1,6 @@
 "use client";
 
+import { Link } from '@/i18n/routing';
 import { useState, useEffect, Suspense, useRef } from "react";
 import { getEmojis } from '@/lib/api'
 import EmojiContainer from "@/components/emoji-container";
@@ -78,7 +79,8 @@ export function HorizontalGalleryContent({model, initialEmojis}: {model?: string
   // 调整单元格样式确保完全正方形
   const cellWidth = "w-full min-h-[90px] aspect-square";
   // 紧凑网格：轻微间距（gap-1）、方形单元格
-  const gridClass = "grid w-full grid-cols-4 sm:grid-cols-6 md:grid-cols-8 lg:grid-cols-8 xl:grid-cols-10 place-content-stretch justify-items-stretch gap-1 max-w-7xl mx-auto";
+  // 紧凑网格：轻微间距（gap-1）、方形单元格
+  const gridClass = "grid w-full auto-rows-max grid-cols-2 place-content-stretch justify-items-stretch gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 max-w-7xl mx-auto";
 
   const renderContent = () => {
     if (loading) {
@@ -102,15 +104,24 @@ export function HorizontalGalleryContent({model, initialEmojis}: {model?: string
         }>
         <div className={gridClass}>
             {emojis.map((emoji, index) => (
-                <EmojiContainer 
-                  key={`${emoji.slug}-${index}`} 
-                  emoji={emoji} 
-                  size="sm" 
-                  lazyLoad={index > 8} 
-                  padding="p-0" 
-                  withBorder={false}
-                  priority={index <= 8}
-                />
+               <div key={`${emoji.slug}-${index}`} className="group relative flex flex-col overflow-hidden rounded-none border bg-card transition-shadow hover:shadow-md">
+                 <div className="aspect-square w-full">
+                    <EmojiContainer 
+                      emoji={emoji} 
+                      size="sm" 
+                      lazyLoad={index > 8} 
+                      padding="p-0" 
+                      withBorder={false}
+                      priority={index <= 8}
+                    />
+                 </div>
+                 <Link 
+                    href={`/emoji/${emoji.slug}`}
+                    className="flex flex-1 px-3 py-3 text-xs text-muted-foreground hover:text-primary transition-colors text-left"
+                 >
+                    {emoji.prompt}
+                 </Link>
+               </div>
             ))}
           </div>
         </Suspense>
