@@ -1,6 +1,6 @@
 import { Emoji, EmojiResponse } from "@/types/emoji";
 import { ActionType, ActionDetails, ActionResponse } from "@/types/action";
-import { 
+import {
   API_BASE_URL,
   API_ENDPOINTS,
   getApiUrl,
@@ -61,9 +61,9 @@ export async function getEmoji(slug: string, locale: string): Promise<Emoji> {
 
 // 2. 获取表情列表
 export async function getEmojis(
-  offset: number, 
-  limit: number, 
-  locale: string, 
+  offset: number,
+  limit: number,
+  locale: string,
   options?: {
     model?: string;
     category?: string;
@@ -75,21 +75,21 @@ export async function getEmojis(
   const { model, category, color, sort, isIndexable } = options || {};
   const endpoint = API_ENDPOINTS.EMOJI_LIST;
   const url = new URL(endpoint, API_BASE_URL);
-  
+
   // 设置基础参数
   url.searchParams.set('offset', offset.toString());
   url.searchParams.set('limit', limit.toString());
   url.searchParams.set('locale', locale);
-  
+
   // 设置可选参数
   if (model) url.searchParams.set('model', model);
   if (category) url.searchParams.set('category', category);
   if (color) url.searchParams.set('color', color);
   if (sort) url.searchParams.set('sort', sort);
   if (isIndexable !== undefined) url.searchParams.set('is_indexable', isIndexable.toString());
-  
+
   // console.log("API Request URL:", url.toString());
-  
+
   const res = await fetch(url, {
     next: { revalidate: 60 }
   });
@@ -105,7 +105,7 @@ export async function getEmojis(
 // 3. 获取相关表情
 export async function getRelatedEmojis(slug: string, locale: string): Promise<Emoji[]> {
   const baseUrl = getApiUrl(API_ENDPOINTS.EMOJI_RELATED(slug), locale);
-  const url = `${baseUrl}&limit=16`;
+  const url = `${baseUrl}&limit=18`;
 
   const res = await fetch(url, {
     next: { revalidate: 120 }
@@ -122,7 +122,7 @@ export async function getRelatedEmojis(slug: string, locale: string): Promise<Em
 // 4. 点赞表情
 export async function toggleLike(slug: string, locale: string): Promise<{ success: boolean; data?: { liked: boolean } }> {
   const url = `${API_BASE_URL}${API_ENDPOINTS.ACTION_LIKE(slug)}`;
-  
+
   const res = await fetch(url, {
     method: 'POST',
     headers: DEFAULT_HEADERS,
@@ -151,7 +151,7 @@ export async function performAction(
   details?: ActionDetails
 ): Promise<ActionResponse> {
   const url = `${API_BASE_URL}${API_ENDPOINTS.ACTION_GENERAL(slug)}`;
-  
+
   const res = await fetch(url, {
     method: 'POST',
     headers: DEFAULT_HEADERS,
@@ -194,13 +194,13 @@ export async function genMoji(
 
   if (!res.ok) {
     const errorData = await res.json().catch(() => null);
-    
+
     // 处理 429 状态码 - 达到生成限制/credits
     if (res.status === 429) {
       const message = errorData?.error || 'Generation limit exceeded';
       throw new GenerationLimitError(message, errorData?.details || {});
     }
-    
+
     throw new Error(errorData?.error || 'Failed to generate emoji');
   }
   return res.json();
@@ -236,7 +236,7 @@ export async function getEmojiGroups(locale: string): Promise<{
   colors: { name: string; translated_name: string; count?: number }[];
 }> {
   const url = getApiUrl(API_ENDPOINTS.EMOJI_GROUPS, locale);
-  
+
   const res = await fetch(url, {
     next: { revalidate: 86400 } // 缓存24小时
   });
@@ -255,11 +255,11 @@ export async function getEmojiGroups(locale: string): Promise<{
     }
   };
   // console.log("API Request URL:", response.data);
-  
+
   if (!response.success) {
     throw new Error(response.error || 'Failed to fetch emoji groups');
   }
-  
+
   return response.data || { models: [], categories: [], colors: [] };
 }
 
@@ -309,7 +309,7 @@ export async function getSubscriptionPlans(): Promise<{
   }>;
 }> {
   const url = `${API_BASE_URL}${API_ENDPOINTS.SUBSCRIPTION_PLANS}`;
-  
+
   const res = await fetch(url, {
     headers: DEFAULT_HEADERS
   });
@@ -317,7 +317,7 @@ export async function getSubscriptionPlans(): Promise<{
   if (!res.ok) {
     throw new Error('Failed to fetch subscription plans');
   }
-  
+
   return res.json();
 }
 
@@ -335,7 +335,7 @@ export async function getSubscriptionStatus(token: string): Promise<{
   };
 }> {
   const url = `${API_BASE_URL}${API_ENDPOINTS.SUBSCRIPTION_STATUS}`;
-  
+
   const res = await fetch(url, {
     headers: getAuthHeaders(token)
   });
@@ -343,7 +343,7 @@ export async function getSubscriptionStatus(token: string): Promise<{
   if (!res.ok) {
     throw new Error('Failed to fetch subscription status');
   }
-  
+
   return res.json();
 }
 
@@ -362,7 +362,7 @@ export async function createSubscription(
   };
 }> {
   const url = `${API_BASE_URL}${API_ENDPOINTS.SUBSCRIPTION_CREATE}`;
-  
+
   const res = await fetch(url, {
     method: 'POST',
     headers: getAuthHeaders(token),
@@ -372,7 +372,7 @@ export async function createSubscription(
   if (!res.ok) {
     throw new Error('Failed to create subscription');
   }
-  
+
   return res.json();
 }
 
@@ -383,7 +383,7 @@ export async function cancelSubscription(token: string): Promise<{
   error?: string;
 }> {
   const url = `${API_BASE_URL}${API_ENDPOINTS.SUBSCRIPTION_CANCEL}`;
-  
+
   const res = await fetch(url, {
     method: 'POST',
     headers: getAuthHeaders(token)
@@ -392,6 +392,6 @@ export async function cancelSubscription(token: string): Promise<{
   if (!res.ok) {
     throw new Error('Failed to cancel subscription');
   }
-  
+
   return res.json();
 }

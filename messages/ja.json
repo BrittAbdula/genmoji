@@ -159,6 +159,12 @@
       "title": "非公開",
       "membersOnly": "メンバー限定"
     },
+    "publicVisibility": {
+      "title": "公開設定",
+      "tooltip": "このオプションを有効にすると、出力が選択されて「探索」フィードに公開される可能性があります。",
+      "termsLink": "利用規約を読む",
+      "membersOnly": "メンバー限定"
+    },
     "cameraModalTitle": "写真を撮影",
     "camera": {
       "takePhoto": "撮影",

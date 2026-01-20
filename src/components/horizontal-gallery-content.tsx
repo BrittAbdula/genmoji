@@ -19,7 +19,7 @@ export function HorizontalGalleryContent({model, initialEmojis}: {model?: string
   const [emojis, setEmojis] = useState<Emoji[]>(initialEmojis ?? []);
   const [loading, setLoading] = useState<boolean>(!(initialEmojis && initialEmojis.length > 0));
   const [error, setError] = useState<string | null>(null);
-  const limit = 40; // Reduce initial grid for better performance
+  const limit = 36; // Reduce initial grid for better performance
   const locale = useLocale();
   const [selectedModel, setSelectedModel] = useState<string | null>(null);
   const didMountRef = useRef(false);
@@ -31,11 +31,14 @@ export function HorizontalGalleryContent({model, initialEmojis}: {model?: string
     { id: 'liquid-metal', name: t('generator.models.liquid-metal.name'), image: "/emojis/Liquid-Metal.png" },
     { id: 'claymation', name: t('generator.models.claymation.name'), image: "/emojis/Claymation.png" },
     { id: '3d', name: t('generator.models.3d.name'), image: "/emojis/3d.png" },
+    { id: 'handdrawn', name: t('generator.models.handdrawn.name'), image: "/emojis/handdrawn.png" },
     { id: 'origami', name: t('generator.models.origami.name'), image: "/emojis/Origami.png" },
     { id: 'pixel', name: t('generator.models.pixel.name'), image: "/emojis/pixel.png" },
     { id: 'cross-stitch', name: t('generator.models.cross-stitch.name'), image: "/emojis/Cross-stitch-Pixel.png" },
     { id: 'steampunk', name: t('generator.models.steampunk.name'), image: "/emojis/Steampunk.png" },
-    { id: 'handdrawn', name: t('generator.models.handdrawn.name'), image: "/emojis/handdrawn.png" },
+    { id: 'doodle', name: t('generator.models.doodle.name'), image: "https://store.genmojionline.com/cdn-cgi/imagedelivery/DEOVdDdfeGzASe0KdtD7FA/671e0a40-ff72-4531-069f-6c86cb801200/public" },
+    { id: 'chibi', name: t('generator.models.chibi.name'), image: "https://store.genmojionline.com/cdn-cgi/imagedelivery/DEOVdDdfeGzASe0KdtD7FA/40baee31-30d2-4890-e853-e9fbd07ab000/public" },
+    { id: 'plushie', name: t('generator.models.plushie.name'), image: "https://store.genmojionline.com/cdn-cgi/imagedelivery/DEOVdDdfeGzASe0KdtD7FA/c084cf24-fc12-4f80-1b7c-76cab6b2da00/public" },
     { id: 'gemstickers', name: t('generator.models.gemstickers.name'), image: "https://gstatic.com/synthidtextdemo/images/gemstickers/dot/pixel_out.png" },
   ];
 

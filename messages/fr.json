@@ -166,6 +166,12 @@
       "title": "Privé",
       "membersOnly": "Réservé aux membres"
     },
+    "publicVisibility": {
+      "title": "Visibilité Publique",
+      "tooltip": "Lorsque cette option est activée, le résultat peut être sélectionné et publié dans le flux Explorer.",
+      "termsLink": "Lire nos conditions",
+      "membersOnly": "Réservé aux membres"
+    },
     "cameraModalTitle": "Prendre une photo",
     "camera": {
       "takePhoto": "Prendre une photo",
