@@ -31,7 +31,12 @@
   "hero": {
     "title": "Genmoji Online — Free AI Genmoji Generator",
     "subtitle": "Create custom Apple-style genmojis from text or photos. Free, no watermark.",
-    "cta": "Generate Genmoji"
+    "cta": "Generate Genmoji",
+    "trustBadges": {
+      "users": "10K+ users",
+      "noCard": "No credit card required",
+      "freeToTry": "Free to try"
+    }
   },
   "seo": {
     "title": "Genmoji Online — Free AI Genmoji Generator & Custom Emoji Maker",
@@ -388,7 +393,18 @@
     },
     "recentTitle": "Recent Genmojis",
     "generationStatus": {
-      "starting": "Starting generation..."
+      "starting": "Starting generation...",
+      "creating": "Creating magic...",
+      "processing": "Processing your genmoji...",
+      "almostDone": "Almost there...",
+      "messages": [
+        "Mixing colors... 🎨",
+        "Adding magic sparkles... ✨",
+        "Shaping your emoji... 🔮",
+        "Polishing the details... 💎",
+        "Almost ready... 🚀"
+      ],
+      "estimatedTime": "~5 seconds"
     },
     "error": {
       "failed": "Generation failed. Please try again."

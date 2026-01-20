@@ -752,6 +752,7 @@ export function UnifiedGenmojiGenerator({
                 className={cn(
                   "flex items-center gap-2 shrink-0 border rounded-full pr-3 pl-2 py-2",
                   "transition-colors bg-background",
+                  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2",
                   model === m.id
                     ? "border-primary/40 bg-primary/5"
                     : "border-border hover:bg-muted/60"
@@ -769,6 +770,7 @@ export function UnifiedGenmojiGenerator({
               className={cn(
                 "flex items-center gap-1.5 shrink-0 border rounded-full px-3 py-2",
                 "transition-colors",
+                "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2",
                 (isStylesExpanded || isCurrentModelExpanded)
                   ? "border-primary/40 bg-primary/5"
                   : "border-border hover:bg-muted/60"
@@ -795,6 +797,7 @@ export function UnifiedGenmojiGenerator({
                     className={cn(
                       "flex items-center gap-2 shrink-0 border rounded-full pr-3 pl-2 py-2",
                       "transition-colors bg-background",
+                      "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2",
                       model === m.id
                         ? "border-primary/40 bg-primary/5"
                         : "border-border hover:bg-muted/60"
@@ -825,6 +828,7 @@ export function UnifiedGenmojiGenerator({
                       className={cn(
                         "shrink-0 rounded-xl border p-2 text-left",
                         "bg-background hover:bg-muted/60",
+                        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2",
                         selected ? "border-primary/50 shadow-sm" : "border-border"
                       )}
                       aria-pressed={selected}
@@ -858,6 +862,7 @@ export function UnifiedGenmojiGenerator({
                       onClick={() => handleEmotionSelect(key)}
                       className={cn(
                         "px-3 py-1.5 text-xs rounded-full border",
+                        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2",
                         selected ? "border-primary/50 bg-primary/10" : "border-border bg-muted/40 hover:bg-muted/70"
                       )}
                       aria-pressed={selected}
@@ -872,8 +877,18 @@ export function UnifiedGenmojiGenerator({
         )}
       </div>
       {isGenerating && (
-        <div className="w-full">
-          <Progress value={progress} className="h-1" />
+        <div className="w-full space-y-2">
+          <Progress value={progress} className="h-1.5" aria-valuenow={progress} aria-valuemin={0} aria-valuemax={100} />
+          <div className="flex items-center justify-between text-xs text-muted-foreground px-1">
+            <span className="animate-pulse">
+              {progress < 20 && "🎨 Mixing colors..."}
+              {progress >= 20 && progress < 40 && "✨ Adding magic sparkles..."}
+              {progress >= 40 && progress < 60 && "🔮 Shaping your emoji..."}
+              {progress >= 60 && progress < 80 && "💎 Polishing the details..."}
+              {progress >= 80 && "🚀 Almost ready..."}
+            </span>
+            <span className="text-muted-foreground/70">~5s</span>
+          </div>
         </div>
       )}
 
@@ -888,7 +903,8 @@ export function UnifiedGenmojiGenerator({
                 type="button"
                 onClick={() => setActiveTab('text')}
                 className={cn(
-                  "px-3 py-1.5 text-xs sm:text-sm rounded-full",
+                  "px-3 py-1.5 text-xs sm:text-sm rounded-full transition-colors",
+                  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2",
                   activeTab === 'text' ? 'bg-background shadow font-medium' : 'text-muted-foreground hover:text-foreground'
                 )}
               >
@@ -898,7 +914,8 @@ export function UnifiedGenmojiGenerator({
                 type="button"
                 onClick={() => setActiveTab('image')}
                 className={cn(
-                  "px-3 py-1.5 text-xs sm:text-sm rounded-full",
+                  "px-3 py-1.5 text-xs sm:text-sm rounded-full transition-colors",
+                  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2",
                   activeTab === 'image' ? 'bg-background shadow font-medium' : 'text-muted-foreground hover:text-foreground'
                 )}
               >
@@ -1144,6 +1161,7 @@ export function UnifiedGenmojiGenerator({
                     "px-4 py-2 text-sm rounded-full border border-border/50",
                     "bg-muted/40 hover:bg-muted/70 text-muted-foreground hover:text-foreground",
                     "transition-all duration-200 hover:shadow-md hover:border-border/70 hover:scale-105",
+                    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2",
                     "backdrop-blur-sm",
                     "whitespace-nowrap"
                   )}

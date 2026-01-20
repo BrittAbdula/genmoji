@@ -5,7 +5,7 @@ import { cn } from '@/lib/utils';
 import { useTranslations } from 'next-intl';
 import dynamic from 'next/dynamic';
 import { Button } from "@/components/ui/button";
-import { Sparkles } from "lucide-react";
+import { Sparkles, Star, Shield, Zap } from "lucide-react";
 import { memo } from "react";
 
 const UnifiedGenmojiGenerator = dynamic(
@@ -97,6 +97,22 @@ export function Hero() {
             <div className="flex flex-col items-center max-w-5xl mx-auto text-center mb-6">
               <Title title={t('title')} />
               <Subtitle text={t('subtitle')} />
+              
+              {/* Trust Badges */}
+              <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-6 mt-5 text-sm text-muted-foreground">
+                <span className="flex items-center gap-1.5 bg-muted/50 px-3 py-1.5 rounded-full">
+                  <Star className="w-4 h-4 text-yellow-500" fill="currentColor" />
+                  <span>{t('trustBadges.users')}</span>
+                </span>
+                <span className="flex items-center gap-1.5 bg-muted/50 px-3 py-1.5 rounded-full">
+                  <Zap className="w-4 h-4 text-green-500" />
+                  <span>{t('trustBadges.freeToTry')}</span>
+                </span>
+                <span className="hidden sm:flex items-center gap-1.5 bg-muted/50 px-3 py-1.5 rounded-full">
+                  <Shield className="w-4 h-4 text-blue-500" />
+                  <span>{t('trustBadges.noCard')}</span>
+                </span>
+              </div>
             </div>
 
             <div className="w-full max-w-2xl mx-auto">

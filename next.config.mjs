@@ -20,7 +20,22 @@ const nextConfig = {
         hostname: '**.gstatic.com',
       },
     ],
+    // Next.js 16: 本地图片需要显式配置 localPatterns
+    localPatterns: [
+      {
+        pathname: '/emojis/**',
+      },
+      {
+        pathname: '/**',
+      },
+    ],
     formats: ['image/avif', 'image/webp'],
+    dangerouslyAllowSVG: true,
+    contentDispositionType: 'attachment',
+    // Next.js 16 + Turbopack: 使用自定义 loader 绕过图片优化代理
+    // 这解决了 upstream image resolved to private ip 和 404 问题
+    loader: 'custom',
+    loaderFile: './src/lib/image-loader.js',
   },
   output: 'standalone',
   trailingSlash: true,

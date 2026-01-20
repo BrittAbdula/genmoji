@@ -31,7 +31,12 @@
   "hero": {
     "title": "Genmoji Online — 免费 AI Genmoji 生成器",
     "subtitle": "免费 AI genmoji/emoji 生成器，支持文字生成与以图生图",
-    "cta": "生成 Genmoji"
+    "cta": "生成 Genmoji",
+    "trustBadges": {
+      "users": "10000+ 用户",
+      "noCard": "无需信用卡",
+      "freeToTry": "免费试用"
+    }
   },
   "seo": {
     "title": "Genmoji Online — 免费 AI Genmoji 生成器 | 自定义表情制作",
@@ -389,7 +394,18 @@
     },
     "recentTitle": "最近生成的 Genmoji",
     "generationStatus": {
-      "starting": "开始生成..."
+      "starting": "开始生成...",
+      "creating": "创造魔法中...",
+      "processing": "正在处理您的 genmoji...",
+      "almostDone": "快完成了...",
+      "messages": [
+        "调配色彩中... 🎨",
+        "添加魔法闪光... ✨",
+        "塑造您的表情... 🔮",
+        "精雕细节中... 💎",
+        "即将完成... 🚀"
+      ],
+      "estimatedTime": "约5秒"
     },
     "error": {
       "failed": "生成失败。请重试。"

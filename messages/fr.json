@@ -31,7 +31,12 @@
   "hero": {
     "title": "Genmoji Online — Générateur Genmoji IA Gratuit",
     "subtitle": "Exprimez-vous avec des genmoji personnalisés alimentés par l'IA",
-    "cta": "Générer un Genmoji"
+    "cta": "Générer un Genmoji",
+    "trustBadges": {
+      "users": "10K+ utilisateurs",
+      "noCard": "Pas de carte de crédit requise",
+      "freeToTry": "Gratuit à essayer"
+    }
   },
   "seo": {
     "title": "Genmoji Online — Générateur Genmoji IA Gratuit",
@@ -141,7 +146,18 @@
     },
     "recentTitle": "Genmojis récents",
     "generationStatus": {
-      "starting": "Démarrage de la génération..."
+      "starting": "Démarrage de la génération...",
+      "creating": "Création en cours...",
+      "processing": "Traitement de votre genmoji...",
+      "almostDone": "Presque terminé...",
+      "messages": [
+        "Mélange des couleurs... 🎨",
+        "Ajout des étincelles magiques... ✨",
+        "Façonnage de votre emoji... 🔮",
+        "Polissage des détails... 💎",
+        "Bientôt prêt... 🚀"
+      ],
+      "estimatedTime": "~5 secondes"
     },
     "error": {
       "failed": "La génération a échoué. Veuillez réessayer."
