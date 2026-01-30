@@ -1,4 +1,5 @@
 import { siteConfig } from "@/lib/config";
+import { normalizeBaseUrl, normalizePath, withTrailingSlash } from "@/lib/url";
 import { type ClassValue, clsx } from "clsx";
 import { Metadata } from "next";
 import { twMerge } from "tailwind-merge";
@@ -26,8 +27,37 @@ export function constructMetadata({
   type?: "website" | "article";
   [key: string]: any;
 } = {}): Metadata {
-  const fullUrl = `${siteConfig.url}/${path}`;
+  const normalizedPath = normalizePath(path);
+  const baseUrl = normalizeBaseUrl(siteConfig.url);
+  const fullUrl = withTrailingSlash(`${baseUrl}${normalizedPath}`);
   const ogImage = image || siteConfig.seo.openGraph.images[0].url;
+  const { openGraph: overrideOpenGraph, twitter: overrideTwitter, ...rest } = props;
+
+  const defaultOpenGraph = {
+    type,
+    locale: siteConfig.seo.openGraph.locale,
+    url: fullUrl,
+    siteName: siteConfig.seo.openGraph.siteName,
+    title: title || siteConfig.seo.title,
+    description: description || siteConfig.description,
+    images: [
+      {
+        url: ogImage,
+        width: 1200,
+        height: 630,
+        alt: title || siteConfig.seo.title,
+      },
+    ],
+  };
+
+  const defaultTwitter = {
+    card: siteConfig.seo.twitter.cardType as "summary" | "summary_large_image" | "player" | "app",
+    title: title || siteConfig.seo.title,
+    description: description || siteConfig.description,
+    site: siteConfig.seo.twitter.site,
+    creator: siteConfig.seo.twitter.handle,
+    images: [ogImage],
+  };
 
   return {
     metadataBase: new URL(siteConfig.url),
@@ -40,30 +70,14 @@ export function constructMetadata({
     
     // Open Graph
     openGraph: {
-      type,
-      locale: siteConfig.seo.openGraph.locale,
-      url: fullUrl,
-      siteName: siteConfig.seo.openGraph.siteName,
-      title: title || siteConfig.seo.title,
-      description: description || siteConfig.description,
-      images: [
-        {
-          url: ogImage,
-          width: 1200,
-          height: 630,
-          alt: title || siteConfig.seo.title,
-        },
-      ],
+      ...defaultOpenGraph,
+      ...(overrideOpenGraph || {}),
     },
 
     // Twitter
     twitter: {
-      card: siteConfig.seo.twitter.cardType as "summary" | "summary_large_image" | "player" | "app",
-      title: title || siteConfig.seo.title,
-      description: description || siteConfig.description,
-      site: siteConfig.seo.twitter.site,
-      creator: siteConfig.seo.twitter.handle,
-      images: [ogImage],
+      ...defaultTwitter,
+      ...(overrideTwitter || {}),
     },
 
     // 其他元数据
@@ -93,7 +107,7 @@ export function constructMetadata({
       apple: '/apple-touch-icon.png',
     },
 
-    ...props,
+    ...rest,
   };
 }
 
@@ -180,4 +194,3 @@ export function getOptimizedImageUrl(url: string, width: number = 800): string {
   
   return `${baseUrl}cdn-cgi/image/format=webp,width=${width}/${imagePath}`;
 }
-

@@ -2,6 +2,7 @@
 import { Metadata } from 'next';
 import { getEmojis } from '@/lib/api';
 import { siteConfig } from '@/lib/config';
+import { buildAlternates } from '@/lib/seo';
 import { getLocale, getTranslations } from 'next-intl/server';
 import Link from 'next/link';
 import { ChevronRight, Home, Palette, Sparkles, ArrowLeft, Info, CheckCircle2, Lightbulb, Wand2, BookOpen, Shield } from 'lucide-react';
@@ -247,23 +248,7 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
       description,
       images: [category.image],
     },
-    alternates: {
-      canonical:
-        locale === 'en'
-          ? `${siteConfig.url}/styles/${style}`
-          : `${siteConfig.url}/${locale}/styles/${style}`,
-      languages: {
-        'x-default': `${siteConfig.url}/styles/${style}`,
-        en: `${siteConfig.url}/styles/${style}`,
-        'en-US': `${siteConfig.url}/styles/${style}`,
-        ja: `${siteConfig.url}/ja/styles/${style}`,
-        'ja-JP': `${siteConfig.url}/ja/styles/${style}`,
-        fr: `${siteConfig.url}/fr/styles/${style}`,
-        'fr-FR': `${siteConfig.url}/fr/styles/${style}`,
-        zh: `${siteConfig.url}/zh/styles/${style}`,
-        'zh-CN': `${siteConfig.url}/zh/styles/${style}`,
-      },
-    },
+    alternates: buildAlternates(`/styles/${style}`, locale),
   };
 }
 
@@ -295,7 +280,7 @@ export default async function StylePage(props: Props) {
   }
 
   // 拉取最近作品
-  const initialEmojis = await getEmojis(0, 24, locale, { model: style, sort: 'latest' });
+  const initialEmojis = await getEmojis(0, 24, locale, { model: style, sort: 'quality', isIndexable: true });
 
   // 生成 Prompt 模板（基于 name）
   const promptIdeas: string[] = [

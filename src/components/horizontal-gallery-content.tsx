@@ -48,8 +48,9 @@ export function HorizontalGalleryContent({model, initialEmojis}: {model?: string
       const effectiveModel = selectedModel ?? model ?? undefined;
       const newEmojis = await getEmojis(0, limit, locale, effectiveModel ? {
         sort: 'latest',
-        model: effectiveModel
-      } : { sort: 'latest' });
+        model: effectiveModel,
+        isIndexable: true,
+      } : { sort: 'latest', isIndexable: true });
       setEmojis(newEmojis || []);
     } catch (error) {
       console.error('Error fetching emojis:', error);

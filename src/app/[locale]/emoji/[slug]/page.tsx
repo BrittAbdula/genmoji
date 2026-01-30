@@ -11,6 +11,7 @@ import { getLocale } from "next-intl/server";
 import { siteConfig } from "@/lib/config";
 import { ScrollToTop } from '@/components/scroll-to-top';
 import { ChevronRight, Home, Palette } from 'lucide-react';
+import { buildAlternates, buildCanonicalUrl, buildOgImageUrl, isIndexableEmoji } from '@/lib/seo';
 
 // Add Edge Runtime configuration
 export const runtime = 'edge';
@@ -26,7 +27,13 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
         const emoji = await getEmoji(slug, locale);
         const t = await getTranslations('emoji.detail.meta');
          // 检查 slug 是否包含 '--'，如果包含则添加 robots 元标签阻止搜索引擎收录
-         const robotsMeta = slug.includes('--') || !emoji.is_indexable ? { robots: 'noindex' } : { robots: 'index' };
+         const shouldIndex = isIndexableEmoji(emoji);
+         const robotsMeta = shouldIndex ? {} : { robots: { index: false, follow: false } };
+        const ogImageUrl = buildOgImageUrl({
+          locale,
+          title: t('ogTitle', { prompt: emoji.prompt }),
+          image: emoji.image_url,
+        });
         //  const robotsMeta = { robots: 'noindex' };
 
 
@@ -37,10 +44,11 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
                 title: t('ogTitle', { prompt: emoji.prompt }),
                 description: t('ogDescription', { prompt: emoji.prompt }),
                 type: 'article',
+                url: buildCanonicalUrl(`/emoji/${emoji.slug}`, locale),
                 images: [{
-                    url: emoji.image_url,
-                    width: 256,
-                    height: 256,
+                    url: ogImageUrl,
+                    width: 1200,
+                    height: 630,
                     alt: `${emoji.prompt} genmoji`,
                 }],
             },
@@ -48,7 +56,7 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
                 card: 'summary_large_image',
                 title: t('twitterTitle', { prompt: emoji.prompt }),
                 description: t('twitterDescription', { prompt: emoji.prompt }),
-                images: [emoji.image_url],
+                images: [ogImageUrl],
             },
             icons: {
                 icon: emoji.image_url,
@@ -59,20 +67,7 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
                     url: emoji.image_url,
                 },
             },
-            alternates: {
-                canonical: locale === 'en' ? `${siteConfig.url}/emoji/${emoji.slug}` : `${siteConfig.url}/${locale}/emoji/${emoji.slug}`,
-                languages: {
-                    'x-default': `${siteConfig.url}/emoji/${emoji.slug}`,
-                    'en': `${siteConfig.url}/emoji/${emoji.slug}`,
-                    'en-US': `${siteConfig.url}/emoji/${emoji.slug}`,
-                    'ja': `${siteConfig.url}/ja/emoji/${emoji.slug}`,
-                    'ja-JP': `${siteConfig.url}/ja/emoji/${emoji.slug}`,
-                    'fr': `${siteConfig.url}/fr/emoji/${emoji.slug}`,
-                    'fr-FR': `${siteConfig.url}/fr/emoji/${emoji.slug}`,
-                    'zh': `${siteConfig.url}/zh/emoji/${emoji.slug}`,
-                    'zh-CN': `${siteConfig.url}/zh/emoji/${emoji.slug}`,
-                },
-            },
+            alternates: buildAlternates(`/emoji/${emoji.slug}`, locale),
             path: locale === 'en' ? `emoji/${emoji.slug}/` : `${locale}/emoji/${emoji.slug}/`,
             ...robotsMeta,
         });
@@ -93,6 +88,7 @@ export default async function EmojiPage(props: Props) {
         const emoji = await getEmoji(slug, locale);
         const t = await getTranslations('emoji');
         const tCommon = await getTranslations('common');
+        const tNav = await getTranslations('common.navigation');
 
         const jsonLd = {
             '@context': 'https://schema.org',
@@ -123,12 +119,45 @@ export default async function EmojiPage(props: Props) {
             isAccessibleForFree: true,
             usageTerms: 'Free for any use - no attribution required. You can use, modify, and distribute this genmoji without any restrictions.'
         };
+        const breadcrumbLd = {
+            '@context': 'https://schema.org',
+            '@type': 'BreadcrumbList',
+            itemListElement: [
+                {
+                    '@type': 'ListItem',
+                    position: 1,
+                    name: tNav('home'),
+                    item: buildCanonicalUrl('/', locale),
+                },
+                {
+                    '@type': 'ListItem',
+                    position: 2,
+                    name: tNav('styles'),
+                    item: buildCanonicalUrl('/styles', locale),
+                },
+                {
+                    '@type': 'ListItem',
+                    position: 3,
+                    name: emoji.model,
+                    item: buildCanonicalUrl(`/styles/${emoji.model}`, locale),
+                },
+                {
+                    '@type': 'ListItem',
+                    position: 4,
+                    name: emoji.prompt,
+                    item: buildCanonicalUrl(`/emoji/${emoji.slug}`, locale),
+                },
+            ],
+        };
 
         return (
             <div className="py-4">
                 <ScrollToTop />
                 <Script id="json-ld" type="application/ld+json">
                     {JSON.stringify(jsonLd)}
+                </Script>
+                <Script id="ld-breadcrumb-emoji" type="application/ld+json">
+                    {JSON.stringify(breadcrumbLd)}
                 </Script>
                 
                 {/* Breadcrumb navigation */}

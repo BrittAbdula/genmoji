@@ -3,6 +3,8 @@ import CategoryPageClient from './client';
 import { getEmojiGroups, getEmojis } from '@/lib/api';
 import { siteConfig } from "@/lib/config";
 import { getLocale } from 'next-intl/server';
+import { buildAlternates, buildCanonicalUrl } from '@/lib/seo';
+import Script from 'next/script';
 
 export const runtime = 'edge';
 
@@ -44,20 +46,7 @@ export async function generateMetadata(props: {
       description,
       images: ['/og-image.png'],
     },
-    alternates: {
-      canonical: locale === 'en' ? `${siteConfig.url}/category/${slug}` : `${siteConfig.url}/${locale}/category/${slug}`,
-      languages: {
-        'x-default': `${siteConfig.url}/category/${slug}`,
-        'en': `${siteConfig.url}/category/${slug}`,
-        'en-US': `${siteConfig.url}/category/${slug}`,
-        'ja': `${siteConfig.url}/ja/category/${slug}`,
-        'ja-JP': `${siteConfig.url}/ja/category/${slug}`,
-        'fr': `${siteConfig.url}/fr/category/${slug}`,
-        'fr-FR': `${siteConfig.url}/fr/category/${slug}`,
-        'zh': `${siteConfig.url}/zh/category/${slug}`,
-        'zh-CN': `${siteConfig.url}/zh/category/${slug}`,
-      },
-    },
+    alternates: buildAlternates(`/category/${slug}`, locale),
   };
 }
 
@@ -67,7 +56,8 @@ async function getInitialData(slug: string, locale: string) {
   const groups = await getEmojiGroups(locale);
   const initialEmojis = await getEmojis(0, 24, locale, {
     category: categoryName,
-    sort: 'latest'
+    sort: 'quality',
+    isIndexable: true,
   });
   
   return {
@@ -95,16 +85,47 @@ export default async function CategoryPage(props: {
   
   const initialEmojis = await getEmojis(0, 24, locale, { 
     category: categoryName,
-    sort: 'latest'
+    sort: 'quality',
+    isIndexable: true,
   });
+
+  const breadcrumbLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      {
+        '@type': 'ListItem',
+        position: 1,
+        name: 'Home',
+        item: buildCanonicalUrl('/', locale),
+      },
+      {
+        '@type': 'ListItem',
+        position: 2,
+        name: 'Categories',
+        item: buildCanonicalUrl('/category', locale),
+      },
+      {
+        '@type': 'ListItem',
+        position: 3,
+        name: categoryTranslatedName,
+        item: buildCanonicalUrl(`/category/${slug}`, locale),
+      },
+    ],
+  };
   
   return (
-    <CategoryPageClient 
-      params={{ slug, locale }} 
-      initialData={{ 
-        emojis: initialEmojis,
-        categoryName: categoryTranslatedName
-      }} 
-    />
+    <>
+      <Script id="ld-breadcrumb-category-detail" type="application/ld+json">
+        {JSON.stringify(breadcrumbLd)}
+      </Script>
+      <CategoryPageClient 
+        params={{ slug, locale }} 
+        initialData={{ 
+          emojis: initialEmojis,
+          categoryName: categoryTranslatedName
+        }} 
+      />
+    </>
   );
 } 

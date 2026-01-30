@@ -1,5 +1,6 @@
 import { Metadata } from 'next';
 import { siteConfig } from "@/lib/config";
+import { buildAlternates } from '@/lib/seo';
 import { getLocale, setRequestLocale } from 'next-intl/server';
 import { UnifiedGenmojiGenerator } from '@/components/unified-genmoji-generator';
 import { HorizontalGalleryContent } from '@/components/horizontal-gallery-content';
@@ -40,20 +41,7 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
       description,
       images: ['/og-image.png'],
     },
-    alternates: {
-      canonical: locale === 'en' ? `${siteConfig.url}/genmoji-maker` : `${siteConfig.url}/${locale}/genmoji-maker`,
-      languages: {
-        'x-default': `${siteConfig.url}/genmoji-maker`,
-        'en': `${siteConfig.url}/genmoji-maker`,
-        'en-US': `${siteConfig.url}/genmoji-maker`,
-        'ja': `${siteConfig.url}/ja/genmoji-maker`,
-        'ja-JP': `${siteConfig.url}/ja/genmoji-maker`,
-        'fr': `${siteConfig.url}/fr/genmoji-maker`,
-        'fr-FR': `${siteConfig.url}/fr/genmoji-maker`,
-        'zh': `${siteConfig.url}/zh/genmoji-maker`,
-        'zh-CN': `${siteConfig.url}/zh/genmoji-maker`,
-      },
-    },
+    alternates: buildAlternates('/genmoji-maker', locale),
   };
 }
 

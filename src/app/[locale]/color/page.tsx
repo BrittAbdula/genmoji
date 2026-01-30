@@ -1,9 +1,11 @@
 import { Metadata } from 'next';
 import { getEmojiGroups } from '@/lib/api';
 import { siteConfig } from '@/lib/config';
+import { buildAlternates, buildCanonicalUrl } from '@/lib/seo';
 import { getLocale } from 'next-intl/server';
 import Link from 'next/link';
 import { ChevronRight, Home } from 'lucide-react';
+import Script from 'next/script';
 
 export const runtime = 'edge';
 
@@ -32,20 +34,7 @@ export async function generateMetadata(): Promise<Metadata> {
       description: 'Browse our collection of genmojis by color. Find genmojis in your favorite colors to express yourself colorfully.',
       images: ['/og-image.png'],
     },
-    alternates: {
-      canonical: locale === 'en' ? `${siteConfig.url}/color` : `${siteConfig.url}/${locale}/color`,
-      languages: {
-        'x-default': `${siteConfig.url}/color`,
-        'en': `${siteConfig.url}/color`,
-        'en-US': `${siteConfig.url}/color`,
-        'ja': `${siteConfig.url}/ja/color`,
-        'ja-JP': `${siteConfig.url}/ja/color`,
-        'fr': `${siteConfig.url}/fr/color`,
-        'fr-FR': `${siteConfig.url}/fr/color`,
-        'zh': `${siteConfig.url}/zh/color`,
-        'zh-CN': `${siteConfig.url}/zh/color`,
-      },
-    },
+    alternates: buildAlternates('/color', locale),
   };
 }
 
@@ -74,6 +63,25 @@ function getColorCircle(colorName: string): string {
 export default async function ColorIndex() {
   const locale = await getLocale();
   const groups = await getEmojiGroups(locale);
+
+  const breadcrumbLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      {
+        '@type': 'ListItem',
+        position: 1,
+        name: 'Home',
+        item: buildCanonicalUrl('/', locale),
+      },
+      {
+        '@type': 'ListItem',
+        position: 2,
+        name: 'Colors',
+        item: buildCanonicalUrl('/color', locale),
+      },
+    ],
+  };
   
   const colors = groups.colors.map(color => ({
     id: color.name,
@@ -86,6 +94,9 @@ export default async function ColorIndex() {
   
   return (
     <div className="min-h-screen">
+      <Script id="ld-breadcrumb-colors" type="application/ld+json">
+        {JSON.stringify(breadcrumbLd)}
+      </Script>
       {/* Simple server-rendered breadcrumb navigation */}
       <nav className="py-4 container mx-auto px-4">
         <ol className="flex items-center space-x-1 text-sm text-muted-foreground">

@@ -1,9 +1,11 @@
 import { Metadata } from 'next';
 import { getEmojiGroups } from '@/lib/api';
 import { siteConfig } from '@/lib/config';
+import { buildAlternates, buildCanonicalUrl } from '@/lib/seo';
 import { getLocale } from 'next-intl/server';
 import Link from 'next/link';
 import { ChevronRight, Home } from 'lucide-react';
+import Script from 'next/script';
 
 export const runtime = 'edge';
 
@@ -32,20 +34,7 @@ export async function generateMetadata(): Promise<Metadata> {
       description: 'Browse our collection of genmoji models. Choose from various styles to find the perfect genmoji for your messages and social media.',
       images: ['/og-image.png'],
     },
-    alternates: {
-      canonical: locale === 'en' ? `${siteConfig.url}/model` : `${siteConfig.url}/${locale}/model`,
-      languages: {
-        'x-default': `${siteConfig.url}/model`,
-        'en': `${siteConfig.url}/model`,
-        'en-US': `${siteConfig.url}/model`,
-        'ja': `${siteConfig.url}/ja/model`,
-        'ja-JP': `${siteConfig.url}/ja/model`,
-        'fr': `${siteConfig.url}/fr/model`,
-        'fr-FR': `${siteConfig.url}/fr/model`,
-        'zh': `${siteConfig.url}/zh/model`,
-        'zh-CN': `${siteConfig.url}/zh/model`,
-      },
-    },
+    alternates: buildAlternates('/model', locale),
   };
 }
 
@@ -68,6 +57,25 @@ function getModelEmoji(modelName: string): string {
 export default async function ModelIndex() {
   const locale = await getLocale();
   const groups = await getEmojiGroups(locale);
+
+  const breadcrumbLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      {
+        '@type': 'ListItem',
+        position: 1,
+        name: 'Home',
+        item: buildCanonicalUrl('/', locale),
+      },
+      {
+        '@type': 'ListItem',
+        position: 2,
+        name: 'Models',
+        item: buildCanonicalUrl('/model', locale),
+      },
+    ],
+  };
   
   const models = groups.models.map(model => ({
     id: model.name,
@@ -79,6 +87,9 @@ export default async function ModelIndex() {
   
   return (
     <div className="min-h-screen">
+      <Script id="ld-breadcrumb-models" type="application/ld+json">
+        {JSON.stringify(breadcrumbLd)}
+      </Script>
       {/* Simple server-rendered breadcrumb navigation */}
       <nav className="py-4 container mx-auto px-4">
         <ol className="flex items-center space-x-1 text-sm text-muted-foreground">

@@ -68,8 +68,10 @@ export default function ModelPageClient({ params, initialData }: ModelPageClient
       model?: string;
       color?: string;
       sort?: 'latest' | 'popular' | 'quality';
+      isIndexable?: boolean;
     } = {
-      model: slug
+      model: slug,
+      isIndexable: true,
     };
     
     if (selectedColor) {

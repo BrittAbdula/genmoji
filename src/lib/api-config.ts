@@ -33,6 +33,10 @@ export const API_ENDPOINTS = {
   SUBSCRIPTION_STATUS: '/subscription/status',
   SUBSCRIPTION_CREATE: '/subscription/create',
   SUBSCRIPTION_CANCEL: '/subscription/cancel',
+
+  // Admin
+  ADMIN_SUBSCRIPTIONS: '/admin/subscriptions',
+  ADMIN_USER_EMOJIS: (userId: string) => `/admin/subscriptions/${userId}/emojis`,
 } as const;
 
 // API 请求帮助函数

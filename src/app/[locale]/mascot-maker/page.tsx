@@ -1,5 +1,6 @@
 import { Metadata } from 'next';
 import { siteConfig } from "@/lib/config";
+import { buildAlternates } from '@/lib/seo';
 import { getLocale, setRequestLocale } from 'next-intl/server';
 import { UnifiedGenmojiGenerator } from '@/components/unified-genmoji-generator';
 import { HorizontalGalleryContent } from '@/components/horizontal-gallery-content';
@@ -40,20 +41,7 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
       description,
       images: ['/og-image.png'],
     },
-    alternates: {
-      canonical: locale === 'en' ? `${siteConfig.url}/mascot-maker` : `${siteConfig.url}/${locale}/mascot-maker`,
-      languages: {
-        'x-default': `${siteConfig.url}/mascot-maker`,
-        'en': `${siteConfig.url}/mascot-maker`,
-        'en-US': `${siteConfig.url}/mascot-maker`,
-        'ja': `${siteConfig.url}/ja/mascot-maker`,
-        'ja-JP': `${siteConfig.url}/ja/mascot-maker`,
-        'fr': `${siteConfig.url}/fr/mascot-maker`,
-        'fr-FR': `${siteConfig.url}/fr/mascot-maker`,
-        'zh': `${siteConfig.url}/zh/mascot-maker`,
-        'zh-CN': `${siteConfig.url}/zh/mascot-maker`,
-      },
-    },
+    alternates: buildAlternates('/mascot-maker', locale),
   };
 }
 

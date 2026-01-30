@@ -1,5 +1,6 @@
 import { Metadata } from 'next';
 import { siteConfig } from '@/lib/config';
+import { buildAlternates } from '@/lib/seo';
 import { getLocale, getTranslations } from 'next-intl/server';
 import Link from 'next/link';
 import { ChevronRight, Home } from 'lucide-react';
@@ -32,20 +33,7 @@ export async function generateMetadata(): Promise<Metadata> {
       description: 'Explore all styles and categories. From classic to pixel art, 3D, hand-drawn, and more creative styles.',
       images: ['/og-image.png'],
     },
-    alternates: {
-      canonical: locale === 'en' ? `${siteConfig.url}/styles` : `${siteConfig.url}/${locale}/styles`,
-      languages: {
-        'x-default': `${siteConfig.url}/styles`,
-        'en': `${siteConfig.url}/styles`,
-        'en-US': `${siteConfig.url}/styles`,
-        'ja': `${siteConfig.url}/ja/styles`,
-        'ja-JP': `${siteConfig.url}/ja/styles`,
-        'fr': `${siteConfig.url}/fr/styles`,
-        'fr-FR': `${siteConfig.url}/fr/styles`,
-        'zh': `${siteConfig.url}/zh/styles`,
-        'zh-CN': `${siteConfig.url}/zh/styles`,
-      },
-    },
+    alternates: buildAlternates('/styles', locale),
   };
 }
 

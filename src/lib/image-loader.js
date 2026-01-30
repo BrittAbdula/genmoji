@@ -1,5 +1,3 @@
-'use client'
-
 /**
  * Custom Image Loader for Next.js 16
  * 
@@ -12,19 +10,15 @@
  * so we don't need Next.js to re-optimize them.
  */
 export default function imageLoader({ src, width, quality }) {
+    const q = quality || 75;
+    const separator = src.includes('?') ? '&' : '?';
+    const sizedSrc = `${src}${separator}w=${width}&q=${q}`;
+
     // Handle absolute URLs (remote images from CDN)
     if (src.startsWith('http://') || src.startsWith('https://')) {
-        // Cloudflare Images already supports width/quality transformation
-        // For store.genmojionline.com, the URL format is:
-        // https://store.genmojionline.com/cdn-cgi/imagedelivery/{account_id}/{image_id}/{variant}
-        // We can append /w={width} for responsive images if needed
-
-        // For now, return the original URL as Cloudflare handles optimization
-        return src;
+        return sizedSrc;
     }
 
     // Handle local images (from /public directory)
-    // In development, serve directly from the origin
-    // In production, these will be properly handled
-    return src;
+    return sizedSrc;
 }

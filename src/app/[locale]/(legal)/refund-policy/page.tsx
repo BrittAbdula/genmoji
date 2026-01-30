@@ -1,36 +1,25 @@
 import { getTranslations } from 'next-intl/server';
 import { getLocale } from 'next-intl/server';
 import { siteConfig } from "@/lib/config";
+import { buildAlternates } from '@/lib/seo';
 
 export const runtime = 'edge';
 
 export async function generateMetadata() {
   const t = await getTranslations('legal.refundPolicy');
   const locale = await getLocale();
-  const path = locale === 'en' ? '/refund-policy' : `/${locale}/refund-policy`;
+  const path = '/refund-policy';
+  const alternates = buildAlternates(path, locale);
 
   return {
     metadataBase: new URL(siteConfig.url),
     title: `${t('title')} | Genmoji Online`,
     description: t('metaDescription'),
-    alternates: {
-      canonical: `${siteConfig.url}${path}`,
-      languages: {
-        'x-default': `${siteConfig.url}/refund-policy`,
-        'en': `${siteConfig.url}/refund-policy`,
-        'en-US': `${siteConfig.url}/refund-policy`,
-        'ja': `${siteConfig.url}/ja/refund-policy`,
-        'ja-JP': `${siteConfig.url}/ja/refund-policy`,
-        'fr': `${siteConfig.url}/fr/refund-policy`,
-        'fr-FR': `${siteConfig.url}/fr/refund-policy`,
-        'zh': `${siteConfig.url}/zh/refund-policy`,
-        'zh-CN': `${siteConfig.url}/zh/refund-policy`,
-      },
-    },
+    alternates,
     openGraph: {
       title: `${t('title')} | Genmoji Online`,
       description: t('metaDescription'),
-      url: `${siteConfig.url}${path}`,
+      url: alternates.canonical,
       images: [
         {
           url: `${siteConfig.url}/og-image.png`,
@@ -86,5 +75,3 @@ export default async function RefundPolicyPage() {
     </main>
   );
 }
-
-

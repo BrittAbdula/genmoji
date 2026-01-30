@@ -3,6 +3,8 @@ import ModelPageClient from './client';
 import { getEmojiGroups, getEmojis } from '@/lib/api';
 import { siteConfig } from "@/lib/config";
 import { getLocale } from 'next-intl/server';
+import { buildAlternates, buildCanonicalUrl } from '@/lib/seo';
+import Script from 'next/script';
 export const runtime = 'edge';
 
 type Params = Promise<{ slug: string }>
@@ -44,20 +46,7 @@ export async function generateMetadata(props: {
       description,
       images: ['/og-image.png'],
     },
-    alternates: {
-      canonical: locale === 'en' ? `${siteConfig.url}/model/${slug}` : `${siteConfig.url}/${locale}/model/${slug}`,
-      languages: {
-        'x-default': `${siteConfig.url}/model/${slug}`,
-        'en': `${siteConfig.url}/model/${slug}`,
-        'en-US': `${siteConfig.url}/model/${slug}`,
-        'ja': `${siteConfig.url}/ja/model/${slug}`,
-        'ja-JP': `${siteConfig.url}/ja/model/${slug}`,
-        'fr': `${siteConfig.url}/fr/model/${slug}`,
-        'fr-FR': `${siteConfig.url}/fr/model/${slug}`,
-        'zh': `${siteConfig.url}/zh/model/${slug}`,
-        'zh-CN': `${siteConfig.url}/zh/model/${slug}`,
-      },
-    },
+    alternates: buildAlternates(`/model/${slug}`, locale),
   };
 }
 
@@ -79,16 +68,47 @@ export default async function ModelPage(props: {
   // 获取初始表情数据
   const initialEmojis = await getEmojis(0, 24, locale, { 
     model: slug,
-    sort: 'latest'
+    sort: 'quality',
+    isIndexable: true,
   });
+
+  const breadcrumbLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      {
+        '@type': 'ListItem',
+        position: 1,
+        name: 'Home',
+        item: buildCanonicalUrl('/', locale),
+      },
+      {
+        '@type': 'ListItem',
+        position: 2,
+        name: 'Models',
+        item: buildCanonicalUrl('/model', locale),
+      },
+      {
+        '@type': 'ListItem',
+        position: 3,
+        name: modelName,
+        item: buildCanonicalUrl(`/model/${slug}`, locale),
+      },
+    ],
+  };
   
   return (
-    <ModelPageClient 
-      params={{ slug, locale }} 
-      initialData={{ 
-        emojis: initialEmojis,
-        modelName: modelName
-      }} 
-    />
+    <>
+      <Script id="ld-breadcrumb-model-detail" type="application/ld+json">
+        {JSON.stringify(breadcrumbLd)}
+      </Script>
+      <ModelPageClient 
+        params={{ slug, locale }} 
+        initialData={{ 
+          emojis: initialEmojis,
+          modelName: modelName
+        }} 
+      />
+    </>
   );
 } 

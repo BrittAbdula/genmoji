@@ -12,6 +12,7 @@ import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { siteConfig } from "@/lib/config";
 import { routing } from '@/i18n/routing';
 import { constructMetadata } from "@/lib/utils";
+import { buildAlternates } from "@/lib/seo";
 import { getLocale } from 'next-intl/server';
 import { GalleryContent } from '@/components/gallery-content';
 import { HorizontalGalleryContent } from '@/components/horizontal-gallery-content';
@@ -64,20 +65,7 @@ export async function generateMetadata(props: Props) {
       description: t('defaultTitle'),
       images: [`${siteConfig.url}/og-image.png`],
     },
-    alternates: {
-      canonical: locale === 'en' ? `${siteConfig.url}` : `${siteConfig.url}/${locale}`,
-      languages: {
-        'x-default': `${siteConfig.url}`,
-        'en': `${siteConfig.url}`,
-        'en-US': `${siteConfig.url}`,
-        'ja': `${siteConfig.url}/ja`,
-        'ja-JP': `${siteConfig.url}/ja`,
-        'fr': `${siteConfig.url}/fr`,
-        'fr-FR': `${siteConfig.url}/fr`,
-        'zh': `${siteConfig.url}/zh`,
-        'zh-CN': `${siteConfig.url}/zh`,
-      },
-    },
+    alternates: buildAlternates('/', locale),
   };
 }
 
@@ -91,7 +79,7 @@ export default async function Home(props: Props) {
   let initialEmojis: any[] = [];
   if (PREFETCH) {
     try {
-      initialEmojis = await getEmojis(0, 40, locale, { sort: 'latest' });
+      initialEmojis = await getEmojis(0, 40, locale, { sort: 'quality', isIndexable: true });
     } catch (e) {
       initialEmojis = [];
     }

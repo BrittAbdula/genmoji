@@ -54,8 +54,10 @@ export default function ColorPageClient({ params, initialData }: ColorPageClient
     const options: {
       color?: string;
       sort?: 'latest' | 'popular' | 'quality';
+      isIndexable?: boolean;
     } = {
-      color: slug
+      color: slug,
+      isIndexable: true,
     };
     
     // 映射排序选项

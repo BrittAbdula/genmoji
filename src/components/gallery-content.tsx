@@ -1,22 +1,24 @@
 "use client";
 
 import { useState, useEffect, useCallback, useRef, memo } from "react";
-import { motion } from "framer-motion";
 import { getEmojis } from '@/lib/api'
 import EmojiContainer from "@/components/emoji-container";
 import { Emoji } from "@/types/emoji";
 import { Button } from "@/components/ui/button";
 import { useTranslations, useLocale} from 'next-intl';
 import { useInView } from "react-intersection-observer";
-import { EmojiGrid } from "@/components/emoji-grid";
+import { Link } from "@/i18n/routing";
 
 
 // 将加载状态组件抽离
 const LoadingSkeleton = memo(() => {
   return (
-    <div className="grid w-full auto-rows-max grid-cols-4 place-content-stretch justify-items-stretch gap-1 sm:grid-cols-5 md:grid-cols-6 lg:grid-cols-8">
-      {Array.from({ length: 32 }).map((_, i) => (
-        <div key={`loading-skeleton-${i}`} className="aspect-square bg-muted/20 animate-pulse" />
+    <div className="grid w-full auto-rows-max grid-cols-2 place-content-stretch justify-items-stretch gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 max-w-7xl mx-auto">
+      {Array.from({ length: 24 }).map((_, i) => (
+        <div
+          key={`loading-skeleton-${i}`}
+          className="aspect-square bg-muted/20 animate-pulse"
+        />
       ))}
     </div>
   );
@@ -54,7 +56,8 @@ export function GalleryContent() {
     try {
         
       const newEmojis = await getEmojis(0, refreshLimit, locale, {
-        sort: 'latest'
+        sort: 'latest',
+        isIndexable: true,
       });
       
       if (newEmojis && newEmojis.length > 0) {
@@ -136,7 +139,8 @@ export function GalleryContent() {
         limit,
         locale,
         {
-          sort: 'latest'
+          sort: 'latest',
+          isIndexable: true,
         }
       );
 
@@ -229,8 +233,32 @@ export function GalleryContent() {
     }
 
     return (
-      <div className="mx-auto flex w-full max-w-6xl flex-1 flex-col">
-        <EmojiGrid emojis={emojis} />
+      <div className="mx-auto flex w-full max-w-7xl flex-1 flex-col">
+        <div className="grid w-full auto-rows-max grid-cols-2 place-content-stretch justify-items-stretch gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
+          {emojis.map((emoji, index) => (
+            <div
+              key={`${emoji.slug}-${index}`}
+              className="group relative flex flex-col overflow-hidden rounded-none border bg-card transition-shadow hover:shadow-md"
+            >
+              <div className="aspect-square w-full">
+                <EmojiContainer
+                  emoji={emoji}
+                  size="sm"
+                  lazyLoad={index > 8}
+                  padding="p-0"
+                  withBorder={false}
+                  priority={index <= 8}
+                />
+              </div>
+              <Link
+                href={`/emoji/${emoji.slug}`}
+                className="flex flex-1 px-3 py-3 text-xs text-muted-foreground hover:text-primary transition-colors text-left"
+              >
+                {emoji.prompt}
+              </Link>
+            </div>
+          ))}
+        </div>
         {hasMore && (
           <div
             ref={loadMoreRef}

@@ -51,7 +51,7 @@ export function GenmojiGenerator() {
   // 获取最近生成的emoji
   const fetchRecentEmojis = async () => {
     try {
-      const emojis = await getEmojis(0, 36, locale);
+      const emojis = await getEmojis(0, 36, locale, { sort: 'quality', isIndexable: true });
       setRecentEmojis(emojis);
     } catch (error) {
       console.error('Error fetching recent emojis:', error);

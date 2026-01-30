@@ -35,7 +35,8 @@ export default function StylePageClient({ params, initialData }: StylePageClient
     try {
       const newEmojis = await getEmojis(offset, LIMIT, locale, { 
         model: style,
-        sort: sortBy
+        sort: sortBy,
+        isIndexable: true,
       });
       
       if (newEmojis && newEmojis.length > 0) {
@@ -60,7 +61,8 @@ export default function StylePageClient({ params, initialData }: StylePageClient
       try {
         const newEmojis = await getEmojis(0, LIMIT, locale, { 
           model: style,
-          sort: sortBy
+          sort: sortBy,
+          isIndexable: true,
         });
         
         setEmojis(newEmojis || []);

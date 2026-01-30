@@ -1,9 +1,11 @@
 import { Metadata } from 'next';
 import { getEmojiGroups } from '@/lib/api';
 import { siteConfig } from '@/lib/config';
+import { buildAlternates, buildCanonicalUrl } from '@/lib/seo';
 import { getLocale } from 'next-intl/server';
 import Link from 'next/link';
 import { ChevronRight, Home } from 'lucide-react';
+import Script from 'next/script';
 
 export const runtime = 'edge';
 
@@ -32,20 +34,7 @@ export async function generateMetadata(): Promise<Metadata> {
       description: 'Browse our collection of genmoji categories. Find genmojis organized by theme and subject to express yourself perfectly.',
       images: ['/og-image.png'],
     },
-    alternates: {
-      canonical: locale === 'en' ? `${siteConfig.url}/category` : `${siteConfig.url}/${locale}/category`,
-      languages: {
-        'x-default': `${siteConfig.url}/category`,
-        'en': `${siteConfig.url}/category`,
-        'en-US': `${siteConfig.url}/category`,
-        'ja': `${siteConfig.url}/ja/category`,
-        'ja-JP': `${siteConfig.url}/ja/category`,
-        'fr': `${siteConfig.url}/fr/category`,
-        'fr-FR': `${siteConfig.url}/fr/category`,
-        'zh': `${siteConfig.url}/zh/category`,
-        'zh-CN': `${siteConfig.url}/zh/category`,
-      },
-    },
+    alternates: buildAlternates('/category', locale),
   };
 }
 
@@ -69,6 +58,25 @@ function getCategoryEmoji(categoryName: string): string {
 export default async function CategoryIndex() {
   const locale = await getLocale();
   const groups = await getEmojiGroups(locale);
+
+  const breadcrumbLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      {
+        '@type': 'ListItem',
+        position: 1,
+        name: 'Home',
+        item: buildCanonicalUrl('/', locale),
+      },
+      {
+        '@type': 'ListItem',
+        position: 2,
+        name: 'Categories',
+        item: buildCanonicalUrl('/category', locale),
+      },
+    ],
+  };
   
   const categories = groups.categories.map(category => ({
     id: category.name,
@@ -80,6 +88,9 @@ export default async function CategoryIndex() {
   
   return (
     <div className="min-h-screen">
+      <Script id="ld-breadcrumb-category" type="application/ld+json">
+        {JSON.stringify(breadcrumbLd)}
+      </Script>
       {/* Simple server-rendered breadcrumb navigation */}
       <nav className="py-4 container mx-auto px-4">
         <ol className="flex items-center space-x-1 text-sm text-muted-foreground">

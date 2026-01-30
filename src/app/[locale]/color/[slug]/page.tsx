@@ -3,6 +3,8 @@ import ColorPageClient from './client';
 import { getEmojiGroups, getEmojis } from '@/lib/api';
 import { siteConfig } from "@/lib/config";
 import { getLocale } from 'next-intl/server';
+import { buildAlternates, buildCanonicalUrl } from '@/lib/seo';
+import Script from 'next/script';
 
 export const runtime = 'edge';
 
@@ -44,20 +46,7 @@ export async function generateMetadata(props: {
       description,
       images: ['/og-image.png'],
     },
-    alternates: {
-      canonical: locale === 'en' ? `${siteConfig.url}/color/${slug}` : `${siteConfig.url}/${locale}/color/${slug}`,
-      languages: {
-        'x-default': `${siteConfig.url}/color/${slug}`,
-        'en': `${siteConfig.url}/color/${slug}`,
-        'en-US': `${siteConfig.url}/color/${slug}`,
-        'ja': `${siteConfig.url}/ja/color/${slug}`,
-        'ja-JP': `${siteConfig.url}/ja/color/${slug}`,
-        'fr': `${siteConfig.url}/fr/color/${slug}`,
-        'fr-FR': `${siteConfig.url}/fr/color/${slug}`,
-        'zh': `${siteConfig.url}/zh/color/${slug}`,
-        'zh-CN': `${siteConfig.url}/zh/color/${slug}`,
-      },
-    },
+    alternates: buildAlternates(`/color/${slug}`, locale),
   };
 }
 
@@ -79,17 +68,48 @@ export default async function ColorPage(props: {
   // 获取初始表情数据
   const initialEmojis = await getEmojis(0, 24, locale, { 
     color: slug,
-    sort: 'latest'
+    sort: 'quality',
+    isIndexable: true,
   });
+
+  const breadcrumbLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      {
+        '@type': 'ListItem',
+        position: 1,
+        name: 'Home',
+        item: buildCanonicalUrl('/', locale),
+      },
+      {
+        '@type': 'ListItem',
+        position: 2,
+        name: 'Colors',
+        item: buildCanonicalUrl('/color', locale),
+      },
+      {
+        '@type': 'ListItem',
+        position: 3,
+        name: colorName,
+        item: buildCanonicalUrl(`/color/${slug}`, locale),
+      },
+    ],
+  };
   
   return (
-    <ColorPageClient 
-      params={{ slug, locale }} 
-      initialData={{ 
-        emojis: initialEmojis,
-        colorName: colorName,
-        // 不传递完整的groups数据，因为它将通过Context Provider提供
-      }} 
-    />
+    <>
+      <Script id="ld-breadcrumb-color-detail" type="application/ld+json">
+        {JSON.stringify(breadcrumbLd)}
+      </Script>
+      <ColorPageClient 
+        params={{ slug, locale }} 
+        initialData={{ 
+          emojis: initialEmojis,
+          colorName: colorName,
+          // 不传递完整的groups数据，因为它将通过Context Provider提供
+        }} 
+      />
+    </>
   );
 } 

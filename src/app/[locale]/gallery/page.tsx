@@ -5,6 +5,7 @@ import { GalleryContent } from "@/components/gallery-content";
 import { getLocale } from 'next-intl/server';
 import { getTranslations } from 'next-intl/server';
 import { cn } from '@/lib/utils';
+import { buildAlternates } from '@/lib/seo';
 import { outfit } from '@/lib/fonts';
 import { AuroraText } from "@/components/ui/aurora-text";
 import { Suspense } from "react";
@@ -34,20 +35,7 @@ export async function generateMetadata() {
       description: "Explore our curated collection of AI-generated genmojis. Find unique and expressive genmojis for your digital conversations.",
       images: [`${siteConfig.url}/og-gallery.png`],
     },
-    alternates: {
-      canonical: locale === 'en' ? `${siteConfig.url}/gallery` : `${siteConfig.url}/${locale}/gallery`,
-      languages: {
-        'x-default': `${siteConfig.url}/gallery`,
-        'en': `${siteConfig.url}/gallery`,
-        'en-US': `${siteConfig.url}/gallery`,
-        'ja': `${siteConfig.url}/ja/gallery`,
-        'ja-JP': `${siteConfig.url}/ja/gallery`,
-        'fr': `${siteConfig.url}/fr/gallery`,
-        'fr-FR': `${siteConfig.url}/fr/gallery`,
-        'zh': `${siteConfig.url}/zh/gallery`,
-        'zh-CN': `${siteConfig.url}/zh/gallery`,
-      },
-    },
+    alternates: buildAlternates('/gallery', locale),
   });
 }
 

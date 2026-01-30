@@ -7,6 +7,7 @@ import { CategoryNav } from '@/components/prompts/category-nav';
 import { KeywordCloud } from '@/components/prompts/keyword-cloud';
 import { FAQ } from '@/components/sections/faq';
 import { API_BASE_URL } from '@/lib/api-config';
+import { buildAlternates } from '@/lib/seo';
 
 export const runtime = 'edge';
 
@@ -70,20 +71,7 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
       description,
       images: ['/og-image.png'],
     },
-    alternates: {
-      canonical: locale === 'en' ? `${siteConfig.url}/prompts` : `${siteConfig.url}/${locale}/prompts`,
-      languages: {
-        'x-default': `${siteConfig.url}/prompts`,
-        'en': `${siteConfig.url}/prompts`,
-        'en-US': `${siteConfig.url}/prompts`,
-        'ja': `${siteConfig.url}/ja/prompts`,
-        'ja-JP': `${siteConfig.url}/ja/prompts`,
-        'fr': `${siteConfig.url}/fr/prompts`,
-        'fr-FR': `${siteConfig.url}/fr/prompts`,
-        'zh': `${siteConfig.url}/zh/prompts`,
-        'zh-CN': `${siteConfig.url}/zh/prompts`,
-      },
-    },
+    alternates: buildAlternates('/prompts', locale),
   };
 }
 

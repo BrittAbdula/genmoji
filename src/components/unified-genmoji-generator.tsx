@@ -19,11 +19,11 @@ import { useMediaQuery } from "@/hooks/use-media-query";
 import { cn } from "@/lib/utils";
 import { useGenerationStore } from "@/store/generation-store";
 import { useAuthStore } from "@/store/auth-store";
-// Dynamically import heavy modals
 import Image from "next/image";
+import CameraModal from "@/components/camera-modal";
+// Dynamically import heavy modals
 const LoginDialog = dynamic(() => import("./login-dialog").then(mod => mod.LoginDialog), { ssr: false });
 const SubscriptionLimitDialog = dynamic(() => import("./subscription-limit-dialog").then(mod => mod.SubscriptionLimitDialog), { ssr: false });
-const CameraModal = dynamic(() => import("@/components/camera-modal"), { ssr: false });
 
 // Gem Stickers substyle typing (avoid never when indexing)
 type GemSubStyleId =

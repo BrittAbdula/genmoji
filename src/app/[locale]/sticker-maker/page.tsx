@@ -1,5 +1,6 @@
 import { Metadata } from 'next';
 import { siteConfig } from "@/lib/config";
+import { buildAlternates } from '@/lib/seo';
 import { getLocale, setRequestLocale } from 'next-intl/server';
 import { UnifiedGenmojiGenerator } from '@/components/unified-genmoji-generator';
 import { HorizontalGalleryContent } from '@/components/horizontal-gallery-content';
@@ -40,20 +41,7 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
       description,
       images: ['/og-image.png'],
     },
-    alternates: {
-      canonical: locale === 'en' ? `${siteConfig.url}/sticker-maker` : `${siteConfig.url}/${locale}/sticker-maker`,
-      languages: {
-        'x-default': `${siteConfig.url}/sticker-maker`,
-        'en': `${siteConfig.url}/sticker-maker`,
-        'en-US': `${siteConfig.url}/sticker-maker`,
-        'ja': `${siteConfig.url}/ja/sticker-maker`,
-        'ja-JP': `${siteConfig.url}/ja/sticker-maker`,
-        'fr': `${siteConfig.url}/fr/sticker-maker`,
-        'fr-FR': `${siteConfig.url}/fr/sticker-maker`,
-        'zh': `${siteConfig.url}/zh/sticker-maker`,
-        'zh-CN': `${siteConfig.url}/zh/sticker-maker`,
-      },
-    },
+    alternates: buildAlternates('/sticker-maker', locale),
   };
 }
 

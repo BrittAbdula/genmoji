@@ -6,9 +6,9 @@ import { getLocale } from 'next-intl/server';
 import { notFound } from 'next/navigation';
 import { CategoryNav } from '@/components/prompts/category-nav';
 import { CATEGORY_LABELS } from '@/lib/categories';
-import EmojiContainer from '@/components/emoji-container';
 import { CTA } from '@/components/sections/cta';
-import { Link } from '@/i18n/routing';
+import { buildAlternates } from '@/lib/seo';
+import PromptsCategoryClient from './client';
 
 export const runtime = 'edge';
 
@@ -21,6 +21,7 @@ type Props = {
 
 export async function generateMetadata(props: Props): Promise<Metadata> {
   const { category, locale } = await props.params;
+  const isAllCategory = category === 'all';
 
   // Validate category
   if (!CATEGORY_LABELS[category] && category !== 'all') {
@@ -33,6 +34,9 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
   const title = `${categoryName} Genmoji Prompts - Best AI Emoji Ideas | Genmoji Online`;
   const description = `Explore the best ${categoryName.toLowerCase()} genmoji prompts. Copy prompts or generate your own custom ${categoryName.toLowerCase()} emojis with AI.`;
 
+  const alternates = buildAlternates(isAllCategory ? '/prompts' : `/prompts/${category}`, locale);
+  const ogUrl = alternates.canonical;
+
   return {
     title,
     description,
@@ -40,11 +44,10 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
       title,
       description,
       type: 'website',
-      url: `${siteConfig.url}/prompts/${category}`,
+      url: ogUrl,
     },
-    alternates: {
-      canonical: locale === 'en' ? `${siteConfig.url}/prompts/${category}` : `${siteConfig.url}/${locale}/prompts/${category}`,
-    }
+    alternates,
+    ...(isAllCategory ? { robots: { index: false, follow: true } } : {}),
   };
 }
 
@@ -64,7 +67,8 @@ export default async function CategoryPage(props: Props) {
   try {
     emojis = await getEmojis(0, 48, locale, { 
       category: category === 'all' ? undefined : category,
-      sort: 'latest'
+      sort: 'quality',
+      isIndexable: true,
     });
   } catch (error) {
     console.error(`Failed to fetch emojis for category ${category}:`, error);
@@ -87,34 +91,7 @@ export default async function CategoryPage(props: Props) {
         <CategoryNav activeCategory={category} />
       </div>
 
-      <div className="grid w-full auto-rows-max grid-cols-2 place-content-stretch justify-items-stretch gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
-        {emojis.map((emoji) => (
-          <div key={emoji.slug} className="group relative flex flex-col overflow-hidden rounded-none border bg-card transition-shadow hover:shadow-md">
-            <div className="aspect-square w-full">
-              <EmojiContainer
-                emoji={emoji}
-                size="sm"
-                withBorder={false}
-                padding="p-0"
-                priority={false}
-              />
-            </div>
-             <Link 
-                href={`/emoji/${emoji.slug}`}
-                className="flex flex-1 px-3 py-3 text-xs text-muted-foreground hover:text-primary transition-colors text-left"
-             >
-                {emoji.prompt}
-             </Link>
-          </div>
-        ))}
-      </div>
-
-      {emojis.length === 0 && (
-        <div className="text-center py-20 bg-muted/30 rounded-xl">
-          <p className="text-xl text-muted-foreground">No prompts found in this category yet.</p>
-          <p className="mt-2">Be the first to create one!</p>
-        </div>
-      )}
+      <PromptsCategoryClient initialEmojis={emojis} category={category} locale={locale} />
       
       <div className="mt-20">
         <CTA />

@@ -58,8 +58,10 @@ export default function CategoryPageClient({ params, initialData }: CategoryPage
     const options: {
       category?: string;
       sort?: 'latest' | 'popular' | 'quality';
+      isIndexable?: boolean;
     } = {
-      category: decodeURIComponent(slug)
+      category: decodeURIComponent(slug),
+      isIndexable: true,
     };
     
     // 映射排序选项
