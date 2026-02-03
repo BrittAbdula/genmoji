@@ -24,14 +24,15 @@ export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
 }
 
-// 强制静态渲染
-export const dynamic = 'force-static';
+// 强制 Edge Runtime (Cloudflare Pages 最佳实践)
+export const runtime = 'edge';
 
-// 禁用重新验证，确保数据只获取一次
-export const revalidate = false;
+// 启用 ISR: 每 60 秒重新生成一次页面
+export const revalidate = 60;
 
-// 禁用动态参数
-export const dynamicParams = false;
+// 移除 force-static 以允许动态更新
+// export const dynamic = 'force-static';
+// export const dynamicParams = false;
 
 type Props = {
   params: Promise<{ locale: string }>;
@@ -79,7 +80,8 @@ export default async function Home(props: Props) {
   let initialEmojis: any[] = [];
   if (PREFETCH) {
     try {
-      initialEmojis = await getEmojis(0, 40, locale, { sort: 'quality', isIndexable: true });
+      // 修改为 sort: 'latest' 获取最新生成的表情
+      initialEmojis = await getEmojis(0, 40, locale, { sort: 'latest', isIndexable: true });
     } catch (e) {
       initialEmojis = [];
     }
