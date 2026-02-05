@@ -19,11 +19,6 @@ import { HorizontalGalleryContent } from '@/components/horizontal-gallery-conten
 import { getEmojis } from '@/lib/api';
 import Script from 'next/script';
 
-// 为静态生成提供所有支持的语言
-export function generateStaticParams() {
-  return routing.locales.map((locale) => ({ locale }));
-}
-
 // Cloudflare Pages requires Edge Runtime for dynamic routes
 export const runtime = 'edge';
 
