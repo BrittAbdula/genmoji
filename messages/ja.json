@@ -455,7 +455,10 @@
   },
   "emoji": {
     "container": {
-      "imageAlt": "絵文字：{prompt}"
+      "imageAlt": "絵文字：{prompt}",
+      "processing": "Processing...",
+      "queued": "Queued...",
+      "failed": "Failed"
     },
     "notFound": {
       "title": "絵文字が見つかりません",

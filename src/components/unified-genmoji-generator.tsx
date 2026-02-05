@@ -14,7 +14,6 @@ import { X, Plus, ArrowUp, Globe, Crown, Info } from 'lucide-react';
 // confetti is now dynamically imported in triggerConfetti
 import { useRouter } from "next/navigation";
 import { useTranslations, useLocale } from 'next-intl';
-import EmojiContainer from "@/components/emoji-container";
 import { useMediaQuery } from "@/hooks/use-media-query";
 import { cn } from "@/lib/utils";
 import { useGenerationStore } from "@/store/generation-store";
@@ -92,6 +91,7 @@ export function UnifiedGenmojiGenerator({
   const [isStylesExpanded, setIsStylesExpanded] = useState(false);
   const cameraVideoRef = useRef<HTMLVideoElement>(null);
   const cameraStreamRef = useRef<MediaStream | null>(null);
+  const pollIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
   // Secondary style options (substyles) for the Gem Stickers model
   const gemSubStyles: readonly GemSubStyle[] = [
     { id: 'pop-art', imgUrl: 'https://gstatic.com/synthidtextdemo/images/gemstickers/dot/pop_art_love.png', selectedImgUrl: 'https://gstatic.com/synthidtextdemo/images/gemstickers/dot/pop_art_love_out.png' },
@@ -530,6 +530,20 @@ export function UnifiedGenmojiGenerator({
     });
   };
 
+  const clearPollInterval = () => {
+    if (pollIntervalRef.current) {
+      clearInterval(pollIntervalRef.current);
+      pollIntervalRef.current = null;
+    }
+  };
+
+  // Ensure polling interval is cleared on unmount
+  useEffect(() => {
+    return () => {
+      clearPollInterval();
+    };
+  }, []);
+
   // 实际的生成逻辑
   const startGeneration = async () => {
     setGenerating(true);
@@ -557,10 +571,72 @@ export function UnifiedGenmojiGenerator({
       });
       
       if (emojiResponse.success && emojiResponse.emoji) {
-        // 不跳转详情页，直接在组件底部展示，可点击跳转
-        setGeneratedEmoji(emojiResponse.emoji);
-        triggerConfetti();
-        if (onGenerated) onGenerated(emojiResponse.emoji);
+        const emoji = emojiResponse.emoji;
+
+        // Only redirect after confirmed completion with an image
+        if (emoji.status === 'completed' && emoji.image_url) {
+          clearPollInterval();
+          triggerConfetti();
+          if (onGenerated) onGenerated(emoji);
+          // eslint-disable-next-line @typescript-eslint/no-floating-promises
+          router.push(`/${locale}/emoji/${emoji.slug}/`);
+          return;
+        }
+
+        if (emoji.status === 'failed') {
+          setGenerating(false);
+          console.error('Generation failed:', emoji.error_message);
+          return;
+        }
+
+        // For pending/processing/unknown status, poll until completion
+        const maxPolls = 60; // max 2 minutes (60 * 2 seconds)
+        let polls = 0;
+
+        clearPollInterval();
+        pollIntervalRef.current = setInterval(async () => {
+          polls++;
+          setProgress(Math.min(90, (polls / maxPolls) * 100));
+
+          try {
+            // Fetch the latest emoji status using getEmoji
+            const { getEmoji } = await import('@/lib/api');
+            const updatedEmoji = await getEmoji(emoji.slug, locale);
+
+            const isCompleted = updatedEmoji.status === 'completed' && !!updatedEmoji.image_url;
+            const isLegacyCompleted = !updatedEmoji.status && !!updatedEmoji.image_url;
+
+            if (isCompleted || isLegacyCompleted) {
+              clearPollInterval();
+              setProgress(100);
+              triggerConfetti();
+              if (onGenerated) onGenerated(updatedEmoji);
+              // eslint-disable-next-line @typescript-eslint/no-floating-promises
+              router.push(`/${locale}/emoji/${updatedEmoji.slug}/`);
+              setGenerating(false);
+              return;
+            }
+
+            if (updatedEmoji.status === 'failed') {
+              clearPollInterval();
+              setGenerating(false);
+              console.error('Generation failed:', updatedEmoji.error_message);
+              return;
+            }
+
+            if (polls >= maxPolls) {
+              clearPollInterval();
+              setGenerating(false);
+              console.error('Generation timeout');
+            }
+          } catch (pollError) {
+            // Keep polling on error, don't stop
+            console.warn('Poll error:', pollError);
+          }
+        }, 2000);
+
+        // Return here, setGenerating(false) will be called in polling callback
+        return;
       } else {
         throw new Error(emojiResponse.error || t('error.failed'));
       }
@@ -580,7 +656,6 @@ export function UnifiedGenmojiGenerator({
         console.error('Generation error:', error);
         // 这里可以添加用户友好的错误提示，比如 toast 通知
       }
-    } finally {
       setGenerating(false);
     }
   };
@@ -1202,11 +1277,6 @@ export function UnifiedGenmojiGenerator({
         switchLabel={t('camera.switchCamera')}
         mirrored={cameraFacing === 'user'}
       />
-      {generatedEmoji && (
-        <div className="mt-4 flex justify-center">
-          <EmojiContainer emoji={generatedEmoji} size="lg" />
-        </div>
-      )}
       
       {/* 登录对话框 */}
       <LoginDialog 

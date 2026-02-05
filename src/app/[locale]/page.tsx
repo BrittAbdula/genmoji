@@ -24,9 +24,6 @@ export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
 }
 
-// 强制 Edge Runtime (Cloudflare Pages 最佳实践)
-export const runtime = 'edge';
-
 // 启用 ISR: 每 60 秒重新生成一次页面
 export const revalidate = 60;
 
@@ -80,8 +77,8 @@ export default async function Home(props: Props) {
   let initialEmojis: any[] = [];
   if (PREFETCH) {
     try {
-      // 修改为 sort: 'latest' 获取最新生成的表情
-      initialEmojis = await getEmojis(0, 40, locale, { sort: 'latest', isIndexable: true });
+      // 首页 All Models 展示最受欢迎的表情
+      initialEmojis = await getEmojis(0, 40, locale, { sort: 'popular', isIndexable: true });
     } catch (e) {
       initialEmojis = [];
     }

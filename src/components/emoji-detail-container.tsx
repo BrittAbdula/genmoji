@@ -41,6 +41,7 @@ import { useLocale } from 'next-intl';
 import { useRouter } from 'next/navigation';
 import Image from "next/image";
 import Link from "next/link";
+import { API_BASE_URL, API_ENDPOINTS } from "@/lib/api-config";
 
 interface EmojiDetailContainerProps {
   emoji: Emoji;
@@ -339,6 +340,7 @@ const VariationsList = memo(({
 
 export function EmojiDetailContainer({ emoji: initialEmoji }: EmojiDetailContainerProps) {
   const t = useTranslations('emoji.detail');
+  const tContainer = useTranslations('emoji.container');
   const locale = useLocale();
   const router = useRouter();
   const [currentEmoji, setCurrentEmoji] = useState(initialEmoji);
@@ -364,6 +366,8 @@ export function EmojiDetailContainer({ emoji: initialEmoji }: EmojiDetailContain
   const LIMIT = 10;
   const [isUsageExpanded, setIsUsageExpanded] = useState(false);
   const [showRemixGenerator, setShowRemixGenerator] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
+  const [refreshAttempted, setRefreshAttempted] = useState(false);
 
   // 获取变体 - 只在初始化时调用一次
   const fetchVariations = async () => {
@@ -372,15 +376,17 @@ export function EmojiDetailContainer({ emoji: initialEmoji }: EmojiDetailContain
     try {
       setIsLoading(true);
       const newEmojis = await getEmojisByBaseSlug(initialEmoji.slug, locale, LIMIT, 0);
+      const safeEmojis = newEmojis.filter((e) => e.image_url && e.image_url.trim() !== '');
+      const safeInitial = initialEmoji.image_url && initialEmoji.image_url.trim() !== '' ? [initialEmoji] : [];
 
       // 确保当前emoji在列表中，并找到它的位置
-      const currentEmojiIndex = newEmojis.findIndex(e => e.slug === initialEmoji.slug);
+      const currentEmojiIndex = safeEmojis.findIndex(e => e.slug === initialEmoji.slug);
       if (currentEmojiIndex === -1) {
         // 如果当前emoji不在返回列表中，将其添加到开头
-        setAllVariations([initialEmoji, ...newEmojis]);
+        setAllVariations([...safeInitial, ...safeEmojis]);
         setDisplayIndex(0);
       } else {
-        setAllVariations(newEmojis);
+        setAllVariations(safeEmojis);
         setDisplayIndex(currentEmojiIndex);
       }
     } catch (err) {
@@ -394,6 +400,87 @@ export function EmojiDetailContainer({ emoji: initialEmoji }: EmojiDetailContain
   useEffect(() => {
     fetchVariations();
   }, []);
+
+  const refreshEmoji = async () => {
+    if (refreshing) return;
+    setRefreshing(true);
+    try {
+      const url = new URL(API_ENDPOINTS.EMOJI_BY_SLUG(currentEmoji.slug), API_BASE_URL);
+      url.searchParams.set('locale', locale);
+      url.searchParams.set('no_cache', '1');
+      const res = await fetch(url.toString(), { cache: 'no-store' });
+      if (!res.ok) {
+        throw new Error('Failed to refresh emoji');
+      }
+      const data = await res.json();
+      if (data?.success && data?.emoji) {
+        setCurrentEmoji(data.emoji);
+        setLikesCount(data.emoji.likes_count || 0);
+        checkLikeStatus(data.emoji.slug);
+        setAllVariations((prev) => {
+          if (!prev || prev.length === 0) return prev;
+          const exists = prev.some((e) => e.slug === data.emoji.slug);
+          if (!exists) return [data.emoji, ...prev];
+          return prev.map((e) => (e.slug === data.emoji.slug ? data.emoji : e));
+        });
+      }
+    } catch (err) {
+      console.error('Failed to refresh emoji:', err);
+    } finally {
+      setRefreshing(false);
+      setRefreshAttempted(true);
+    }
+  };
+
+  const hasImage = !!(currentEmoji.image_url && currentEmoji.image_url.trim() !== '');
+  const isIncomplete = !hasImage || currentEmoji.status === 'pending' || currentEmoji.status === 'processing' || currentEmoji.status === 'failed';
+
+  useEffect(() => {
+    if (isIncomplete && !refreshAttempted) {
+      refreshEmoji();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isIncomplete, refreshAttempted, currentEmoji.slug, locale]);
+
+  if (isIncomplete) {
+    return (
+      <div className="py-6">
+        <div className="container mx-auto px-4">
+          <div className="max-w-2xl mx-auto flex flex-col items-center gap-6">
+            <EmojiContainer emoji={currentEmoji} size="lg" />
+            <div className="text-sm text-muted-foreground">
+              {currentEmoji.status === 'failed' ? tContainer('failed') : tContainer('processing')}
+            </div>
+
+            {showRemixGenerator && (
+              <div className="w-full max-w-md">
+                <UnifiedGenmojiGenerator
+                  initialPrompt={currentEmoji.prompt}
+                  onGenerated={(newEmoji) => {
+                    setShowRemixGenerator(false);
+                    router.push(`/emoji/${newEmoji.slug}`);
+                  }}
+                />
+              </div>
+            )}
+
+            {(currentEmoji.status === 'failed' || refreshAttempted) && (
+              <div className="w-full max-w-sm space-y-3">
+                <Button
+                  variant="outline"
+                  className="w-full text-muted-foreground hover:text-foreground py-4"
+                  onClick={() => setShowRemixGenerator(!showRemixGenerator)}
+                >
+                  <ImageIcon className="mr-2 h-4 w-4" />
+                  {showRemixGenerator ? t('hideGenerator') : t('reGenmoji')}
+                </Button>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   // 添加键盘事件监听
   useEffect(() => {
@@ -452,13 +539,13 @@ export function EmojiDetailContainer({ emoji: initialEmoji }: EmojiDetailContain
 
   // 检查用户是否已经点赞过
   useEffect(() => {
-    checkLikeStatus(initialEmoji.slug);
+    checkLikeStatus(currentEmoji.slug);
     return () => {
       if (likeTimeoutRef.current) {
         clearTimeout(likeTimeoutRef.current);
       }
     };
-  }, [initialEmoji.slug]);
+  }, [currentEmoji.slug]);
 
   // 获取当前URL
   const getShareUrl = () => {
@@ -478,7 +565,7 @@ export function EmojiDetailContainer({ emoji: initialEmoji }: EmojiDetailContain
       setTimeout(() => setShowCopied(false), 2000);
 
       // 异步提交行为数据
-      performAction(initialEmoji.slug, locale, 'copy').catch(error => {
+      performAction(currentEmoji.slug, locale, 'copy').catch(error => {
         console.error('Failed to record copy action:', error);
       });
     } catch (error) {
@@ -489,7 +576,7 @@ export function EmojiDetailContainer({ emoji: initialEmoji }: EmojiDetailContain
   // 复制提示词
   const handlePromptCopy = async () => {
     try {
-      await navigator.clipboard.writeText(initialEmoji.prompt);
+      await navigator.clipboard.writeText(currentEmoji.prompt);
       setShowPromptCopied(true);
       setTimeout(() => setShowPromptCopied(false), 2000);
     } catch (err) {
@@ -504,7 +591,7 @@ export function EmojiDetailContainer({ emoji: initialEmoji }: EmojiDetailContain
     setIsCopyingImage(true);
     
     try {
-      const response = await fetch(initialEmoji.image_url);
+      const response = await fetch(currentEmoji.image_url);
       const blob = await response.blob();
 
       // 检测是否支持剪贴板 API
@@ -521,7 +608,7 @@ export function EmojiDetailContainer({ emoji: initialEmoji }: EmojiDetailContain
           setTimeout(() => setShowImageCopied(false), 2000);
 
           // 异步提交行为数据
-          performAction(initialEmoji.slug, locale, 'copy', { type: 'image' }).catch(error => {
+          performAction(currentEmoji.slug, locale, 'copy', { type: 'image' }).catch(error => {
             console.error('Failed to record image copy action:', error);
           });
           return;
@@ -582,20 +669,20 @@ export function EmojiDetailContainer({ emoji: initialEmoji }: EmojiDetailContain
 
     try {
       // 先执行下载操作
-      const response = await fetch(initialEmoji.image_url);
+      const response = await fetch(currentEmoji.image_url);
       const blob = await response.blob();
       const url = URL.createObjectURL(blob);
 
       const link = document.createElement('a');
       link.href = url;
-      link.download = `${initialEmoji.slug}.png`;
+      link.download = `${currentEmoji.slug}.png`;
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
       URL.revokeObjectURL(url);
 
       // 异步提交行为数据
-      performAction(initialEmoji.slug, locale, 'download').catch(error => {
+      performAction(currentEmoji.slug, locale, 'download').catch(error => {
         console.error('Failed to record download action:', error);
       });
     } catch (error) {
@@ -608,9 +695,9 @@ export function EmojiDetailContainer({ emoji: initialEmoji }: EmojiDetailContain
   // 构建社交媒体分享链接
   const getSocialShareUrl = (platform: 'twitter' | 'linkedin' | 'facebook' | 'pinterest' | 'telegram' | 'whatsapp' | 'wechat' | 'imgur') => {
     const url = encodeURIComponent(getShareUrl());
-    const text = encodeURIComponent(`Check out this emoji: ${initialEmoji.prompt}`);
-    const title = encodeURIComponent(initialEmoji.prompt);
-    const image = encodeURIComponent(initialEmoji.image_url);
+    const text = encodeURIComponent(`Check out this emoji: ${currentEmoji.prompt}`);
+    const title = encodeURIComponent(currentEmoji.prompt);
+    const image = encodeURIComponent(currentEmoji.image_url);
 
     switch (platform) {
       case 'twitter':
@@ -637,12 +724,12 @@ export function EmojiDetailContainer({ emoji: initialEmoji }: EmojiDetailContain
   // 处理分享到 Instagram
   const handleInstagramShare = async () => {
     try {
-      const response = await fetch(initialEmoji.image_url);
+      const response = await fetch(currentEmoji.image_url);
       const blob = await response.blob();
 
       const a = document.createElement('a');
       a.href = URL.createObjectURL(blob);
-      a.download = `${initialEmoji.slug}.png`;
+      a.download = `${currentEmoji.slug}.png`;
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
@@ -663,8 +750,8 @@ export function EmojiDetailContainer({ emoji: initialEmoji }: EmojiDetailContain
     try {
       if (navigator.share) {
         await navigator.share({
-          title: initialEmoji.prompt,
-          text: t('sharing.defaultText', { prompt: initialEmoji.prompt }),
+          title: currentEmoji.prompt,
+          text: t('sharing.defaultText', { prompt: currentEmoji.prompt }),
           url: getShareUrl()
         });
       } else {
@@ -678,10 +765,10 @@ export function EmojiDetailContainer({ emoji: initialEmoji }: EmojiDetailContain
   // 更新本地存储的点赞状态
   const updateLocalLikeStatus = (liked: boolean) => {
     const likedEmojis = JSON.parse(localStorage.getItem('likedEmojis') || '[]');
-    if (liked && !likedEmojis.includes(initialEmoji.slug)) {
-      likedEmojis.push(initialEmoji.slug);
+    if (liked && !likedEmojis.includes(currentEmoji.slug)) {
+      likedEmojis.push(currentEmoji.slug);
     } else if (!liked) {
-      const index = likedEmojis.indexOf(initialEmoji.slug);
+      const index = likedEmojis.indexOf(currentEmoji.slug);
       if (index > -1) {
         likedEmojis.splice(index, 1);
       }
@@ -706,7 +793,7 @@ export function EmojiDetailContainer({ emoji: initialEmoji }: EmojiDetailContain
     setIsLiking(true);
 
     try {
-      const response = await toggleLike(initialEmoji.slug, locale);
+      const response = await toggleLike(currentEmoji.slug, locale);
 
       if (response.success && response.data?.liked !== undefined) {
         // 使用服务器返回的状态更新UI
@@ -814,9 +901,9 @@ export function EmojiDetailContainer({ emoji: initialEmoji }: EmojiDetailContain
           >
             <h1
               className="text-xl font-medium truncate leading-tight"
-              title={initialEmoji.prompt}
+              title={currentEmoji.prompt}
             >
-              {initialEmoji.prompt}
+              {currentEmoji.prompt}
             </h1>
             {showPromptCopied && (
               <div className="absolute top-full left-0 mt-1 flex items-center gap-1 text-xs text-green-500 z-50">
@@ -1073,7 +1160,7 @@ export function EmojiDetailContainer({ emoji: initialEmoji }: EmojiDetailContain
         {showRemixGenerator && (
           <div className="w-full mb-4">
             <UnifiedGenmojiGenerator
-              initialPrompt={initialEmoji.prompt}
+              initialPrompt={currentEmoji.prompt}
               onGenerated={(newEmoji) => {
                 // 直接跳转到新生成的 emoji 页面
                 setShowRemixGenerator(false);

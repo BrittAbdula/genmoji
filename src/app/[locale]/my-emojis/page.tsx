@@ -24,6 +24,8 @@ interface UserEmoji {
   category: string;
   primary_color: string;
   created_at: string;
+  status?: 'pending' | 'processing' | 'completed' | 'failed';
+  error_message?: string;
 }
 
 interface PaginationInfo {
@@ -87,6 +89,19 @@ export default function MyEmojisPage() {
     }
   }, [isLoggedIn, token]);
 
+  // Auto-refresh when there are pending/processing emojis
+  useEffect(() => {
+    const hasPending = emojis.some(e => e.status === 'pending' || e.status === 'processing');
+    if (!hasPending || !isLoggedIn || !token) return;
+
+    // Poll every 10 seconds for updates
+    const intervalId = setInterval(() => {
+      fetchEmojis(0, false);
+    }, 10000);
+
+    return () => clearInterval(intervalId);
+  }, [emojis, isLoggedIn, token]);
+
   const loadMore = () => {
     if (pagination && pagination.hasMore) {
       fetchEmojis(pagination.offset + pagination.limit, true);
@@ -108,6 +123,8 @@ export default function MyEmojisPage() {
     has_reference_image: false,
     quality_score: 0,
     is_indexable: false,
+    status: userEmoji.status,
+    error_message: userEmoji.error_message,
   });
 
   if (!isLoggedIn) {
@@ -179,13 +196,24 @@ export default function MyEmojisPage() {
       ) : (
         <>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3 sm:gap-4">
-            {emojis.map((userEmoji) => (
-              <EmojiContainer
-                key={userEmoji.id}
-                emoji={convertToEmoji(userEmoji)}
-                size="md"
-              />
-            ))}
+            {emojis.map((userEmoji) => {
+              const emoji = convertToEmoji(userEmoji);
+              const isIncomplete = emoji.status === 'pending' || emoji.status === 'processing' || emoji.status === 'failed';
+              if (isIncomplete) {
+                return (
+                  <Link key={userEmoji.id} href={`/emoji/${emoji.slug}`} className="block">
+                    <EmojiContainer emoji={emoji} size="md" />
+                  </Link>
+                );
+              }
+              return (
+                <EmojiContainer
+                  key={userEmoji.id}
+                  emoji={emoji}
+                  size="md"
+                />
+              );
+            })}
           </div>
 
           {pagination && pagination.hasMore && (

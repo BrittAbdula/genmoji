@@ -1,4 +1,4 @@
-export type EmojiCategory = 
+export type EmojiCategory =
   | 'smileys_emotion'
   | 'people_body'
   | 'animals_nature'
@@ -9,7 +9,7 @@ export type EmojiCategory =
   | 'symbols'
   | 'flags'
   | 'other';
-  
+
 export interface Emoji {
   id?: number;
   prompt: string;
@@ -30,6 +30,8 @@ export interface Emoji {
   keywords?: string | string[];
   likes_count?: number;
   is_indexable: boolean;
+  status?: 'pending' | 'processing' | 'completed' | 'failed';
+  error_message?: string;
 }
 
 export interface EmojiResponse {

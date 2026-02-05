@@ -462,7 +462,10 @@
   },
   "emoji": {
     "container": {
-      "imageAlt": "genmoji : {prompt}"
+      "imageAlt": "genmoji : {prompt}",
+      "processing": "Processing...",
+      "queued": "Queued...",
+      "failed": "Failed"
     },
     "notFound": {
       "title": "Genmoji Non Trouvé",
