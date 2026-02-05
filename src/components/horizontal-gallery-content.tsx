@@ -23,6 +23,7 @@ export function HorizontalGalleryContent({model, initialEmojis}: {model?: string
   const locale = useLocale();
   const [selectedModel, setSelectedModel] = useState<string | null>(null);
   const didMountRef = useRef(false);
+  const didBackgroundRefresh = useRef(false);
 
   // Model chips (only show on homepage when no explicit model is passed)
   const modelItems = [
@@ -42,8 +43,12 @@ export function HorizontalGalleryContent({model, initialEmojis}: {model?: string
     { id: 'gemstickers', name: t('generator.models.gemstickers.name'), image: "https://gstatic.com/synthidtextdemo/images/gemstickers/dot/pixel_out.png" },
   ];
 
-  const fetchEmojis = async (retryCount = 2) => { // Reduced retries from 3 to 2
+  const fetchEmojis = async (retryCount = 2, options?: { silent?: boolean }) => { // Reduced retries from 3 to 2
+    const silent = options?.silent === true;
     try {
+      if (!silent) {
+        setLoading(true);
+      }
       setError(null);
       const effectiveModel = selectedModel ?? model ?? undefined;
       const newEmojis = await getEmojis(0, limit, locale, effectiveModel ? {
@@ -57,12 +62,16 @@ export function HorizontalGalleryContent({model, initialEmojis}: {model?: string
       if (retryCount > 0) {
         const delay = 1000 * (3 - retryCount); // Shorter delays
         await new Promise(resolve => setTimeout(resolve, delay));
-        return fetchEmojis(retryCount - 1);
+        return fetchEmojis(retryCount - 1, options);
       }
-      setError(t('generator.error.failed'));
-      setEmojis([]);
+      if (!silent) {
+        setError(t('generator.error.failed'));
+        setEmojis([]);
+      }
     } finally {
-      setLoading(false);
+      if (!silent) {
+        setLoading(false);
+      }
     }
   };
 
@@ -72,10 +81,14 @@ export function HorizontalGalleryContent({model, initialEmojis}: {model?: string
       didMountRef.current = true;
       // 如果有首屏SSR数据且未固定模型，则跳过首次拉取
       if (initialEmojis && initialEmojis.length > 0 && !model) {
+        if (!didBackgroundRefresh.current) {
+          didBackgroundRefresh.current = true;
+          // 背景刷新一次，避免前台闪烁
+          fetchEmojis(2, { silent: true });
+        }
         return;
       }
     }
-    setLoading(true);
     fetchEmojis();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedModel, model, locale]);

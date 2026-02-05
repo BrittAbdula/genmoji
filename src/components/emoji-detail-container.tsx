@@ -401,6 +401,14 @@ export function EmojiDetailContainer({ emoji: initialEmoji }: EmojiDetailContain
     fetchVariations();
   }, []);
 
+  // 检查点赞状态
+  const checkLikeStatus = (slug: string) => {
+    const likedEmojis = JSON.parse(localStorage.getItem('likedEmojis') || '[]');
+    const hasLiked = likedEmojis.includes(slug);
+    setIsLiked(hasLiked);
+    initialLikeState.current = hasLiked;
+  };
+
   const refreshEmoji = async () => {
     if (refreshing) return;
     setRefreshing(true);
@@ -441,46 +449,6 @@ export function EmojiDetailContainer({ emoji: initialEmoji }: EmojiDetailContain
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isIncomplete, refreshAttempted, currentEmoji.slug, locale]);
-
-  if (isIncomplete) {
-    return (
-      <div className="py-6">
-        <div className="container mx-auto px-4">
-          <div className="max-w-2xl mx-auto flex flex-col items-center gap-6">
-            <EmojiContainer emoji={currentEmoji} size="lg" />
-            <div className="text-sm text-muted-foreground">
-              {currentEmoji.status === 'failed' ? tContainer('failed') : tContainer('processing')}
-            </div>
-
-            {showRemixGenerator && (
-              <div className="w-full max-w-md">
-                <UnifiedGenmojiGenerator
-                  initialPrompt={currentEmoji.prompt}
-                  onGenerated={(newEmoji) => {
-                    setShowRemixGenerator(false);
-                    router.push(`/emoji/${newEmoji.slug}`);
-                  }}
-                />
-              </div>
-            )}
-
-            {(currentEmoji.status === 'failed' || refreshAttempted) && (
-              <div className="w-full max-w-sm space-y-3">
-                <Button
-                  variant="outline"
-                  className="w-full text-muted-foreground hover:text-foreground py-4"
-                  onClick={() => setShowRemixGenerator(!showRemixGenerator)}
-                >
-                  <ImageIcon className="mr-2 h-4 w-4" />
-                  {showRemixGenerator ? t('hideGenerator') : t('reGenmoji')}
-                </Button>
-              </div>
-            )}
-          </div>
-        </div>
-      </div>
-    );
-  }
 
   // 添加键盘事件监听
   useEffect(() => {
@@ -528,14 +496,6 @@ export function EmojiDetailContainer({ emoji: initialEmoji }: EmojiDetailContain
   //     console.error('Failed to record view:', error);
   //   });
   // }, [initialEmoji.slug, locale]);
-
-  // 检查点赞状态
-  const checkLikeStatus = (slug: string) => {
-    const likedEmojis = JSON.parse(localStorage.getItem('likedEmojis') || '[]');
-    const hasLiked = likedEmojis.includes(slug);
-    setIsLiked(hasLiked);
-    initialLikeState.current = hasLiked;
-  };
 
   // 检查用户是否已经点赞过
   useEffect(() => {
@@ -887,6 +847,48 @@ export function EmojiDetailContainer({ emoji: initialEmoji }: EmojiDetailContain
       />
     )
   ), [allVariations, displayIndex]);
+
+  const incompleteView = (
+    <div className="py-6">
+      <div className="container mx-auto px-4">
+        <div className="max-w-2xl mx-auto flex flex-col items-center gap-6">
+          <EmojiContainer emoji={currentEmoji} size="lg" />
+          <div className="text-sm text-muted-foreground">
+            {currentEmoji.status === 'failed' ? tContainer('failed') : tContainer('processing')}
+          </div>
+
+          {showRemixGenerator && (
+            <div className="w-full max-w-md">
+              <UnifiedGenmojiGenerator
+                initialPrompt={currentEmoji.prompt}
+                onGenerated={(newEmoji) => {
+                  setShowRemixGenerator(false);
+                  router.push(`/emoji/${newEmoji.slug}`);
+                }}
+              />
+            </div>
+          )}
+
+          {(currentEmoji.status === 'failed' || refreshAttempted) && (
+            <div className="w-full max-w-sm space-y-3">
+              <Button
+                variant="outline"
+                className="w-full text-muted-foreground hover:text-foreground py-4"
+                onClick={() => setShowRemixGenerator(!showRemixGenerator)}
+              >
+                <ImageIcon className="mr-2 h-4 w-4" />
+                {showRemixGenerator ? t('hideGenerator') : t('reGenmoji')}
+              </Button>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+
+  if (isIncomplete) {
+    return incompleteView;
+  }
 
   return (
     <div className="mx-auto px-4 flex w-full max-w-2xl flex-col items-center">

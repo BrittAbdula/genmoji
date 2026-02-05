@@ -26,13 +26,14 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
         const locale = await getLocale();
         const emoji = await getEmoji(slug, locale);
         const t = await getTranslations('emoji.detail.meta');
+        const hasImage = !!emoji.image_url && emoji.image_url.trim() !== '';
          // 检查 slug 是否包含 '--'，如果包含则添加 robots 元标签阻止搜索引擎收录
          const shouldIndex = isIndexableEmoji(emoji);
          const robotsMeta = shouldIndex ? {} : { robots: { index: false, follow: false } };
         const ogImageUrl = buildOgImageUrl({
           locale,
           title: t('ogTitle', { prompt: emoji.prompt }),
-          image: emoji.image_url,
+          image: hasImage ? emoji.image_url : undefined,
         });
         //  const robotsMeta = { robots: 'noindex' };
 
@@ -58,15 +59,17 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
                 description: t('twitterDescription', { prompt: emoji.prompt }),
                 images: [ogImageUrl],
             },
-            icons: {
-                icon: emoji.image_url,
-                shortcut: emoji.image_url,
-                apple: emoji.image_url,
-                other: {
-                    rel: 'apple-touch-icon-precomposed',
-                    url: emoji.image_url,
+            ...(hasImage ? {
+                icons: {
+                    icon: emoji.image_url,
+                    shortcut: emoji.image_url,
+                    apple: emoji.image_url,
+                    other: {
+                        rel: 'apple-touch-icon-precomposed',
+                        url: emoji.image_url,
+                    },
                 },
-            },
+            } : {}),
             alternates: buildAlternates(`/emoji/${emoji.slug}`, locale),
             path: locale === 'en' ? `emoji/${emoji.slug}/` : `${locale}/emoji/${emoji.slug}/`,
             ...robotsMeta,
