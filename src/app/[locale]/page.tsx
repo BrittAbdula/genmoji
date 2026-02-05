@@ -24,6 +24,9 @@ export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
 }
 
+// Cloudflare Pages requires Edge Runtime for dynamic routes
+export const runtime = 'edge';
+
 // 启用 ISR: 每 60 秒重新生成一次页面
 export const revalidate = 60;
 
