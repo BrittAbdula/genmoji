@@ -70,9 +70,10 @@ export async function getEmojis(
     color?: string;
     sort?: 'latest' | 'popular' | 'quality';
     isIndexable?: boolean;
+    hasInteractions?: boolean;
   }
 ): Promise<Emoji[]> {
-  const { model, category, color, sort, isIndexable } = options || {};
+  const { model, category, color, sort, isIndexable, hasInteractions } = options || {};
   const endpoint = API_ENDPOINTS.EMOJI_LIST;
   const url = new URL(endpoint, API_BASE_URL);
 
@@ -87,6 +88,7 @@ export async function getEmojis(
   if (color) url.searchParams.set('color', color);
   if (sort) url.searchParams.set('sort', sort);
   if (isIndexable !== undefined) url.searchParams.set('is_indexable', isIndexable.toString());
+  if (hasInteractions !== undefined) url.searchParams.set('has_interactions', hasInteractions.toString());
 
   // console.log("API Request URL:", url.toString());
 

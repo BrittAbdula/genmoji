@@ -75,8 +75,12 @@ export default async function Home(props: Props) {
   let initialEmojis: any[] = [];
   if (PREFETCH) {
     try {
-      // 首页 All Models 展示最受欢迎的表情
-      initialEmojis = await getEmojis(0, 40, locale, { sort: 'popular', isIndexable: true });
+      // 首页 All Models 展示「最近有互动数据」的表情
+      initialEmojis = await getEmojis(0, 40, locale, {
+        sort: 'latest',
+        isIndexable: true,
+        hasInteractions: true
+      });
     } catch (e) {
       initialEmojis = [];
     }

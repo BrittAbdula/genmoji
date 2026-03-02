@@ -55,7 +55,11 @@ export function HorizontalGalleryContent({model, initialEmojis}: {model?: string
         sort: 'latest',
         model: effectiveModel,
         isIndexable: true,
-      } : { sort: 'popular', isIndexable: true });
+      } : {
+        sort: 'latest',
+        isIndexable: true,
+        hasInteractions: true,
+      });
       setEmojis(newEmojis || []);
     } catch (error) {
       console.error('Error fetching emojis:', error);
