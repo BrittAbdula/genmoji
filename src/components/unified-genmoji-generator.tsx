@@ -129,7 +129,8 @@ export function UnifiedGenmojiGenerator({
 
   // 监听登录状态变化，登录成功后自动开始生成
   useEffect(() => {
-    if (isLoggedIn && pendingGeneration && prompt.trim()) {
+    const hasValidInput = activeTab === 'image' ? !!selectedImage : !!prompt.trim();
+    if (isLoggedIn && pendingGeneration && hasValidInput) {
       setPendingGeneration(false);
       setShowLoginDialog(false);
       // 延迟一点时间确保对话框关闭动画完成
@@ -137,7 +138,7 @@ export function UnifiedGenmojiGenerator({
         generateGenmoji();
       }, 300);
     }
-  }, [isLoggedIn, pendingGeneration, prompt]);
+  }, [isLoggedIn, pendingGeneration, prompt, activeTab, selectedImage]);
 
   // 恢复已保存的样式和情绪选择
   useEffect(() => {
@@ -538,8 +539,8 @@ export function UnifiedGenmojiGenerator({
     const effectivePrompt = (() => {
       const base = (prompt || '').trim();
       if (activeTab === 'image') {
-        // Backend will build final prompt for image mode
-        return '';
+        // Avoid empty prompt so backend can build stable slug/prompt fallback.
+        return base || 'Based on uploaded reference image';
       }
       // Text mode: send user input only; backend will augment if needed
       return base;
@@ -586,7 +587,7 @@ export function UnifiedGenmojiGenerator({
           try {
             // Fetch the latest emoji status using getEmoji
             const { getEmoji } = await import('@/lib/api');
-            const updatedEmoji = await getEmoji(emoji.slug, locale);
+            const updatedEmoji = await getEmoji(emoji.slug, locale, { noCache: true });
 
             const isCompleted = updatedEmoji.status === 'completed' && !!updatedEmoji.image_url;
             const isLegacyCompleted = !updatedEmoji.status && !!updatedEmoji.image_url;

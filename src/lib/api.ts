@@ -26,14 +26,27 @@ export class GenerationLimitError extends Error {
 }
 
 // 1. 获取单个表情
-export async function getEmoji(slug: string, locale: string): Promise<Emoji> {
-  const url = getApiUrl(API_ENDPOINTS.EMOJI_BY_SLUG(slug), locale);
-  // console.log('--------getEmojiurl', url);
+export async function getEmoji(
+  slug: string,
+  locale: string,
+  options?: { noCache?: boolean }
+): Promise<Emoji> {
+  const urlObj = new URL(getApiUrl(API_ENDPOINTS.EMOJI_BY_SLUG(slug), locale));
+  if (options?.noCache) {
+    urlObj.searchParams.set('no_cache', '1');
+  }
+  const url = urlObj.toString();
+  const fetchOptions: (RequestInit & { next?: { revalidate: number } }) = {
+    headers: DEFAULT_HEADERS
+  };
+  if (options?.noCache) {
+    fetchOptions.cache = 'no-store';
+  } else {
+    fetchOptions.next = { revalidate: 86400 };
+  }
+
   try {
-    const res = await fetch(url, {
-      next: { revalidate: 86400 },
-      headers: DEFAULT_HEADERS
-    });
+    const res = await fetch(url, fetchOptions);
 
     if (!res.ok) {
       const errorText = await res.text();
