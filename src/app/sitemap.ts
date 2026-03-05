@@ -71,6 +71,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     const styleIds = [
       'genmoji',
       'sticker',
+      'chibi',
+      'plushie',
+      'keychain',
+      'doodle',
       'gemstickers',
       'pixel',
       'handdrawn',
@@ -80,6 +84,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       'cross-stitch',
       'steampunk',
       'liquid-metal',
+      'flower-petals',
     ] as const;
 
     let dynamicRoutes: MetadataRoute.Sitemap = locales.flatMap((locale) =>

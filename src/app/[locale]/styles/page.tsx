@@ -54,6 +54,34 @@ const getStyleCategories = (t: any) => [
     subStyles: []
   },
   {
+    id: 'chibi',
+    name: t('generator.models.chibi.name'),
+    description: t('generator.models.chibi.description'),
+    image: 'https://store.genmojionline.com/cdn-cgi/imagedelivery/DEOVdDdfeGzASe0KdtD7FA/40baee31-30d2-4890-e853-e9fbd07ab000/public',
+    subStyles: []
+  },
+  {
+    id: 'plushie',
+    name: t('generator.models.plushie.name'),
+    description: t('generator.models.plushie.description'),
+    image: 'https://store.genmojionline.com/cdn-cgi/imagedelivery/DEOVdDdfeGzASe0KdtD7FA/c084cf24-fc12-4f80-1b7c-76cab6b2da00/public',
+    subStyles: []
+  },
+  {
+    id: 'keychain',
+    name: t('generator.models.keychain.name'),
+    description: t('generator.models.keychain.description'),
+    image: '/emojis/keychain.png',
+    subStyles: []
+  },
+  {
+    id: 'doodle',
+    name: t('generator.models.doodle.name'),
+    description: t('generator.models.doodle.description'),
+    image: 'https://store.genmojionline.com/cdn-cgi/imagedelivery/DEOVdDdfeGzASe0KdtD7FA/671e0a40-ff72-4531-069f-6c86cb801200/public',
+    subStyles: []
+  },
+  {
     id: 'gemstickers',
     name: t('generator.models.gemstickers.name'),
     description: t('generator.models.gemstickers.description'),
@@ -124,6 +152,13 @@ const getStyleCategories = (t: any) => [
     name: t('generator.models.liquid-metal.name'),
     description: t('generator.models.liquid-metal.description'),
     image: '/emojis/Liquid-Metal.png',
+    subStyles: []
+  },
+  {
+    id: 'flower-petals',
+    name: t('generator.models.flower-petals.name'),
+    description: t('generator.models.flower-petals.description'),
+    image: '/emojis/flower-petals.png',
     subStyles: []
   }
 ];
