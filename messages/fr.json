@@ -140,6 +140,8 @@
     "uploadReference": "Télécharger une photo",
     "changeImage": "Changer l'image",
     "selectModel": "Sélectionner le style",
+    "pickStyle": "Choisir un style",
+    "substyle": "Sous-style",
     "tabs": {
       "text": "Texte vers Genmoji",
       "image": "Image vers Genmoji"
@@ -240,6 +242,14 @@
       "plushie": {
         "name": "Peluche",
         "description": "Texture peluche douce et câline"
+      },
+      "keychain": {
+        "name": "Porte-clés",
+        "description": "Figurine 3D miniature style porte-clés, finition résine brillante"
+      },
+      "flower-petals": {
+        "name": "Pétales de fleurs",
+        "description": "Silhouette élégante sculptée en pétales superposés"
       }
     },
     "gemstyles": {
@@ -410,6 +420,22 @@
         "Renard câlin",
         "Pingouin velours",
         "Champignon feutrine"
+      ],
+      "keychain": [
+        "Mini astronaute figurine",
+        "Petite figurine chat",
+        "Petit dragon porte-clés",
+        "Mignon panda à collectionner",
+        "Figurine robot miniature",
+        "Petite figurine champignon"
+      ],
+      "flower-petals": [
+        "Fille en pétales de rose",
+        "Chat formé de fleurs de cerisier",
+        "Portrait en pétales",
+        "Renard en lavande",
+        "Lapin de pétales de marguerite",
+        "Dragon en pétales de lotus"
       ]
     }
   },

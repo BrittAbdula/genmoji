@@ -405,6 +405,8 @@
     "uploadReference": "上传照片",
     "changeImage": "更换图片",
     "selectModel": "选择风格",
+    "pickStyle": "选择一个风格",
+    "substyle": "子风格",
     "tabs": {
       "text": "文字生成 Genmoji",
       "image": "图片生成 Genmoji"
@@ -505,6 +507,14 @@
       "plushie": {
         "name": "毛绒玩具",
         "description": "柔软毛绒质感，温馨可抱"
+      },
+      "keychain": {
+        "name": "钥匙扣",
+        "description": "真实感3D小人钥匙扣，光泽质感"
+      },
+      "flower-petals": {
+        "name": "花瓣人像",
+        "description": "由层叠花瓣雕塑的优雅人物形象"
       }
     },
     "gemstyles": {
@@ -674,6 +684,22 @@
         "可抱小狐狸",
         "绒布企鹅",
         "毡布小蘑菇"
+      ],
+      "keychain": [
+        "迷你宇航员摆件",
+        "小猫收藏品",
+        "小龙吊坠",
+        "可爱熊猫钥匙扣",
+        "小机器人挂件",
+        "蘑菇造型小人"
+      ],
+      "flower-petals": [
+        "玫瑞花瓣拼成的女孩",
+        "樱花花瓣组成的小猫",
+        "花瓣人像写真",
+        "薰衣草花瓣拼成的狐狸",
+        "雏菊花瓣拼成的兔子",
+        "荷花花瓣雕塑的龙"
       ]
     }
   },

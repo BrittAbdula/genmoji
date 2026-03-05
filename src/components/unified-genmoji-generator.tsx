@@ -10,7 +10,7 @@ import { genMoji, uploadImage, GenerationLimitError, getSubscriptionStatus } fro
 import { Emoji } from "@/types/emoji";
 // Defer loading of heavy components
 import dynamic from 'next/dynamic';
-import { X, Plus, ArrowUp, Globe, Crown, Info } from 'lucide-react';
+import { X, Plus, ArrowUp, Globe, Crown, Info, Star, ChevronLeft, ChevronRight } from 'lucide-react';
 // confetti is now dynamically imported in triggerConfetti
 import { useRouter } from "next/navigation";
 import { useTranslations, useLocale } from 'next-intl';
@@ -64,7 +64,6 @@ export function UnifiedGenmojiGenerator({
   const modelSelectorRef = useRef<HTMLDivElement>(null);
   const itemRefs = useRef<Record<string, HTMLButtonElement | null>>({});
   const hasCenteredOnce = useRef(false);
-  const hasPlayedIntroAnimation = useRef(false);
   const isMobile = useMediaQuery("(max-width: 768px)");
   const [mounted, setMounted] = useState(false);
   
@@ -135,7 +134,7 @@ export function UnifiedGenmojiGenerator({
       setShowLoginDialog(false);
       // 延迟一点时间确保对话框关闭动画完成
       setTimeout(() => {
-        startGeneration();
+        generateGenmoji();
       }, 300);
     }
   }, [isLoggedIn, pendingGeneration, prompt]);
@@ -197,10 +196,6 @@ export function UnifiedGenmojiGenerator({
     return () => clearTimeout(timer);
   }, []);
 
-  // 模型数据，统一管理所有模型信息
-  // Featured models shown by default (first 4)
-  const FEATURED_MODEL_IDS = ['genmoji', 'sticker', 'doodle', 'chibi'] as const;
-  
   const models = [
     {
       id: 'genmoji' as const,
@@ -216,34 +211,28 @@ export function UnifiedGenmojiGenerator({
       image: "https://store.genmojionline.com/cdn-cgi/imagedelivery/DEOVdDdfeGzASe0KdtD7FA/8ef04dd2-6612-496a-d2ea-bada5ccf9400/public",
       alt: "Sticker"
     },
-    // New transparent background styles (featured)
-    { id: 'doodle' as const, name: t('models.doodle.name'), description: t('models.doodle.description'), image: "https://store.genmojionline.com/cdn-cgi/imagedelivery/DEOVdDdfeGzASe0KdtD7FA/671e0a40-ff72-4531-069f-6c86cb801200/public", alt: 'Doodle Genmoji' },
     { id: 'chibi' as const, name: t('models.chibi.name'), description: t('models.chibi.description'), image: "https://store.genmojionline.com/cdn-cgi/imagedelivery/DEOVdDdfeGzASe0KdtD7FA/40baee31-30d2-4890-e853-e9fbd07ab000/public", alt: 'Chibi Genmoji' },
-    // More styles (expanded)
     { id: 'plushie' as const, name: t('models.plushie.name'), description: t('models.plushie.description'), image: "https://store.genmojionline.com/cdn-cgi/imagedelivery/DEOVdDdfeGzASe0KdtD7FA/c084cf24-fc12-4f80-1b7c-76cab6b2da00/public", alt: 'Plushie Genmoji' },
-    { id: 'liquid-metal' as const, name: t('models.liquid-metal.name'), description: t('models.liquid-metal.description'), image: "/emojis/Liquid-Metal.png", alt: 'Liquid Metal Genmoji' },
-    { id: 'claymation' as const, name: t('models.claymation.name'), description: t('models.claymation.description'), image: "/emojis/Claymation.png", alt: 'Claymation Genmoji' },
+    { id: 'keychain' as const, name: t('models.keychain.name'), description: t('models.keychain.description'), image: "/emojis/keychain.png", alt: 'Keychain Genmoji' },
+    { id: 'flower-petals' as const, name: t('models.flower-petals.name'), description: t('models.flower-petals.description'), image: "/emojis/flower-petals.png", alt: 'Flower Petals Genmoji' },
     { id: '3d' as const, name: t('models.3d.name'), description: t('models.3d.description'), image: "/emojis/3d.png", alt: '3D Genmoji' },
-    { id: 'handdrawn' as const, name: t('models.handdrawn.name'), description: t('models.handdrawn.description'), image: "/emojis/handdrawn.png", alt: 'Hand-drawn Genmoji' },
-    { id: 'steampunk' as const, name: t('models.steampunk.name'), description: t('models.steampunk.description'), image: "/emojis/Steampunk.png", alt: 'Steampunk Genmoji' },
+    { id: 'claymation' as const, name: t('models.claymation.name'), description: t('models.claymation.description'), image: "/emojis/Claymation.png", alt: 'Claymation Genmoji' },
     { id: 'pixel' as const, name: t('models.pixel.name'), description: t('models.pixel.description'), image: "/emojis/pixel.png", alt: 'Pixel Genmoji' },
-    { id: 'origami' as const, name: t('models.origami.name'), description: t('models.origami.description'), image: "/emojis/Origami.png", alt: 'Origami Genmoji' },
     { id: 'cross-stitch' as const, name: t('models.cross-stitch.name'), description: t('models.cross-stitch.description'), image: "/emojis/Cross-stitch-Pixel.png", alt: 'Cross-stitch Genmoji' },
+    { id: 'steampunk' as const, name: t('models.steampunk.name'), description: t('models.steampunk.description'), image: "/emojis/Steampunk.png", alt: 'Steampunk Genmoji' },
+    { id: 'doodle' as const, name: t('models.doodle.name'), description: t('models.doodle.description'), image: "https://store.genmojionline.com/cdn-cgi/imagedelivery/DEOVdDdfeGzASe0KdtD7FA/671e0a40-ff72-4531-069f-6c86cb801200/public", alt: 'Doodle Genmoji' },
+    { id: 'handdrawn' as const, name: t('models.handdrawn.name'), description: t('models.handdrawn.description'), image: "/emojis/handdrawn.png", alt: 'Hand-drawn Genmoji' },
+    { id: 'liquid-metal' as const, name: t('models.liquid-metal.name'), description: t('models.liquid-metal.description'), image: "/emojis/Liquid-Metal.png", alt: 'Liquid Metal Genmoji' },
+    { id: 'origami' as const, name: t('models.origami.name'), description: t('models.origami.description'), image: "/emojis/Origami.png", alt: 'Origami Genmoji' },
     {
       id: 'gemstickers' as const,
       name: t('models.gemstickers.name'),
       description: t('models.gemstickers.description'),
-      image: "/emojis/handdrawn.png",
+      image: "https://gstatic.com/synthidtextdemo/images/gemstickers/dot/pixel.png",
       alt: "Gem Stickers"
     }
   ];
 
-  // Split models into featured and expanded
-  const featuredModels = models.filter(m => (FEATURED_MODEL_IDS as readonly string[]).includes(m.id));
-  const expandedModels = models.filter(m => !(FEATURED_MODEL_IDS as readonly string[]).includes(m.id));
-  
-  // Auto-expand if current model is in expanded section
-  const isCurrentModelExpanded = !(FEATURED_MODEL_IDS as readonly string[]).includes(model);
 
   // Get current model info from the unified models array
   const getCurrentModelInfo = () => {
@@ -255,10 +244,6 @@ export function UnifiedGenmojiGenerator({
   const currentGemSubStyle: GemSubStyle | null = (model === 'gemstickers' && selectedStyleId)
     ? (gemSubStyles.find((s) => s.id === selectedStyleId) ?? null)
     : null;
-  const currentPreviewImage = currentGemSubStyle?.selectedImgUrl || currentGemSubStyle?.imgUrl || currentModel.image;
-  const currentPreviewAlt = (model === 'gemstickers' && selectedStyleId)
-    ? (t(`gemstyles.styles.${selectedStyleId}.name` as any) as string)
-    : currentModel.name;
 
   useEffect(() => {
     setPrompt(initialPrompt);
@@ -710,187 +695,90 @@ export function UnifiedGenmojiGenerator({
 
   // 初始进入时跑马灯快速预览一遍，最后停留在上次选择
   // 如果有 init_model 参数，跳过动画直接显示指定模型
-  useEffect(() => {
-    if (hasPlayedIntroAnimation.current) return;
-
-    // 如果有 init_model 参数，直接显示指定模型，跳过跑马灯动画
-    if (init_model) {
-      hasPlayedIntroAnimation.current = true;
-      // 确保模型选择器滚动到指定模型
-      setTimeout(() => {
-        const el = itemRefs.current[init_model];
-        if (el) {
-          try {
-            el.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
-          } catch {}
-        }
-      }, 100);
-      return;
-    }
-
-    let raf = 0 as number | undefined;
-
-    const run = () => {
-      // 读取上次选择
-      let saved: string | null = null;
-      try { saved = localStorage.getItem('genmoji:selectedModel'); } catch {}
-      const endModel = saved || model;
-
-      const ids = models.map((m) => m.id as string);
-      const container = modelSelectorRef.current;
-      if (!container || ids.length === 0) {
-        hasPlayedIntroAnimation.current = true;
-        return;
-      }
-
-      // 从头滚到尾（一次），快速马灯效果
-      const scrollMax = Math.max(0, container.scrollWidth - container.clientWidth);
-      container.scrollTo({ left: 0, behavior: 'auto' });
-      const duration = 1000; // 1s 快速过一遍
-      const start = performance.now();
-      let lastIdx = -1;
-
-      const step = (now: number) => {
-        const t = Math.min(1, (now - start) / duration);
-        container.scrollLeft = scrollMax * t;
-
-        // 根据进度快速切换预览（避免每帧都 setModel）
-        const idx = Math.min(ids.length - 1, Math.floor(t * ids.length));
-        if (idx !== lastIdx) {
-          lastIdx = idx;
-          setModel(ids[idx]);
-        }
-
-        if (t < 1) {
-          raf = requestAnimationFrame(step);
-        } else {
-          // 停留在上次选择
-          setTimeout(() => {
-            if (endModel) {
-              setModel(endModel);
-              const el = itemRefs.current[endModel];
-              try {
-                el?.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
-              } catch {}
-            }
-            hasPlayedIntroAnimation.current = true;
-          }, 50);
-        }
-      };
-
-      raf = requestAnimationFrame(step);
-    };
-
-    const timer = setTimeout(run, 200);
-    return () => {
-      clearTimeout(timer);
-      if (raf) cancelAnimationFrame(raf);
-    };
-  }, [init_model]);
-
-  // Removed old dialog/drawer model selectors in favor of inline selector bar
-
   const content = (
-    <div className="flex flex-col gap-4 py-4">
-      {/* Inline style selector bar */}
-      <div className="w-full">
-        {/* Large preview of the currently selected style */}
-        <div className="w-full px-4 mb-3">
-          <div className="relative mx-auto w-full max-w-[160px]">
-            <Image
-              src={currentPreviewImage}
-              alt={currentPreviewAlt}
-              width={160}
-              height={160}
-              priority
-              className="w-full h-auto rounded-xl object-cover"
-            />
-          </div>
-        </div>
-        <div className="w-full px-4">
-          {/* Featured models row */}
-          <div 
-            ref={modelSelectorRef}
-            className="flex gap-2 flex-wrap justify-center" 
-            role="listbox" 
-            aria-label={t('selectModel')}
+    <div className="flex flex-col gap-2 py-4 w-full overflow-hidden">
+      {/* Header with Title and Scroll Buttons */}
+      <div className="flex items-center justify-between px-4 w-full max-w-7xl mx-auto">
+        <h2 className="text-xl sm:text-2xl font-semibold tracking-tight text-foreground">{t('pickStyle')}</h2>
+        <div className="flex gap-2">
+          <button
+            onClick={() => {
+              if (modelSelectorRef.current) {
+                modelSelectorRef.current.scrollBy({ left: -200, behavior: 'smooth' });
+              }
+            }}
+            className="p-2 rounded-full border border-border/50 bg-background hover:bg-muted/60 transition-colors shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+            aria-label="Scroll left"
           >
-            {/* Featured models */}
-            {featuredModels.map((m) => (
-              <button
-                key={m.id}
-                type="button"
-                onClick={() => handleModelSelect(m.id)}
-                title={m.name}
-                aria-pressed={model === m.id}
-                ref={(el) => { itemRefs.current[m.id] = el; }}
+            <ChevronLeft className="w-5 h-5 text-foreground/80" />
+          </button>
+          <button
+            onClick={() => {
+              if (modelSelectorRef.current) {
+                modelSelectorRef.current.scrollBy({ left: 200, behavior: 'smooth' });
+              }
+            }}
+            className="p-2 rounded-full border border-border/50 bg-background hover:bg-muted/60 transition-colors shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+            aria-label="Scroll right"
+          >
+            <ChevronRight className="w-5 h-5 text-foreground/80" />
+          </button>
+        </div>
+      </div>
+
+      {/* Horizontal Scroll Models */}
+      <div className="w-full relative max-w-7xl mx-auto">
+        <div 
+          ref={modelSelectorRef}
+          className="flex gap-3 overflow-x-auto scrollbar-hide px-4 pb-4 pt-2 snap-x"
+          role="listbox"
+          aria-label={t('selectModel')}
+        >
+          {models.map((m) => (
+            <button
+              key={m.id}
+              type="button"
+              onClick={() => handleModelSelect(m.id)}
+              title={m.name}
+              aria-pressed={model === m.id}
+              ref={(el) => { itemRefs.current[m.id] = el; }}
+              className="flex flex-col items-center gap-2 shrink-0 snap-start focus-visible:outline-none focus:outline-none group w-[100px] sm:w-[120px]"
+            >
+              <div
                 className={cn(
-                  "flex items-center gap-2 shrink-0 border rounded-full pr-3 pl-2 py-2",
-                  "transition-colors bg-background",
-                  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2",
+                  "relative w-full aspect-square overflow-hidden rounded-[20px] transition-all duration-300",
+                  "border-2",
                   model === m.id
-                    ? "border-primary/40 bg-primary/5"
-                    : "border-border hover:bg-muted/60"
+                    ? "border-primary shadow-md scale-[0.98] ring-2 ring-primary/20"
+                    : "border-transparent bg-muted/20 hover:scale-[1.02] hover:shadow-sm"
                 )}
               >
-                <Image src={m.image} alt={m.alt} width={28} height={28} className="rounded-full" />
-                <span className="text-[13px] sm:text-sm whitespace-nowrap">{m.name}</span>
-              </button>
-            ))}
-            
-            {/* More Styles button */}
-            <button
-              type="button"
-              onClick={() => setIsStylesExpanded(!isStylesExpanded)}
-              className={cn(
-                "flex items-center gap-1.5 shrink-0 border rounded-full px-3 py-2",
-                "transition-colors",
-                "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2",
-                (isStylesExpanded || isCurrentModelExpanded)
-                  ? "border-primary/40 bg-primary/5"
-                  : "border-border hover:bg-muted/60"
-              )}
-            >
-              <span className="text-[13px] sm:text-sm whitespace-nowrap">
-                {isStylesExpanded || isCurrentModelExpanded ? '−' : '+'} More
+                <Image 
+                  src={m.image} 
+                  alt={m.alt} 
+                  fill
+                  sizes="(max-width: 768px) 33vw, 20vw"
+                  className={cn(
+                    "object-cover transition-transform duration-500",
+                    model === m.id ? "scale-105" : "group-hover:scale-105"
+                  )} 
+                />
+              </div>
+              <span className={cn(
+                "text-xs sm:text-sm font-medium transition-colors text-center w-full px-1 truncate",
+                model === m.id ? "text-primary" : "text-muted-foreground group-hover:text-foreground"
+              )}>
+                {m.name}
               </span>
             </button>
-          </div>
-          
-          {/* Expanded models grid */}
-          {(isStylesExpanded || isCurrentModelExpanded) && (
-            <div className="mt-3 pt-3 border-t border-border/50">
-              <div className="flex gap-2 flex-wrap justify-center">
-                {expandedModels.map((m) => (
-                  <button
-                    key={m.id}
-                    type="button"
-                    onClick={() => handleModelSelect(m.id)}
-                    title={m.name}
-                    aria-pressed={model === m.id}
-                    ref={(el) => { itemRefs.current[m.id] = el; }}
-                    className={cn(
-                      "flex items-center gap-2 shrink-0 border rounded-full pr-3 pl-2 py-2",
-                      "transition-colors bg-background",
-                      "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2",
-                      model === m.id
-                        ? "border-primary/40 bg-primary/5"
-                        : "border-border hover:bg-muted/60"
-                    )}
-                  >
-                    <Image src={m.image} alt={m.alt} width={28} height={28} className="rounded-full" />
-                    <span className="text-[13px] sm:text-sm whitespace-nowrap">{m.name}</span>
-                  </button>
-                ))}
-              </div>
-            </div>
-          )}
+          ))}
         </div>
+      </div>
         {model === 'gemstickers' && (
           <div className="w-full px-4 mt-1">
             {/* Gem Stickers sub-styles */}
             <div className="w-full max-w-3xl mx-auto mb-3">
-              <div className="mb-2 text-sm text-muted-foreground">{t('gemstyles.ui.selectStyle')}</div>
+              <div className="mb-2 text-sm font-medium text-muted-foreground">{t('substyle')}</div>
               <div className="flex gap-3 overflow-x-auto scrollbar-hide py-1">
                 {gemSubStyles.map((opt) => {
                   const selected = selectedStyleId === opt.id;
@@ -950,7 +838,6 @@ export function UnifiedGenmojiGenerator({
             </div>
           </div>
         )}
-      </div>
       {isGenerating && (
         <div className="w-full space-y-2">
           <Progress value={progress} className="h-1.5" aria-valuenow={progress} aria-valuemin={0} aria-valuemax={100} />

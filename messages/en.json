@@ -404,6 +404,8 @@
     "uploadReference": "Upload Photo",
     "changeImage": "Change Image",
     "selectModel": "Select Style",
+    "pickStyle": "Pick a style",
+    "substyle": "Substyle",
     "tabs": {
       "text": "Text to Genmoji",
       "image": "Image to Genmoji"
@@ -504,6 +506,14 @@
       "plushie": {
         "name": "Plushie",
         "description": "Cuddly stuffed toy with soft texture"
+      },
+      "keychain": {
+        "name": "Keychain",
+        "description": "Cute 3D figurine keychain with glossy resin finish"
+      },
+      "flower-petals": {
+        "name": "Flower Petals",
+        "description": "Elegant figure sculpted from layered flower petals"
       }
     },
     "gemstyles": {
@@ -673,6 +683,22 @@
         "Cuddly fox toy",
         "Velvet penguin plush",
         "Felt mushroom friend"
+      ],
+      "keychain": [
+        "Tiny astronaut figurine",
+        "Mini cat collectible",
+        "Small dragon figure",
+        "Cute panda keychain",
+        "Little robot charm",
+        "Mushroom figurine"
+      ],
+      "flower-petals": [
+        "Girl made of rose petals",
+        "Cat formed from cherry blossoms",
+        "Petal portrait of a person",
+        "Fox silhouette in lavender petals",
+        "Bunny shaped from daisy petals",
+        "Dragon sculpted from lotus petals"
       ]
     }
   },
