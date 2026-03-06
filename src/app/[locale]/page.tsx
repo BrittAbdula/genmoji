@@ -69,7 +69,7 @@ export default async function Home(props: Props) {
   const { locale } = await props.params;
   // 启用静态渲染
   setRequestLocale(locale);
-  // 预取首屏可索引的最近 Genmoji（SSR）
+  // 预取首屏最近有行为的 Genmoji（SSR）
   // Cloudflare Pages 纯前端部署可通过 env 关闭（NEXT_PUBLIC_PREFETCH_HOME_RECENT=0）
   const PREFETCH = process.env.NEXT_PUBLIC_PREFETCH_HOME_RECENT !== '0';
   let initialEmojis: any[] = [];
@@ -78,7 +78,6 @@ export default async function Home(props: Props) {
       // 首页 All Models 展示「最近有互动数据」的表情
       initialEmojis = await getEmojis(0, 40, locale, {
         sort: 'latest',
-        isIndexable: true,
         hasInteractions: true
       });
     } catch (e) {

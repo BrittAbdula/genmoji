@@ -51,13 +51,13 @@ export function HorizontalGalleryContent({model, initialEmojis}: {model?: string
       }
       setError(null);
       const effectiveModel = selectedModel ?? model ?? undefined;
+      const requireIndexable = !!model;
       const newEmojis = await getEmojis(0, limit, locale, effectiveModel ? {
         sort: 'latest',
         model: effectiveModel,
-        isIndexable: true,
+        ...(requireIndexable ? { isIndexable: true } : {}),
       } : {
         sort: 'latest',
-        isIndexable: true,
         hasInteractions: true,
       });
       setEmojis(newEmojis || []);
