@@ -1,16 +1,13 @@
 "use client";
 
 import { useTranslations } from 'next-intl';
-import { Metadata } from 'next';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
-import { Separator } from "@/components/ui/separator";
 import { 
   Crown, 
   CreditCard, 
-  Calendar, 
   Clock, 
   CheckCircle, 
   XCircle, 
@@ -145,6 +142,7 @@ export default function SubscriptionPage() {
   const isPremium = subscriptionData?.subscription?.status === 'active';
   const subscription = subscriptionData?.subscription;
   const usage = subscriptionData?.usage;
+  const cancellationScheduled = Boolean(subscription?.cancel_at_period_end);
 
   return (
     <div className="min-h-screen bg-background">
@@ -175,7 +173,7 @@ export default function SubscriptionPage() {
             <CardContent className="pt-6">
               <div className="flex items-center gap-2 text-red-800">
                 <AlertTriangle className="w-4 h-4" />
-                <span>{tm('error')}</span>
+                <span>{error}</span>
               </div>
             </CardContent>
           </Card>
@@ -203,10 +201,10 @@ export default function SubscriptionPage() {
                         {subscription?.billing_cycle === 'yearly' ? tm('yearlyBilling') : tm('monthlyBilling')}
                       </p>
                     </div>
-                    <Badge className={getStatusColor(subscription?.status)}>
+                    <Badge className={getStatusColor(cancellationScheduled ? 'cancelled' : subscription?.status)}>
                       <div className="flex items-center gap-1">
-                        {getStatusIcon(subscription?.status)}
-                        {subscription?.status}
+                        {getStatusIcon(cancellationScheduled ? 'cancelled' : subscription?.status)}
+                        {cancellationScheduled ? tm('scheduledCancellation') : subscription?.status}
                       </div>
                     </Badge>
                   </div>
@@ -223,13 +221,30 @@ export default function SubscriptionPage() {
                     </div>
                     
                     <div className="flex justify-between text-sm">
-                      <span className="text-muted-foreground">{tm('nextBilling')}:</span>
+                      <span className="text-muted-foreground">
+                        {cancellationScheduled ? tm('accessEnds') : tm('nextBilling')}:
+                      </span>
                       <span className="font-medium">
                         {formatDate(subscription?.current_period_end)}
                       </span>
                     </div>
                     {/* Daily limit row removed due to monthly credits migration */}
                   </div>
+
+                  {cancellationScheduled && (
+                    <>
+                      <div className="h-px bg-border" />
+                      <div className="rounded-lg border border-orange-200 bg-orange-50 p-3 text-sm text-orange-900">
+                        <div className="flex items-start gap-2">
+                          <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0 text-orange-600" />
+                          <div>
+                            <p className="font-medium">{tm('scheduledCancellation')}</p>
+                            <p className="mt-1 text-orange-800">{tm('scheduledCancellationDescription')}</p>
+                          </div>
+                        </div>
+                      </div>
+                    </>
+                  )}
 
                   <div className="h-px bg-border" />
 
@@ -362,19 +377,21 @@ export default function SubscriptionPage() {
                     <AlertTriangle className="w-5 h-5 text-orange-600 mt-0.5" />
                     <div className="flex-1">
                       <h4 className="font-medium text-orange-900 mb-1">
-                        {tm('cancelSubscription')}
+                        {cancellationScheduled ? tm('scheduledCancellation') : tm('cancelSubscription')}
                       </h4>
                       <p className="text-sm text-orange-800 mb-3">
-                        {tm('cancelDescription')}
+                        {cancellationScheduled ? tm('scheduledCancellationDescription') : tm('cancelDescription')}
                       </p>
-                      <Button 
-                        variant="outline" 
-                        onClick={handleCancelSubscription}
-                        disabled={cancelling}
-                        className="border-orange-300 text-orange-700 hover:bg-orange-100"
-                      >
-                        {cancelling ? tm('cancelling') : tm('cancelSubscription')}
-                      </Button>
+                      {!cancellationScheduled && (
+                        <Button 
+                          variant="outline" 
+                          onClick={handleCancelSubscription}
+                          disabled={cancelling}
+                          className="border-orange-300 text-orange-700 hover:bg-orange-100"
+                        >
+                          {cancelling ? tm('cancelling') : tm('cancelSubscription')}
+                        </Button>
+                      )}
                     </div>
                   </div>
                 </div>

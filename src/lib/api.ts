@@ -404,9 +404,14 @@ export async function cancelSubscription(token: string): Promise<{
     headers: getAuthHeaders(token)
   });
 
+  const payload = await res.json().catch(() => null);
+
   if (!res.ok) {
-    throw new Error('Failed to cancel subscription');
+    return {
+      success: false,
+      error: payload?.error || 'Failed to cancel subscription'
+    };
   }
 
-  return res.json();
+  return payload;
 }
