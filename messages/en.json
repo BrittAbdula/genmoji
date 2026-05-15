@@ -1,4 +1,20 @@
 {
+  "home": {
+    "styleShowcase": {
+      "title": "Browse by style",
+      "subtitle": "From claymation to pixel art — 14 styles to remix."
+    },
+    "categoryShowcase": {
+      "title": "Popular categories",
+      "subtitle": "Jump straight into the kinds of genmojis people make most.",
+      "countLabel": "{count, plural, one {# genmoji} other {# genmojis}}",
+      "exploreLabel": "Explore this category"
+    },
+    "trendingGrid": {
+      "title": "Trending genmojis",
+      "subtitle": "The most-liked picks from the community."
+    }
+  },
   "common": {
     "name": "Genmoji Online",
     "description": "Create custom genmojis that perfectly express your emotion and creativity.",
@@ -211,15 +227,35 @@
       "copying": "Copying...",
       "share": {
         "title": "Share",
-        "twitter": "Share on Twitter",
-        "facebook": "Share on Facebook",
-        "linkedin": "Share on LinkedIn",
-        "instagram": "Share on Instagram",
-        "pinterest": "Share on Pinterest",
-        "imgur": "Share on Imgur",
-        "telegram": "Share on Telegram",
-        "whatsapp": "Share on WhatsApp",
-        "wechat": "Share on WeChat"
+        "send": "Send",
+        "shared": "Shared",
+        "sendInChat": "Send in chat",
+        "copyAndPaste": "Copy & paste",
+        "quickPost": "Quick post",
+        "whatsapp": "WhatsApp",
+        "telegram": "Telegram",
+        "messenger": "Messenger",
+        "signal": "Signal",
+        "discord": "Discord",
+        "x": "X",
+        "reddit": "Reddit",
+        "pinterest": "Pinterest",
+        "facebook": "Facebook",
+        "linkedin": "LinkedIn",
+        "instagram": "Instagram",
+        "imgur": "Imgur",
+        "wechat": "WeChat",
+        "twitter": "Twitter",
+        "email": "Email",
+        "iosHint": "Pick iMessage or WhatsApp — the image goes in as a sticker / media attachment.",
+        "androidHint": "Pick WhatsApp, Telegram or Messenger — the image arrives as a media attachment.",
+        "desktopHint": "Copy the image, then paste it into any chat app.",
+        "discordTooltip": "Image copied — paste it in any Discord channel.",
+        "signalTooltip": "Image copied — paste it in any Signal chat.",
+        "imageCopied": "Image copied to clipboard",
+        "linkCopied": "Link copied",
+        "shareFailed": "Couldn't open the share sheet — try Copy image instead.",
+        "shareCanceled": "Share canceled"
       },
       "sharing": {
         "defaultText": "Check out this awesome genmoji I made with Genmoji Online!",
@@ -410,7 +446,7 @@
       "text": "Text to Genmoji",
       "image": "Image to Genmoji"
     },
-    "recentTitle": "Recent Genmojis",
+    "recentTitle": "Fresh from the community",
     "generationStatus": {
       "starting": "Starting generation...",
       "creating": "Creating magic...",

@@ -1,4 +1,20 @@
 {
+  "home": {
+    "styleShowcase": {
+      "title": "Parcourir par style",
+      "subtitle": "De la pâte à modeler au pixel art — 14 styles à remixer."
+    },
+    "categoryShowcase": {
+      "title": "Catégories populaires",
+      "subtitle": "Plongez directement dans les types de genmojis les plus créés.",
+      "countLabel": "{count, plural, one {# genmoji} other {# genmojis}}",
+      "exploreLabel": "Explorer cette catégorie"
+    },
+    "trendingGrid": {
+      "title": "Genmojis tendance",
+      "subtitle": "Les plus appréciés de la communauté."
+    }
+  },
   "common": {
     "name": "Genmoji Online",
     "description": "Créez des genmojis personnalisés qui expriment parfaitement vos émotions et votre créativité.",
@@ -146,7 +162,7 @@
       "text": "Texte vers Genmoji",
       "image": "Image vers Genmoji"
     },
-    "recentTitle": "Genmojis récents",
+    "recentTitle": "Fraîchement créés par la communauté",
     "generationStatus": {
       "starting": "Démarrage de la génération...",
       "creating": "Création en cours...",
@@ -524,16 +540,36 @@
       "downloading": "Téléchargement...",
       "copying": "Copie en cours...",
       "share": {
-        "title": "Partager sur",
-        "twitter": "Partager sur Twitter",
-        "facebook": "Partager sur Facebook",
-        "linkedin": "Partager sur LinkedIn",
-        "instagram": "Partager sur Instagram",
-        "pinterest": "Partager sur Pinterest",
-        "imgur": "Partager sur Imgur",
-        "telegram": "Partager sur Telegram",
-        "whatsapp": "Partager sur WhatsApp",
-        "wechat": "Partager sur WeChat"
+        "title": "Partager",
+        "send": "Envoyer",
+        "shared": "Partagé",
+        "sendInChat": "Envoyer dans un chat",
+        "copyAndPaste": "Copier-coller",
+        "quickPost": "Publication rapide",
+        "whatsapp": "WhatsApp",
+        "telegram": "Telegram",
+        "messenger": "Messenger",
+        "signal": "Signal",
+        "discord": "Discord",
+        "x": "X",
+        "reddit": "Reddit",
+        "pinterest": "Pinterest",
+        "facebook": "Facebook",
+        "linkedin": "LinkedIn",
+        "instagram": "Instagram",
+        "imgur": "Imgur",
+        "wechat": "WeChat",
+        "twitter": "Twitter",
+        "email": "E-mail",
+        "iosHint": "Choisissez iMessage ou WhatsApp — l'image arrive comme sticker / pièce jointe.",
+        "androidHint": "Choisissez WhatsApp, Telegram ou Messenger — l'image arrive comme pièce jointe.",
+        "desktopHint": "Copiez l'image, puis collez-la dans n'importe quelle app de chat.",
+        "discordTooltip": "Image copiée — collez-la dans n'importe quel salon Discord.",
+        "signalTooltip": "Image copiée — collez-la dans n'importe quelle conversation Signal.",
+        "imageCopied": "Image copiée",
+        "linkCopied": "Lien copié",
+        "shareFailed": "Impossible d'ouvrir le partage — essayez Copier l'image.",
+        "shareCanceled": "Partage annulé"
       },
       "sharing": {
         "defaultText": "Découvrez ce superbe genmoji que j'ai créé avec Genmoji Online !",

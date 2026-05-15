@@ -1,22 +1,15 @@
-import { Benefits } from "@/components/sections/benefits";
-import { BentoGrid } from "@/components/sections/bento";
 import { CTA } from "@/components/sections/cta";
 import { FAQ } from "@/components/sections/faq";
-import { FeatureHighlight } from "@/components/sections/feature-highlight";
-import { FeatureScroll } from "@/components/sections/feature-scroll";
-import { Features } from "@/components/sections/features";
 import { Hero } from "@/components/sections/hero";
-import { Testimonials } from "@/components/sections/testimonials";
-import { HomeGenerator } from '@/components/sections/home-generator';
+import { StyleShowcase } from "@/components/sections/style-showcase";
+import { CategoryShowcase } from "@/components/sections/category-showcase";
+import { TrendingGrid } from "@/components/sections/trending-grid";
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { siteConfig } from "@/lib/config";
-import { routing } from '@/i18n/routing';
-import { constructMetadata } from "@/lib/utils";
 import { buildAlternates } from "@/lib/seo";
-import { getLocale } from 'next-intl/server';
-import { GalleryContent } from '@/components/gallery-content';
 import { HorizontalGalleryContent } from '@/components/horizontal-gallery-content';
-import { getEmojis } from '@/lib/api';
+import { getEmojis, getEmojiGroups } from '@/lib/api';
+import { filterSfw } from '@/lib/sfw-filter';
 import Script from 'next/script';
 
 // Cloudflare Pages requires Edge Runtime for dynamic routes
@@ -67,22 +60,24 @@ export async function generateMetadata(props: Props) {
 
 export default async function Home(props: Props) {
   const { locale } = await props.params;
-  // 启用静态渲染
   setRequestLocale(locale);
-  // 预取首屏最近有行为的 Genmoji（SSR）
-  // Cloudflare Pages 纯前端部署可通过 env 关闭（NEXT_PUBLIC_PREFETCH_HOME_RECENT=0）
+
   const PREFETCH = process.env.NEXT_PUBLIC_PREFETCH_HOME_RECENT !== '0';
   let initialEmojis: any[] = [];
+  let trendingEmojis: any[] = [];
+  let groups: { categories: { name: string; translated_name: string; count?: number }[] } = { categories: [] };
+
   if (PREFETCH) {
-    try {
-      // 首页 All Models 展示「最近有互动数据」的表情
-      initialEmojis = await getEmojis(0, 40, locale, {
-        sort: 'latest',
-        hasInteractions: true
-      });
-    } catch (e) {
-      initialEmojis = [];
-    }
+    // Over-fetch then filter out NSFW client-side because backend `is_indexable`
+    // is not strict enough for homepage exposure.
+    const [latestRes, trendingRes, groupsRes] = await Promise.allSettled([
+      getEmojis(0, 60, locale, { sort: 'latest', hasInteractions: true, isIndexable: true }),
+      getEmojis(0, 48, locale, { sort: 'popular', isIndexable: true }),
+      getEmojiGroups(locale),
+    ]);
+    if (latestRes.status === 'fulfilled') initialEmojis = filterSfw(latestRes.value).slice(0, 24);
+    if (trendingRes.status === 'fulfilled') trendingEmojis = filterSfw(trendingRes.value).slice(0, 18);
+    if (groupsRes.status === 'fulfilled') groups = groupsRes.value;
   }
   // FAQ 结构化数据
   const tFaq = await getTranslations('faq');
@@ -125,9 +120,10 @@ export default async function Home(props: Props) {
       <Script id="ld-website" type="application/ld+json">{JSON.stringify(webSiteLd)}</Script>
       <Script id="ld-org" type="application/ld+json">{JSON.stringify(orgLd)}</Script>
       <Hero />
+      <StyleShowcase />
+      <CategoryShowcase categories={groups.categories} locale={locale} />
+      <TrendingGrid emojis={trendingEmojis} />
       <HorizontalGalleryContent initialEmojis={initialEmojis.length ? initialEmojis : undefined} />
-      <FeatureHighlight />
-      <Features />
       <FAQ />
       <CTA />
     </main>

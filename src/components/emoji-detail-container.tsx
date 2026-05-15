@@ -5,28 +5,21 @@ import EmojiContainer from "@/components/emoji-container";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { performAction, toggleLike, getEmojisByBaseSlug } from "@/lib/api";
+import { shareEmojiNative } from "@/lib/sharing";
 import { Button } from "./ui/button";
 import {
   DownloadIcon,
-  Share2,
   MoreHorizontalIcon,
   HeartIcon,
   CheckIcon,
   CopyIcon,
-  LinkedinIcon,
-  X,
   ImageIcon,
-  FacebookIcon,
-  MessageCircleIcon,
-  SendIcon,
-  InstagramIcon,
   Share2Icon,
-  QrCodeIcon,
-  UploadIcon,
   ChevronDownIcon,
   ChevronUpIcon,
 } from "lucide-react";
 import { useState, useEffect, useRef, memo, useMemo, forwardRef } from "react";
+import dynamic from 'next/dynamic';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -36,12 +29,16 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useTranslations } from 'next-intl';
 import { UnifiedGenmojiGenerator } from './unified-genmoji-generator';
-import { TimeAgo } from './time-ago';
 import { useLocale } from 'next-intl';
 import { useRouter } from 'next/navigation';
 import Image from "next/image";
 import Link from "next/link";
 import { API_BASE_URL, API_ENDPOINTS } from "@/lib/api-config";
+
+const ShareSheet = dynamic(
+  () => import('./share-sheet').then((m) => ({ default: m.ShareSheet })),
+  { ssr: false }
+);
 
 interface EmojiDetailContainerProps {
   emoji: Emoji;
@@ -368,6 +365,9 @@ export function EmojiDetailContainer({ emoji: initialEmoji }: EmojiDetailContain
   const [showRemixGenerator, setShowRemixGenerator] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
   const [refreshAttempted, setRefreshAttempted] = useState(false);
+  const [isShareSheetOpen, setIsShareSheetOpen] = useState(false);
+  const [isSharing, setIsSharing] = useState(false);
+  const [showShared, setShowShared] = useState(false);
 
   // 获取变体 - 只在初始化时调用一次
   const fetchVariations = async () => {
@@ -652,73 +652,25 @@ export function EmojiDetailContainer({ emoji: initialEmoji }: EmojiDetailContain
     }
   };
 
-  // 构建社交媒体分享链接
-  const getSocialShareUrl = (platform: 'twitter' | 'linkedin' | 'facebook' | 'pinterest' | 'telegram' | 'whatsapp' | 'wechat' | 'imgur') => {
-    const url = encodeURIComponent(getShareUrl());
-    const text = encodeURIComponent(`Check out this emoji: ${currentEmoji.prompt}`);
-    const title = encodeURIComponent(currentEmoji.prompt);
-    const image = encodeURIComponent(currentEmoji.image_url);
-
-    switch (platform) {
-      case 'twitter':
-        return `https://twitter.com/intent/tweet?url=${url}&text=${text}`;
-      case 'linkedin':
-        return `https://www.linkedin.com/sharing/share-offsite/?url=${url}`;
-      case 'facebook':
-        return `https://www.facebook.com/sharer/sharer.php?u=${url}`;
-      case 'pinterest':
-        return `https://pinterest.com/pin/create/button/?url=${url}&media=${image}&description=${text}`;
-      case 'telegram':
-        return `https://t.me/share/url?url=${url}&text=${text}`;
-      case 'whatsapp':
-        return `https://api.whatsapp.com/send?text=${text}%20${url}`;
-      case 'wechat':
-        return `weixin://dl/posts/${url}`;
-      case 'imgur':
-        return `https://imgur.com/upload?url=${image}`;
-      default:
-        return '';
-    }
-  };
-
-  // 处理分享到 Instagram
-  const handleInstagramShare = async () => {
-    try {
-      const response = await fetch(currentEmoji.image_url);
-      const blob = await response.blob();
-
-      const a = document.createElement('a');
-      a.href = URL.createObjectURL(blob);
-      a.download = `${currentEmoji.slug}.png`;
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-
-      alert(t('alert.instagramShare'));
-    } catch (err) {
-      console.error('Failed to prepare Instagram share:', err);
-    }
-  };
-
-  // 处理分享到微信
-  const handleWeChatShare = () => {
-    alert(t('alert.wechatShare'));
-  };
-
-  // 处理分享
+  // 处理分享：优先用 Web Share API L2 把图片当附件发，失败则打开 ShareSheet
   const handleShare = async () => {
+    if (isSharing) return;
+    setIsSharing(true);
     try {
-      if (navigator.share) {
-        await navigator.share({
-          title: currentEmoji.prompt,
-          text: t('sharing.defaultText', { prompt: currentEmoji.prompt }),
-          url: getShareUrl()
-        });
-      } else {
-        window.open(getSocialShareUrl('twitter'), '_blank');
+      const result = await shareEmojiNative(
+        currentEmoji,
+        t('sharing.defaultText', { prompt: currentEmoji.prompt }),
+        locale
+      );
+      if (result === 'shared') {
+        setShowShared(true);
+        setTimeout(() => setShowShared(false), 2000);
+      } else if (result === 'unsupported' || result === 'error') {
+        setIsShareSheetOpen(true);
       }
-    } catch (err) {
-      console.error('Failed to share:', err);
+      // result === 'canceled' → 用户取消，什么都不做
+    } finally {
+      setIsSharing(false);
     }
   };
 
@@ -981,7 +933,7 @@ export function EmojiDetailContainer({ emoji: initialEmoji }: EmojiDetailContain
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-48">
-                <DropdownMenuItem onClick={handleShare}>
+                <DropdownMenuItem onClick={() => setIsShareSheetOpen(true)}>
                   <Share2Icon className="mr-2 h-4 w-4" />
                   {t('share.title')}
                 </DropdownMenuItem>
@@ -989,44 +941,6 @@ export function EmojiDetailContainer({ emoji: initialEmoji }: EmojiDetailContain
                   <CopyIcon className="mr-2 h-4 w-4" />
                   {t('copyLink')}
                 </DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={() => window.open(getSocialShareUrl('twitter'), '_blank')}>
-                  <X className="mr-2 h-4 w-4" />
-                  {t('share.twitter')}
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => window.open(getSocialShareUrl('facebook'), '_blank')}>
-                  <FacebookIcon className="mr-2 h-4 w-4" />
-                  {t('share.facebook')}
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => window.open(getSocialShareUrl('linkedin'), '_blank')}>
-                  <LinkedinIcon className="mr-2 h-4 w-4" />
-                  {t('share.linkedin')}
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => window.open(getSocialShareUrl('pinterest'), '_blank')}>
-                  <Share2Icon className="mr-2 h-4 w-4" />
-                  {t('share.pinterest')}
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={handleInstagramShare}>
-                  <InstagramIcon className="mr-2 h-4 w-4" />
-                  {t('share.instagram')}
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => window.open(getSocialShareUrl('imgur'), '_blank')}>
-                  <UploadIcon className="mr-2 h-4 w-4" />
-                  {t('share.imgur')}
-                </DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={() => window.open(getSocialShareUrl('telegram'), '_blank')}>
-                  <SendIcon className="mr-2 h-4 w-4" />
-                  {t('share.telegram')}
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => window.open(getSocialShareUrl('whatsapp'), '_blank')}>
-                  <MessageCircleIcon className="mr-2 h-4 w-4" />
-                  {t('share.whatsapp')}
-                </DropdownMenuItem>
-                {/* <DropdownMenuItem onClick={handleWeChatShare}>
-                    <QrCodeIcon className="mr-2 h-4 w-4" />
-                    {t('share.wechat')}
-                  </DropdownMenuItem> */}
               </DropdownMenuContent>
             </DropdownMenu>
           </div>
@@ -1183,8 +1097,38 @@ export function EmojiDetailContainer({ emoji: initialEmoji }: EmojiDetailContain
             {showRemixGenerator ? t('hideGenerator') : t('reGenmoji')}
           </Button>
 
-          {/* Copy 和 Download 按钮一行 */}
-          <div className="grid grid-cols-2 gap-3">
+          {/* Share / Copy / Download 主 CTA */}
+          <div className="grid grid-cols-3 gap-3">
+            <Button
+              className="w-full py-4 bg-primary text-primary-foreground hover:bg-primary/90 transition-all duration-200 relative"
+              onClick={handleShare}
+              disabled={isSharing}
+            >
+              <div
+                className={cn(
+                  "absolute inset-0 flex items-center justify-center rounded-md transition-all duration-300",
+                  showShared ? "opacity-100" : "opacity-0"
+                )}
+              >
+                <CheckIcon className="h-4 w-4" />
+                <span className="ml-2 text-sm font-medium">{t('share.shared')}</span>
+              </div>
+              <div
+                className={cn(
+                  "flex items-center transition-opacity duration-300",
+                  isSharing || showShared ? "opacity-0" : "opacity-100"
+                )}
+              >
+                <Share2Icon className="mr-2 h-3.5 w-3.5" />
+                {t('share.send')}
+              </div>
+              {isSharing && !showShared && (
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="h-3.5 w-3.5 animate-spin rounded-full border-2 border-current border-t-transparent" />
+                </div>
+              )}
+            </Button>
+
             <Button
               variant="outline"
               className="w-full text-muted-foreground hover:text-foreground py-4 bg-blue-500/5 hover:bg-blue-500/10 dark:bg-blue-500/10 dark:hover:bg-blue-500/20 border-blue-500/20 dark:border-blue-500/30 transition-all duration-200 relative"
@@ -1277,6 +1221,10 @@ export function EmojiDetailContainer({ emoji: initialEmoji }: EmojiDetailContain
       </div>
       
       {/* </div> */}
+
+      {isShareSheetOpen && (
+        <ShareSheet emoji={currentEmoji} open={isShareSheetOpen} onOpenChange={setIsShareSheetOpen} />
+      )}
     </div>
   );
-} 
+}

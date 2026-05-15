@@ -1,4 +1,20 @@
 {
+  "home": {
+    "styleShowcase": {
+      "title": "按风格浏览",
+      "subtitle": "从粘土到像素艺术，14 种风格任你混搭。"
+    },
+    "categoryShowcase": {
+      "title": "热门分类",
+      "subtitle": "直接跳到大家最爱创作的 genmoji 类型。",
+      "countLabel": "{count, plural, other {# 个 genmoji}}",
+      "exploreLabel": "探索这个分类"
+    },
+    "trendingGrid": {
+      "title": "热门 genmoji",
+      "subtitle": "社区点赞最多的精选。"
+    }
+  },
   "common": {
     "name": "Genmoji Online",
     "description": "AI驱动的genmoji创作工具。创建独特的Apple风格genmoji，展现个性。",
@@ -211,16 +227,36 @@
       "downloading": "下载中...",
       "copying": "复制中...",
       "share": {
-        "title": "分享到",
-        "twitter": "分享到 Twitter",
-        "facebook": "分享到 Facebook",
-        "linkedin": "分享到 LinkedIn",
-        "instagram": "分享到 Instagram",
-        "pinterest": "分享到 Pinterest",
-        "imgur": "分享到 Imgur",
-        "telegram": "分享到 Telegram",
-        "whatsapp": "分享到 WhatsApp",
-        "wechat": "分享到微信"
+        "title": "分享",
+        "send": "分享",
+        "shared": "已分享",
+        "sendInChat": "发到聊天",
+        "copyAndPaste": "复制粘贴",
+        "quickPost": "快速发帖",
+        "whatsapp": "WhatsApp",
+        "telegram": "Telegram",
+        "messenger": "Messenger",
+        "signal": "Signal",
+        "discord": "Discord",
+        "x": "X",
+        "reddit": "Reddit",
+        "pinterest": "Pinterest",
+        "facebook": "Facebook",
+        "linkedin": "LinkedIn",
+        "instagram": "Instagram",
+        "imgur": "Imgur",
+        "wechat": "微信",
+        "twitter": "Twitter",
+        "email": "邮件",
+        "iosHint": "选 iMessage 或 WhatsApp，图片会作为贴纸/媒体附件直接进入聊天。",
+        "androidHint": "选 WhatsApp、Telegram 或 Messenger，图片会作为媒体附件直接发送。",
+        "desktopHint": "复制图片后粘贴到任何聊天应用即可。",
+        "discordTooltip": "图片已复制 — 粘贴到任意 Discord 频道。",
+        "signalTooltip": "图片已复制 — 粘贴到任意 Signal 聊天。",
+        "imageCopied": "图片已复制",
+        "linkCopied": "链接已复制",
+        "shareFailed": "无法打开分享面板 — 试试复制图片。",
+        "shareCanceled": "已取消分享"
       },
       "sharing": {
         "defaultText": "看看我用 Genmoji Online 制作的这个超棒的 genmoji！",
@@ -411,7 +447,7 @@
       "text": "文字生成 Genmoji",
       "image": "图片生成 Genmoji"
     },
-    "recentTitle": "最近生成的 Genmoji",
+    "recentTitle": "社区最新生成",
     "generationStatus": {
       "starting": "开始生成...",
       "creating": "创造魔法中...",

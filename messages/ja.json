@@ -1,4 +1,20 @@
 {
+  "home": {
+    "styleShowcase": {
+      "title": "スタイルで探す",
+      "subtitle": "クレイメーションからピクセルアートまで、14 スタイルでリミックス。"
+    },
+    "categoryShowcase": {
+      "title": "人気のカテゴリ",
+      "subtitle": "みんながよく作る genmoji にすぐ飛び込めます。",
+      "countLabel": "{count, plural, other {# 個の genmoji}}",
+      "exploreLabel": "このカテゴリを見る"
+    },
+    "trendingGrid": {
+      "title": "トレンドの genmoji",
+      "subtitle": "コミュニティで最もいいねされた作品。"
+    }
+  },
   "common": {
     "name": "Genmoji Online",
     "description": "あなたの感情と創造性を完璧に表現するカスタムgenmojiを一緒に作りましょう。",
@@ -139,7 +155,7 @@
       "text": "テキストからGenmoji",
       "image": "画像からGenmoji"
     },
-    "recentTitle": "最近生成された絵文字",
+    "recentTitle": "コミュニティの最新作",
     "generationStatus": {
       "starting": "生成を開始しています...",
       "creating": "魔法を作成中...",
@@ -519,15 +535,35 @@
       "copying": "コピー中...",
       "share": {
         "title": "共有",
-        "twitter": "Twitterで共有",
-        "facebook": "Facebookで共有",
-        "linkedin": "LinkedInで共有",
-        "instagram": "Instagramで共有",
-        "pinterest": "Pinterestで共有",
-        "imgur": "Imgurで共有",
-        "telegram": "Telegramで共有",
-        "whatsapp": "WhatsAppで共有",
-        "wechat": "WeChatで共有",
+        "send": "送信",
+        "shared": "共有しました",
+        "sendInChat": "チャットに送る",
+        "copyAndPaste": "コピーして貼り付け",
+        "quickPost": "クイック投稿",
+        "whatsapp": "WhatsApp",
+        "telegram": "Telegram",
+        "messenger": "Messenger",
+        "signal": "Signal",
+        "discord": "Discord",
+        "x": "X",
+        "reddit": "Reddit",
+        "pinterest": "Pinterest",
+        "facebook": "Facebook",
+        "linkedin": "LinkedIn",
+        "instagram": "Instagram",
+        "imgur": "Imgur",
+        "wechat": "WeChat",
+        "twitter": "Twitter",
+        "email": "メール",
+        "iosHint": "iMessage または WhatsApp を選ぶと、画像がステッカー / 添付ファイルとしてそのまま届きます。",
+        "androidHint": "WhatsApp、Telegram、Messenger を選ぶと、画像が添付ファイルとしてそのまま届きます。",
+        "desktopHint": "画像をコピーして、お好きなチャットアプリに貼り付けてください。",
+        "discordTooltip": "画像をコピーしました — Discord のチャンネルに貼り付けてください。",
+        "signalTooltip": "画像をコピーしました — Signal のチャットに貼り付けてください。",
+        "imageCopied": "画像をコピーしました",
+        "linkCopied": "リンクをコピーしました",
+        "shareFailed": "共有を開けませんでした — 画像をコピーしてみてください。",
+        "shareCanceled": "共有をキャンセルしました",
         "defaultText": "Genmoji オンラインで作った素敵な絵文字をチェックしてください！ ✨"
       },
       "sharing": {

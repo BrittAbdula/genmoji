@@ -3,6 +3,7 @@
 import { Link } from '@/i18n/routing';
 import { useState, useEffect, Suspense, useRef } from "react";
 import { getEmojis } from '@/lib/api'
+import { filterSfw } from '@/lib/sfw-filter';
 import EmojiContainer from "@/components/emoji-container";
 import { Emoji } from "@/types/emoji";
 import { Button } from "@/components/ui/button";
@@ -19,7 +20,7 @@ export function HorizontalGalleryContent({model, initialEmojis}: {model?: string
   const [emojis, setEmojis] = useState<Emoji[]>(initialEmojis ?? []);
   const [loading, setLoading] = useState<boolean>(!(initialEmojis && initialEmojis.length > 0));
   const [error, setError] = useState<string | null>(null);
-  const limit = 36; // Reduce initial grid for better performance
+  const limit = 24;
   const locale = useLocale();
   const [selectedModel, setSelectedModel] = useState<string | null>(null);
   const didMountRef = useRef(false);
@@ -51,16 +52,17 @@ export function HorizontalGalleryContent({model, initialEmojis}: {model?: string
       }
       setError(null);
       const effectiveModel = selectedModel ?? model ?? undefined;
-      const requireIndexable = !!model;
-      const newEmojis = await getEmojis(0, limit, locale, effectiveModel ? {
+      // Over-fetch then SFW-filter to ensure no NSFW slugs surface on the homepage.
+      const fetched = await getEmojis(0, limit * 2, locale, effectiveModel ? {
         sort: 'latest',
         model: effectiveModel,
-        ...(requireIndexable ? { isIndexable: true } : {}),
+        isIndexable: true,
       } : {
         sort: 'latest',
         hasInteractions: true,
+        isIndexable: true,
       });
-      setEmojis(newEmojis || []);
+      setEmojis(filterSfw(fetched).slice(0, limit));
     } catch (error) {
       console.error('Error fetching emojis:', error);
       if (retryCount > 0) {
